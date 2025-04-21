@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+  <title>Contact - Dr. Peter Probability</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="includeHTML.js" defer></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <main>
+    <section>
+      <h2>Get in Touch</h2>
+      <p><b>Email:</b> <span id="email"></span>.</p>
+	  <script>
+  const user = "P.Gracar";
+  const domain = "leeds.ac.uk";
+  document.getElementById("email").innerHTML = `<a href="mailto:${user}@${domain}">${user}@${domain}</a>`;
+  </script>
+      <p><b>Office</b>: My office is <b>9.10p1</b> in the <b>Maths Research Deck</b> of the <b>EC Stoner building</b>. The Deck can be accessed either by using Staircase 1 (next to the IT Service Desk) or by using the door opposite the main School of Mathematics entrance and following the signs. Using this <span class="hover-image"><b>map</b><img src="img/Map.jpg" alt="map to office" class="hover-img"></span> might also be helpful.</p>
+	<p><b>Address</b>: School of Mathematics. University of Leeds, Leeds LS2 9JT, UK.</p>
+    </section>
+  </main>
+  <div id="footer-placeholder"></div>
+</body>
+</html>
