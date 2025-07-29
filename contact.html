@@ -31,12 +31,13 @@
     <main>
         <section>
             <h2>Get in Touch</h2>
-            <p><b>Email:</b> <span id="email"></span>.</p>
+            <p><b>Email:</b> <span id="e9"></span>.</p>
             <script>
-                const user = "P.Gracar";
-                const dom = "leeds";
-				const ain = ".ac.uk";
-                document.getElementById("email").innerHTML = `<a href="mailto:${user}@${dom}${ain}">${user}@${dom}${ain}</a>`;
+                // Encoded email string
+                const k = "UC5HcmFjYXJAbGVlZHMuYWMudWs=";
+                const v = atob(k);
+                const m = atob("bWFpbHRvOg==");
+                document.getElementById("e9").innerHTML = `<a href="${m}${v}">${v}</a>`;
             </script>
             <p><b>Office</b>: My office is <b>9.10p1</b> in the <b>Maths Research Deck</b> of the <b>EC Stoner building</b>. The Deck can be accessed either by using Staircase 1 (next to the IT Service Desk) or by using the door opposite the main School
                 of Mathematics entrance and following the signs. Using this <span class="hover-image"><b>map</b><img src="img/Map.webp" alt="map to office" class="hover-img"></span> might also be helpful.</p>
