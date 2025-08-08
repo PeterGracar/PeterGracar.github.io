@@ -1,0 +1,576 @@
+<!DOCTYPE html><html lang="en-GB">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)</title>
+<!--Generated on Tue Dec  3 15:06:01 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on December 3, 2024.-->
+<style>:root { --bml-ltx-font-size: 10.95; }</style>
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-article.css" type="text/css">
+<link rel="stylesheet" href="ltx-amsart.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-table.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-search.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-bookdown.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-fontsettings.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook,plain.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook.css" type="text/css">
+<link rel="stylesheet" href="bmluser/colors.gitbook-DiscreteTimeFinance.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
+<link rel="up" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="start" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="prev" href="Pt9.html" title="Lecture IX 26/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="next" href="Ptx1.html" title="Extra reading (non-examinable) ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt1.html" title="Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt2.html" title="Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt3.html" title="Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt4.html" title="Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt5.html" title="Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt6.html" title="Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt7.html" title="Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt8.html" title="Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt9.html" title="Lecture IX 26/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx1.html" title="Extra reading (non-examinable) ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx2.html" title="Literature list ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+</head>
+<body>
+<div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+<a href="#bml-main-content" tabindex="0" class="bml-skip-to-content">Skip to content.</a>
+<div class="book-summary"><nav class="ltx_page_navbar">
+<ul class="ltx_toclist summary">
+<li>
+<a href="index.html" title="" class="ltx_ref" rel="start">Lecture notes: Discrete Time Finance (MATH5320M)</a>
+</li>
+<li class="divider">
+<li data-level="I" data-path="Pt1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">I </span></b>01/10/2024</a></li>
+<li data-level="II" data-path="Pt2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">II </span></b>08/10/2024</a></li>
+<li data-level="III" data-path="Pt3.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt3.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">III </span></b>15/10/2024</a></li>
+<li data-level="IV" data-path="Pt4.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt4.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IV </span></b>22/10/2024</a></li>
+<li data-level="V" data-path="Pt5.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt5.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">V </span></b>29/10/2024</a></li>
+<li data-level="VI" data-path="Pt6.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt6.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VI </span></b>05/11/2024</a></li>
+<li data-level="VII" data-path="Pt7.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt7.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VII </span></b>12/11/2024</a></li>
+<li data-level="VIII" data-path="Pt8.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt8.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VIII </span></b>19/11/2024</a></li>
+<li data-level="IX" data-path="Pt9.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt9.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IX </span></b>26/11/2024</a></li>
+<li data-level="X" data-path="" class="ltx_tocentry ltx_tocentry_part ltx_ref_self  chapter active">
+<a href="" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">X </span></b>03/12/2024</a>
+<ol class="ltx_toclist ltx_toclist_part">
+<li data-level="3.5" data-path="" class="ltx_tocentry ltx_tocentry_subsection  chapter ">
+<a href="#S3.SS5" title="In Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">3.5 </span></b>The Capital Asset Pricing Model</a>
+<ol class="ltx_toclist ltx_toclist_subsection">
+<li data-level="" data-path="" class="ltx_tocentry ltx_tocentry_paragraph  chapter "><a href="#S3.SS5.SSS0.Px1" title="In 3.5. The Capital Asset Pricing Model ‣ Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Pricing</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li data-level="" data-path="Ptx1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Extra reading (non-examinable)</a></li>
+<li data-level="" data-path="Ptx2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Literature list</a></li>
+</ul>
+</nav></div>
+<div class="ltx_page_main book-body fixed">
+<div class="body-inner">
+<div class="book-header fixed" role="navigation"><h1>03/12/2024</h1></div>
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="ltx_page_content page-inner" id="bml-main-content">
+<section class="ltx_part normal" lang="en-GB">
+<div class="section level1">
+
+<h1 class="ltx_title ltx_title_part">
+<span class="ltx_tag ltx_tag_part header-section-number">Lecture X</span> 03/12/2024</h1>
+
+<section id="S3.SS5" class="ltx_subsection normal">
+<div class="section level2">
+
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection header-section-number">3.5</span>. The Capital Asset Pricing Model</h2>
+
+<div id="S3.SS5.p1" class="ltx_para">
+<p class="ltx_p">For the rest of this section we impose the following assumption:</p>
+<div id="S3.SS5.Ex1" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex1.m1" class="ltx_math_unparsed" alttext="\boxed{\text{The market model is complete, i.e. there exists one risk
+neutral measure }\mathbb{Q}.}" display="block"><semantics><menclose notation="box"><mrow><mtext>The market model is complete, i.e. there exists one risk
+neutral measure </mtext><mi>ℚ</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\text{The market model is complete, i.e. there exists one risk
+neutral measure }\mathbb{Q}.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">We will also assume that <math id="S3.SS5.p1.m1" class="ltx_Math" alttext="\mathbb{Q}\neq\mathbb{P}" display="inline"><semantics><mrow><mi>ℚ</mi><mo>≠</mo><mi>ℙ</mi></mrow><annotation encoding="application/x-tex">\mathbb{Q}\neq\mathbb{P}</annotation></semantics></math> and denote by <math id="S3.SS5.p1.m2" class="ltx_Math" alttext="L" display="inline"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+the state price density</p>
+<div id="S3.SS5.Ex2" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex2.m1" class="ltx_Math" alttext="L(\omega)=\frac{\mathbb{Q}(\omega)}{\mathbb{P}(\omega)}." display="block"><semantics><mrow><mrow><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><mi>ℚ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">L(\omega)=\frac{\mathbb{Q}(\omega)}{\mathbb{P}(\omega)}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">In order to obtain a classical result, which is called the
+<span class="ltx_text ltx_font_bold">Capital Asset Pricing Mode</span>l, we will translate the mean
+variance problem into an optimal portfolio problem which we can
+solve with the methods from Section <a href="Pt7.html#S3.SS1" title="3.1. Single Period Investment ‣ 3. Investment ‣ Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1</span></a>. We will do it in
+two steps. Consider first the following problem:</p>
+</div>
+<div id="S3.SS5.p2" class="ltx_para">
+<div id="S3.SS5.Ex3" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex3.m1" class="ltx_Math" alttext="\boxed{\begin{split}\text{minimise}\quad&amp;\operatorname{Var}(V_{1})\\
+\text{subject to}\quad&amp;\mathbb{E}(V_{1})=x(1+\rho)\\
+&amp;V_{0}=x.\end{split}}" display="block"><semantics><menclose notation="box"><mtable columnspacing="0pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_right" columnalign="right"><mtext>minimise</mtext></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mi>Var</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mtd></mtr><mtr><mtd class="ltx_align_right" columnalign="right"><mtext>subject to</mtext></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>ρ</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>=</mo><mi>x</mi></mrow><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable></menclose><annotation encoding="application/x-tex">\boxed{\begin{split}\text{minimise}\quad&amp;\operatorname{Var}(V_{1})\\
+\text{subject to}\quad&amp;\mathbb{E}(V_{1})=x(1+\rho)\\
+&amp;V_{0}=x.\end{split}}</annotation></semantics></math></span>
+</div>
+</div>
+<div id="S3.SS5.p3" class="ltx_para">
+<p class="ltx_p">In this problem the constraints identify the set of all time <math id="S3.SS5.p3.m1" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>
+values corresponding to trading strategies that can be implemented
+with a total initial investment of <math id="S3.SS5.p3.m2" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> and which have a mean of
+<math id="S3.SS5.p3.m3" class="ltx_Math" alttext="x(1+\rho)" display="inline"><semantics><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>ρ</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">x(1+\rho)</annotation></semantics></math>. We claim that this problem is equivalent to the
+original minimum variance problem. In fact, <math id="S3.SS5.p3.m4" class="ltx_Math" alttext="\hat{V}_{1}" display="inline"><semantics><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><annotation encoding="application/x-tex">\hat{V}_{1}</annotation></semantics></math> is a
+solution of the latter problem if and only if <math id="S3.SS5.p3.m5" class="ltx_Math" alttext="\hat{R}=\frac{(\hat{V}_{1}-x)}{x}" display="inline"><semantics><mrow><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>−</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow><mi>x</mi></mfrac></mrow><annotation encoding="application/x-tex">\hat{R}=\frac{(\hat{V}_{1}-x)}{x}</annotation></semantics></math> is a solution of the original mean variance
+problem. We leave the details as an exercise.</p>
+</div>
+<div id="S3.SS5.p4" class="ltx_para">
+<p class="ltx_p">Let us now introduce a new problem which under special choice of
+the parameter <math id="S3.SS5.p4.m1" class="ltx_Math" alttext="\beta" display="inline"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> is equivalent to the previous one, but has the
+form of a standard optimal portfolio problem:</p>
+</div>
+<div id="S3.SS5.p5" class="ltx_para">
+<div id="S3.SS5.Ex4" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex4.m1" class="ltx_Math" alttext="\boxed{\begin{split}\text{maximise}\quad&amp;\mathbb{E}\left(-\frac{1}{2}V_{1}^{2}%
++\beta V_{1}\right)\\
+\text{subject to}\quad&amp;V_{0}=x.\end{split}}" display="block"><semantics><menclose notation="box"><mtable columnspacing="0pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_right" columnalign="right"><mtext>maximise</mtext></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mo>−</mo><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⁢</mo><msubsup><mi>V</mi><mn>1</mn><mn>2</mn></msubsup></mrow></mrow><mo>+</mo><mrow><mi>β</mi><mo>⁢</mo><msub><mi>V</mi><mn>1</mn></msub></mrow></mrow><mo>)</mo></mrow></mrow></mtd></mtr><mtr><mtd class="ltx_align_right" columnalign="right"><mtext>subject to</mtext></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>=</mo><mi>x</mi></mrow><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable></menclose><annotation encoding="application/x-tex">\boxed{\begin{split}\text{maximise}\quad&amp;\mathbb{E}\left(-\frac{1}{2}V_{1}^{2}%
++\beta V_{1}\right)\\
+\text{subject to}\quad&amp;V_{0}=x.\end{split}}</annotation></semantics></math></span>
+</div>
+</div>
+<div id="S3.SS5.p6" class="ltx_para">
+<p class="ltx_p">The function <math id="S3.SS5.p6.m1" class="ltx_Math" alttext="u(x)=-\frac{1}{2}x^{2}+\beta x" display="inline"><semantics><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mo>−</mo><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⁢</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mrow><mo>+</mo><mrow><mi>β</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow><annotation encoding="application/x-tex">u(x)=-\frac{1}{2}x^{2}+\beta x</annotation></semantics></math> is not a utility
+function in the strict sense as defined in Definition
+<a href="Pt7.html#S3.SS1.Thmtheorem1" title="Definition 3.1.1. ‣ 3.1. Single Period Investment ‣ 3. Investment ‣ Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.1</span></a>. However, its second derivative is clearly negative
+and the function is therefore concave. One can show that in this
+special case this is enough in order to make the methods discussed
+in Section <a href="Pt7.html#S3.SS1" title="3.1. Single Period Investment ‣ 3. Investment ‣ Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1</span></a> work. We have <math id="S3.SS5.p6.m2" class="ltx_Math" alttext="u^{\prime}(x)=-x+\beta" display="inline"><semantics><mrow><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mo>−</mo><mi>x</mi></mrow><mo>+</mo><mi>β</mi></mrow></mrow><annotation encoding="application/x-tex">u^{\prime}(x)=-x+\beta</annotation></semantics></math> and
+by coincidence <math id="S3.SS5.p6.m3" class="ltx_Math" alttext="I(x)=-x+\beta" display="inline"><semantics><mrow><mrow><mi>I</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mo>−</mo><mi>x</mi></mrow><mo>+</mo><mi>β</mi></mrow></mrow><annotation encoding="application/x-tex">I(x)=-x+\beta</annotation></semantics></math> as well. We solve equation
+(<a href="Pt8.html#S3.SS1.E9" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.9</span></a>) from Section <a href="Pt7.html#S3.SS1" title="3.1. Single Period Investment ‣ 3. Investment ‣ Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1</span></a> to obtain the value for
+the Lagrange multiplier:</p>
+<div id="S3.SS5.Ex5" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex5.m1" class="ltx_math_unparsed" alttext="\lambda=-\frac{(x(1+r)-\beta)(1+r))}{\mathbb{E}_{\mathbb{Q}}(L)}." display="block"><semantics><mrow><mrow><mi>λ</mi><mo>=</mo><mrow><mo>−</mo><mfrac><mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo stretchy="false">)</mo></mrow><mo>−</mo><mi>β</mi><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\lambda=-\frac{(x(1+r)-\beta)(1+r))}{\mathbb{E}_{\mathbb{Q}}(L)}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Substituting this value into equation (<a href="Pt8.html#S3.SS1.E8" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.8</span></a>) we obtain the
+optimal wealth</p>
+<div id="S3.SS5.E1" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.E1.m1" class="ltx_Math" alttext="\hat{V}_{1}=\frac{\beta}{\mathbb{E}_{\mathbb{Q}}(L)}\big{(}\mathbb{E}_{\mathbb%
+{Q}}(L)-L\big{)}+x(1+r)\frac{L}{\mathbb{E}_{\mathbb{Q}}(L)}." display="block"><semantics><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>=</mo><mrow><mrow><mfrac><mi>β</mi><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>L</mi></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mfrac><mi>L</mi><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\hat{V}_{1}=\frac{\beta}{\mathbb{E}_{\mathbb{Q}}(L)}\big{(}\mathbb{E}_{\mathbb%
+{Q}}(L)-L\big{)}+x(1+r)\frac{L}{\mathbb{E}_{\mathbb{Q}}(L)}.</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.5.1)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">Then (there is no mistake, try to find all the differences)</p>
+<div id="S3.SS5.E2" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.E2.m1" class="ltx_Math" alttext="\mathbb{E}(\hat{V}_{1})=\frac{\beta}{\mathbb{E}_{\mathbb{Q}}(L)}\big{(}\mathbb%
+{E}_{\mathbb{Q}}(L)-1\big{)}+x(1+r)\frac{1}{\mathbb{E}_{\mathbb{Q}}(L)}." display="block"><semantics><mrow><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mfrac><mi>β</mi><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mfrac><mn>1</mn><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}(\hat{V}_{1})=\frac{\beta}{\mathbb{E}_{\mathbb{Q}}(L)}\big{(}\mathbb%
+{E}_{\mathbb{Q}}(L)-1\big{)}+x(1+r)\frac{1}{\mathbb{E}_{\mathbb{Q}}(L)}.</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.5.2)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">We now want this optimal wealth to satisfy the first constraint of
+the first, i.e.</p>
+<div id="S3.SS5.E3" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.E3.m1" class="ltx_Math" alttext="\mathbb{E}(\hat{V}_{1})=x(1+\rho)." display="block"><semantics><mrow><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>ρ</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}(\hat{V}_{1})=x(1+\rho).</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.5.3)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">Using (<a href="#S3.SS5.E2" title="In 3.5. The Capital Asset Pricing Model ‣ Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5.2</span></a>) this translates into</p>
+<div id="S3.SS5.Ex6" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex6.m1" class="ltx_Math" alttext="\frac{\beta}{\mathbb{E}_{\mathbb{Q}}(L)}\big{(}\mathbb{E}_{\mathbb{Q}}(L)-1%
+\big{)}+x(1+r)\frac{1}{\mathbb{E}_{\mathbb{Q}}(L)}=x(1+\rho)." display="block"><semantics><mrow><mrow><mrow><mrow><mfrac><mi>β</mi><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mfrac><mn>1</mn><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow></mrow><mo>=</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>ρ</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\frac{\beta}{\mathbb{E}_{\mathbb{Q}}(L)}\big{(}\mathbb{E}_{\mathbb{Q}}(L)-1%
+\big{)}+x(1+r)\frac{1}{\mathbb{E}_{\mathbb{Q}}(L)}=x(1+\rho).</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Since by our assumptions <math id="S3.SS5.p6.m4" class="ltx_Math" alttext="\mathbb{Q}\neq\mathbb{P}" display="inline"><semantics><mrow><mi>ℚ</mi><mo>≠</mo><mi>ℙ</mi></mrow><annotation encoding="application/x-tex">\mathbb{Q}\neq\mathbb{P}</annotation></semantics></math>, we have
+<math id="S3.SS5.p6.m5" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}L&gt;1" display="inline"><semantics><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mi>L</mi></mrow><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}L&gt;1</annotation></semantics></math> (this is also left as an exercise).
+Solving the above equation for <math id="S3.SS5.p6.m6" class="ltx_Math" alttext="\beta" display="inline"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> gives</p>
+<div id="S3.SS5.E4" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.E4.m1" class="ltx_Math" alttext="\beta=\frac{x[(1+\rho)\mathbb{E}_{\mathbb{Q}}(L)-(1+r)]}{\mathbb{E}_{\mathbb{Q%
+}}(L)-1}." display="block"><semantics><mrow><mrow><mi>β</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>ρ</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">]</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\beta=\frac{x[(1+\rho)\mathbb{E}_{\mathbb{Q}}(L)-(1+r)]}{\mathbb{E}_{\mathbb{Q%
+}}(L)-1}.</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.5.4)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">With this choice of <math id="S3.SS5.p6.m7" class="ltx_Math" alttext="\beta" display="inline"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> the solution <math id="S3.SS5.p6.m8" class="ltx_Math" alttext="\hat{V}_{1}" display="inline"><semantics><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><annotation encoding="application/x-tex">\hat{V}_{1}</annotation></semantics></math> of the second problem
+satisfies the constraints in the first problem. We will now show that it is
+in fact a solution of the first problem. If <math id="S3.SS5.p6.m9" class="ltx_Math" alttext="V_{1}" display="inline"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_{1}</annotation></semantics></math> is any other random
+variable which satisfies the constraints in the first problem then in
+particular</p>
+<div id="S3.SS5.Ex7" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex7.m1" class="ltx_Math" alttext="\mathbb{E}(V_{1})=x(1+\rho)=\mathbb{E}(\hat{V}_{1})" display="block"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>ρ</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}(V_{1})=x(1+\rho)=\mathbb{E}(\hat{V}_{1})</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">and therefore</p>
+<div id="S3.SS5.Ex8" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex8.m1" class="ltx_Math" alttext="\mathbb{E}\left(-\frac{1}{2}\hat{V}_{1}^{2}+\beta\hat{V}_{1}\right)\geq\mathbb%
+{E}\left(-\frac{1}{2}V^{2}_{1}+\beta V_{1}\right)." display="block"><semantics><mrow><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mo>−</mo><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⁢</mo><msubsup><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn><mn>2</mn></msubsup></mrow></mrow><mo>+</mo><mrow><mi>β</mi><mo>⁢</mo><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub></mrow></mrow><mo>)</mo></mrow></mrow><mo>≥</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mo>−</mo><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⁢</mo><msubsup><mi>V</mi><mn>1</mn><mn>2</mn></msubsup></mrow></mrow><mo>+</mo><mrow><mi>β</mi><mo>⁢</mo><msub><mi>V</mi><mn>1</mn></msub></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}\left(-\frac{1}{2}\hat{V}_{1}^{2}+\beta\hat{V}_{1}\right)\geq\mathbb%
+{E}\left(-\frac{1}{2}V^{2}_{1}+\beta V_{1}\right).</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">It is equivalent to</p>
+<div id="S3.SS5.Ex9" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex9.m1" class="ltx_Math" alttext="\mathbb{E}\left(\frac{1}{2}\hat{V}^{2}_{1}\right)\leq\mathbb{E}\left(\frac{1}{%
+2}V^{2}_{1}\right)" display="block"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⁢</mo><msubsup><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn><mn>2</mn></msubsup></mrow><mo>)</mo></mrow></mrow><mo>≤</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⁢</mo><msubsup><mi>V</mi><mn>1</mn><mn>2</mn></msubsup></mrow><mo>)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}\left(\frac{1}{2}\hat{V}^{2}_{1}\right)\leq\mathbb{E}\left(\frac{1}{%
+2}V^{2}_{1}\right)</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">and, consequently, to</p>
+<div id="S3.SS5.Ex10" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex10.m1" class="ltx_Math" alttext="Var(\hat{V}_{1})\leq Var(V_{1})." display="block"><semantics><mrow><mrow><mrow><mi>V</mi><mo>⁢</mo><mi>a</mi><mo>⁢</mo><mi>r</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>≤</mo><mrow><mi>V</mi><mo>⁢</mo><mi>a</mi><mo>⁢</mo><mi>r</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">Var(\hat{V}_{1})\leq Var(V_{1}).</annotation></semantics></math></span>
+</div>
+</div>
+<div id="S3.SS5.p7" class="ltx_para">
+<p class="ltx_p">On the other hand, reversing the argument above, we can see that a
+solution of this probem is also a solution of of the original problem. These two
+problems are therefore equivalent, provided <math id="S3.SS5.p7.m1" class="ltx_Math" alttext="\beta" display="inline"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> and <math id="S3.SS5.p7.m2" class="ltx_Math" alttext="\rho" display="inline"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math> are
+related by equation (<a href="#S3.SS5.E4" title="In 3.5. The Capital Asset Pricing Model ‣ Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5.4</span></a>).</p>
+</div>
+<div id="S3.SS5.p8" class="ltx_para">
+<p class="ltx_p">Now we come to the most complicated part of this section leading to
+the famous results of CAPM. Substituting <math id="S3.SS5.p8.m1" class="ltx_Math" alttext="\beta" display="inline"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> from equation
+(<a href="#S3.SS5.E4" title="In 3.5. The Capital Asset Pricing Model ‣ Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5.4</span></a>) into equation (<a href="#S3.SS5.E1" title="In 3.5. The Capital Asset Pricing Model ‣ Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5.1</span></a>) gives</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx47" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S3.SS5.Ex18">
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS5.Ex11.m1" class="ltx_Math" alttext="\displaystyle\hat{V}_{1}" display="inline"><semantics><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><annotation encoding="application/x-tex">\displaystyle\hat{V}_{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex11.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex11.m3" class="ltx_Math" alttext="\displaystyle\frac{x[(1+\rho)\mathbb{E}_{\mathbb{Q}}(L)-(1+r)]}{(\mathbb{E}_{%
+\mathbb{Q}}(L)-1)\mathbb{E}_{\mathbb{Q}}(L)}(\mathbb{E}_{\mathbb{Q}}(L)-L)+x(1%
++r)\frac{L}{\mathbb{E}_{\mathbb{Q}}(L)}" display="inline"><semantics><mrow><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>ρ</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">]</mo></mrow></mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>L</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mi>L</mi><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\frac{x[(1+\rho)\mathbb{E}_{\mathbb{Q}}(L)-(1+r)]}{(\mathbb{E}_{%
+\mathbb{Q}}(L)-1)\mathbb{E}_{\mathbb{Q}}(L)}(\mathbb{E}_{\mathbb{Q}}(L)-L)+x(1%
++r)\frac{L}{\mathbb{E}_{\mathbb{Q}}(L)}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex12.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex12.m2" class="ltx_Math" alttext="\displaystyle\left(\frac{x(1+r)}{\mathbb{E}_{\mathbb{Q}}(L)-1}+\frac{x(\rho-r)%
+}{\mathbb{E}_{\mathbb{Q}}(L)-1}-\frac{x(1+r)}{\mathbb{E}_{\mathbb{Q}}(L)(%
+\mathbb{E}_{\mathbb{Q}}(L)-1)}\right)(\mathbb{E}_{\mathbb{Q}}(L)-L)" display="inline"><semantics><mrow><mrow><mo>(</mo><mrow><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle></mrow><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle></mrow><mo>)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>L</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\left(\frac{x(1+r)}{\mathbb{E}_{\mathbb{Q}}(L)-1}+\frac{x(\rho-r)%
+}{\mathbb{E}_{\mathbb{Q}}(L)-1}-\frac{x(1+r)}{\mathbb{E}_{\mathbb{Q}}(L)(%
+\mathbb{E}_{\mathbb{Q}}(L)-1)}\right)(\mathbb{E}_{\mathbb{Q}}(L)-L)</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex13.m1" class="ltx_Math" alttext="\displaystyle+\,x(1+r)\frac{L}{\mathbb{E}_{\mathbb{Q}}(L)}" display="inline"><semantics><mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mi>L</mi><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle></mrow></mrow><annotation encoding="application/x-tex">\displaystyle+\,x(1+r)\frac{L}{\mathbb{E}_{\mathbb{Q}}(L)}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex14.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex14.m2" class="ltx_Math" alttext="\displaystyle\left(\frac{x(1+r)\mathbb{E}_{\mathbb{Q}}(L)-x(1+r)}{\mathbb{E}_{%
+\mathbb{Q}}(L)(\mathbb{E}_{\mathbb{Q}}(L)-1)}+\frac{x(\rho-r)}{\mathbb{E}_{%
+\mathbb{Q}}(L)-1}\right)(\mathbb{E}_{\mathbb{Q}}(L)-L)" display="inline"><semantics><mrow><mrow><mo>(</mo><mrow><mstyle displaystyle="true"><mfrac><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle></mrow><mo>)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>L</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\left(\frac{x(1+r)\mathbb{E}_{\mathbb{Q}}(L)-x(1+r)}{\mathbb{E}_{%
+\mathbb{Q}}(L)(\mathbb{E}_{\mathbb{Q}}(L)-1)}+\frac{x(\rho-r)}{\mathbb{E}_{%
+\mathbb{Q}}(L)-1}\right)(\mathbb{E}_{\mathbb{Q}}(L)-L)</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex15.m1" class="ltx_Math" alttext="\displaystyle+\,x(1+r)\frac{L}{\mathbb{E}_{\mathbb{Q}}(L)}" display="inline"><semantics><mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mi>L</mi><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle></mrow></mrow><annotation encoding="application/x-tex">\displaystyle+\,x(1+r)\frac{L}{\mathbb{E}_{\mathbb{Q}}(L)}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex16.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex16.m2" class="ltx_Math" alttext="\displaystyle\left(\frac{x(1+r)}{\mathbb{E}_{\mathbb{Q}}(L)}+\frac{x(\rho-r)}{%
+\mathbb{E}_{\mathbb{Q}}(L)-1}\right)(\mathbb{E}_{\mathbb{Q}}(L)-L)+x(1+r)\frac%
+{L}{\mathbb{E}_{\mathbb{Q}}(L)}" display="inline"><semantics><mrow><mrow><mrow><mo>(</mo><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle></mrow><mo>)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>L</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mi>L</mi><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\left(\frac{x(1+r)}{\mathbb{E}_{\mathbb{Q}}(L)}+\frac{x(\rho-r)}{%
+\mathbb{E}_{\mathbb{Q}}(L)-1}\right)(\mathbb{E}_{\mathbb{Q}}(L)-L)+x(1+r)\frac%
+{L}{\mathbb{E}_{\mathbb{Q}}(L)}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex17.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex17.m2" class="ltx_Math" alttext="\displaystyle x(1+r)-\frac{x(1+r)L}{\mathbb{E}_{\mathbb{Q}}(L)}+\frac{x(\rho-r%
+)}{\mathbb{E}_{\mathbb{Q}}(L)-1}(\mathbb{E}_{\mathbb{Q}}(L)-L)+\frac{x(1+r)L}{%
+\mathbb{E}_{\mathbb{Q}}(L)}" display="inline"><semantics><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>L</mi></mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>L</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>L</mi></mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle x(1+r)-\frac{x(1+r)L}{\mathbb{E}_{\mathbb{Q}}(L)}+\frac{x(\rho-r%
+)}{\mathbb{E}_{\mathbb{Q}}(L)-1}(\mathbb{E}_{\mathbb{Q}}(L)-L)+\frac{x(1+r)L}{%
+\mathbb{E}_{\mathbb{Q}}(L)}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex18.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex18.m2" class="ltx_Math" alttext="\displaystyle x(1+r)+\frac{x(\rho-r)}{\mathbb{E}_{\mathbb{Q}}(L)-1}(\mathbb{E}%
+_{\mathbb{Q}}(L)-L)." display="inline"><semantics><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>L</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle x(1+r)+\frac{x(\rho-r)}{\mathbb{E}_{\mathbb{Q}}(L)-1}(\mathbb{E}%
+_{\mathbb{Q}}(L)-L).</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="ltx_p">The equivalence of the first problem and the Markowitz problem implies</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx48" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S3.SS5.Ex21">
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS5.Ex19.m1" class="ltx_Math" alttext="\displaystyle\hat{R}" display="inline"><semantics><mover accent="true"><mi>R</mi><mo>^</mo></mover><annotation encoding="application/x-tex">\displaystyle\hat{R}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex19.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex19.m3" class="ltx_Math" alttext="\displaystyle\frac{\hat{V}_{1}-x}{x}=r+\frac{x(\rho-r)}{\mathbb{E}_{\mathbb{Q}%
+}(L)-1}(\mathbb{E}_{\mathbb{Q}}(L)-L)" display="inline"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>−</mo><mi>x</mi></mrow><mi>x</mi></mfrac></mstyle><mo>=</mo><mrow><mi>r</mi><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>L</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\frac{\hat{V}_{1}-x}{x}=r+\frac{x(\rho-r)}{\mathbb{E}_{\mathbb{Q}%
+}(L)-1}(\mathbb{E}_{\mathbb{Q}}(L)-L)</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex20.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex20.m2" class="ltx_Math" alttext="\displaystyle\frac{r(\mathbb{E}_{\mathbb{Q}}(L)-1)}{\mathbb{E}_{\mathbb{Q}}(L)%
+-1}+\frac{\rho\mathbb{E}_{\mathbb{Q}}(L)-r\mathbb{E}_{\mathbb{Q}}(L)}{\mathbb{%
+E}_{\mathbb{Q}}(L)-1}-\frac{\rho-r}{\mathbb{E}_{\mathbb{Q}}(L)-1}L" display="inline"><semantics><mrow><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>r</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><mi>ρ</mi><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>r</mi><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle></mrow><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><mo>⁢</mo><mi>L</mi></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\frac{r(\mathbb{E}_{\mathbb{Q}}(L)-1)}{\mathbb{E}_{\mathbb{Q}}(L)%
+-1}+\frac{\rho\mathbb{E}_{\mathbb{Q}}(L)-r\mathbb{E}_{\mathbb{Q}}(L)}{\mathbb{%
+E}_{\mathbb{Q}}(L)-1}-\frac{\rho-r}{\mathbb{E}_{\mathbb{Q}}(L)-1}L</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS5.Ex21.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS5.Ex21.m2" class="ltx_Math" alttext="\displaystyle\frac{\rho\mathbb{E}_{\mathbb{Q}}(L)-r}{\mathbb{E}_{\mathbb{Q}}(L%
+)-1}-\frac{\rho-r}{\mathbb{E}_{\mathbb{Q}}(L)-1}L." display="inline"><semantics><mrow><mrow><mstyle displaystyle="true"><mfrac><mrow><mrow><mi>ρ</mi><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>r</mi></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><mo>⁢</mo><mi>L</mi></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle\frac{\rho\mathbb{E}_{\mathbb{Q}}(L)-r}{\mathbb{E}_{\mathbb{Q}}(L%
+)-1}-\frac{\rho-r}{\mathbb{E}_{\mathbb{Q}}(L)-1}L.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="ltx_p">We have therefore proved the following proposition:</p>
+</div>
+<div id="S3.SS5.Thmtheorem1" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 3.5.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS5.Thmtheorem1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S3.SS5.Thmtheorem1.p1.m1" class="ltx_Math" alttext="\hat{R}" display="inline"><semantics><mover accent="true"><mi>R</mi><mo>^</mo></mover><annotation encoding="application/x-tex">\hat{R}</annotation></semantics></math> be the return of a trading strategy
+which has the minimum variance among all other portfolios with
+expected returns equal to <math id="S3.SS5.Thmtheorem1.p1.m2" class="ltx_Math" alttext="\rho" display="inline"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>. Then</span></p>
+<div id="S3.SS5.Ex22" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex22.m1" class="ltx_Math" alttext="\boxed{\begin{split}\hat{R}&amp;=&amp;\frac{\rho\mathbb{E}_{\mathbb{Q}}(L)-r}{\mathbb{%
+E}_{\mathbb{Q}}(L)-1}-\frac{\rho-r}{\mathbb{E}_{\mathbb{Q}}(L)-1}L.\end{split}}" display="block"><semantics><menclose notation="box"><mtable columnspacing="0pt" displaystyle="true"><mtr><mtd class="ltx_align_right" columnalign="right"><mover accent="true"><mi>R</mi><mo>^</mo></mover></mtd><mtd class="ltx_align_left" columnalign="left"><mo>=</mo></mtd><mtd class="ltx_align_right" columnalign="right"><mrow><mrow><mfrac><mrow><mrow><mi>ρ</mi><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>r</mi></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mrow><mfrac><mrow><mi>ρ</mi><mo>−</mo><mi>r</mi></mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>1</mn></mrow></mfrac><mo>⁢</mo><mi>L</mi></mrow></mrow><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable></menclose><annotation encoding="application/x-tex">\boxed{\begin{split}\hat{R}&amp;=&amp;\frac{\rho\mathbb{E}_{\mathbb{Q}}(L)-r}{\mathbb{%
+E}_{\mathbb{Q}}(L)-1}-\frac{\rho-r}{\mathbb{E}_{\mathbb{Q}}(L)-1}L.\end{split}}</annotation></semantics></math></span>
+</div>
+</div>
+</div>
+<div id="S3.SS5.p9" class="ltx_para">
+<p class="ltx_p">The interesting point in the last proposition is that the solution
+<math id="S3.SS5.p9.m1" class="ltx_Math" alttext="\hat{R}" display="inline"><semantics><mover accent="true"><mi>R</mi><mo>^</mo></mover><annotation encoding="application/x-tex">\hat{R}</annotation></semantics></math> of the mean variance problem is an affine function of the
+state price density. Recall now the formula (<a href="Pt8.html#S3.SS2.E4" title="In 3.2. Returns ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.2.4</span></a>) from
+the preciding section which states a relationship between the
+expected return of such an affine function and an arbitrary return.
+Clearly the solution <math id="S3.SS5.p9.m2" class="ltx_Math" alttext="\hat{R}" display="inline"><semantics><mover accent="true"><mi>R</mi><mo>^</mo></mover><annotation encoding="application/x-tex">\hat{R}</annotation></semantics></math> of the mean variance problem is
+attainable and we therefore have proved the following theorem, which
+is a main result in the Capital Asset Pricing Model (CAPM):</p>
+</div>
+<div id="S3.SS5.Thmtheorem2" class="ltx_theorem ltx_theorem_theorem">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Theorem 3.5.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS5.Thmtheorem2.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">(<span class="ltx_text ltx_font_bold">CAPM</span>) If <math id="S3.SS5.Thmtheorem2.p1.m1" class="ltx_Math" alttext="\hat{R}" display="inline"><semantics><mover accent="true"><mi>R</mi><mo>^</mo></mover><annotation encoding="application/x-tex">\hat{R}</annotation></semantics></math> is a solution to the
+mean variance problem (Problem 1) for <math id="S3.SS5.Thmtheorem2.p1.m2" class="ltx_Math" alttext="\rho\geq r" display="inline"><semantics><mrow><mi>ρ</mi><mo>≥</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">\rho\geq r</annotation></semantics></math> and if <math id="S3.SS5.Thmtheorem2.p1.m3" class="ltx_Math" alttext="R" display="inline"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> is
+the return corresponding to an arbitrary trading strategy, then</span></p>
+<div id="S3.SS5.Ex23" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex23.m1" class="ltx_math_unparsed" alttext="\boxed{\mathbb{E}(R)-r=\frac{Cov(R,\hat{R})}{var(\hat{R})}(\mathbb{E}(\hat{R})%
+-r).}" display="block"><semantics><menclose notation="box"><mrow><mi>𝔼</mi><mrow><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><mo>−</mo><mi>r</mi><mo>=</mo><mfrac><mrow><mi>C</mi><mo>⁢</mo><mi>o</mi><mo>⁢</mo><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo>,</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>v</mi><mo>⁢</mo><mi>a</mi><mo>⁢</mo><mi>r</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow></mfrac><mrow><mo stretchy="false">(</mo><mi>𝔼</mi><mrow><mo stretchy="false">(</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow><mo>−</mo><mi>r</mi><mo stretchy="false">)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{E}(R)-r=\frac{Cov(R,\hat{R})}{var(\hat{R})}(\mathbb{E}(\hat{R})%
+-r).}</annotation></semantics></math></span>
+</div>
+</div>
+</div>
+<div class="ltx_proof">
+
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Proof.</h6>
+<div id="S3.SS5.p10" class="ltx_para">
+<p class="ltx_p">The proof of Theorem 1.4.1 follows directly from the discussion
+above and formula (<a href="Pt8.html#S3.SS2.E4" title="In 3.2. Returns ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.2.4</span></a>).
+∎</p>
+</div>
+</div>
+<section id="S3.SS5.SSS0.Px1" class="ltx_paragraph normal">
+<div class="section level3">
+
+<h3 class="ltx_title ltx_title_paragraph">Pricing</h3>
+
+<div id="S3.SS5.SSS0.Px1.p1" class="ltx_para">
+<p class="ltx_p">So far it is not clear why the CAPM is referred to
+as a pricing model. Assume we have a contingent claim <math id="S3.SS5.SSS0.Px1.p1.m1" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> with the
+maturity time <math id="S3.SS5.SSS0.Px1.p1.m2" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> for which we want to compute a price <math id="S3.SS5.SSS0.Px1.p1.m3" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> at time
+<math id="S3.SS5.SSS0.Px1.p1.m4" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math>. The return of the contingent claim is</p>
+<div id="S3.SS5.Ex24" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex24.m1" class="ltx_Math" alttext="R=\frac{X-x}{x}." display="block"><semantics><mrow><mrow><mi>R</mi><mo>=</mo><mfrac><mrow><mi>X</mi><mo>−</mo><mi>x</mi></mrow><mi>x</mi></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">R=\frac{X-x}{x}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Substituting this into the equation of Theorem <a href="#S3.SS5.Thmtheorem2" title="Theorem 3.5.2. ‣ 3.5. The Capital Asset Pricing Model ‣ Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5.2</span></a> gives</p>
+<div id="S3.SS5.Ex25" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex25.m1" class="ltx_Math" alttext="\frac{\mathbb{E}(X)-x}{x}-r=\frac{Cov(X,\hat{R})}{x\cdot Var(\hat{R})}(\mathbb%
+{E}(\hat{R})-r)" display="block"><semantics><mrow><mrow><mfrac><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>x</mi></mrow><mi>x</mi></mfrac><mo>−</mo><mi>r</mi></mrow><mo>=</mo><mrow><mfrac><mrow><mi>C</mi><mo>⁢</mo><mi>o</mi><mo>⁢</mo><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo>,</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mrow><mrow><mi>x</mi><mo lspace="0.222em" rspace="0.222em">⋅</mo><mi>V</mi></mrow><mo>⁢</mo><mi>a</mi><mo>⁢</mo><mi>r</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\frac{\mathbb{E}(X)-x}{x}-r=\frac{Cov(X,\hat{R})}{x\cdot Var(\hat{R})}(\mathbb%
+{E}(\hat{R})-r)</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Solving for <math id="S3.SS5.SSS0.Px1.p1.m5" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> gives</p>
+<div id="S3.SS5.Ex26" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS5.Ex26.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle x=\frac{\mathbb{E}(X)-\frac{Cov(X,\hat{R})}{Var(\hat{R})}%
+(\mathbb{E}(\hat{R})-r)}{1+r}.}" display="block"><semantics><menclose notation="box"><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mfrac><mrow><mi>C</mi><mo>⁢</mo><mi>o</mi><mo>⁢</mo><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo>,</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>V</mi><mo>⁢</mo><mi>a</mi><mo>⁢</mo><mi>r</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true"><mi>R</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle x=\frac{\mathbb{E}(X)-\frac{Cov(X,\hat{R})}{Var(\hat{R})}%
+(\mathbb{E}(\hat{R})-r)}{1+r}.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">How does this pricing formula relate to the one we developed in the
+previous section? Prices computed using the capital asset pricing
+model are in general not arbitrage free prices. The prices include
+the subjective probability measures <math id="S3.SS5.SSS0.Px1.p1.m6" class="ltx_Math" alttext="\mathbb{P}" display="inline"><semantics><mi>ℙ</mi><annotation encoding="application/x-tex">\mathbb{P}</annotation></semantics></math>, which is a
+handicap, since this measure is in general neither known, nor can it
+be computed. It is also unrealistic to assume that all agents have
+the same subjective probabilities and that all agents are
+mean-variance minimisers. We should however see it as a complement
+or alternative to the methods discussed in the previous section.</p>
+</div>
+</div>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+</div>
+</div>
+<a href="Pt9.html" class="navigation navigation-prev" aria-label="Previous page"><i class="fa fa-angle-left"></i></a><a href="Ptx1.html" class="navigation navigation-next" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+</div>
+</div>
+<script src="bookml/gitbook/js/app.min.js"></script>
+<script src="bookml/gitbook/js/jquery.highlight.js"></script>
+<script src="bookml/gitbook/js/plugin-search.js"></script>
+<script src="bookml/gitbook/js/plugin-fontsettings.js"></script>
+<script src="bookml/gitbook/js/plugin-bookdown.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+        MathJax = {
+          startup: {
+            ready() {
+              // do not process equations disabled with \bmlDisableMathJax (code suggested by Davide P. Cervone)
+              class bmlFindMathML extends MathJax._.input.mathml.FindMathML.FindMathML {
+                processMath(set) {
+                  const adaptor = this.adaptor;
+                  for (const node of set.values()) {
+                    if (adaptor.hasClass(node, 'bml_disable_mathjax')) {
+                      set.delete(node);
+                    }
+                  }
+                  return super.processMath(set);
+                }
+              }
+
+              MathJax._.components.global.combineDefaults(MathJax.config, 'mml', {FindMathML: new bmlFindMathML()});
+
+              MathJax.startup.defaultReady();
+
+              // preproces MathML to make MathJax aware of certain LaTeXML and BookML additional info
+              const mmlFilters = MathJax.startup.input[0].mmlFilters;
+
+              // convert the LaTeXML calligraphic (chancery) annotation to a form MathJax understands
+              // since the corresponding Unicode characters render as script (rounded)
+              const script2latin = {
+                '𝒜': 'A', 'ℬ': 'B', '𝒞': 'C', '𝒟': 'D', 'ℰ': 'E', 'ℱ': 'F', '𝒢': 'G',
+                'ℋ': 'H', 'ℐ': 'I', '𝒥': 'J', '𝒦': 'K', 'ℒ': 'L', 'ℳ': 'M', '𝒩': 'N',
+                '𝒪': 'O', '𝒫': 'P', '𝒬': 'Q', 'ℛ': 'R', '𝒮': 'S', '𝒯': 'T', '𝒰': 'U',
+                '𝒱': 'V', '𝒲': 'W', '𝒳': 'X', '𝒴': 'Y', '𝒵': 'Z',
+              };
+
+              mmlFilters.add((args) => {
+                for (const n of args.data.getElementsByClassName('ltx_font_mathcaligraphic')) {
+                  n.classList.add('MJX-tex-calligraphic');
+                  const letter = script2latin[n.textContent];
+                  if (letter !== undefined) { n.textContent = letter; }
+                }
+              });
+
+              // adjust characters based on Unicode variation sequences
+              const replacements = {
+                // MathJax renders the empty set as the U+FE00 variant, so the plain character needs adjusting
+                '∅': { variant: 'variant' },
+                // MathJax renders script characters in rounded style, which is fine for no variation and U+FE00
+                '𝒜\xFE00': { text: 'A', variant: 'tex-calligraphic' },
+                'ℬ\xFE00': { text: 'B', variant: 'tex-calligraphic' },
+                '𝒞\xFE00': { text: 'C', variant: 'tex-calligraphic' },
+                '𝒟\xFE00': { text: 'D', variant: 'tex-calligraphic' },
+                'ℰ\xFE00': { text: 'E', variant: 'tex-calligraphic' },
+                'ℱ\xFE00': { text: 'F', variant: 'tex-calligraphic' },
+                '𝒢\xFE00': { text: 'G', variant: 'tex-calligraphic' },
+                'ℋ\xFE00': { text: 'H', variant: 'tex-calligraphic' },
+                'ℐ\xFE00': { text: 'I', variant: 'tex-calligraphic' },
+                '𝒥\xFE00': { text: 'J', variant: 'tex-calligraphic' },
+                '𝒦\xFE00': { text: 'K', variant: 'tex-calligraphic' },
+                'ℒ\xFE00': { text: 'L', variant: 'tex-calligraphic' },
+                'ℳ\xFE00': { text: 'M', variant: 'tex-calligraphic' },
+                '𝒩\xFE00': { text: 'N', variant: 'tex-calligraphic' },
+                '𝒪\xFE00': { text: 'O', variant: 'tex-calligraphic' },
+                '𝒫\xFE00': { text: 'P', variant: 'tex-calligraphic' },
+                '𝒬\xFE00': { text: 'Q', variant: 'tex-calligraphic' },
+                'ℛ\xFE00': { text: 'R', variant: 'tex-calligraphic' },
+                '𝒮\xFE00': { text: 'S', variant: 'tex-calligraphic' },
+                '𝒯\xFE00': { text: 'T', variant: 'tex-calligraphic' },
+                '𝒰\xFE00': { text: 'U', variant: 'tex-calligraphic' },
+                '𝒱\xFE00': { text: 'V', variant: 'tex-calligraphic' },
+                '𝒲\xFE00': { text: 'W', variant: 'tex-calligraphic' },
+                '𝒳\xFE00': { text: 'X', variant: 'tex-calligraphic' },
+                '𝒴\xFE00': { text: 'Y', variant: 'tex-calligraphic' },
+                '𝒵\xFE00': { text: 'Z', variant: 'tex-calligraphic' }
+              };
+
+              mmlFilters.add((args) => {
+                let nodes = document.evaluate('.//m:mi | .//m:mn | .//m:mo | .//m:ms', args.data,
+                  () => 'http://www.w3.org/1998/Math/MathML', XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE);
+                for (let i = 0; i < nodes.snapshotLength; i++) {
+                  const n = nodes.snapshotItem(i);
+                  const repl = replacements[n.innerHTML];
+                  if (repl !== undefined) {
+                    const variant = repl['variant'];
+                    const text = repl['text'];
+                    if (variant !== undefined) { n.classList.add('MJX-' + variant); n.removeAttribute('mathvariant'); }
+                    if (text !== undefined) { n.innerHTML = text; }
+                  }
+                }
+              });
+            }
+          }
+        };
+      </script>
+<script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/mml-chtml.js"></script>
+<script type="text/javascript">
+                gitbook.require(["gitbook"], function(gitbook) {
+                gitbook.start({
+                  "fontsettings": {
+                    "theme": "white",
+                    "family": "sans",
+                    "size": 2
+                  },
+                  "download": [ [ "DiscreteTimeFinance.pdf", "PDF (serif)" ], [ "DiscreteTimeFinance-sans.pdf", "PDF (sans serif)" ], [ "DiscreteTimeFinance-sans-large.pdf", "PDF (sans serif, large)" ], ],
+                  "search": {
+                    "engine": "fuse"
+                  },
+                  "toc": {
+                    "collapse": "none"
+                  }
+                });
+              });
+            </script>
+</body>
+
+</html>
