@@ -1,0 +1,871 @@
+<!DOCTYPE html><html lang="en-GB">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)</title>
+<!--Generated on Tue Dec  3 15:06:01 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on December 3, 2024.-->
+<style>:root { --bml-ltx-font-size: 10.95; }</style>
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-article.css" type="text/css">
+<link rel="stylesheet" href="ltx-amsart.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-table.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-search.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-bookdown.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-fontsettings.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook,plain.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook.css" type="text/css">
+<link rel="stylesheet" href="bmluser/colors.gitbook-DiscreteTimeFinance.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
+<link rel="up" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="start" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="prev" href="Pt1.html" title="Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="next" href="Pt3.html" title="Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt1.html" title="Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt3.html" title="Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt4.html" title="Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt5.html" title="Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt6.html" title="Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt7.html" title="Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt8.html" title="Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt9.html" title="Lecture IX 26/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt10.html" title="Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx1.html" title="Extra reading (non-examinable) ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx2.html" title="Literature list ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+</head>
+<body>
+<div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+<a href="#bml-main-content" tabindex="0" class="bml-skip-to-content">Skip to content.</a>
+<div class="book-summary"><nav class="ltx_page_navbar">
+<ul class="ltx_toclist summary">
+<li>
+<a href="index.html" title="" class="ltx_ref" rel="start">Lecture notes: Discrete Time Finance (MATH5320M)</a>
+</li>
+<li class="divider">
+<li data-level="I" data-path="Pt1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">I </span></b>01/10/2024</a></li>
+<li data-level="II" data-path="" class="ltx_tocentry ltx_tocentry_part ltx_ref_self  chapter active">
+<a href="" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">II </span></b>08/10/2024</a>
+<ol class="ltx_toclist ltx_toclist_part">
+<li data-level="1.2" data-path="" class="ltx_tocentry ltx_tocentry_subsection  chapter "><a href="#S1.SS2" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">1.2 </span></b>A general single period market model</a></li>
+</ol>
+</li>
+<li data-level="III" data-path="Pt3.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt3.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">III </span></b>15/10/2024</a></li>
+<li data-level="IV" data-path="Pt4.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt4.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IV </span></b>22/10/2024</a></li>
+<li data-level="V" data-path="Pt5.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt5.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">V </span></b>29/10/2024</a></li>
+<li data-level="VI" data-path="Pt6.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt6.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VI </span></b>05/11/2024</a></li>
+<li data-level="VII" data-path="Pt7.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt7.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VII </span></b>12/11/2024</a></li>
+<li data-level="VIII" data-path="Pt8.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt8.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VIII </span></b>19/11/2024</a></li>
+<li data-level="IX" data-path="Pt9.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt9.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IX </span></b>26/11/2024</a></li>
+<li data-level="X" data-path="Pt10.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt10.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">X </span></b>03/12/2024</a></li>
+<li data-level="" data-path="Ptx1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Extra reading (non-examinable)</a></li>
+<li data-level="" data-path="Ptx2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Literature list</a></li>
+</ul>
+</nav></div>
+<div class="ltx_page_main book-body fixed">
+<div class="body-inner">
+<div class="book-header fixed" role="navigation"><h1>08/10/2024</h1></div>
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="ltx_page_content page-inner" id="bml-main-content">
+<section class="ltx_part normal" lang="en-GB">
+<div class="section level1">
+
+<h1 class="ltx_title ltx_title_part">
+<span class="ltx_tag ltx_tag_part header-section-number">Lecture II</span> 08/10/2024</h1>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">One way to find a price for an option is therefore to look for a replicating strategy and take the initial investment for this replicating strategy as the price. How to find the replicating strategy and does it always exist? Equations <math id="p1.m1" class="ltx_Math" alttext="(\ref{eqn01:1})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><semantics class="ltx_mathvariant_italic"><annotation-xml encoding="text/html" style="display: block;"><a href="Pt1.html#S1.SS1.E1" title="In Definition 1.1.7. ‣ 1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref ltx_font_italic"><span class="ltx_text ltx_ref_tag">1.1.1</span></a></annotation-xml></semantics><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\ref{eqn01:1})</annotation></semantics></math> and <math id="p1.m2" class="ltx_Math" alttext="(\ref{eqn01:2})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><semantics class="ltx_mathvariant_italic"><annotation-xml encoding="text/html" style="display: block;"><a href="Pt1.html#S1.SS1.E2" title="In Definition 1.1.7. ‣ 1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref ltx_font_italic"><span class="ltx_text ltx_ref_tag">1.1.2</span></a></annotation-xml></semantics><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\ref{eqn01:2})</annotation></semantics></math> represent a system of two linear equations with two unknown variables <math id="p1.m3" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> and <math id="p1.m4" class="ltx_Math" alttext="\phi" display="inline"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>. If we manage to solve it, the result will be the sougth for replicating strategy. Solving for <math id="p1.m5" class="ltx_Math" alttext="\phi" display="inline"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> is easy. We subtract <math id="p1.m6" class="ltx_Math" alttext="(\ref{eqn01:2})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><semantics class="ltx_mathvariant_italic"><annotation-xml encoding="text/html" style="display: block;"><a href="Pt1.html#S1.SS1.E2" title="In Definition 1.1.7. ‣ 1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref ltx_font_italic"><span class="ltx_text ltx_ref_tag">1.1.2</span></a></annotation-xml></semantics><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\ref{eqn01:2})</annotation></semantics></math> from <math id="p1.m7" class="ltx_Math" alttext="(\ref{eqn01:1})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><semantics class="ltx_mathvariant_italic"><annotation-xml encoding="text/html" style="display: block;"><a href="Pt1.html#S1.SS1.E1" title="In Definition 1.1.7. ‣ 1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref ltx_font_italic"><span class="ltx_text ltx_ref_tag">1.1.1</span></a></annotation-xml></semantics><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\ref{eqn01:1})</annotation></semantics></math> and obtain</p>
+<div id="S1.SS1.E3" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.E3.m1" class="ltx_Math" alttext="\phi=\frac{h(S_{1}(H))-h(S_{1}(T))}{S_{1}(H)-S_{1}(T)}." display="block"><semantics><mrow><mrow><mi>ϕ</mi><mo>=</mo><mfrac><mrow><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mrow><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\phi=\frac{h(S_{1}(H))-h(S_{1}(T))}{S_{1}(H)-S_{1}(T)}.</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.1.3)</span>
+          
+          
+        
+</div>
+<p class="ltx_p">We can now substitute this value for <math id="p1.m8" class="ltx_Math" alttext="\phi" display="inline"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> and solve for <math id="p1.m9" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>. The formula (<a href="#S1.SS1.E3" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.3</span></a>) is often called
+the <span class="ltx_text ltx_font_bold">Delta hedging formula</span>.</p>
+</div>
+<div id="p2" class="ltx_para">
+<p class="ltx_p">Although we have computed the replicating strategy, we would like to take an opportunity to introduce in this simple setting a method that is suitable for more complicated models. We will use this new method often when dealing with more than two states of the market.
+Let us rewrite equations <math id="p2.m1" class="ltx_Math" alttext="(\ref{eqn01:1})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><semantics class="ltx_mathvariant_italic"><annotation-xml encoding="text/html" style="display: block;"><a href="Pt1.html#S1.SS1.E1" title="In Definition 1.1.7. ‣ 1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref ltx_font_italic"><span class="ltx_text ltx_ref_tag">1.1.1</span></a></annotation-xml></semantics><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\ref{eqn01:1})</annotation></semantics></math> and <math id="p2.m2" class="ltx_Math" alttext="(\ref{eqn01:2})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><semantics class="ltx_mathvariant_italic"><annotation-xml encoding="text/html" style="display: block;"><a href="Pt1.html#S1.SS1.E2" title="In Definition 1.1.7. ‣ 1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref ltx_font_italic"><span class="ltx_text ltx_ref_tag">1.1.2</span></a></annotation-xml></semantics><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\ref{eqn01:2})</annotation></semantics></math> in a different form:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx7" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S1.SS1.E4"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS1.E4.m1" class="ltx_Math" alttext="\displaystyle x+\phi\left(\frac{1}{1+r}S_{1}(H)-S_{0}\right)" display="inline"><semantics><mrow><mi>x</mi><mo>+</mo><mrow><mi>ϕ</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mstyle><mo>⁢</mo><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><msub><mi>S</mi><mn>0</mn></msub></mrow><mo>)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle x+\phi\left(\frac{1}{1+r}S_{1}(H)-S_{0}\right)</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S1.SS1.E4.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS1.E4.m3" class="ltx_Math" alttext="\displaystyle\frac{1}{1+r}h(S_{1}(H))," display="inline"><semantics><mrow><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mstyle><mo>⁢</mo><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\displaystyle\frac{1}{1+r}h(S_{1}(H)),</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.1.4)</span></td>
+</tr></tbody>
+<tbody id="S1.SS1.E5"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS1.E5.m1" class="ltx_Math" alttext="\displaystyle x+\phi\left(\frac{1}{1+r}S_{1}(T)-S_{0}\right)" display="inline"><semantics><mrow><mi>x</mi><mo>+</mo><mrow><mi>ϕ</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mstyle><mo>⁢</mo><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><msub><mi>S</mi><mn>0</mn></msub></mrow><mo>)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle x+\phi\left(\frac{1}{1+r}S_{1}(T)-S_{0}\right)</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S1.SS1.E5.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS1.E5.m3" class="ltx_Math" alttext="\displaystyle\frac{1}{1+r}h(S_{1}(T))." display="inline"><semantics><mrow><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mstyle><mo>⁢</mo><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle\frac{1}{1+r}h(S_{1}(T)).</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.1.5)</span></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">Now we define</p>
+<div id="S1.SS1.E6" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.E6.m1" class="ltx_Math" alttext="\tilde{p}:=\frac{1+r-d}{u-d}." display="block"><semantics><mrow><mrow><mover accent="true"><mi>p</mi><mo>~</mo></mover><mo lspace="0.278em" rspace="0.278em">:=</mo><mfrac><mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo>−</mo><mi>d</mi></mrow><mrow><mi>u</mi><mo>−</mo><mi>d</mi></mrow></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\tilde{p}:=\frac{1+r-d}{u-d}.</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.1.6)</span>
+          
+          
+        
+</div>
+<p class="ltx_p">It follows from the assumption <math id="p2.m3" class="ltx_Math" alttext="d&lt;1+r&lt;u" display="inline"><semantics><mrow><mi>d</mi><mo>&lt;</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo>&lt;</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">d&lt;1+r&lt;u</annotation></semantics></math> that <math id="p2.m4" class="ltx_Math" alttext="0&lt;\tilde{p}&lt;1" display="inline"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0&lt;\tilde{p}&lt;1</annotation></semantics></math>. We have</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx8" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S1.SS1.Ex13">
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS1.Ex11.m1" class="ltx_Math" alttext="\displaystyle 1-\tilde{p}" display="inline"><semantics><mrow><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\displaystyle 1-\tilde{p}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S1.SS1.Ex11.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS1.Ex11.m3" class="ltx_Math" alttext="\displaystyle 1-\frac{1+r-d}{u-d}" display="inline"><semantics><mrow><mn>1</mn><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo>−</mo><mi>d</mi></mrow><mrow><mi>u</mi><mo>−</mo><mi>d</mi></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle 1-\frac{1+r-d}{u-d}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S1.SS1.Ex12.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS1.Ex12.m2" class="ltx_Math" alttext="\displaystyle\frac{u-d-(1+r-d)}{u-d}" display="inline"><semantics><mstyle displaystyle="true"><mfrac><mrow><mi>u</mi><mo>−</mo><mi>d</mi><mo>−</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo>−</mo><mi>d</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>u</mi><mo>−</mo><mi>d</mi></mrow></mfrac></mstyle><annotation encoding="application/x-tex">\displaystyle\frac{u-d-(1+r-d)}{u-d}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S1.SS1.Ex13.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS1.Ex13.m2" class="ltx_Math" alttext="\displaystyle\frac{u-1-r}{u-d}." display="inline"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>u</mi><mo>−</mo><mn>1</mn><mo>−</mo><mi>r</mi></mrow><mrow><mi>u</mi><mo>−</mo><mi>d</mi></mrow></mfrac></mstyle><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle\frac{u-1-r}{u-d}.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="ltx_p">For this choice of <math id="p2.m5" class="ltx_Math" alttext="\tilde{p}" display="inline"><semantics><mover accent="true"><mi>p</mi><mo>~</mo></mover><annotation encoding="application/x-tex">\tilde{p}</annotation></semantics></math> we have</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx9" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S1.SS1.Ex16">
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS1.Ex14.m1" class="ltx_Math" alttext="\displaystyle\frac{1}{1+r}\left(\tilde{p}S_{1}(H)+(1-\tilde{p})S_{1}(T)\right)" display="inline"><semantics><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mstyle><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mover accent="true"><mi>p</mi><mo>~</mo></mover><mo>⁢</mo><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\frac{1}{1+r}\left(\tilde{p}S_{1}(H)+(1-\tilde{p})S_{1}(T)\right)</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S1.SS1.Ex14.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS1.Ex14.m3" class="ltx_Math" alttext="\displaystyle\frac{\frac{1+r-d}{u-d}S_{0}u+\frac{u-1-r}{u-d}S_{0}d}{1+r}" display="inline"><semantics><mstyle displaystyle="true"><mfrac><mrow><mrow><mfrac><mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo>−</mo><mi>d</mi></mrow><mrow><mi>u</mi><mo>−</mo><mi>d</mi></mrow></mfrac><mo>⁢</mo><msub><mi>S</mi><mn>0</mn></msub><mo>⁢</mo><mi>u</mi></mrow><mo>+</mo><mrow><mfrac><mrow><mi>u</mi><mo>−</mo><mn>1</mn><mo>−</mo><mi>r</mi></mrow><mrow><mi>u</mi><mo>−</mo><mi>d</mi></mrow></mfrac><mo>⁢</mo><msub><mi>S</mi><mn>0</mn></msub><mo>⁢</mo><mi>d</mi></mrow></mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mstyle><annotation encoding="application/x-tex">\displaystyle\frac{\frac{1+r-d}{u-d}S_{0}u+\frac{u-1-r}{u-d}S_{0}d}{1+r}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S1.SS1.Ex15.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS1.Ex15.m2" class="ltx_math_unparsed" alttext="\displaystyle S_{0}\frac{(1+r-d)u+(u-(1+r))d)}{(u-d)(1+r)}" display="inline"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo>−</mo><mi>d</mi><mo stretchy="false">)</mo></mrow><mi>u</mi><mo>+</mo><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>−</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow><mi>d</mi><mo stretchy="false">)</mo></mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>−</mo><mi>d</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle S_{0}\frac{(1+r-d)u+(u-(1+r))d)}{(u-d)(1+r)}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S1.SS1.Ex16.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS1.Ex16.m2" class="ltx_Math" alttext="\displaystyle S_{0}." display="inline"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle S_{0}.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="ltx_p">Let us multiply equation <math id="p2.m6" class="ltx_Math" alttext="(\ref{eqn01:4})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><semantics class="ltx_mathvariant_italic"><annotation-xml encoding="text/html" style="display: block;"><a href="#S1.SS1.E4" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref ltx_font_italic"><span class="ltx_text ltx_ref_tag">1.1.4</span></a></annotation-xml></semantics><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\ref{eqn01:4})</annotation></semantics></math> by <math id="p2.m7" class="ltx_Math" alttext="\tilde{p}" display="inline"><semantics><mover accent="true"><mi>p</mi><mo>~</mo></mover><annotation encoding="application/x-tex">\tilde{p}</annotation></semantics></math> and equation <math id="p2.m8" class="ltx_Math" alttext="(\ref{eqn01:5})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><semantics class="ltx_mathvariant_italic"><annotation-xml encoding="text/html" style="display: block;"><a href="#S1.SS1.E5" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref ltx_font_italic"><span class="ltx_text ltx_ref_tag">1.1.5</span></a></annotation-xml></semantics><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\ref{eqn01:5})</annotation></semantics></math> by <math id="p2.m9" class="ltx_Math" alttext="1-\tilde{p}" display="inline"><semantics><mrow><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">1-\tilde{p}</annotation></semantics></math>. By adding them we obtain</p>
+<div class="ltx_equation ltx_eqn_div">
+<span><math id="p2.m10" class="ltx_Math" alttext="x+\phi\Big{(}\frac{1}{1+r}\big{(}\tilde{p}S_{1}(H)+(1-\tilde{p})S_{1}(T)\big{)%
+}-S_{0}\Big{)}=\frac{1}{1+r}\Big{(}\tilde{p}\,h\big{(}S_{1}(H)\big{)}+(1-%
+\tilde{p})h\big{(}S_{1}(T)\big{)}\Big{)}," display="block"><semantics><mtable displaystyle="true"><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><mi>x</mi><mo>+</mo><mrow><mi>ϕ</mi><mo>⁢</mo><mrow><mo maxsize="160%" minsize="160%">(</mo><mrow><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><mrow><mover accent="true"><mi>p</mi><mo>~</mo></mover><mo>⁢</mo><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow><mo>−</mo><msub><mi>S</mi><mn>0</mn></msub></mrow><mo maxsize="160%" minsize="160%">)</mo></mrow></mrow></mrow><mo>=</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mrow><mo maxsize="160%" minsize="160%">(</mo><mrow><mrow><mover accent="true"><mi>p</mi><mo>~</mo></mover><mo>⁢</mo><mi>h</mi><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>h</mi><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow></mrow><mo maxsize="160%" minsize="160%">)</mo></mrow></mrow></mrow><mo>,</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">x+\phi\Big{(}\frac{1}{1+r}\big{(}\tilde{p}S_{1}(H)+(1-\tilde{p})S_{1}(T)\big{)%
+}-S_{0}\Big{)}=\frac{1}{1+r}\Big{(}\tilde{p}\,h\big{(}S_{1}(H)\big{)}+(1-%
+\tilde{p})h\big{(}S_{1}(T)\big{)}\Big{)},</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">which by the choice of <math id="p2.m11" class="ltx_Math" alttext="\tilde{p}" display="inline"><semantics><mover accent="true"><mi>p</mi><mo>~</mo></mover><annotation encoding="application/x-tex">\tilde{p}</annotation></semantics></math> and the equation above is equivalent to</p>
+<div id="S1.SS1.E7" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.E7.m1" class="ltx_math_unparsed" alttext="\boxed{x=\frac{1}{1+r}\Big{(}\tilde{p}\,h\big{(}S_{1}(H)\big{)}+(1-\tilde{p})h%
+\big{(}S_{1}(T)\big{)}\Big{)}.}" display="block"><semantics><menclose notation="box"><mrow><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mrow><mo maxsize="160%" minsize="160%">(</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover><mi>h</mi><mrow><mo maxsize="120%" minsize="120%">(</mo><msub><mi>S</mi><mn>1</mn></msub><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow><mo>+</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover><mo stretchy="false">)</mo></mrow><mi>h</mi><mrow><mo maxsize="120%" minsize="120%">(</mo><msub><mi>S</mi><mn>1</mn></msub><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow><mo maxsize="160%" minsize="160%">)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{x=\frac{1}{1+r}\Big{(}\tilde{p}\,h\big{(}S_{1}(H)\big{)}+(1-\tilde{p})h%
+\big{(}S_{1}(T)\big{)}\Big{)}.}</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.1.7)</span>
+          
+          
+        
+</div>
+</div>
+<div id="p3" class="ltx_para">
+<p class="ltx_p">Either from (<a href="#S1.SS1.E3" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.3</span></a>) or from (<a href="#S1.SS1.E7" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.7</span></a>) we see that under the condition <math id="p3.m1" class="ltx_Math" alttext="u&gt;d" display="inline"><semantics><mrow><mi>u</mi><mo>&gt;</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">u&gt;d</annotation></semantics></math> (we assumed it at the very beginning) we can always find a replicating strategy for an option in our elementary single period market model. Models which have this property are called <span class="ltx_text ltx_font_bold">complete</span>. We will soon see, that there are also models which are not complete and where the technique of pricing by the replication principle does not work.</p>
+</div>
+<div id="p4" class="ltx_para">
+<p class="ltx_p">It is interesting to note, that the price <math id="p4.m1" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> for the option computed above, does not depend on the probabilities <math id="p4.m2" class="ltx_Math" alttext="p" display="inline"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> and <math id="p4.m3" class="ltx_Math" alttext="1-p" display="inline"><semantics><mrow><mn>1</mn><mo>−</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">1-p</annotation></semantics></math>. In particular it does not coincide with the discounted expectation of the payoff of the option using the probability measure <math id="p4.m4" class="ltx_Math" alttext="\mathbb{P}" display="inline"><semantics><mi>ℙ</mi><annotation encoding="application/x-tex">\mathbb{P}</annotation></semantics></math>, i.e. in general</p>
+<div id="S1.SS1.Ex17" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.Ex17.m1" class="ltx_Math" alttext="x\neq\mathbb{E}_{\mathbb{P}}\left(\frac{1}{1+r}h(S_{T})\right)=\frac{1}{1+r}%
+\Big{(}p\,h\big{(}S_{1}(H)\big{)}+(1-p)h\big{(}S_{1}(T)\big{)}\Big{)}." display="block"><semantics><mrow><mrow><mi>x</mi><mo>≠</mo><mrow><msub><mi>𝔼</mi><mi>ℙ</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>S</mi><mi>T</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mrow><mo maxsize="160%" minsize="160%">(</mo><mrow><mrow><mi>p</mi><mo lspace="0.170em">⁢</mo><mi>h</mi><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>−</mo><mi>p</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>h</mi><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow></mrow><mo maxsize="160%" minsize="160%">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">x\neq\mathbb{E}_{\mathbb{P}}\left(\frac{1}{1+r}h(S_{T})\right)=\frac{1}{1+r}%
+\Big{(}p\,h\big{(}S_{1}(H)\big{)}+(1-p)h\big{(}S_{1}(T)\big{)}\Big{)}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">The latter equation is only true if <math id="p4.m5" class="ltx_Math" alttext="p=\tilde{p}" display="inline"><semantics><mrow><mi>p</mi><mo>=</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">p=\tilde{p}</annotation></semantics></math> and hence also <math id="p4.m6" class="ltx_Math" alttext="1-p=1-\tilde{p}" display="inline"><semantics><mrow><mrow><mn>1</mn><mo>−</mo><mi>p</mi></mrow><mo>=</mo><mrow><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow></mrow><annotation encoding="application/x-tex">1-p=1-\tilde{p}</annotation></semantics></math>, or if <math id="p4.m7" class="ltx_Math" alttext="h(S_{1}(H))=h(S_{1}(T))" display="inline"><semantics><mrow><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">h(S_{1}(H))=h(S_{1}(T))</annotation></semantics></math> i.e. the payoff of the option is deterministic (non random). This however is hardly the case in reality. On the other hand, if we define another measure <math id="p4.m8" class="ltx_Math" alttext="\tilde{\mathbb{P}}" display="inline"><semantics><mover accent="true"><mi>ℙ</mi><mo>~</mo></mover><annotation encoding="application/x-tex">\tilde{\mathbb{P}}</annotation></semantics></math> on the underlying probability space <math id="p4.m9" class="ltx_Math" alttext="\Omega=\{H,T\}" display="inline"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>=</mo><mrow><mo stretchy="false">{</mo><mi>H</mi><mo>,</mo><mi>T</mi><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">\Omega=\{H,T\}</annotation></semantics></math> by</p>
+<div id="S1.SS1.Ex18" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.Ex18.m1" class="ltx_Math" alttext="\tilde{\mathbb{P}}(H)=\tilde{p},\tilde{\mathbb{P}}(T)=1-\tilde{p}" display="block"><semantics><mrow><mrow><mrow><mover accent="true"><mi>ℙ</mi><mo>~</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow><mo>,</mo><mrow><mrow><mover accent="true"><mi>ℙ</mi><mo>~</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>~</mo></mover></mrow></mrow></mrow><annotation encoding="application/x-tex">\tilde{\mathbb{P}}(H)=\tilde{p},\tilde{\mathbb{P}}(T)=1-\tilde{p}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">then by taking expectations under the measure <math id="p4.m10" class="ltx_Math" alttext="\tilde{\mathbb{P}}" display="inline"><semantics><mover accent="true"><mi>ℙ</mi><mo>~</mo></mover><annotation encoding="application/x-tex">\tilde{\mathbb{P}}</annotation></semantics></math> instead of <math id="p4.m11" class="ltx_Math" alttext="\mathbb{P}" display="inline"><semantics><mi>ℙ</mi><annotation encoding="application/x-tex">\mathbb{P}</annotation></semantics></math> we conclude from equation (<a href="#S1.SS1.E7" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.7</span></a>) that</p>
+<div id="S1.SS1.E8" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.E8.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle x=\mathbb{E}_{\mathbb{\tilde{P}}}\left(\frac{1}{1+r}h(S_{%
+T})\right).}" display="block"><semantics><menclose notation="box"><mrow><mi>x</mi><mo>=</mo><msub><mi>𝔼</mi><mover accent="true"><mi>ℙ</mi><mo>~</mo></mover></msub><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mi>h</mi><mrow><mo stretchy="false">(</mo><msub><mi>S</mi><mi>T</mi></msub><mo stretchy="false">)</mo></mrow><mo>)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle x=\mathbb{E}_{\mathbb{\tilde{P}}}\left(\frac{1}{1+r}h(S_{%
+T})\right).}</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.1.8)</span>
+          
+          
+        
+</div>
+</div>
+<div id="p5" class="ltx_para">
+<p class="ltx_p">The measure <math id="p5.m1" class="ltx_Math" alttext="\mathbb{\tilde{P}}" display="inline"><semantics><mover accent="true"><mi>ℙ</mi><mo>~</mo></mover><annotation encoding="application/x-tex">\mathbb{\tilde{P}}</annotation></semantics></math> is often called a <span class="ltx_text ltx_font_bold">risk neutral measure</span>, since under this measure the option price depends only on the expectation of the payoff, not on its riskiness. Such measures will play a major role in the once we move on to more complicated models. As we will see risk neutral measures, also called equivalent martingale measures, will enable us to compute prices for options in complete and incomplete markets. Notice that formula (<a href="#S1.SS1.E3" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.3</span></a>), that is the first pricing method we described, is inherently related to the replication principle which is not applicable in incomplete markets.</p>
+</div>
+<div id="p6" class="ltx_para">
+<p class="ltx_p">We devote the rest of this section to examples.</p>
+</div>
+<div id="S1.SS1.Thmtheorem9" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 1.1.9</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.SS1.Thmtheorem9.p1" class="ltx_para">
+<p class="ltx_p">Assume the parameters in our elementary market model are the following: <math id="S1.SS1.Thmtheorem9.p1.m1" class="ltx_Math" alttext="r=\frac{1}{3}" display="inline"><semantics><mrow><mi>r</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow><annotation encoding="application/x-tex">r=\frac{1}{3}</annotation></semantics></math>, <math id="S1.SS1.Thmtheorem9.p1.m2" class="ltx_Math" alttext="S_{0}=1" display="inline"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">S_{0}=1</annotation></semantics></math>, <math id="S1.SS1.Thmtheorem9.p1.m3" class="ltx_Math" alttext="u=2" display="inline"><semantics><mrow><mi>u</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">u=2</annotation></semantics></math>, <math id="S1.SS1.Thmtheorem9.p1.m4" class="ltx_Math" alttext="d=\frac{1}{2}" display="inline"><semantics><mrow><mi>d</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">d=\frac{1}{2}</annotation></semantics></math>, <math id="S1.SS1.Thmtheorem9.p1.m5" class="ltx_Math" alttext="p=\frac{3}{4}" display="inline"><semantics><mrow><mi>p</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">p=\frac{3}{4}</annotation></semantics></math>. We want to compute the price of a European call option with the strike price <math id="S1.SS1.Thmtheorem9.p1.m6" class="ltx_Math" alttext="K=1" display="inline"><semantics><mrow><mi>K</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K=1</annotation></semantics></math> and the maturity time <math id="S1.SS1.Thmtheorem9.p1.m7" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>. In this case</p>
+<div id="S1.SS1.Ex19" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.Ex19.m1" class="ltx_Math" alttext="\tilde{p}=\frac{1+\frac{1}{3}-\frac{1}{2}}{2-\frac{1}{2}}=\frac{5}{9}" display="block"><semantics><mrow><mover accent="true"><mi>p</mi><mo>~</mo></mover><mo>=</mo><mfrac><mrow><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow><mrow><mn>2</mn><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></mfrac><mo>=</mo><mfrac><mn>5</mn><mn>9</mn></mfrac></mrow><annotation encoding="application/x-tex">\tilde{p}=\frac{1+\frac{1}{3}-\frac{1}{2}}{2-\frac{1}{2}}=\frac{5}{9}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">and we obtain the price of the option <math id="S1.SS1.Thmtheorem9.p1.m8" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> as</p>
+<div id="S1.SS1.Ex20" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.Ex20.m1" class="ltx_Math" alttext="x=\frac{1}{1+\frac{1}{3}}\cdot\left(\frac{5}{9}(2-1)+\frac{4}{9}0\right)=\frac%
+{15}{36}." display="block"><semantics><mrow><mrow><mi>x</mi><mo>=</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo>(</mo><mrow><mrow><mfrac><mn>5</mn><mn>9</mn></mfrac><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>2</mn><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mfrac><mn>4</mn><mn>9</mn></mfrac><mo>⁢</mo><mn>0</mn></mrow></mrow><mo>)</mo></mrow></mrow><mo>=</mo><mfrac><mn>15</mn><mn>36</mn></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">x=\frac{1}{1+\frac{1}{3}}\cdot\left(\frac{5}{9}(2-1)+\frac{4}{9}0\right)=\frac%
+{15}{36}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Again, the example shows that the value of the probability <math id="S1.SS1.Thmtheorem9.p1.m9" class="ltx_Math" alttext="p" display="inline"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> is completely irrelevant for the computation of the price of the option. Only the risk neutral probability <math id="S1.SS1.Thmtheorem9.p1.m10" class="ltx_Math" alttext="\tilde{p}" display="inline"><semantics><mover accent="true"><mi>p</mi><mo>~</mo></mover><annotation encoding="application/x-tex">\tilde{p}</annotation></semantics></math> matters. We can also verify that
+the number computer with <math id="S1.SS1.Thmtheorem9.p1.m11" class="ltx_Math" alttext="p" display="inline"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> instead of <math id="S1.SS1.Thmtheorem9.p1.m12" class="ltx_Math" alttext="\tilde{p}" display="inline"><semantics><mover accent="true"><mi>p</mi><mo>~</mo></mover><annotation encoding="application/x-tex">\tilde{p}</annotation></semantics></math> is different:</p>
+<div id="S1.SS1.Ex21" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.Ex21.m1" class="ltx_Math" alttext="\frac{1}{1+\frac{1}{3}}\cdot\left(\frac{3}{4}(2-1)+\frac{1}{4}0\right)=\frac{9%
+}{16}." display="block"><semantics><mrow><mrow><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo>(</mo><mrow><mrow><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>2</mn><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>⁢</mo><mn>0</mn></mrow></mrow><mo>)</mo></mrow></mrow><mo>=</mo><mfrac><mn>9</mn><mn>16</mn></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\frac{1}{1+\frac{1}{3}}\cdot\left(\frac{3}{4}(2-1)+\frac{1}{4}0\right)=\frac{9%
+}{16}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="S1.SS1.Thmtheorem10" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 1.1.10</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.SS1.Thmtheorem10.p1" class="ltx_para">
+<p class="ltx_p">Using the same parameters as in the previous example, we compute the price of a European put option, which has the following payoff</p>
+<div id="S1.SS1.Ex22" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.Ex22.m1" class="ltx_Math" alttext="h(S_{1}):=\max(K-S_{1},0)." display="block"><semantics><mrow><mrow><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>S</mi><mn>1</mn></msub><mo rspace="0.278em" stretchy="false">)</mo></mrow></mrow><mo rspace="0.278em">:=</mo><mrow><mi>max</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>K</mi><mo>−</mo><msub><mi>S</mi><mn>1</mn></msub></mrow><mo>,</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">h(S_{1}):=\max(K-S_{1},0).</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">The price of the European put is then given by</p>
+<div id="S1.SS1.Ex23" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.Ex23.m1" class="ltx_Math" alttext="x=\frac{1}{1+\frac{1}{3}}\cdot\left(\frac{5}{9}0+\frac{4}{9}\cdot(1-\frac{1}{2%
+})\right)=\frac{6}{36}=\frac{1}{6}" display="block"><semantics><mrow><mi>x</mi><mo>=</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo>(</mo><mrow><mrow><mfrac><mn>5</mn><mn>9</mn></mfrac><mo>⁢</mo><mn>0</mn></mrow><mo>+</mo><mrow><mfrac><mn>4</mn><mn>9</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>)</mo></mrow></mrow><mo>=</mo><mfrac><mn>6</mn><mn>36</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac></mrow><annotation encoding="application/x-tex">x=\frac{1}{1+\frac{1}{3}}\cdot\left(\frac{5}{9}0+\frac{4}{9}\cdot(1-\frac{1}{2%
+})\right)=\frac{6}{36}=\frac{1}{6}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="p7" class="ltx_para">
+<p class="ltx_p">There is an interesting relationship between the European call considered in Example <a href="#S1.SS1.Thmtheorem9" title="Example 1.1.9. ‣ Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.9</span></a> and the European put considered in Example <a href="#S1.SS1.Thmtheorem10" title="Example 1.1.10. ‣ Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.10</span></a>. Clearly</p>
+<div id="S1.SS1.Ex24" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.Ex24.m1" class="ltx_Math" alttext="\frac{15}{36}-\frac{1}{6}=\frac{1}{4}=1-\frac{1}{1+\frac{1}{3}}" display="block"><semantics><mrow><mrow><mfrac><mn>15</mn><mn>36</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mrow><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></mfrac></mrow></mrow><annotation encoding="application/x-tex">\frac{15}{36}-\frac{1}{6}=\frac{1}{4}=1-\frac{1}{1+\frac{1}{3}}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">or in words</p>
+<div id="S1.SS1.E9" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS1.E9.m1" class="ltx_Math" alttext="\mbox{ price of call }-\mbox{ price of put }=S_{0}-\frac{1}{1+r}K." display="block"><semantics><mrow><mrow><mrow><mtext> price of call </mtext><mo>−</mo><mtext> price of put </mtext></mrow><mo>=</mo><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>−</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mi>K</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mbox{ price of call }-\mbox{ price of put }=S_{0}-\frac{1}{1+r}K.</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.1.9)</span>
+          
+          
+        
+</div>
+<p class="ltx_p">This relationship not only holds for the special parameters chosen in the Examples but is true in general whenever the underlying model is arbitrage free. Formula (<a href="#S1.SS1.E9" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.9</span></a>) is called the <span class="ltx_text ltx_font_bold">Put-Call parity</span>.</p>
+</div>
+<section id="S1.SS2" class="ltx_subsection normal">
+<div class="section level2">
+
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection header-section-number">1.2</span>. A general single period market model</h2>
+
+<div id="S1.SS2.p1" class="ltx_para">
+<p class="ltx_p">We will now consider a general single period market model, in which an agent is allowed to invest in a money market account (i.e. savings account) and a finite number of stocks <math id="S1.SS2.p1.m1" class="ltx_Math" alttext="S^{1},...,S^{n}" display="inline"><semantics><mrow><msup><mi>S</mi><mn>1</mn></msup><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msup><mi>S</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">S^{1},...,S^{n}</annotation></semantics></math>. The price of the <math id="S1.SS2.p1.m2" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th stock at time <math id="S1.SS2.p1.m3" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math>, resp. <math id="S1.SS2.p1.m4" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>, is denoted by <math id="S1.SS2.p1.m5" class="ltx_Math" alttext="S_{0}^{i}" display="inline"><semantics><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup><annotation encoding="application/x-tex">S_{0}^{i}</annotation></semantics></math>, resp. <math id="S1.SS2.p1.m6" class="ltx_Math" alttext="S_{1}^{i}" display="inline"><semantics><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><annotation encoding="application/x-tex">S_{1}^{i}</annotation></semantics></math>. The money market account is modelled in exactly the same way as in Section <a href="Pt1.html#S1.SS1" title="1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1</span></a>. The prices of the stocks at time <math id="S1.SS2.p1.m7" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> are known but the prices at time <math id="S1.SS2.p1.m8" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> are not known at time <math id="S1.SS2.p1.m9" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> and are considered to be random. We assume that the world at time <math id="S1.SS2.p1.m10" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> can take up one of <math id="S1.SS2.p1.m11" class="ltx_Math" alttext="k" display="inline"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> states <math id="S1.SS2.p1.m12" class="ltx_Math" alttext="\omega_{1},...,\omega_{k}" display="inline"><semantics><mrow><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>ω</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\omega_{1},...,\omega_{k}</annotation></semantics></math> which we all put together into a set <math id="S1.SS2.p1.m13" class="ltx_Math" alttext="\Omega" display="inline"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>, i.e.</p>
+<div id="S1.SS2.Ex1" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.Ex1.m1" class="ltx_math_unparsed" alttext="\boxed{\Omega:=\{\omega_{1},...,\omega_{k}\}.}" display="block"><semantics><menclose notation="box"><mrow><mi mathvariant="normal">Ω</mi><mo lspace="0.278em" rspace="0.278em">:=</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="false">}</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\Omega:=\{\omega_{1},...,\omega_{k}\}.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">We assume that there is a probability measure <math id="S1.SS2.p1.m14" class="ltx_Math" alttext="\mathbb{P}" display="inline"><semantics><mi>ℙ</mi><annotation encoding="application/x-tex">\mathbb{P}</annotation></semantics></math> defined on <math id="S1.SS2.p1.m15" class="ltx_Math" alttext="\Omega" display="inline"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>. This measure tells us about the likelihood <math id="S1.SS2.p1.m16" class="ltx_Math" alttext="\mathbb{P}(\omega_{i})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbb{P}(\omega_{i})</annotation></semantics></math> of the world being in the the <math id="S1.SS2.p1.m17" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th state at time <math id="S1.SS2.p1.m18" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> (as seen from time <math id="S1.SS2.p1.m19" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math>). The stock prices <math id="S1.SS2.p1.m20" class="ltx_Math" alttext="S_{1}^{i}" display="inline"><semantics><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><annotation encoding="application/x-tex">S_{1}^{i}</annotation></semantics></math> can therefore be considered as random variables</p>
+<div id="S1.SS2.Ex2" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.Ex2.m1" class="ltx_math_unparsed" alttext="\boxed{S_{1}^{i}:\Omega\to\mathbb{R}.}" display="block"><semantics><menclose notation="box"><mrow><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><mo lspace="0.278em" rspace="0.278em">:</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">→</mo><mi>ℝ</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{S_{1}^{i}:\Omega\to\mathbb{R}.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Then <math id="S1.SS2.p1.m21" class="ltx_Math" alttext="S_{1}^{i}(\omega)" display="inline"><semantics><mrow><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">S_{1}^{i}(\omega)</annotation></semantics></math> denotes the price of the <math id="S1.SS2.p1.m22" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th stock at time <math id="S1.SS2.p1.m23" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> if the world is in state <math id="S1.SS2.p1.m24" class="ltx_Math" alttext="\omega\in\Omega" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\omega\in\Omega</annotation></semantics></math> at time <math id="S1.SS2.p1.m25" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>. For technical reasons, we assume that each state at time <math id="S1.SS2.p1.m26" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> is possible, i.e.</p>
+<div id="S1.SS2.Ex3" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.Ex3.m1" class="ltx_Math" alttext="\mathbb{P}(\omega)&gt;0\mbox{ for all }\omega\in\Omega." display="block"><semantics><mrow><mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mrow><mn>0</mn><mo>⁢</mo><mtext> for all </mtext><mo>⁢</mo><mi>ω</mi></mrow><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{P}(\omega)&gt;0\mbox{ for all }\omega\in\Omega.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Notice that we can always remove from <math id="S1.SS2.p1.m27" class="ltx_Math" alttext="\Omega" display="inline"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math> the states of the world that have probability of ocurring equal zero (i.e. they are impossible) and consequently we obtain a model that satisfies the above requirement.</p>
+</div>
+<div id="S1.SS2.p2" class="ltx_para">
+<p class="ltx_p">Let us now formally define the trading strategies which our agents are going to use.</p>
+</div>
+<div id="S1.SS2.Thmtheorem1" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 1.2.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.SS2.Thmtheorem1.p1" class="ltx_para">
+<p class="ltx_p">A <span class="ltx_text ltx_font_bold">trading strategy</span> for an agent in our general single period market model is a pair <math id="S1.SS2.Thmtheorem1.p1.m1" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math>, where <math id="S1.SS2.Thmtheorem1.p1.m2" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> is the initial total investment at time <math id="S1.SS2.Thmtheorem1.p1.m3" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> and
+<math id="S1.SS2.Thmtheorem1.p1.m4" class="ltx_Math" alttext="\phi=(\phi^{1},...,\phi^{n})\in\mathbb{R}^{n}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><msup><mi>ϕ</mi><mn>1</mn></msup><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msup><mi>ϕ</mi><mi>n</mi></msup><mo stretchy="false">)</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\phi=(\phi^{1},...,\phi^{n})\in\mathbb{R}^{n}</annotation></semantics></math> is an <math id="S1.SS2.Thmtheorem1.p1.m5" class="ltx_Math" alttext="n" display="inline"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>-dimensional vector specifying the number of shares <math id="S1.SS2.Thmtheorem1.p1.m6" class="ltx_Math" alttext="\phi^{i}" display="inline"><semantics><msup><mi>ϕ</mi><mi>i</mi></msup><annotation encoding="application/x-tex">\phi^{i}</annotation></semantics></math> of the <math id="S1.SS2.Thmtheorem1.p1.m7" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th stock that we own at <math id="S1.SS2.Thmtheorem1.p1.m8" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math>.</p>
+</div>
+</div>
+<div id="S1.SS2.p3" class="ltx_para">
+<p class="ltx_p">Given a trading strategy <math id="S1.SS2.p3.m1" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math> as above, we always assume that the rest of the money:</p>
+<div id="S1.SS2.Ex4" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.Ex4.m1" class="ltx_Math" alttext="x-\sum_{i=1}^{n}\phi^{i}S_{0}^{i}" display="block"><semantics><mrow><mi>x</mi><mo rspace="0.055em">−</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow></mrow></mrow><annotation encoding="application/x-tex">x-\sum_{i=1}^{n}\phi^{i}S_{0}^{i}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">is invested in the money market account. As in Section <a href="Pt1.html#S1.SS1" title="1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1</span></a> we define the value process corresponding to a trading strategy.</p>
+</div>
+<div id="S1.SS2.Thmtheorem2" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 1.2.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.SS2.Thmtheorem2.p1" class="ltx_para">
+<p class="ltx_p">The <span class="ltx_text ltx_font_bold">value process</span> of the trading strategy <math id="S1.SS2.Thmtheorem2.p1.m1" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math> in our general single period market model is given by <math id="S1.SS2.Thmtheorem2.p1.m2" class="ltx_Math" alttext="(V_{0}(x,\phi),V_{1}(x,\phi))" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>,</mo><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(V_{0}(x,\phi),V_{1}(x,\phi))</annotation></semantics></math>, where <math id="S1.SS2.Thmtheorem2.p1.m3" class="ltx_Math" alttext="V_{0}(x,\phi)=x" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">V_{0}(x,\phi)=x</annotation></semantics></math> and <math id="S1.SS2.Thmtheorem2.p1.m4" class="ltx_Math" alttext="V_{1}(x,\phi)" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V_{1}(x,\phi)</annotation></semantics></math> is the random variable</p>
+<div id="S1.SS2.E1" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.E1.m1" class="ltx_math_unparsed" alttext="\boxed{V_{1}(x,\phi)=\left(x-\sum_{i=1}^{n}\phi^{i}S_{0}^{i}\right)(1+r)+\sum_%
+{i=1}^{n}\phi^{i}S_{1}^{i}.}" display="block"><semantics><menclose notation="box"><mrow><msub><mi>V</mi><mn>1</mn></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo rspace="0.055em">−</mo><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi>ϕ</mi><mi>i</mi></msup><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup><mo>)</mo></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo stretchy="false">)</mo></mrow><mo rspace="0.055em">+</mo><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi>ϕ</mi><mi>i</mi></msup><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{V_{1}(x,\phi)=\left(x-\sum_{i=1}^{n}\phi^{i}S_{0}^{i}\right)(1+r)+\sum_%
+{i=1}^{n}\phi^{i}S_{1}^{i}.}</annotation></semantics></math></span>
+              <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.2.1)</span>
+              
+              
+            
+</div>
+</div>
+</div>
+<div id="S1.SS2.p4" class="ltx_para">
+<p class="ltx_p">It is often useful to consider an additional process, the so called <span class="ltx_text ltx_font_bold">gains process</span> <math id="S1.SS2.p4.m1" class="ltx_Math" alttext="G(x,\phi)" display="inline"><semantics><mrow><mi>G</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">G(x,\phi)</annotation></semantics></math>, which in a single period market model consists only of one random variable which is defined by</p>
+<div id="S1.SS2.Ex5" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.Ex5.m1" class="ltx_math_unparsed" alttext="\boxed{G(x,\phi):=\left(x-\sum_{i=1}^{n}\phi^{i}S_{0}^{i}\right)r+\sum_{i=1}^{%
+n}\phi^{i}\Delta S^{i}.}" display="block"><semantics><menclose notation="box"><mrow><mi>G</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo rspace="0.278em" stretchy="false">)</mo></mrow><mo rspace="0.278em">:=</mo><mrow><mo>(</mo><mi>x</mi><mo rspace="0.055em">−</mo><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi>ϕ</mi><mi>i</mi></msup><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup><mo>)</mo></mrow><mi>r</mi><mo rspace="0.055em">+</mo><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi>ϕ</mi><mi>i</mi></msup><mi mathvariant="normal">Δ</mi><msup><mi>S</mi><mi>i</mi></msup><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{G(x,\phi):=\left(x-\sum_{i=1}^{n}\phi^{i}S_{0}^{i}\right)r+\sum_{i=1}^{%
+n}\phi^{i}\Delta S^{i}.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">In this equation <math id="S1.SS2.p4.m2" class="ltx_Math" alttext="\Delta S^{i}" display="inline"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msup><mi>S</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">\Delta S^{i}</annotation></semantics></math> represents the change in price of the <math id="S1.SS2.p4.m3" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th stock, i.e.</p>
+<div id="S1.SS2.E2" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.E2.m1" class="ltx_math_unparsed" alttext="\boxed{\Delta S^{i}:=S_{1}^{i}-S_{0}^{i}.}" display="block"><semantics><menclose notation="box"><mrow><mi mathvariant="normal">Δ</mi><msup><mi>S</mi><mi>i</mi></msup><mo lspace="0.278em" rspace="0.278em">:=</mo><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><mo>−</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\Delta S^{i}:=S_{1}^{i}-S_{0}^{i}.}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.2.2)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">As the name indicates, <math id="S1.SS2.p4.m4" class="ltx_Math" alttext="G" display="inline"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> represents the gains (or losses) the agent obtains from his investment. A simple calculation gives</p>
+<div id="S1.SS2.E3" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.E3.m1" class="ltx_Math" alttext="V_{1}(x,\phi)=V_{0}(x,\phi)+G(x,\phi)." display="block"><semantics><mrow><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>G</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">V_{1}(x,\phi)=V_{0}(x,\phi)+G(x,\phi).</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.2.3)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">Note that this is an equation of random variables, meaning that this equation holds in any possible state the world might attend at time <math id="S1.SS2.p4.m5" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>, i.e. for all <math id="S1.SS2.p4.m6" class="ltx_Math" alttext="\omega\in\Omega" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\omega\in\Omega</annotation></semantics></math>.
+Equation (<a href="#S1.SS2.E3" title="In 1.2. A general single period market model ‣ Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.3</span></a>) says that any change in the value of the trading strategy must be due to a gain or loss in the investment and not, for example, due to the addition of funds from outside sources.</p>
+</div>
+<div id="S1.SS2.p5" class="ltx_para">
+<p class="ltx_p">It is often convenient to study the prices of the stocks in relation to the money market account. For this reason we introduce the <span class="ltx_text ltx_font_bold">discounted stock prices</span> <math id="S1.SS2.p5.m1" class="ltx_Math" alttext="\hat{S}_{t}^{i}" display="inline"><semantics><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>t</mi><mi>i</mi></msubsup><annotation encoding="application/x-tex">\hat{S}_{t}^{i}</annotation></semantics></math> defined as follows:</p>
+<div id="S1.SS2.Ex6" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.Ex6.m1" class="ltx_math_unparsed" alttext="\boxed{\begin{aligned} \hat{S}_{0}^{i}&amp;:=S_{0}^{i},\\
+\hat{S}_{1}^{i}&amp;:=\frac{1}{1+r}S_{1}^{i},\end{aligned}\qquad i=1,\ldots,n.}" display="block"><semantics><menclose notation="box"><mrow><mtable columnspacing="0pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_right" columnalign="right"><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>0</mn><mi>i</mi></msubsup></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mi></mi><mo lspace="0.278em" rspace="0.278em">:=</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd class="ltx_align_right" columnalign="right"><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mi>i</mi></msubsup></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mi></mi><mo lspace="0.278em" rspace="0.278em">:=</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup></mrow></mrow><mo>,</mo></mrow></mtd></mtr></mtable><mspace width="2.19em"></mspace><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\begin{aligned} \hat{S}_{0}^{i}&amp;:=S_{0}^{i},\\
+\hat{S}_{1}^{i}&amp;:=\frac{1}{1+r}S_{1}^{i},\end{aligned}\qquad i=1,\ldots,n.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">We also define the <span class="ltx_text ltx_font_bold">discounted value process</span> corresponding to the trading strategy <math id="S1.SS2.p5.m2" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math> via</p>
+<div id="S1.SS2.Ex7" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.Ex7.m1" class="ltx_Math" alttext="\boxed{\begin{aligned} \hat{V}_{0}(x,\phi)&amp;:=x\\
+\hat{V}_{1}(x,\phi)&amp;:=(x-\sum_{i=1}^{n}\phi^{i}S_{0}^{i})+\sum_{i=1}^{n}\phi^{%
+i}\hat{S}_{1}^{i}\end{aligned}}" display="block"><semantics><menclose notation="box"><mtable columnspacing="0pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_right" columnalign="right"><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mi></mi><mo lspace="0.278em" rspace="0.278em">:=</mo><mi>x</mi></mrow></mtd></mtr><mtr><mtd class="ltx_align_right" columnalign="right"><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mi></mi><mo lspace="0.278em" rspace="0.278em">:=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo rspace="0.055em">−</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow></mrow></mrow><mo stretchy="false">)</mo></mrow><mo rspace="0.055em">+</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mi>i</mi></msubsup></mrow></mrow></mrow></mrow></mtd></mtr></mtable></menclose><annotation encoding="application/x-tex">\boxed{\begin{aligned} \hat{V}_{0}(x,\phi)&amp;:=x\\
+\hat{V}_{1}(x,\phi)&amp;:=(x-\sum_{i=1}^{n}\phi^{i}S_{0}^{i})+\sum_{i=1}^{n}\phi^{%
+i}\hat{S}_{1}^{i}\end{aligned}}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">as well as the <span class="ltx_text ltx_font_bold">discounted gains process</span> <math id="S1.SS2.p5.m3" class="ltx_Math" alttext="\hat{G}(x,\phi)" display="inline"><semantics><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{G}(x,\phi)</annotation></semantics></math> via</p>
+<div id="S1.SS2.E4" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.E4.m1" class="ltx_Math" alttext="\boxed{\hat{G}(x,\phi):=\sum_{i=1}^{n}\phi^{i}\Delta\hat{S}^{i}}" display="block"><semantics><menclose notation="box"><mrow><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo rspace="0.278em" stretchy="false">)</mo></mrow></mrow><mo rspace="0.111em">:=</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>i</mi></msup></mrow></mrow></mrow></menclose><annotation encoding="application/x-tex">\boxed{\hat{G}(x,\phi):=\sum_{i=1}^{n}\phi^{i}\Delta\hat{S}^{i}}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.2.4)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">with <math id="S1.SS2.p5.m4" class="ltx_Math" alttext="\Delta\hat{S}^{i}=\hat{S}^{i}_{1}-\hat{S}^{i}_{0}" display="inline"><semantics><mrow><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>i</mi></msup></mrow><mo>=</mo><mrow><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mi>i</mi></msubsup><mo>−</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>0</mn><mi>i</mi></msubsup></mrow></mrow><annotation encoding="application/x-tex">\Delta\hat{S}^{i}=\hat{S}^{i}_{1}-\hat{S}^{i}_{0}</annotation></semantics></math>. The verification of the following two equations is left as an exercise:</p>
+<div id="S1.SS2.E5" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.E5.m1" class="ltx_Math" alttext="\hat{V}_{t}=\frac{V_{t}}{B_{t}}" display="block"><semantics><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mi>t</mi></msub><mo>=</mo><mfrac><msub><mi>V</mi><mi>t</mi></msub><msub><mi>B</mi><mi>t</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">\hat{V}_{t}=\frac{V_{t}}{B_{t}}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.2.5)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">for <math id="S1.SS2.p5.m5" class="ltx_Math" alttext="t\in\{0,1\}" display="inline"><semantics><mrow><mi>t</mi><mo>∈</mo><mrow><mo stretchy="false">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">t\in\{0,1\}</annotation></semantics></math> with <math id="S1.SS2.p5.m6" class="ltx_Math" alttext="B_{0}=1" display="inline"><semantics><mrow><msub><mi>B</mi><mn>0</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">B_{0}=1</annotation></semantics></math> and <math id="S1.SS2.p5.m7" class="ltx_Math" alttext="B_{1}=1+r" display="inline"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo>=</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mrow><annotation encoding="application/x-tex">B_{1}=1+r</annotation></semantics></math> as well as</p>
+<div id="S1.SS2.E6" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.E6.m1" class="ltx_Math" alttext="\hat{V}_{1}(x,\phi)=\hat{V}_{0}(x,\phi)+\hat{G}(x,\phi)." display="block"><semantics><mrow><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\hat{V}_{1}(x,\phi)=\hat{V}_{0}(x,\phi)+\hat{G}(x,\phi).</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(1.2.6)</span>
+            
+            
+          
+</div>
+</div>
+<div id="S1.SS2.Thmtheorem3" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 1.2.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.SS2.Thmtheorem3.p1" class="ltx_para">
+<p class="ltx_p">We consider the following model featuring two stocks <math id="S1.SS2.Thmtheorem3.p1.m1" class="ltx_Math" alttext="S^{1}" display="inline"><semantics><msup><mi>S</mi><mn>1</mn></msup><annotation encoding="application/x-tex">S^{1}</annotation></semantics></math> and <math id="S1.SS2.Thmtheorem3.p1.m2" class="ltx_Math" alttext="S^{2}" display="inline"><semantics><msup><mi>S</mi><mn>2</mn></msup><annotation encoding="application/x-tex">S^{2}</annotation></semantics></math> as well as the states <math id="S1.SS2.Thmtheorem3.p1.m3" class="ltx_Math" alttext="\Omega=\{\omega_{1},\omega_{2},\omega_{3}\}" display="inline"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>=</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">\Omega=\{\omega_{1},\omega_{2},\omega_{3}\}</annotation></semantics></math>. The prices of the stocks at time <math id="S1.SS2.Thmtheorem3.p1.m4" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> are given by <math id="S1.SS2.Thmtheorem3.p1.m5" class="ltx_Math" alttext="S^{1}_{0}=5" display="inline"><semantics><mrow><msubsup><mi>S</mi><mn>0</mn><mn>1</mn></msubsup><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">S^{1}_{0}=5</annotation></semantics></math> and <math id="S1.SS2.Thmtheorem3.p1.m6" class="ltx_Math" alttext="S^{2}_{0}=10" display="inline"><semantics><mrow><msubsup><mi>S</mi><mn>0</mn><mn>2</mn></msubsup><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">S^{2}_{0}=10</annotation></semantics></math> respectively. At time <math id="S1.SS2.Thmtheorem3.p1.m7" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> the prices depend on the state <math id="S1.SS2.Thmtheorem3.p1.m8" class="ltx_Math" alttext="\omega" display="inline"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math> and are given by the following table:</p>
+</div>
+<div id="S1.SS2.Thmtheorem3.p2" class="ltx_para">
+<div class="bml-overflow-wrapper">
+<table class="ltx_tabular ltx_centering ltx_align_middle">
+<tr class="ltx_tr">
+<td class="ltx_td ltx_border_rr"></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S1.SS2.Thmtheorem3.m1" class="ltx_Math" alttext="\omega_{1}" display="inline"><semantics><msub><mi>ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\omega_{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S1.SS2.Thmtheorem3.m2" class="ltx_Math" alttext="\omega_{2}" display="inline"><semantics><msub><mi>ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\omega_{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center"><math id="S1.SS2.Thmtheorem3.m3" class="ltx_Math" alttext="\omega_{3}" display="inline"><semantics><msub><mi>ω</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\omega_{3}</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_rr ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m4" class="ltx_Math" alttext="S_{1}^{1}" display="inline"><semantics><msubsup><mi>S</mi><mn>1</mn><mn>1</mn></msubsup><annotation encoding="application/x-tex">S_{1}^{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m5" class="ltx_Math" alttext="\frac{60}{9}" display="inline"><semantics><mfrac><mn>60</mn><mn>9</mn></mfrac><annotation encoding="application/x-tex">\frac{60}{9}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m6" class="ltx_Math" alttext="\frac{60}{9}" display="inline"><semantics><mfrac><mn>60</mn><mn>9</mn></mfrac><annotation encoding="application/x-tex">\frac{60}{9}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m7" class="ltx_Math" alttext="\frac{40}{9}" display="inline"><semantics><mfrac><mn>40</mn><mn>9</mn></mfrac><annotation encoding="application/x-tex">\frac{40}{9}</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_rr ltx_border_t"><math id="S1.SS2.Thmtheorem3.m8" class="ltx_Math" alttext="S_{1}^{2}" display="inline"><semantics><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><annotation encoding="application/x-tex">S_{1}^{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S1.SS2.Thmtheorem3.m9" class="ltx_Math" alttext="\frac{40}{3}" display="inline"><semantics><mfrac><mn>40</mn><mn>3</mn></mfrac><annotation encoding="application/x-tex">\frac{40}{3}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S1.SS2.Thmtheorem3.m10" class="ltx_Math" alttext="\frac{80}{9}" display="inline"><semantics><mfrac><mn>80</mn><mn>9</mn></mfrac><annotation encoding="application/x-tex">\frac{80}{9}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="S1.SS2.Thmtheorem3.m11" class="ltx_Math" alttext="\frac{80}{9}" display="inline"><semantics><mfrac><mn>80</mn><mn>9</mn></mfrac><annotation encoding="application/x-tex">\frac{80}{9}</annotation></semantics></math></td>
+</tr>
+</table>
+</div>
+</div>
+<div id="S1.SS2.Thmtheorem3.p3" class="ltx_para">
+<p class="ltx_p">We assume that the interest rate <math id="S1.SS2.Thmtheorem3.p3.m1" class="ltx_Math" alttext="r" display="inline"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math> is equal to <math id="S1.SS2.Thmtheorem3.p3.m2" class="ltx_Math" alttext="\frac{1}{9}" display="inline"><semantics><mfrac><mn>1</mn><mn>9</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{9}</annotation></semantics></math>. Let us consider a trading strategy <math id="S1.SS2.Thmtheorem3.p3.m3" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math>, with <math id="S1.SS2.Thmtheorem3.p3.m4" class="ltx_Math" alttext="\phi=(\phi^{1},\phi^{2})\in\mathbb{R}^{2}." display="inline"><semantics><mrow><mrow><mi>ϕ</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><msup><mi>ϕ</mi><mn>1</mn></msup><mo>,</mo><msup><mi>ϕ</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><mn>2</mn></msup></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\phi=(\phi^{1},\phi^{2})\in\mathbb{R}^{2}.</annotation></semantics></math> Then</p>
+<div id="S1.SS2.Ex8" class="ltx_equation ltx_eqn_div">
+<span><math id="S1.SS2.Ex8.m1" class="ltx_Math" alttext="V_{1}(x,\phi)=(x-\phi^{1}\cdot 5-\phi^{2}\cdot 10)(1+\frac{1}{9})+\phi^{1}S_{1%
+}^{1}+\phi^{2}S_{1}^{2}" display="block"><semantics><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><msup><mi>ϕ</mi><mn>1</mn></msup><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>5</mn></mrow><mo>−</mo><mrow><msup><mi>ϕ</mi><mn>2</mn></msup><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>10</mn></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>9</mn></mfrac></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msup><mi>ϕ</mi><mn>1</mn></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>1</mn><mn>1</mn></msubsup></mrow><mo>+</mo><mrow><msup><mi>ϕ</mi><mn>2</mn></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup></mrow></mrow></mrow><annotation encoding="application/x-tex">V_{1}(x,\phi)=(x-\phi^{1}\cdot 5-\phi^{2}\cdot 10)(1+\frac{1}{9})+\phi^{1}S_{1%
+}^{1}+\phi^{2}S_{1}^{2}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">and depending on the state of the world:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx10" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S1.SS2.Ex9"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex9.m1" class="ltx_Math" alttext="\displaystyle V_{1}(x,\phi)(\omega_{1})" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle V_{1}(x,\phi)(\omega_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex9.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})(1+\frac{1}{9})+\frac{60}{9}\phi^{1}+%
+\frac{40}{3}\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>9</mn></mfrac></mstyle></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>60</mn><mn>9</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>40</mn><mn>3</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})(1+\frac{1}{9})+\frac{60}{9}\phi^{1}+%
+\frac{40}{3}\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S1.SS2.Ex10"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex10.m1" class="ltx_Math" alttext="\displaystyle V_{1}(x,\phi)(\omega_{2})" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle V_{1}(x,\phi)(\omega_{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex10.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})(1+\frac{1}{9})+\frac{60}{9}\phi^{1}+%
+\frac{80}{9}\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>9</mn></mfrac></mstyle></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>60</mn><mn>9</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>80</mn><mn>9</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})(1+\frac{1}{9})+\frac{60}{9}\phi^{1}+%
+\frac{80}{9}\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S1.SS2.Ex11"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex11.m1" class="ltx_Math" alttext="\displaystyle V_{1}(x,\phi)(\omega_{3})" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle V_{1}(x,\phi)(\omega_{3})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex11.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})(1+\frac{1}{9})+\frac{40}{9}\phi^{1}+%
+\frac{80}{9}\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>9</mn></mfrac></mstyle></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>40</mn><mn>9</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>80</mn><mn>9</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})(1+\frac{1}{9})+\frac{40}{9}\phi^{1}+%
+\frac{80}{9}\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">The increments <math id="S1.SS2.Thmtheorem3.p3.m5" class="ltx_Math" alttext="\Delta S^{i}" display="inline"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msup><mi>S</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">\Delta S^{i}</annotation></semantics></math> are given by the following table</p>
+</div>
+<div id="S1.SS2.Thmtheorem3.p4" class="ltx_para">
+<div class="bml-overflow-wrapper">
+<table class="ltx_tabular ltx_centering ltx_align_middle">
+<tr class="ltx_tr">
+<td class="ltx_td ltx_border_rr"></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S1.SS2.Thmtheorem3.m12" class="ltx_Math" alttext="\omega_{1}" display="inline"><semantics><msub><mi>ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\omega_{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S1.SS2.Thmtheorem3.m13" class="ltx_Math" alttext="\omega_{2}" display="inline"><semantics><msub><mi>ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\omega_{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center"><math id="S1.SS2.Thmtheorem3.m14" class="ltx_Math" alttext="\omega_{3}" display="inline"><semantics><msub><mi>ω</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\omega_{3}</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_rr ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m15" class="ltx_Math" alttext="\Delta S^{1}" display="inline"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msup><mi>S</mi><mn>1</mn></msup></mrow><annotation encoding="application/x-tex">\Delta S^{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m16" class="ltx_Math" alttext="\frac{5}{3}" display="inline"><semantics><mfrac><mn>5</mn><mn>3</mn></mfrac><annotation encoding="application/x-tex">\frac{5}{3}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m17" class="ltx_Math" alttext="\frac{5}{3}" display="inline"><semantics><mfrac><mn>5</mn><mn>3</mn></mfrac><annotation encoding="application/x-tex">\frac{5}{3}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m18" class="ltx_Math" alttext="-\frac{5}{9}" display="inline"><semantics><mrow><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac></mrow><annotation encoding="application/x-tex">-\frac{5}{9}</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_rr ltx_border_t"><math id="S1.SS2.Thmtheorem3.m19" class="ltx_Math" alttext="\Delta S^{2}" display="inline"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msup><mi>S</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\Delta S^{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S1.SS2.Thmtheorem3.m20" class="ltx_Math" alttext="\frac{10}{3}" display="inline"><semantics><mfrac><mn>10</mn><mn>3</mn></mfrac><annotation encoding="application/x-tex">\frac{10}{3}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S1.SS2.Thmtheorem3.m21" class="ltx_Math" alttext="-\frac{10}{9}" display="inline"><semantics><mrow><mo>−</mo><mfrac><mn>10</mn><mn>9</mn></mfrac></mrow><annotation encoding="application/x-tex">-\frac{10}{9}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="S1.SS2.Thmtheorem3.m22" class="ltx_Math" alttext="-\frac{10}{9}" display="inline"><semantics><mrow><mo>−</mo><mfrac><mn>10</mn><mn>9</mn></mfrac></mrow><annotation encoding="application/x-tex">-\frac{10}{9}</annotation></semantics></math></td>
+</tr>
+</table>
+</div>
+</div>
+<div id="S1.SS2.Thmtheorem3.p5" class="ltx_para">
+<p class="ltx_p">and the gains process <math id="S1.SS2.Thmtheorem3.p5.m1" class="ltx_Math" alttext="G" display="inline"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> by</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx11" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S1.SS2.Ex12"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex12.m1" class="ltx_Math" alttext="\displaystyle G(x,\phi)(\omega_{1})" display="inline"><semantics><mrow><mi>G</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle G(x,\phi)(\omega_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex12.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})\frac{1}{9}+\frac{5}{3}\phi^{1}+\frac{10%
+}{3}\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>9</mn></mfrac></mstyle></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>5</mn><mn>3</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>3</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})\frac{1}{9}+\frac{5}{3}\phi^{1}+\frac{10%
+}{3}\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S1.SS2.Ex13"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex13.m1" class="ltx_Math" alttext="\displaystyle G(x,\phi)(\omega_{2})" display="inline"><semantics><mrow><mi>G</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle G(x,\phi)(\omega_{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex13.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})\frac{1}{9}+\frac{5}{3}\phi^{1}-\frac{10%
+}{9}\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>9</mn></mfrac></mstyle></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>5</mn><mn>3</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow></mrow><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})\frac{1}{9}+\frac{5}{3}\phi^{1}-\frac{10%
+}{9}\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S1.SS2.Ex14"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex14.m1" class="ltx_Math" alttext="\displaystyle G(x,\phi)(\omega_{3})" display="inline"><semantics><mrow><mi>G</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle G(x,\phi)(\omega_{3})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex14.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})\frac{1}{9}-\frac{5}{9}\phi^{1}-\frac{10%
+}{9}\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>9</mn></mfrac></mstyle></mrow><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mn>5</mn><mn>9</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})\frac{1}{9}-\frac{5}{9}\phi^{1}-\frac{10%
+}{9}\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">The discounted prices of the stock at time <math id="S1.SS2.Thmtheorem3.p5.m2" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>:</p>
+</div>
+<div id="S1.SS2.Thmtheorem3.p6" class="ltx_para">
+<div class="bml-overflow-wrapper">
+<table class="ltx_tabular ltx_centering ltx_align_middle">
+<tr class="ltx_tr">
+<td class="ltx_td ltx_border_rr"></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S1.SS2.Thmtheorem3.m23" class="ltx_Math" alttext="\omega_{1}" display="inline"><semantics><msub><mi>ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\omega_{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S1.SS2.Thmtheorem3.m24" class="ltx_Math" alttext="\omega_{2}" display="inline"><semantics><msub><mi>ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\omega_{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center"><math id="S1.SS2.Thmtheorem3.m25" class="ltx_Math" alttext="\omega_{3}" display="inline"><semantics><msub><mi>ω</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\omega_{3}</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_rr ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m26" class="ltx_Math" alttext="\hat{S}_{1}^{1}" display="inline"><semantics><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mn>1</mn></msubsup><annotation encoding="application/x-tex">\hat{S}_{1}^{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m27" class="ltx_Math" alttext="6" display="inline"><semantics><mn>6</mn><annotation encoding="application/x-tex">6</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m28" class="ltx_Math" alttext="6" display="inline"><semantics><mn>6</mn><annotation encoding="application/x-tex">6</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m29" class="ltx_Math" alttext="4" display="inline"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_rr ltx_border_t"><math id="S1.SS2.Thmtheorem3.m30" class="ltx_Math" alttext="\hat{S}_{1}^{2}" display="inline"><semantics><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mn>2</mn></msubsup><annotation encoding="application/x-tex">\hat{S}_{1}^{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S1.SS2.Thmtheorem3.m31" class="ltx_Math" alttext="12" display="inline"><semantics><mn>12</mn><annotation encoding="application/x-tex">12</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S1.SS2.Thmtheorem3.m32" class="ltx_Math" alttext="8" display="inline"><semantics><mn>8</mn><annotation encoding="application/x-tex">8</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="S1.SS2.Thmtheorem3.m33" class="ltx_Math" alttext="8" display="inline"><semantics><mn>8</mn><annotation encoding="application/x-tex">8</annotation></semantics></math></td>
+</tr>
+</table>
+</div>
+</div>
+<div id="S1.SS2.Thmtheorem3.p7" class="ltx_para">
+<p class="ltx_p">The discounted value process at time <math id="S1.SS2.Thmtheorem3.p7.m1" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx12" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S1.SS2.Ex15"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex15.m1" class="ltx_Math" alttext="\displaystyle\hat{V}_{1}(x,\phi)(\omega_{1})" display="inline"><semantics><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\hat{V}_{1}(x,\phi)(\omega_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex15.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})+6\phi^{1}+4\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>+</mo><mrow><mn>4</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})+6\phi^{1}+4\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S1.SS2.Ex16"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex16.m1" class="ltx_Math" alttext="\displaystyle\hat{V}_{1}(x,\phi)(\omega_{2})" display="inline"><semantics><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\hat{V}_{1}(x,\phi)(\omega_{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex16.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})+6\phi^{1}+8\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>+</mo><mrow><mn>8</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})+6\phi^{1}+8\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S1.SS2.Ex17"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex17.m1" class="ltx_Math" alttext="\displaystyle\hat{V}_{1}(x,\phi)(\omega_{3})" display="inline"><semantics><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\hat{V}_{1}(x,\phi)(\omega_{3})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex17.m2" class="ltx_Math" alttext="\displaystyle=(x-5\phi^{1}-10\phi^{2})+4\phi^{1}+8\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>−</mo><mrow><mn>5</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>10</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>+</mo><mrow><mn>4</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>+</mo><mrow><mn>8</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=(x-5\phi^{1}-10\phi^{2})+4\phi^{1}+8\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">The increments of the discounted stock prices <math id="S1.SS2.Thmtheorem3.p7.m2" class="ltx_Math" alttext="\Delta\hat{S}^{i}" display="inline"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">\Delta\hat{S}^{i}</annotation></semantics></math>:</p>
+</div>
+<div id="S1.SS2.Thmtheorem3.p8" class="ltx_para">
+<div class="bml-overflow-wrapper">
+<table class="ltx_tabular ltx_centering ltx_align_middle">
+<tr class="ltx_tr">
+<td class="ltx_td ltx_border_rr"></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S1.SS2.Thmtheorem3.m34" class="ltx_Math" alttext="\omega_{1}" display="inline"><semantics><msub><mi>ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\omega_{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S1.SS2.Thmtheorem3.m35" class="ltx_Math" alttext="\omega_{2}" display="inline"><semantics><msub><mi>ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\omega_{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center"><math id="S1.SS2.Thmtheorem3.m36" class="ltx_Math" alttext="\omega_{3}" display="inline"><semantics><msub><mi>ω</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\omega_{3}</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_rr ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m37" class="ltx_Math" alttext="\Delta\hat{S}_{1}^{1}" display="inline"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mn>1</mn></msubsup></mrow><annotation encoding="application/x-tex">\Delta\hat{S}_{1}^{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m38" class="ltx_Math" alttext="1" display="inline"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m39" class="ltx_Math" alttext="1" display="inline"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_tt"><math id="S1.SS2.Thmtheorem3.m40" class="ltx_Math" alttext="-1" display="inline"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_rr ltx_border_t"><math id="S1.SS2.Thmtheorem3.m41" class="ltx_Math" alttext="\Delta\hat{S}_{1}^{2}" display="inline"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">\Delta\hat{S}_{1}^{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S1.SS2.Thmtheorem3.m42" class="ltx_Math" alttext="2" display="inline"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S1.SS2.Thmtheorem3.m43" class="ltx_Math" alttext="-2" display="inline"><semantics><mrow><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="S1.SS2.Thmtheorem3.m44" class="ltx_Math" alttext="-2" display="inline"><semantics><mrow><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math></td>
+</tr>
+</table>
+</div>
+</div>
+<div id="S1.SS2.Thmtheorem3.p9" class="ltx_para">
+<p class="ltx_p">The discounted gains process <math id="S1.SS2.Thmtheorem3.p9.m1" class="ltx_Math" alttext="\hat{G}" display="inline"><semantics><mover accent="true"><mi>G</mi><mo>^</mo></mover><annotation encoding="application/x-tex">\hat{G}</annotation></semantics></math>:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx13" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S1.SS2.Ex18"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex18.m1" class="ltx_Math" alttext="\displaystyle\hat{G}(x,\phi)(\omega_{1})" display="inline"><semantics><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\hat{G}(x,\phi)(\omega_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex18.m2" class="ltx_Math" alttext="\displaystyle=1\phi^{1}+2\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mn>1</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=1\phi^{1}+2\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S1.SS2.Ex19"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex19.m1" class="ltx_Math" alttext="\displaystyle\hat{G}(x,\phi)(\omega_{2})" display="inline"><semantics><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\hat{G}(x,\phi)(\omega_{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex19.m2" class="ltx_Math" alttext="\displaystyle=1\phi^{1}-2\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mn>1</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow><mo>−</mo><mrow><mn>2</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=1\phi^{1}-2\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S1.SS2.Ex20"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S1.SS2.Ex20.m1" class="ltx_Math" alttext="\displaystyle\hat{G}(x,\phi)(\omega_{3})" display="inline"><semantics><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\hat{G}(x,\phi)(\omega_{3})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S1.SS2.Ex20.m2" class="ltx_Math" alttext="\displaystyle=-1\phi^{1}-2\phi^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><mo>−</mo><mrow><mn>1</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>1</mn></msup></mrow></mrow><mo>−</mo><mrow><mn>2</mn><mo>⁢</mo><msup><mi>ϕ</mi><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=-1\phi^{1}-2\phi^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="S1.SS2.p6" class="ltx_para">
+<p class="ltx_p">Given the definition of the value process (<a href="#S1.SS2.E1" title="In Definition 1.2.2. ‣ 1.2. A general single period market model ‣ Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.1</span></a>) in the general single period market model, the definition of an arbitrage in this model looks almost the same as in Definition <a href="Pt1.html#S1.SS1.Thmtheorem2" title="Definition 1.1.2. ‣ 1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.2</span></a>:</p>
+</div>
+<div id="S1.SS2.Thmtheorem4" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 1.2.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.SS2.Thmtheorem4.p1" class="ltx_para">
+<p class="ltx_p">A trading strategy <math id="S1.SS2.Thmtheorem4.p1.m1" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math> in our general single period market model is called an <span class="ltx_text ltx_font_bold">arbitrage</span>, if</p>
+<ol id="S1.I5" class="ltx_enumerate">
+<li id="S1.I5.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S1.I5.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I5.i1.p1.m1" class="ltx_Math" alttext="x=V_{0}(x,\phi)=0" display="inline"><semantics><mrow><mi>x</mi><mo>=</mo><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=V_{0}(x,\phi)=0</annotation></semantics></math></p>
+</div>
+</li>
+<li id="S1.I5.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S1.I5.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I5.i2.p1.m1" class="ltx_Math" alttext="V_{1}(x,\phi)\geq 0" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">V_{1}(x,\phi)\geq 0</annotation></semantics></math></p>
+</div>
+</li>
+<li id="S1.I5.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S1.I5.i3.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I5.i3.p1.m1" class="ltx_Math" alttext="\mathbb{E}(V_{1}(x,\phi))=\sum_{i=1}^{k}\mathbb{P}(\omega_{i})V_{1}(x,\phi)(%
+\omega_{i})&gt;0" display="inline"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo rspace="0.111em">=</mo><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></msubsup><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{E}(V_{1}(x,\phi))=\sum_{i=1}^{k}\mathbb{P}(\omega_{i})V_{1}(x,\phi)(%
+\omega_{i})&gt;0</annotation></semantics></math></p>
+</div>
+</li>
+</ol>
+<p class="ltx_p">Here <math id="S1.SS2.Thmtheorem4.p1.m2" class="ltx_Math" alttext="V_{1}(x,\phi)" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V_{1}(x,\phi)</annotation></semantics></math> is given by equation (<a href="#S1.SS2.E1" title="In Definition 1.2.2. ‣ 1.2. A general single period market model ‣ Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.1</span></a>).</p>
+</div>
+</div>
+<div id="S1.SS2.p7" class="ltx_para">
+<p class="ltx_p">The following remark is often very helpful:</p>
+</div>
+<div id="S1.SS2.Thmtheorem5" class="ltx_theorem ltx_theorem_remark">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_italic">Remark 1.2.5</span></span><span class="ltx_text ltx_font_italic">.</span>
+</h6>
+<div id="S1.SS2.Thmtheorem5.p1" class="ltx_para">
+<p class="ltx_p">Condition 3. in Definition <a href="#S1.SS2.Thmtheorem4" title="Definition 1.2.4. ‣ 1.2. A general single period market model ‣ Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.4</span></a> is equivalent to:</p>
+<ul id="S1.I6" class="ltx_itemize">
+<li id="S1.I6.ix1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3’)</span><div id="S1.I6.ix1.p1" class="ltx_para">​<p class="ltx_p">There exists <math id="S1.I6.ix1.p1.m1" class="ltx_Math" alttext="\omega\in\Omega" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\omega\in\Omega</annotation></semantics></math> such that <math id="S1.I6.ix1.p1.m2" class="ltx_Math" alttext="V_{1}(x,\phi)(\omega)&gt;0" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">V_{1}(x,\phi)(\omega)&gt;0</annotation></semantics></math>.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div id="S1.SS2.p8" class="ltx_para">
+<p class="ltx_p">The definition of an arbitrage can also be formulated with the discounted value process or with the discounted gains process. The following proposition gives us such a statement.</p>
+</div>
+<div id="S1.SS2.Thmtheorem6" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 1.2.6</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.SS2.Thmtheorem6.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">A trading strategy <math id="S1.SS2.Thmtheorem6.p1.m1" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math> in the general single period market model is an arbitrage if and only if one of the following two equivalent conditions hold:</span></p>
+<ul id="S1.I7" class="ltx_itemize">
+<li id="S1.I7.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S1.I7.i1.p1" class="ltx_para">
+<ol id="S1.I7.i1.I1" class="ltx_enumerate">
+<li id="S1.I7.i1.I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S1.I7.i1.I1.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I7.i1.I1.i1.p1.m1" class="ltx_Math" alttext="x=\hat{V}_{0}(x,\phi)=0" display="inline"><semantics><mrow><mi>x</mi><mo>=</mo><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=\hat{V}_{0}(x,\phi)=0</annotation></semantics></math><span class="ltx_text ltx_font_italic"></span></p>
+</div>
+</li>
+<li id="S1.I7.i1.I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S1.I7.i1.I1.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I7.i1.I1.i2.p1.m1" class="ltx_Math" alttext="\hat{V}_{1}(x,\phi)\geq 0" display="inline"><semantics><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat{V}_{1}(x,\phi)\geq 0</annotation></semantics></math><span class="ltx_text ltx_font_italic"></span></p>
+</div>
+</li>
+<li id="S1.I7.i1.I1.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S1.I7.i1.I1.i3.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I7.i1.I1.i3.p1.m1" class="ltx_Math" alttext="\mathbb{E}(\hat{V}_{1}(x,\phi))&gt;0" display="inline"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{E}(\hat{V}_{1}(x,\phi))&gt;0</annotation></semantics></math><span class="ltx_text ltx_font_italic"> or equivalently: there exists </span><math id="S1.I7.i1.I1.i3.p1.m2" class="ltx_Math" alttext="\omega\in\Omega" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\omega\in\Omega</annotation></semantics></math><span class="ltx_text ltx_font_italic"> s.t. </span><math id="S1.I7.i1.I1.i3.p1.m3" class="ltx_Math" alttext="\hat{V}_{1}(x,\phi)(\omega)&gt;0" display="inline"><semantics><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat{V}_{1}(x,\phi)(\omega)&gt;0</annotation></semantics></math><span class="ltx_text ltx_font_italic">.</span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="S1.I7.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S1.I7.i2.p1" class="ltx_para">
+<ol id="S1.I7.i2.I1" class="ltx_enumerate">
+<li id="S1.I7.i2.I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S1.I7.i2.I1.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I7.i2.I1.i1.p1.m1" class="ltx_Math" alttext="x=\hat{V}_{0}(x,\phi)=0" display="inline"><semantics><mrow><mi>x</mi><mo>=</mo><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=\hat{V}_{0}(x,\phi)=0</annotation></semantics></math><span class="ltx_text ltx_font_italic"></span></p>
+</div>
+</li>
+<li id="S1.I7.i2.I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S1.I7.i2.I1.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I7.i2.I1.i2.p1.m1" class="ltx_Math" alttext="\hat{G}(x,\phi)\geq 0" display="inline"><semantics><mrow><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat{G}(x,\phi)\geq 0</annotation></semantics></math><span class="ltx_text ltx_font_italic"></span></p>
+</div>
+</li>
+<li id="S1.I7.i2.I1.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S1.I7.i2.I1.i3.p1" class="ltx_para">​<p class="ltx_p"><math id="S1.I7.i2.I1.i3.p1.m1" class="ltx_Math" alttext="\mathbb{E}(\hat{G}(x,\phi))&gt;0" display="inline"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{E}(\hat{G}(x,\phi))&gt;0</annotation></semantics></math><span class="ltx_text ltx_font_italic"> or equivalently: there exists </span><math id="S1.I7.i2.I1.i3.p1.m2" class="ltx_Math" alttext="\omega\in\Omega" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\omega\in\Omega</annotation></semantics></math><span class="ltx_text ltx_font_italic"> s.t. </span><math id="S1.I7.i2.I1.i3.p1.m3" class="ltx_Math" alttext="\hat{G}(x,\phi)(\omega)&gt;0" display="inline"><semantics><mrow><mrow><mover accent="true"><mi>G</mi><mo>^</mo></mover><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat{G}(x,\phi)(\omega)&gt;0</annotation></semantics></math><span class="ltx_text ltx_font_italic">.</span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</div>
+</section>
+</div>
+</div>
+</div>
+<a href="Pt1.html" class="navigation navigation-prev" aria-label="Previous page"><i class="fa fa-angle-left"></i></a><a href="Pt3.html" class="navigation navigation-next" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+</div>
+</div>
+<script src="bookml/gitbook/js/app.min.js"></script>
+<script src="bookml/gitbook/js/jquery.highlight.js"></script>
+<script src="bookml/gitbook/js/plugin-search.js"></script>
+<script src="bookml/gitbook/js/plugin-fontsettings.js"></script>
+<script src="bookml/gitbook/js/plugin-bookdown.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+        MathJax = {
+          startup: {
+            ready() {
+              // do not process equations disabled with \bmlDisableMathJax (code suggested by Davide P. Cervone)
+              class bmlFindMathML extends MathJax._.input.mathml.FindMathML.FindMathML {
+                processMath(set) {
+                  const adaptor = this.adaptor;
+                  for (const node of set.values()) {
+                    if (adaptor.hasClass(node, 'bml_disable_mathjax')) {
+                      set.delete(node);
+                    }
+                  }
+                  return super.processMath(set);
+                }
+              }
+
+              MathJax._.components.global.combineDefaults(MathJax.config, 'mml', {FindMathML: new bmlFindMathML()});
+
+              MathJax.startup.defaultReady();
+
+              // preproces MathML to make MathJax aware of certain LaTeXML and BookML additional info
+              const mmlFilters = MathJax.startup.input[0].mmlFilters;
+
+              // convert the LaTeXML calligraphic (chancery) annotation to a form MathJax understands
+              // since the corresponding Unicode characters render as script (rounded)
+              const script2latin = {
+                '𝒜': 'A', 'ℬ': 'B', '𝒞': 'C', '𝒟': 'D', 'ℰ': 'E', 'ℱ': 'F', '𝒢': 'G',
+                'ℋ': 'H', 'ℐ': 'I', '𝒥': 'J', '𝒦': 'K', 'ℒ': 'L', 'ℳ': 'M', '𝒩': 'N',
+                '𝒪': 'O', '𝒫': 'P', '𝒬': 'Q', 'ℛ': 'R', '𝒮': 'S', '𝒯': 'T', '𝒰': 'U',
+                '𝒱': 'V', '𝒲': 'W', '𝒳': 'X', '𝒴': 'Y', '𝒵': 'Z',
+              };
+
+              mmlFilters.add((args) => {
+                for (const n of args.data.getElementsByClassName('ltx_font_mathcaligraphic')) {
+                  n.classList.add('MJX-tex-calligraphic');
+                  const letter = script2latin[n.textContent];
+                  if (letter !== undefined) { n.textContent = letter; }
+                }
+              });
+
+              // adjust characters based on Unicode variation sequences
+              const replacements = {
+                // MathJax renders the empty set as the U+FE00 variant, so the plain character needs adjusting
+                '∅': { variant: 'variant' },
+                // MathJax renders script characters in rounded style, which is fine for no variation and U+FE00
+                '𝒜\xFE00': { text: 'A', variant: 'tex-calligraphic' },
+                'ℬ\xFE00': { text: 'B', variant: 'tex-calligraphic' },
+                '𝒞\xFE00': { text: 'C', variant: 'tex-calligraphic' },
+                '𝒟\xFE00': { text: 'D', variant: 'tex-calligraphic' },
+                'ℰ\xFE00': { text: 'E', variant: 'tex-calligraphic' },
+                'ℱ\xFE00': { text: 'F', variant: 'tex-calligraphic' },
+                '𝒢\xFE00': { text: 'G', variant: 'tex-calligraphic' },
+                'ℋ\xFE00': { text: 'H', variant: 'tex-calligraphic' },
+                'ℐ\xFE00': { text: 'I', variant: 'tex-calligraphic' },
+                '𝒥\xFE00': { text: 'J', variant: 'tex-calligraphic' },
+                '𝒦\xFE00': { text: 'K', variant: 'tex-calligraphic' },
+                'ℒ\xFE00': { text: 'L', variant: 'tex-calligraphic' },
+                'ℳ\xFE00': { text: 'M', variant: 'tex-calligraphic' },
+                '𝒩\xFE00': { text: 'N', variant: 'tex-calligraphic' },
+                '𝒪\xFE00': { text: 'O', variant: 'tex-calligraphic' },
+                '𝒫\xFE00': { text: 'P', variant: 'tex-calligraphic' },
+                '𝒬\xFE00': { text: 'Q', variant: 'tex-calligraphic' },
+                'ℛ\xFE00': { text: 'R', variant: 'tex-calligraphic' },
+                '𝒮\xFE00': { text: 'S', variant: 'tex-calligraphic' },
+                '𝒯\xFE00': { text: 'T', variant: 'tex-calligraphic' },
+                '𝒰\xFE00': { text: 'U', variant: 'tex-calligraphic' },
+                '𝒱\xFE00': { text: 'V', variant: 'tex-calligraphic' },
+                '𝒲\xFE00': { text: 'W', variant: 'tex-calligraphic' },
+                '𝒳\xFE00': { text: 'X', variant: 'tex-calligraphic' },
+                '𝒴\xFE00': { text: 'Y', variant: 'tex-calligraphic' },
+                '𝒵\xFE00': { text: 'Z', variant: 'tex-calligraphic' }
+              };
+
+              mmlFilters.add((args) => {
+                let nodes = document.evaluate('.//m:mi | .//m:mn | .//m:mo | .//m:ms', args.data,
+                  () => 'http://www.w3.org/1998/Math/MathML', XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE);
+                for (let i = 0; i < nodes.snapshotLength; i++) {
+                  const n = nodes.snapshotItem(i);
+                  const repl = replacements[n.innerHTML];
+                  if (repl !== undefined) {
+                    const variant = repl['variant'];
+                    const text = repl['text'];
+                    if (variant !== undefined) { n.classList.add('MJX-' + variant); n.removeAttribute('mathvariant'); }
+                    if (text !== undefined) { n.innerHTML = text; }
+                  }
+                }
+              });
+            }
+          }
+        };
+      </script>
+<script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/mml-chtml.js"></script>
+<script type="text/javascript">
+                gitbook.require(["gitbook"], function(gitbook) {
+                gitbook.start({
+                  "fontsettings": {
+                    "theme": "white",
+                    "family": "sans",
+                    "size": 2
+                  },
+                  "download": [ [ "DiscreteTimeFinance.pdf", "PDF (serif)" ], [ "DiscreteTimeFinance-sans.pdf", "PDF (sans serif)" ], [ "DiscreteTimeFinance-sans-large.pdf", "PDF (sans serif, large)" ], ],
+                  "search": {
+                    "engine": "fuse"
+                  },
+                  "toc": {
+                    "collapse": "none"
+                  }
+                });
+              });
+            </script>
+</body>
+
+</html>
