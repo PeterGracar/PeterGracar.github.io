@@ -1,0 +1,1001 @@
+<!DOCTYPE html><html lang="en-GB">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)</title>
+<!--Generated on Tue Dec  3 15:06:01 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on December 3, 2024.-->
+<style>:root { --bml-ltx-font-size: 10.95; }</style>
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-article.css" type="text/css">
+<link rel="stylesheet" href="ltx-amsart.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-table.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-search.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-bookdown.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-fontsettings.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook,plain.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook.css" type="text/css">
+<link rel="stylesheet" href="bmluser/colors.gitbook-DiscreteTimeFinance.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
+<link rel="up" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="start" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="prev" href="Pt7.html" title="Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="next" href="Pt9.html" title="Lecture IX 26/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt1.html" title="Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt2.html" title="Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt3.html" title="Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt4.html" title="Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt5.html" title="Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt6.html" title="Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt7.html" title="Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt9.html" title="Lecture IX 26/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt10.html" title="Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx1.html" title="Extra reading (non-examinable) ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx2.html" title="Literature list ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+</head>
+<body>
+<div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+<a href="#bml-main-content" tabindex="0" class="bml-skip-to-content">Skip to content.</a>
+<div class="book-summary"><nav class="ltx_page_navbar">
+<ul class="ltx_toclist summary">
+<li>
+<a href="index.html" title="" class="ltx_ref" rel="start">Lecture notes: Discrete Time Finance (MATH5320M)</a>
+</li>
+<li class="divider">
+<li data-level="I" data-path="Pt1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">I </span></b>01/10/2024</a></li>
+<li data-level="II" data-path="Pt2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">II </span></b>08/10/2024</a></li>
+<li data-level="III" data-path="Pt3.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt3.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">III </span></b>15/10/2024</a></li>
+<li data-level="IV" data-path="Pt4.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt4.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IV </span></b>22/10/2024</a></li>
+<li data-level="V" data-path="Pt5.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt5.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">V </span></b>29/10/2024</a></li>
+<li data-level="VI" data-path="Pt6.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt6.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VI </span></b>05/11/2024</a></li>
+<li data-level="VII" data-path="Pt7.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt7.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VII </span></b>12/11/2024</a></li>
+<li data-level="VIII" data-path="" class="ltx_tocentry ltx_tocentry_part ltx_ref_self  chapter active">
+<a href="" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VIII </span></b>19/11/2024</a>
+<ol class="ltx_toclist ltx_toclist_part">
+<li data-level="3.2" data-path="" class="ltx_tocentry ltx_tocentry_subsection  chapter "><a href="#S3.SS2" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">3.2 </span></b>Returns</a></li>
+<li data-level="3.3" data-path="" class="ltx_tocentry ltx_tocentry_subsection  chapter "><a href="#S3.SS3" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">3.3 </span></b>Mean-Variance Analysis</a></li>
+</ol>
+</li>
+<li data-level="IX" data-path="Pt9.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt9.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IX </span></b>26/11/2024</a></li>
+<li data-level="X" data-path="Pt10.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt10.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">X </span></b>03/12/2024</a></li>
+<li data-level="" data-path="Ptx1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Extra reading (non-examinable)</a></li>
+<li data-level="" data-path="Ptx2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Literature list</a></li>
+</ul>
+</nav></div>
+<div class="ltx_page_main book-body fixed">
+<div class="body-inner">
+<div class="book-header fixed" role="navigation"><h1>19/11/2024</h1></div>
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="ltx_page_content page-inner" id="bml-main-content">
+<section class="ltx_part normal" lang="en-GB">
+<div class="section level1">
+
+<h1 class="ltx_title ltx_title_part">
+<span class="ltx_tag ltx_tag_part header-section-number">Lecture VIII</span> 19/11/2024</h1>
+
+<div id="S3.SS1.Thmtheorem5" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 3.1.5</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS1.Thmtheorem5.p1" class="ltx_para">
+<p class="ltx_p">Suppose that <math id="S3.SS1.Thmtheorem5.p1.m1" class="ltx_Math" alttext="n=2" display="inline"><semantics><mrow><mi>n</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n=2</annotation></semantics></math>, <math id="S3.SS1.Thmtheorem5.p1.m2" class="ltx_Math" alttext="k=3" display="inline"><semantics><mrow><mi>k</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">k=3</annotation></semantics></math>, <math id="S3.SS1.Thmtheorem5.p1.m3" class="ltx_Math" alttext="r=\frac{1}{9}" display="inline"><semantics><mrow><mi>r</mi><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac></mrow><annotation encoding="application/x-tex">r=\frac{1}{9}</annotation></semantics></math>, <math id="S3.SS1.Thmtheorem5.p1.m4" class="ltx_Math" alttext="\hat{S}_{0}^{1}=6" display="inline"><semantics><mrow><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>0</mn><mn>1</mn></msubsup><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">\hat{S}_{0}^{1}=6</annotation></semantics></math>, <math id="S3.SS1.Thmtheorem5.p1.m5" class="ltx_Math" alttext="\hat{S}_{0}^{2}=10" display="inline"><semantics><mrow><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>0</mn><mn>2</mn></msubsup><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">\hat{S}_{0}^{2}=10</annotation></semantics></math> and that the discounted price process is given by the following table:</p>
+<div class="bml-overflow-wrapper">
+<table class="ltx_tabular ltx_centering ltx_align_middle">
+<tr class="ltx_tr">
+<td class="ltx_td ltx_border_r"></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S3.SS1.Thmtheorem5.p1.m6" class="ltx_Math" alttext="\omega_{1}" display="inline"><semantics><msub><mi>ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\omega_{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r"><math id="S3.SS1.Thmtheorem5.p1.m7" class="ltx_Math" alttext="\omega_{2}" display="inline"><semantics><msub><mi>ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\omega_{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center"><math id="S3.SS1.Thmtheorem5.p1.m8" class="ltx_Math" alttext="\omega_{3}" display="inline"><semantics><msub><mi>ω</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\omega_{3}</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S3.SS1.Thmtheorem5.p1.m9" class="ltx_Math" alttext="\hat{S}_{1}^{1}" display="inline"><semantics><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mn>1</mn></msubsup><annotation encoding="application/x-tex">\hat{S}_{1}^{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S3.SS1.Thmtheorem5.p1.m10" class="ltx_Math" alttext="6" display="inline"><semantics><mn>6</mn><annotation encoding="application/x-tex">6</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S3.SS1.Thmtheorem5.p1.m11" class="ltx_Math" alttext="8" display="inline"><semantics><mn>8</mn><annotation encoding="application/x-tex">8</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="S3.SS1.Thmtheorem5.p1.m12" class="ltx_Math" alttext="4" display="inline"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S3.SS1.Thmtheorem5.p1.m13" class="ltx_Math" alttext="\hat{S}_{1}^{2}" display="inline"><semantics><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>1</mn><mn>2</mn></msubsup><annotation encoding="application/x-tex">\hat{S}_{1}^{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S3.SS1.Thmtheorem5.p1.m14" class="ltx_Math" alttext="13" display="inline"><semantics><mn>13</mn><annotation encoding="application/x-tex">13</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t"><math id="S3.SS1.Thmtheorem5.p1.m15" class="ltx_Math" alttext="9" display="inline"><semantics><mn>9</mn><annotation encoding="application/x-tex">9</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="S3.SS1.Thmtheorem5.p1.m16" class="ltx_Math" alttext="8" display="inline"><semantics><mn>8</mn><annotation encoding="application/x-tex">8</annotation></semantics></math></td>
+</tr>
+</table>
+</div>
+</div>
+<div id="S3.SS1.Thmtheorem5.p2" class="ltx_para">
+<p class="ltx_p">We wish to use the exponential utility function with <math id="S3.SS1.Thmtheorem5.p2.m1" class="ltx_Math" alttext="\lambda=1" display="inline"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lambda=1</annotation></semantics></math>, i.e. <math id="S3.SS1.Thmtheorem5.p2.m2" class="ltx_Math" alttext="u(x)=1-\exp(-x)" display="inline"><semantics><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mn>1</mn><mo>−</mo><mrow><mi>exp</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mo>−</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">u(x)=1-\exp(-x)</annotation></semantics></math>.
+Since additive constants does not play a role in our optimisation process we shall use an equivalent but simpler utility function <math id="S3.SS1.Thmtheorem5.p2.m3" class="ltx_Math" alttext="u(x)=-\exp(-x)" display="inline"><semantics><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo rspace="0.167em">−</mo><mrow><mi>exp</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mo>−</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">u(x)=-\exp(-x)</annotation></semantics></math>.</p>
+</div>
+<div id="S3.SS1.Thmtheorem5.p3" class="ltx_para">
+<p class="ltx_p">In order to compute the optimal trading strategy for an initial investment <math id="S3.SS1.Thmtheorem5.p3.m1" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>, we have to compute the maximum of the function</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx33" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S3.SS1.Ex21"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS1.Ex21.m1" class="ltx_Math" alttext="\displaystyle U:\mathbb{R}^{2}" display="inline"><semantics><mrow><mi>U</mi><mo lspace="0.278em" rspace="0.278em">:</mo><msup><mi>ℝ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle U:\mathbb{R}^{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS1.Ex21.m2" class="ltx_Math" alttext="\displaystyle\to" display="inline"><semantics><mo stretchy="false">→</mo><annotation encoding="application/x-tex">\displaystyle\to</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex21.m3" class="ltx_Math" alttext="\displaystyle\mathbb{R}" display="inline"><semantics><mi>ℝ</mi><annotation encoding="application/x-tex">\displaystyle\mathbb{R}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S3.SS1.Ex22"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS1.Ex22.m1" class="ltx_Math" alttext="\displaystyle(\phi^{1},\phi^{2})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><msup><mi>ϕ</mi><mn>1</mn></msup><mo>,</mo><msup><mi>ϕ</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle(\phi^{1},\phi^{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS1.Ex22.m2" class="ltx_Math" alttext="\displaystyle\mapsto" display="inline"><semantics><mo stretchy="false">↦</mo><annotation encoding="application/x-tex">\displaystyle\mapsto</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex22.m3" class="ltx_Math" alttext="\displaystyle\mathbb{E}(-\exp(-(V_{1}(x,(\phi^{1},\phi^{2})))))." display="inline"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo rspace="0.167em">−</mo><mrow><mi>exp</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mo>−</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mrow><mo stretchy="false">(</mo><msup><mi>ϕ</mi><mn>1</mn></msup><mo>,</mo><msup><mi>ϕ</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{E}(-\exp(-(V_{1}(x,(\phi^{1},\phi^{2}))))).</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">Using equation (<a href="Pt7.html#S3.SS1.E3" title="In 3.1. Single Period Investment ‣ 3. Investment ‣ Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.3</span></a>), computing the expectation and setting the partial derivatives with respect to <math id="S3.SS1.Thmtheorem5.p3.m2" class="ltx_Math" alttext="\phi^{1}" display="inline"><semantics><msup><mi>ϕ</mi><mn>1</mn></msup><annotation encoding="application/x-tex">\phi^{1}</annotation></semantics></math> and <math id="S3.SS1.Thmtheorem5.p3.m3" class="ltx_Math" alttext="\phi^{2}" display="inline"><semantics><msup><mi>ϕ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\phi^{2}</annotation></semantics></math> equal to zero, we obtain the following two equations:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx34" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S3.SS1.Ex23"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS1.Ex23.m1" class="ltx_Math" alttext="\displaystyle 0=" display="inline"><semantics><mrow><mn>0</mn><mo>=</mo><mi></mi></mrow><annotation encoding="application/x-tex">\displaystyle 0=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex23.m2" class="ltx_math_unparsed" alttext="\displaystyle\ \mathbb{P}(\omega_{1})\exp\left(-\left(\frac{10}{9}\right)(x+0%
+\phi^{1}+3\phi^{2}\right)\cdot\frac{10}{9}\cdot 0" display="inline"><semantics><mrow><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo rspace="0.167em" stretchy="false">)</mo></mrow><mi>exp</mi><mrow><mo>(</mo><mo lspace="0em">−</mo><mrow><mo>(</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo>)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>0</mn><msup><mi>ϕ</mi><mn>1</mn></msup><mo>+</mo><mn>3</mn><msup><mi>ϕ</mi><mn>2</mn></msup><mo rspace="0.055em">)</mo></mrow><mo rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0</mn></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\ \mathbb{P}(\omega_{1})\exp\left(-\left(\frac{10}{9}\right)(x+0%
+\phi^{1}+3\phi^{2}\right)\cdot\frac{10}{9}\cdot 0</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S3.SS1.Ex24"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex24.m1" class="ltx_math_unparsed" alttext="\displaystyle+\mathbb{P}(\omega_{2})\exp\left(-\left(\frac{10}{9}\right)(x+2%
+\phi^{1}-\phi^{2}\right)\cdot\frac{10}{9}\cdot 2" display="inline"><semantics><mrow><mo>+</mo><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo rspace="0.167em" stretchy="false">)</mo></mrow><mi>exp</mi><mrow><mo>(</mo><mo lspace="0em">−</mo><mrow><mo>(</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo>)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>2</mn><msup><mi>ϕ</mi><mn>1</mn></msup><mo>−</mo><msup><mi>ϕ</mi><mn>2</mn></msup><mo rspace="0.055em">)</mo></mrow><mo rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>2</mn></mrow></mrow><annotation encoding="application/x-tex">\displaystyle+\mathbb{P}(\omega_{2})\exp\left(-\left(\frac{10}{9}\right)(x+2%
+\phi^{1}-\phi^{2}\right)\cdot\frac{10}{9}\cdot 2</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S3.SS1.Ex25"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex25.m1" class="ltx_math_unparsed" alttext="\displaystyle+\mathbb{P}(\omega_{3})\exp\left(-\left(\frac{10}{9}\right)(x-2%
+\phi^{1}-2\phi^{2}\right)\cdot\frac{10}{9}\cdot(-2)," display="inline"><semantics><mrow><mo>+</mo><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo rspace="0.167em" stretchy="false">)</mo></mrow><mi>exp</mi><mrow><mo>(</mo><mo lspace="0em">−</mo><mrow><mo>(</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo>)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><msup><mi>ϕ</mi><mn>1</mn></msup><mo>−</mo><mn>2</mn><msup><mi>ϕ</mi><mn>2</mn></msup><mo rspace="0.055em">)</mo></mrow><mo rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo stretchy="false">(</mo><mo lspace="0em">−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mo>,</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle+\mathbb{P}(\omega_{3})\exp\left(-\left(\frac{10}{9}\right)(x-2%
+\phi^{1}-2\phi^{2}\right)\cdot\frac{10}{9}\cdot(-2),</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">and</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx35" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S3.SS1.Ex26"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS1.Ex26.m1" class="ltx_Math" alttext="\displaystyle 0=" display="inline"><semantics><mrow><mn>0</mn><mo>=</mo><mi></mi></mrow><annotation encoding="application/x-tex">\displaystyle 0=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex26.m2" class="ltx_math_unparsed" alttext="\displaystyle\ \mathbb{P}(\omega_{1})\exp\left(-\left(\frac{10}{9}\right)(x+0%
+\phi^{1}+3\phi^{2}\right)\cdot\frac{10}{9}\cdot 3" display="inline"><semantics><mrow><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo rspace="0.167em" stretchy="false">)</mo></mrow><mi>exp</mi><mrow><mo>(</mo><mo lspace="0em">−</mo><mrow><mo>(</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo>)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>0</mn><msup><mi>ϕ</mi><mn>1</mn></msup><mo>+</mo><mn>3</mn><msup><mi>ϕ</mi><mn>2</mn></msup><mo rspace="0.055em">)</mo></mrow><mo rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>3</mn></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\ \mathbb{P}(\omega_{1})\exp\left(-\left(\frac{10}{9}\right)(x+0%
+\phi^{1}+3\phi^{2}\right)\cdot\frac{10}{9}\cdot 3</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S3.SS1.Ex27"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex27.m1" class="ltx_math_unparsed" alttext="\displaystyle+\mathbb{P}(\omega_{2})\exp\left(-\left(\frac{10}{9}\right)(x+2%
+\phi^{1}-\phi^{2}\right)\cdot\frac{10}{9}\cdot(-1)" display="inline"><semantics><mrow><mo>+</mo><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo rspace="0.167em" stretchy="false">)</mo></mrow><mi>exp</mi><mrow><mo>(</mo><mo lspace="0em">−</mo><mrow><mo>(</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo>)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>2</mn><msup><mi>ϕ</mi><mn>1</mn></msup><mo>−</mo><msup><mi>ϕ</mi><mn>2</mn></msup><mo rspace="0.055em">)</mo></mrow><mo rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo stretchy="false">(</mo><mo lspace="0em">−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle+\mathbb{P}(\omega_{2})\exp\left(-\left(\frac{10}{9}\right)(x+2%
+\phi^{1}-\phi^{2}\right)\cdot\frac{10}{9}\cdot(-1)</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S3.SS1.Ex28"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex28.m1" class="ltx_math_unparsed" alttext="\displaystyle+\mathbb{P}(\omega_{3})\exp\left(-\left(\frac{10}{9}\right)(x-2%
+\phi^{1}-2\phi^{2}\right)\cdot\frac{10}{9}\cdot(-2)." display="inline"><semantics><mrow><mo>+</mo><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo rspace="0.167em" stretchy="false">)</mo></mrow><mi>exp</mi><mrow><mo>(</mo><mo lspace="0em">−</mo><mrow><mo>(</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo>)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><msup><mi>ϕ</mi><mn>1</mn></msup><mo>−</mo><mn>2</mn><msup><mi>ϕ</mi><mn>2</mn></msup><mo rspace="0.055em">)</mo></mrow><mo rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>10</mn><mn>9</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo stretchy="false">(</mo><mo lspace="0em">−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mo lspace="0em">.</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle+\mathbb{P}(\omega_{3})\exp\left(-\left(\frac{10}{9}\right)(x-2%
+\phi^{1}-2\phi^{2}\right)\cdot\frac{10}{9}\cdot(-2).</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">These two equations have to be solved for <math id="S3.SS1.Thmtheorem5.p3.m4" class="ltx_Math" alttext="\phi^{1}" display="inline"><semantics><msup><mi>ϕ</mi><mn>1</mn></msup><annotation encoding="application/x-tex">\phi^{1}</annotation></semantics></math> and <math id="S3.SS1.Thmtheorem5.p3.m5" class="ltx_Math" alttext="\phi^{2}" display="inline"><semantics><msup><mi>ϕ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\phi^{2}</annotation></semantics></math>. Although numerically possible this may not be easy. We therefore propose another technique in the following.
+∎</p>
+</div>
+</div>
+<div id="p1" class="ltx_para">
+<p class="ltx_p">As you could see the naive technique to solve the optimal portfolio problem can be computationally difficult. There is however a more efficient technique to solve the problem. This technique involves risk neutral measures and the Lagrange multiplier method to find an optimum under constraints (Step 1 below). The idea of the technique is as follows: Decompose the optimal portfolio problem into two subproblems:</p>
+<dl id="S3.I3" class="ltx_description">
+<dt id="S3.I3.ix1" class="ltx_item"><span class="ltx_tag ltx_tag_item"><span class="ltx_text ltx_font_bold">Step 1: </span></span></dt>
+<dd class="ltx_item">
+<div id="S3.I3.ix1.p1" class="ltx_para">
+<p class="ltx_p">Compute the maximiser <math id="S3.I3.ix1.p1.m1" class="ltx_Math" alttext="V_{1}" display="inline"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_{1}</annotation></semantics></math> of the function <math id="S3.I3.ix1.p1.m2" class="ltx_Math" alttext="V\mapsto\mathbb{E}u(V)" display="inline"><semantics><mrow><mi>V</mi><mo stretchy="false">↦</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>V</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">V\mapsto\mathbb{E}u(V)</annotation></semantics></math>, where <math id="S3.I3.ix1.p1.m3" class="ltx_Math" alttext="V" display="inline"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math> is allowed to take values is a certain feasible set.</p>
+</div>
+</dd>
+<dt id="S3.I3.ix2" class="ltx_item"><span class="ltx_tag ltx_tag_item"><span class="ltx_text ltx_font_bold">Step 2: </span></span></dt>
+<dd class="ltx_item">
+<div id="S3.I3.ix2.p1" class="ltx_para">
+<p class="ltx_p">Compute a trading strategy which has the maximiser <math id="S3.I3.ix2.p1.m1" class="ltx_Math" alttext="V_{1}" display="inline"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_{1}</annotation></semantics></math> computed in Step 1 as value at time <math id="S3.I3.ix2.p1.m2" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>.</p>
+</div>
+</dd>
+</dl>
+<p class="ltx_p">The trading strategy arising from the second step is then an optimal portfolio. Step 2 is in fact a replication or hedging problem and we know that such a problem poses certain difficulties in an incomplete market model. Therefore, let us assume first that our model is <span class="ltx_text ltx_font_bold">complete</span>. In this case there is a unique risk neutral measure which we denote by <math id="p1.m1" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> (see Theorem <a href="Pt4.html#S1.SS2.Thmtheorem26" title="Theorem 1.2.26. ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.26</span></a>).</p>
+</div>
+<div id="S3.SS1.Thmtheorem6" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 3.1.6</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS1.Thmtheorem6.p1" class="ltx_para">
+<p class="ltx_p">We define the set of attainable wealths from initial investment <math id="S3.SS1.Thmtheorem6.p1.m1" class="ltx_Math" alttext="x&gt;0" display="inline"><semantics><mrow><mi>x</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x&gt;0</annotation></semantics></math> by</p>
+<div id="S3.SS1.Ex29" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex29.m1" class="ltx_math_unparsed" alttext="\boxed{\mathbb{W}_{x}:=\left\{W\in\mathbb{R}^{k}\middle|\mathbb{E}_{\mathbb{Q}%
+}\left(\frac{1}{1+r}W\right)=x\right\}.}" display="block"><semantics><menclose notation="box"><mrow><msub><mi>𝕎</mi><mi>x</mi></msub><mo lspace="0.278em" rspace="0.278em">:=</mo><mrow><mo>{</mo><mi>W</mi><mo>∈</mo><msup><mi>ℝ</mi><mi>k</mi></msup><mo lspace="0em" rspace="0em" stretchy="true">|</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mi>x</mi><mo>}</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{W}_{x}:=\left\{W\in\mathbb{R}^{k}\middle|\mathbb{E}_{\mathbb{Q}%
+}\left(\frac{1}{1+r}W\right)=x\right\}.}</annotation></semantics></math></span>
+</div>
+</div>
+</div>
+<div id="p2" class="ltx_para">
+<p class="ltx_p">It follows from Propositions <a href="Pt4.html#S1.SS2.Thmtheorem25" title="Proposition 1.2.25. ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.25</span></a> and <a href="Pt3.html#S1.SS2.Thmtheorem17" title="Proposition 1.2.17. ‣ Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.17</span></a> that if <math id="p2.m1" class="ltx_Math" alttext="W\in\mathbb{W}_{x}" display="inline"><semantics><mrow><mi>W</mi><mo>∈</mo><msub><mi>𝕎</mi><mi>x</mi></msub></mrow><annotation encoding="application/x-tex">W\in\mathbb{W}_{x}</annotation></semantics></math> then there exists a trading strategy <math id="p2.m2" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math> such that <math id="p2.m3" class="ltx_Math" alttext="W=V_{1}(x,\phi)" display="inline"><semantics><mrow><mi>W</mi><mo>=</mo><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">W=V_{1}(x,\phi)</annotation></semantics></math> and hence the name is justified. The first step of our optimisation process can be stated as the following constrained optimisation problem:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx36" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S3.SS1.Ex30"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><span class="ltx_text ltx_markedasmath">maximise</span></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex30.m2" class="ltx_Math" alttext="\displaystyle\mathbb{E}(u(W))" display="inline"><semantics><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{E}(u(W))</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S3.SS1.Ex31"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><span class="ltx_text ltx_markedasmath">subject to</span></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS1.Ex31.m2" class="ltx_Math" alttext="\displaystyle W\in\mathbb{W}_{x}." display="inline"><semantics><mrow><mrow><mi>W</mi><mo>∈</mo><msub><mi>𝕎</mi><mi>x</mi></msub></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle W\in\mathbb{W}_{x}.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">This problem can be solved by the Lagrange multiplier method. To do this we consider the Lagrange function</p>
+<div id="S3.SS1.E4" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.E4.m1" class="ltx_math_unparsed" alttext="\boxed{\mathcal{L}(W,\lambda):=\mathbb{E}(u(W))-\lambda\left(\mathbb{E}_{%
+\mathbb{Q}}\left(\frac{1}{1+r}W\right)-x\right).}" display="block"><semantics><menclose notation="box"><mrow><mi class="ltx_font_mathcaligraphic">ℒ</mi><mrow><mo stretchy="false">(</mo><mi>W</mi><mo>,</mo><mi>λ</mi><mo rspace="0.278em" stretchy="false">)</mo></mrow><mo rspace="0.278em">:=</mo><mi>𝔼</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mrow><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow><mo>−</mo><mi>λ</mi><mrow><mo>(</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mi>W</mi><mo>)</mo></mrow><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathcal{L}(W,\lambda):=\mathbb{E}(u(W))-\lambda\left(\mathbb{E}_{%
+\mathbb{Q}}\left(\frac{1}{1+r}W\right)-x\right).}</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.1.4)</span>
+          
+          
+        
+</div>
+</div>
+<div id="p3" class="ltx_para">
+<p class="ltx_p">A solution of the above constrained optimisation problem may then be computed by setting all partial derivatives with respect to <math id="p3.m1" class="ltx_Math" alttext="W_{i}=W(\omega_{i})" display="inline"><semantics><mrow><msub><mi>W</mi><mi>i</mi></msub><mo>=</mo><mrow><mi>W</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">W_{i}=W(\omega_{i})</annotation></semantics></math> and <math id="p3.m2" class="ltx_Math" alttext="\lambda" display="inline"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> equal to zero. In the definition of the Lagrange function in (<a href="#S3.SS1.E4" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.4</span></a>) we have to compute expectations with respect to two different measures <math id="p3.m3" class="ltx_Math" alttext="\mathbb{P}" display="inline"><semantics><mi>ℙ</mi><annotation encoding="application/x-tex">\mathbb{P}</annotation></semantics></math> and <math id="p3.m4" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math>. In order to avoid this, we introduce the so called <span class="ltx_text ltx_font_bold">state price density</span></p>
+<div id="S3.SS1.E5" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.E5.m1" class="ltx_Math" alttext="L(\omega):=\frac{\mathbb{Q}(\omega)}{\mathbb{P}(\omega)}." display="block"><semantics><mrow><mrow><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo rspace="0.278em" stretchy="false">)</mo></mrow></mrow><mo rspace="0.278em">:=</mo><mfrac><mrow><mi>ℚ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">L(\omega):=\frac{\mathbb{Q}(\omega)}{\mathbb{P}(\omega)}.</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.1.5)</span>
+          
+          
+        
+</div>
+<p class="ltx_p">Then for any random variable <math id="p3.m5" class="ltx_Math" alttext="Y" display="inline"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> we have</p>
+<div id="S3.SS1.Ex32" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex32.m1" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}Y=\mathbb{E}LY." display="block"><semantics><mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mi>Y</mi></mrow><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mi>L</mi><mo>⁢</mo><mi>Y</mi></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}Y=\mathbb{E}LY.</annotation></semantics></math></span>
+</div>
+</div>
+<div id="p4" class="ltx_para">
+<p class="ltx_p">Using the state price density we can write the Lagrange function as follows:</p>
+<div id="S3.SS1.Ex33" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex33.m1" class="ltx_Math" alttext="\mathcal{L}(W,\lambda)=\sum_{i=1}^{k}\mathbb{P}(\omega_{i})\left[u(W(\omega_{i%
+}))-\lambda\left(L(\omega_{i})\frac{1}{1+r}W(\omega_{i})-x\right)\right]" display="block"><semantics><mrow><mrow><mi class="ltx_font_mathcaligraphic">ℒ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo>,</mo><mi>λ</mi><mo stretchy="false">)</mo></mrow></mrow><mo rspace="0.111em">=</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo>[</mo><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>W</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>λ</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mi>W</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>x</mi></mrow><mo>)</mo></mrow></mrow></mrow><mo>]</mo></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">\mathcal{L}(W,\lambda)=\sum_{i=1}^{k}\mathbb{P}(\omega_{i})\left[u(W(\omega_{i%
+}))-\lambda\left(L(\omega_{i})\frac{1}{1+r}W(\omega_{i})-x\right)\right]</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Computing the partial derivatives with respect to <math id="p4.m1" class="ltx_Math" alttext="W_{i}=W(\omega_{i})" display="inline"><semantics><mrow><msub><mi>W</mi><mi>i</mi></msub><mo>=</mo><mrow><mi>W</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">W_{i}=W(\omega_{i})</annotation></semantics></math> and setting them equal to zero gives</p>
+<div id="S3.SS1.E6" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.E6.m1" class="ltx_Math" alttext="u^{\prime}(W(\omega_{i}))=\lambda\frac{L(\omega_{i})}{1+r},\quad i\in\{i,\dots%
+,k\}." display="block"><semantics><mrow><mrow><mrow><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>W</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>λ</mi><mo>⁢</mo><mfrac><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mrow></mrow><mo rspace="1.267em">,</mo><mrow><mi>i</mi><mo>∈</mo><mrow><mo stretchy="false">{</mo><mi>i</mi><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>k</mi><mo stretchy="false">}</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">u^{\prime}(W(\omega_{i}))=\lambda\frac{L(\omega_{i})}{1+r},\quad i\in\{i,\dots%
+,k\}.</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.1.6)</span>
+          
+          
+        
+</div>
+<p class="ltx_p">Taking the expected value (i.e. multiplying with <math id="p4.m2" class="ltx_Math" alttext="\mathbb{P}(\omega_{i})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbb{P}(\omega_{i})</annotation></semantics></math> and summing over <math id="p4.m3" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>) of both sides of the above equality we obtain:</p>
+<div id="S3.SS1.E7" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.E7.m1" class="ltx_Math" alttext="\lambda=\mathbb{E}((1+r)u^{\prime}(W))." display="block"><semantics><mrow><mrow><mi>λ</mi><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\lambda=\mathbb{E}((1+r)u^{\prime}(W)).</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.1.7)</span>
+          
+          
+        
+</div>
+</div>
+<div id="p5" class="ltx_para">
+<p class="ltx_p">Let us denote the inverse function of <math id="p5.m1" class="ltx_Math" alttext="u^{\prime}(x)" display="inline"><semantics><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">u^{\prime}(x)</annotation></semantics></math> with <math id="p5.m2" class="ltx_Math" alttext="I(x)" display="inline"><semantics><mrow><mi>I</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">I(x)</annotation></semantics></math>, i.e. <math id="p5.m3" class="ltx_Math" alttext="I(x)" display="inline"><semantics><mrow><mi>I</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">I(x)</annotation></semantics></math> is the function s.t. <math id="p5.m4" class="ltx_Math" alttext="u^{\prime}(I(x))=x=I(u^{\prime}(x))" display="inline"><semantics><mrow><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>I</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>x</mi><mo>=</mo><mrow><mi>I</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">u^{\prime}(I(x))=x=I(u^{\prime}(x))</annotation></semantics></math>. Such a function exists, since <math id="p5.m5" class="ltx_Math" alttext="u^{\prime}(x)" display="inline"><semantics><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">u^{\prime}(x)</annotation></semantics></math> is strictly decreasing by property 3. of a utility function. It is easy to check that</p>
+<ol id="S3.I4" class="ltx_enumerate">
+<li id="S3.I4.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S3.I4.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S3.I4.i1.p1.m1" class="ltx_Math" alttext="I" display="inline"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math> is strictly decreasing,</p>
+</div>
+</li>
+<li id="S3.I4.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S3.I4.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S3.I4.i2.p1.m1" class="ltx_Math" alttext="\lim_{x\to 0}I(x)=\infty" display="inline"><semantics><mrow><mrow><msub><mo>lim</mo><mrow><mi>x</mi><mo stretchy="false">→</mo><mn>0</mn></mrow></msub><mrow><mi>I</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">\lim_{x\to 0}I(x)=\infty</annotation></semantics></math>,</p>
+</div>
+</li>
+<li id="S3.I4.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S3.I4.i3.p1" class="ltx_para">​<p class="ltx_p"><math id="S3.I4.i3.p1.m1" class="ltx_Math" alttext="\lim_{x\to\infty}I(x)=0" display="inline"><semantics><mrow><mrow><msub><mo>lim</mo><mrow><mi>x</mi><mo stretchy="false">→</mo><mi mathvariant="normal">∞</mi></mrow></msub><mrow><mi>I</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{x\to\infty}I(x)=0</annotation></semantics></math>.</p>
+</div>
+</li>
+</ol>
+<p class="ltx_p">Applying <math id="p5.m6" class="ltx_Math" alttext="I" display="inline"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math> to equation (<a href="#S3.SS1.E6" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.6</span></a>) we obtain</p>
+<div id="S3.SS1.E8" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.E8.m1" class="ltx_math_unparsed" alttext="\boxed{W(\omega)=I\left(\lambda\frac{L(\omega)}{1+r}\right).}" display="block"><semantics><menclose notation="box"><mrow><mi>W</mi><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>I</mi><mrow><mo>(</mo><mi>λ</mi><mfrac><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{W(\omega)=I\left(\lambda\frac{L(\omega)}{1+r}\right).}</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.1.8)</span>
+          
+          
+        
+</div>
+<p class="ltx_p">This last equation would give the solution of the constrained optimisation problem if we knew the correct value of <math id="p5.m7" class="ltx_Math" alttext="\lambda" display="inline"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>. Equation (<a href="#S3.SS1.E7" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.7</span></a>) does not help us in computation of <math id="p5.m8" class="ltx_Math" alttext="\lambda" display="inline"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> since it involves the so far still unknown <math id="p5.m9" class="ltx_Math" alttext="W" display="inline"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>. We know however that <math id="p5.m10" class="ltx_Math" alttext="W" display="inline"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math> must satisfy</p>
+<div id="S3.SS1.Ex34" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex34.m1" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}\left(\frac{1}{1+r}W\right)=x" display="block"><semantics><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mi>W</mi></mrow><mo>)</mo></mrow></mrow><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}\left(\frac{1}{1+r}W\right)=x</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">and substituting the expression from equation (<a href="#S3.SS1.E8" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.8</span></a>) into last equation we obtain</p>
+<div id="S3.SS1.E9" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.E9.m1" class="ltx_math_unparsed" alttext="\boxed{\mathbb{E}_{\mathbb{Q}}\left(\frac{1}{1+r}I\left(\lambda\frac{L}{1+r}%
+\right)\right)=x.}" display="block"><semantics><menclose notation="box"><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mi>I</mi><mrow><mo>(</mo><mi>λ</mi><mfrac><mi>L</mi><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>)</mo></mrow><mo>)</mo></mrow><mo>=</mo><mi>x</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{E}_{\mathbb{Q}}\left(\frac{1}{1+r}I\left(\lambda\frac{L}{1+r}%
+\right)\right)=x.}</annotation></semantics></math></span>
+          <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.1.9)</span>
+          
+          
+        
+</div>
+<p class="ltx_p">If we solve this equation for <math id="p5.m11" class="ltx_Math" alttext="\lambda" display="inline"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> and plug the solution into (<a href="#S3.SS1.E8" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.8</span></a>), we get the solution of our constrained optimisation problem. Such a <math id="p5.m12" class="ltx_Math" alttext="\lambda" display="inline"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> always exists and is in fact uniquely determined by equation (<a href="#S3.SS1.E9" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.9</span></a>) because the function <math id="p5.m13" class="ltx_Math" alttext="h(\lambda):=\mathbb{E}_{\mathbb{Q}}\left(\frac{1}{1+r}I\left(\lambda\frac{L(%
+\omega)}{1+r}\right)\right)" display="inline"><semantics><mrow><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>λ</mi><mo rspace="0.278em" stretchy="false">)</mo></mrow></mrow><mo rspace="0.278em">:=</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mi>I</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>λ</mi><mo>⁢</mo><mfrac><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">h(\lambda):=\mathbb{E}_{\mathbb{Q}}\left(\frac{1}{1+r}I\left(\lambda\frac{L(%
+\omega)}{1+r}\right)\right)</annotation></semantics></math> is strictly decreasing, continuous and satisfies <math id="p5.m14" class="ltx_Math" alttext="\lim_{\lambda\to 0}h(\lambda)=\infty" display="inline"><semantics><mrow><mrow><msub><mo>lim</mo><mrow><mi>λ</mi><mo stretchy="false">→</mo><mn>0</mn></mrow></msub><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>λ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">\lim_{\lambda\to 0}h(\lambda)=\infty</annotation></semantics></math> and <math id="p5.m15" class="ltx_Math" alttext="\lim_{\lambda\to\infty}h(\lambda)=0" display="inline"><semantics><mrow><mrow><msub><mo>lim</mo><mrow><mi>λ</mi><mo stretchy="false">→</mo><mi mathvariant="normal">∞</mi></mrow></msub><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>λ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{\lambda\to\infty}h(\lambda)=0</annotation></semantics></math>.</p>
+</div>
+<div id="S3.SS1.Thmtheorem7" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 3.1.7</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS1.Thmtheorem7.p1" class="ltx_para">
+<p class="ltx_p">Suppose the utility function in the optimal
+portfolio problem is given by <math id="S3.SS1.Thmtheorem7.p1.m1" class="ltx_Math" alttext="u(x)=\ln(x)" display="inline"><semantics><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>ln</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">u(x)=\ln(x)</annotation></semantics></math>. In this case
+<math id="S3.SS1.Thmtheorem7.p1.m2" class="ltx_Math" alttext="u^{\prime}(x)=\frac{1}{x}" display="inline"><semantics><mrow><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mn>1</mn><mi>x</mi></mfrac></mrow><annotation encoding="application/x-tex">u^{\prime}(x)=\frac{1}{x}</annotation></semantics></math> and therefore <math id="S3.SS1.Thmtheorem7.p1.m3" class="ltx_Math" alttext="I(x)=\frac{1}{x}" display="inline"><semantics><mrow><mrow><mi>I</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mn>1</mn><mi>x</mi></mfrac></mrow><annotation encoding="application/x-tex">I(x)=\frac{1}{x}</annotation></semantics></math> as
+well. Hence, the optimal wealth in equation (<a href="#S3.SS1.E8" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.8</span></a>) is
+given by</p>
+<div id="S3.SS1.E10" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.E10.m1" class="ltx_Math" alttext="W=I\Big{(}\lambda\frac{L}{1+r}\Big{)}=\frac{1+r}{\lambda L}." display="block"><semantics><mrow><mrow><mi>W</mi><mo>=</mo><mrow><mi>I</mi><mo>⁢</mo><mrow><mo maxsize="160%" minsize="160%">(</mo><mrow><mi>λ</mi><mo>⁢</mo><mfrac><mi>L</mi><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mrow><mo maxsize="160%" minsize="160%">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mrow><mi>λ</mi><mo>⁢</mo><mi>L</mi></mrow></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">W=I\Big{(}\lambda\frac{L}{1+r}\Big{)}=\frac{1+r}{\lambda L}.</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.1.10)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">We remind ourselves that <math id="S3.SS1.Thmtheorem7.p1.m4" class="ltx_Math" alttext="L&gt;0" display="inline"><semantics><mrow><mi>L</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L&gt;0</annotation></semantics></math> so the above expression is well defined. Equation (<a href="#S3.SS1.E9" title="In Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.9</span></a>) gets the following
+form:</p>
+<div id="S3.SS1.Ex35" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex35.m1" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}\Bigg{(}\frac{1}{1+r}I\Big{(}\lambda\frac{L}{1+r}\Big{)%
+}\Bigg{)}=x." display="block"><semantics><mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo maxsize="260%" minsize="260%">(</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mi>I</mi><mo>⁢</mo><mrow><mo maxsize="160%" minsize="160%">(</mo><mrow><mi>λ</mi><mo>⁢</mo><mfrac><mi>L</mi><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac></mrow><mo maxsize="160%" minsize="160%">)</mo></mrow></mrow><mo maxsize="260%" minsize="260%">)</mo></mrow></mrow><mo>=</mo><mi>x</mi></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}\Bigg{(}\frac{1}{1+r}I\Big{(}\lambda\frac{L}{1+r}\Big{)%
+}\Bigg{)}=x.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">The solution can be easily computed and is given by</p>
+<div id="S3.SS1.Ex36" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex36.m1" class="ltx_Math" alttext="\lambda=\frac{1}{x}." display="block"><semantics><mrow><mrow><mi>λ</mi><mo>=</mo><mfrac><mn>1</mn><mi>x</mi></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\lambda=\frac{1}{x}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Substituting the last expression in equation (<a href="#S3.SS1.E10" title="In Example 3.1.7. ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.10</span></a>) we obtain</p>
+<div id="S3.SS1.E11" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.E11.m1" class="ltx_Math" alttext="W=x\frac{1+r}{L}." display="block"><semantics><mrow><mrow><mi>W</mi><mo>=</mo><mrow><mi>x</mi><mo>⁢</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mi>L</mi></mfrac></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">W=x\frac{1+r}{L}.</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.1.11)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">This is the optimal wealth in the general complete single period
+market model where logarithmic utility of the form <math id="S3.SS1.Thmtheorem7.p1.m5" class="ltx_Math" alttext="u(x)=\ln(x)" display="inline"><semantics><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>ln</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">u(x)=\ln(x)</annotation></semantics></math>
+is used. In order to compute the optimal trading strategy we would
+now have to find a hedging strategy for <math id="S3.SS1.Thmtheorem7.p1.m6" class="ltx_Math" alttext="W" display="inline"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>. This strategy depends
+on the specific model. We have discussed methods how to find
+replicating strategies in the previous sections.</p>
+</div>
+<div id="S3.SS1.Thmtheorem7.p2" class="ltx_para">
+<p class="ltx_p">Let us now compute the optimal expected utility, i.e. the expected utility of the optimal wealth we have just calculated. Plugging the expression for the optimal wealth <math id="S3.SS1.Thmtheorem7.p2.m1" class="ltx_Math" alttext="W" display="inline"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math> from (<a href="#S3.SS1.E11" title="In Example 3.1.7. ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.11</span></a>) into <math id="S3.SS1.Thmtheorem7.p2.m2" class="ltx_Math" alttext="u(x)" display="inline"><semantics><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">u(x)</annotation></semantics></math> gives</p>
+<div id="S3.SS1.Ex37" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex37.m1" class="ltx_Math" alttext="u(W)=\ln(x)+\ln\frac{1+r}{L}." display="block"><semantics><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>ln</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>ln</mi><mo lspace="0.167em">⁡</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mi>L</mi></mfrac></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">u(W)=\ln(x)+\ln\frac{1+r}{L}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Computing the expectation yields</p>
+<div id="S3.SS1.Ex38" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex38.m1" class="ltx_Math" alttext="\mathbb{E}(u(W))=\ln(x)+\mathbb{E}\left(\ln\frac{1+r}{L}\right)." display="block"><semantics><mrow><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>ln</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>ln</mi><mo lspace="0.167em">⁡</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mi>L</mi></mfrac></mrow><mo>)</mo></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}(u(W))=\ln(x)+\mathbb{E}\left(\ln\frac{1+r}{L}\right).</annotation></semantics></math></span>
+</div>
+</div>
+</div>
+<div id="p6" class="ltx_para">
+<p class="ltx_p">Let us now consider the optimal portfolio problem for a market model
+which is <span class="ltx_text ltx_font_bold">incomplete</span>. The crucial difference to the
+previous case where we studied a complete model is that one has to
+be more careful when defining the set of attainable wealths. In a
+complete market model every contingent claim is attainable and in
+defining the set of attainable wealths one has only to take the
+initial investment into account. Doing the same thing in an
+incomplete market it might be that the optimal wealth computed is
+not attainable at all. The remark concluding Definition
+<a href="#S3.SS1.Thmtheorem6" title="Definition 3.1.6. ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.6</span></a> does not hold in the incomplete market case. We have
+therefore to modify Definition <a href="#S3.SS1.Thmtheorem6" title="Definition 3.1.6. ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.6</span></a> in the way that
+<math id="p6.m1" class="ltx_Math" alttext="\mathbb{W}_{x}" display="inline"><semantics><msub><mi>𝕎</mi><mi>x</mi></msub><annotation encoding="application/x-tex">\mathbb{W}_{x}</annotation></semantics></math> only contains wealths which are indeed attainable by
+trading strategies, which start with an initial investment of <math id="p6.m2" class="ltx_Math" alttext="x" display="inline"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.
+We know from Proposition <a href="Pt4.html#S1.SS2.Thmtheorem25" title="Proposition 1.2.25. ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.25</span></a> that a contingent claim <math id="p6.m3" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+in a possibly incomplete market model is attainable if and only if
+the value of <math id="p6.m4" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}(\frac{1}{1+r}X)" display="inline"><semantics><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>⁢</mo><mi>X</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}(\frac{1}{1+r}X)</annotation></semantics></math> is the same for
+all <math id="p6.m5" class="ltx_Math" alttext="\mathbb{Q}\in\mathbb{M}" display="inline"><semantics><mrow><mi>ℚ</mi><mo>∈</mo><mi>𝕄</mi></mrow><annotation encoding="application/x-tex">\mathbb{Q}\in\mathbb{M}</annotation></semantics></math>. The natural generalization of
+Definition <a href="#S3.SS1.Thmtheorem6" title="Definition 3.1.6. ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.6</span></a> for the case of an incomplete single
+period market model is therefore:</p>
+</div>
+<div id="S3.SS1.Thmtheorem8" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 3.1.8</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS1.Thmtheorem8.p1" class="ltx_para">
+<p class="ltx_p">We define the set of attainable wealths from
+initial investment <math id="S3.SS1.Thmtheorem8.p1.m1" class="ltx_Math" alttext="x&gt;0" display="inline"><semantics><mrow><mi>x</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x&gt;0</annotation></semantics></math> in a possibly incomplete market model by</p>
+<div id="S3.SS1.Ex39" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex39.m1" class="ltx_math_unparsed" alttext="\boxed{\mathbb{W}_{x}:=\left\{W\in\mathbb{R}^{k}\middle|\mathbb{E}_{\mathbb{Q}%
+}\left(\frac{1}{1+r}W\right)=x\mbox{ for
+all }\mathbb{Q}\in\mathbb{M}\right\}.}" display="block"><semantics><menclose notation="box"><mrow><msub><mi>𝕎</mi><mi>x</mi></msub><mo lspace="0.278em" rspace="0.278em">:=</mo><mrow><mo>{</mo><mi>W</mi><mo>∈</mo><msup><mi>ℝ</mi><mi>k</mi></msup><mo lspace="0em" rspace="0em" stretchy="true">|</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mi>x</mi><mtext> for
+all </mtext><mi>ℚ</mi><mo>∈</mo><mi>𝕄</mi><mo>}</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{W}_{x}:=\left\{W\in\mathbb{R}^{k}\middle|\mathbb{E}_{\mathbb{Q}%
+}\left(\frac{1}{1+r}W\right)=x\mbox{ for
+all }\mathbb{Q}\in\mathbb{M}\right\}.}</annotation></semantics></math></span>
+</div>
+</div>
+</div>
+<div id="p7" class="ltx_para">
+<p class="ltx_p">The first step in the optimal portfolio problem is then formally the
+same as the first step in the complete market case:</p>
+</div>
+<div id="p8" class="ltx_para">
+<div id="S3.SS1.Ex40" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex40.m1" class="ltx_Math" alttext="\boxed{\begin{split}\mbox{maximise }&amp;&amp;\mathbb{E}(u(W))\\
+\mbox{subject to }&amp;&amp;W\in\mathbb{W}_{x}.\end{split}}" display="block"><semantics><menclose notation="box"><mtable columnspacing="0pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_right" columnalign="right"><mtext>maximise </mtext></mtd><mtd></mtd><mtd class="ltx_align_right" columnalign="right"><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mtd></mtr><mtr><mtd class="ltx_align_right" columnalign="right"><mtext>subject to </mtext></mtd><mtd></mtd><mtd class="ltx_align_right" columnalign="right"><mrow><mrow><mi>W</mi><mo>∈</mo><msub><mi>𝕎</mi><mi>x</mi></msub></mrow><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable></menclose><annotation encoding="application/x-tex">\boxed{\begin{split}\mbox{maximise }&amp;&amp;\mathbb{E}(u(W))\\
+\mbox{subject to }&amp;&amp;W\in\mathbb{W}_{x}.\end{split}}</annotation></semantics></math></span>
+</div>
+</div>
+<div id="p9" class="ltx_para">
+<p class="ltx_p">The real problem lies here in the set of constraints
+determining the set <math id="p9.m1" class="ltx_Math" alttext="\mathbb{W}_{x}" display="inline"><semantics><msub><mi>𝕎</mi><mi>x</mi></msub><annotation encoding="application/x-tex">\mathbb{W}_{x}</annotation></semantics></math>. We already know that in
+general in an incomplete market model there exists an infinite
+number of risk neutral measures leading to an infinite number of
+constraints. The Lagrange multiplier method which we used to solve
+the optimal portfolio problem before works only for a finite number
+of constraints. Therefore we have to reduce the number of
+constraints to a finite number. This is possible as the following
+lemma shows.</p>
+</div>
+<div id="S3.SS1.Thmtheorem9" class="ltx_theorem ltx_theorem_lemma">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Lemma 3.1.9</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS1.Thmtheorem9.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Consider a general single period, possibly
+incomplete, market model. Then there exist finitely many probability
+measures <math id="S3.SS1.Thmtheorem9.p1.m1" class="ltx_Math" alttext="\mathbb{Q}_{i}\in\overline{\mathbb{M}}" display="inline"><semantics><mrow><msub><mi>ℚ</mi><mi>i</mi></msub><mo>∈</mo><mover accent="true"><mi>𝕄</mi><mo>¯</mo></mover></mrow><annotation encoding="application/x-tex">\mathbb{Q}_{i}\in\overline{\mathbb{M}}</annotation></semantics></math>, <math id="S3.SS1.Thmtheorem9.p1.m2" class="ltx_Math" alttext="i=1,...,l" display="inline"><semantics><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>l</mi></mrow></mrow><annotation encoding="application/x-tex">i=1,...,l</annotation></semantics></math> such
+that the space <math id="S3.SS1.Thmtheorem9.p1.m3" class="ltx_Math" alttext="\mathbb{W}_{x}" display="inline"><semantics><msub><mi>𝕎</mi><mi>x</mi></msub><annotation encoding="application/x-tex">\mathbb{W}_{x}</annotation></semantics></math> from Definition <a href="#S3.SS1.Thmtheorem8" title="Definition 3.1.8. ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.8</span></a> is
+given by</span></p>
+<div id="S3.SS1.Ex41" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex41.m1" class="ltx_math_unparsed" alttext="\boxed{\mathbb{W}_{x}:=\left\{W\in\mathbb{R}^{k}\middle|\mathbb{E}_{\mathbb{Q}%
+_{i}}\left(\frac{1}{1+r}W\right)=x\mbox{
+for all }i=1,...,l\right\}.}" display="block"><semantics><menclose notation="box"><mrow><msub><mi>𝕎</mi><mi>x</mi></msub><mo lspace="0.278em" rspace="0.278em">:=</mo><mrow><mo>{</mo><mi>W</mi><mo>∈</mo><msup><mi>ℝ</mi><mi>k</mi></msup><mo lspace="0em" rspace="0em" stretchy="true">|</mo><msub><mi>𝔼</mi><msub><mi>ℚ</mi><mi>i</mi></msub></msub><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mi>x</mi><mtext class="ltx_mathvariant_italic"> for all </mtext><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>l</mi><mo>}</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{W}_{x}:=\left\{W\in\mathbb{R}^{k}\middle|\mathbb{E}_{\mathbb{Q}%
+_{i}}\left(\frac{1}{1+r}W\right)=x\mbox{
+for all }i=1,...,l\right\}.}</annotation></semantics></math></span>
+</div>
+</div>
+</div>
+<div id="p10" class="ltx_para">
+<p class="ltx_p">Notice a mysterious bar over <math id="p10.m1" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> in the statement of the
+lemma. It stands for the closure of <math id="p10.m2" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math>, i.e. the set
+<math id="p10.m3" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> together with its boundary. If we characterise
+<math id="p10.m4" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> by a system of equalities and inequalities, as we can
+always do, all the inequalities are strict. They are basically
+derived from the condition that the probability of each <math id="p10.m5" class="ltx_Math" alttext="\omega" display="inline"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
+must be greater than <math id="p10.m6" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math> and smaller than <math id="p10.m7" class="ltx_Math" alttext="1" display="inline"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>. Now, we obtain
+<math id="p10.m8" class="ltx_Math" alttext="\overline{\mathbb{M}}" display="inline"><semantics><mover accent="true"><mi>𝕄</mi><mo>¯</mo></mover><annotation encoding="application/x-tex">\overline{\mathbb{M}}</annotation></semantics></math> by changing all the strict inequalities <math id="p10.m9" class="ltx_Math" alttext="&gt;" display="inline"><semantics><mo>&gt;</mo><annotation encoding="application/x-tex">&gt;</annotation></semantics></math>
+and <math id="p10.m10" class="ltx_Math" alttext="&lt;" display="inline"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math> to <math id="p10.m11" class="ltx_Math" alttext="\geq" display="inline"><semantics><mo>≥</mo><annotation encoding="application/x-tex">\geq</annotation></semantics></math> and <math id="p10.m12" class="ltx_Math" alttext="\leq" display="inline"><semantics><mo>≤</mo><annotation encoding="application/x-tex">\leq</annotation></semantics></math>.</p>
+</div>
+<div id="p11" class="ltx_para">
+<p class="ltx_p">We omit the proof of this lemma. The main reason why this lemma
+holds is that the space <math id="p11.m1" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> can be expressed as the
+intersection of the finite dimensional vectorspace <math id="p11.m2" class="ltx_Math" alttext="\mathbb{W}^{\bot}" display="inline"><semantics><msup><mi>𝕎</mi><mo>⊥</mo></msup><annotation encoding="application/x-tex">\mathbb{W}^{\bot}</annotation></semantics></math>
+and the set <math id="p11.m3" class="ltx_Math" alttext="\mathcal{P}^{+}" display="inline"><semantics><msup><mi class="ltx_font_mathcaligraphic">𝒫</mi><mo>+</mo></msup><annotation encoding="application/x-tex">\mathcal{P}^{+}</annotation></semantics></math> and can therefore be written as a convex
+combination of a finite number of fixed risk neutral measures.</p>
+</div>
+<div id="p12" class="ltx_para">
+<p class="ltx_p">The optimal portfolio problem above then translates into the problem</p>
+</div>
+<div id="p13" class="ltx_para">
+<div id="S3.SS1.Ex42" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex42.m1" class="ltx_Math" alttext="\boxed{\begin{split}\mbox{maximise }&amp;&amp;\mathbb{E}(u(W))\\
+\mbox{subject to }&amp;&amp;\mathbb{E}_{\mathbb{Q}_{i}}\left(\frac{W}{1+r}\right)=x,i=%
+1,...,l.\end{split}}" display="block"><semantics><menclose notation="box"><mtable columnspacing="0pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_right" columnalign="right"><mtext>maximise </mtext></mtd><mtd></mtd><mtd class="ltx_align_right" columnalign="right"><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mtd></mtr><mtr><mtd class="ltx_align_right" columnalign="right"><mtext>subject to </mtext></mtd><mtd></mtd><mtd class="ltx_align_right" columnalign="right"><mrow><mrow><mrow><mrow><msub><mi>𝔼</mi><msub><mi>ℚ</mi><mi>i</mi></msub></msub><mo>⁢</mo><mrow><mo>(</mo><mfrac><mi>W</mi><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>)</mo></mrow></mrow><mo>=</mo><mi>x</mi></mrow><mo>,</mo><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>l</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable></menclose><annotation encoding="application/x-tex">\boxed{\begin{split}\mbox{maximise }&amp;&amp;\mathbb{E}(u(W))\\
+\mbox{subject to }&amp;&amp;\mathbb{E}_{\mathbb{Q}_{i}}\left(\frac{W}{1+r}\right)=x,i=%
+1,...,l.\end{split}}</annotation></semantics></math></span>
+</div>
+</div>
+<div id="p14" class="ltx_para">
+<p class="ltx_p">This problem is a constrained optimisation problem with a
+finite number of constraints and can therefore be solved by the
+Lagrange multiplier method in the same way as before. Defining the
+Lagrange function <math id="p14.m1" class="ltx_Math" alttext="\mathcal{L}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">ℒ</mi><annotation encoding="application/x-tex">\mathcal{L}</annotation></semantics></math> via</p>
+<div id="S3.SS1.Ex43" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex43.m1" class="ltx_Math" alttext="\mathcal{L}(W,\lambda)=\mathbb{E}(u(W))-\sum_{i=1}^{l}\lambda_{i}\left(\mathbb%
+{E}\left(\frac{L_{i}W}{1+r}\right)-x\right)" display="block"><semantics><mrow><mrow><mi class="ltx_font_mathcaligraphic">ℒ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo>,</mo><mi>λ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo rspace="0.055em">−</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>l</mi></munderover><mrow><msub><mi>λ</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo>(</mo><mfrac><mrow><msub><mi>L</mi><mi>i</mi></msub><mo>⁢</mo><mi>W</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>)</mo></mrow></mrow><mo>−</mo><mi>x</mi></mrow><mo>)</mo></mrow></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">\mathcal{L}(W,\lambda)=\mathbb{E}(u(W))-\sum_{i=1}^{l}\lambda_{i}\left(\mathbb%
+{E}\left(\frac{L_{i}W}{1+r}\right)-x\right)</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">with <math id="p14.m2" class="ltx_Math" alttext="L_{i}(\omega)=\frac{\mathbb{Q}_{i}(\omega)}{\mathbb{P}(\omega)}" display="inline"><semantics><mrow><mrow><msub><mi>L</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><msub><mi>ℚ</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">L_{i}(\omega)=\frac{\mathbb{Q}_{i}(\omega)}{\mathbb{P}(\omega)}</annotation></semantics></math>
+and <math id="p14.m3" class="ltx_Math" alttext="\lambda=(\lambda_{1},...,\lambda_{l})^{T}" display="inline"><semantics><mrow><mi>λ</mi><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>λ</mi><mi>l</mi></msub><mo stretchy="false">)</mo></mrow><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\lambda=(\lambda_{1},...,\lambda_{l})^{T}</annotation></semantics></math> we obtain as the solution
+of the first step in the optimal portfolio problem</p>
+<div id="S3.SS1.Ex44" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex44.m1" class="ltx_math_unparsed" alttext="\boxed{W(\omega)=I\left(\sum_{i=1}^{l}\lambda_{i}\frac{L_{i}(\omega)}{1+r}%
+\right).}" display="block"><semantics><menclose notation="box"><mrow><mi>W</mi><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>I</mi><mrow><mo>(</mo><munderover><mo lspace="0em" movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>l</mi></munderover><msub><mi>λ</mi><mi>i</mi></msub><mfrac><mrow><msub><mi>L</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{W(\omega)=I\left(\sum_{i=1}^{l}\lambda_{i}\frac{L_{i}(\omega)}{1+r}%
+\right).}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">To obtain the unknown Lagrange multiplier one now has to solve the
+<math id="p14.m4" class="ltx_Math" alttext="l" display="inline"><semantics><mi>l</mi><annotation encoding="application/x-tex">l</annotation></semantics></math> equations</p>
+<div id="S3.SS1.Ex45" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS1.Ex45.m1" class="ltx_math_unparsed" alttext="\boxed{\mathbb{E}\left(L_{i}I\left(\frac{\lambda_{1}L_{1}+...+\lambda_{l}L_{l}%
+}{1+r}\right)\right)=(1+r)x,\quad i=1,\ldots,l.}" display="block"><semantics><menclose notation="box"><mrow><mi>𝔼</mi><mrow><mo>(</mo><msub><mi>L</mi><mi>i</mi></msub><mi>I</mi><mrow><mo>(</mo><mfrac><mrow><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>L</mi><mn>1</mn></msub></mrow><mo>+</mo><mi mathvariant="normal">…</mi><mo>+</mo><mrow><msub><mi>λ</mi><mi>l</mi></msub><mo>⁢</mo><msub><mi>L</mi><mi>l</mi></msub></mrow></mrow><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><mo>)</mo></mrow><mo>)</mo></mrow><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo stretchy="false">)</mo></mrow><mi>x</mi><mo rspace="1.267em">,</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>l</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{E}\left(L_{i}I\left(\frac{\lambda_{1}L_{1}+...+\lambda_{l}L_{l}%
+}{1+r}\right)\right)=(1+r)x,\quad i=1,\ldots,l.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Solutions of this system of equations exist and are unique by the
+same reasons as in the complete case.</p>
+</div>
+<section id="S3.SS2" class="ltx_subsection normal">
+<div class="section level2">
+
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection header-section-number">3.2</span>. Returns</h2>
+
+<div id="S3.SS2.p1" class="ltx_para">
+<p class="ltx_p">This section acts as a introduction for the famous
+Capital Asset Pricing Model that will be discussed in the following
+section. We shall set up some notation regarding the returns of
+trading strategies and obtain a few key relations.</p>
+</div>
+<div id="S3.SS2.p2" class="ltx_para">
+<p class="ltx_p">As in the previous section we use the notation <math id="S3.SS2.p2.m1" class="ltx_Math" alttext="L" display="inline"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> for the
+<span class="ltx_text ltx_font_bold">state price density</span></p>
+<div id="S3.SS2.Ex1" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex1.m1" class="ltx_math_unparsed" alttext="\boxed{L(\omega)=\frac{\mathbb{Q}(\omega)}{\mathbb{P}(\omega)}.}" display="block"><semantics><menclose notation="box"><mrow><mi>L</mi><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>ℚ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{L(\omega)=\frac{\mathbb{Q}(\omega)}{\mathbb{P}(\omega)}.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Here <math id="S3.SS2.p2.m2" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> is a fixed risk neutral measure. It is not
+important whether the model is complete or not, but in the case of
+incompleteness we choose one risk neutral measure <math id="S3.SS2.p2.m3" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> for
+the rest of the section. The return of the <math id="S3.SS2.p2.m4" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th stock in our model
+is defined by the random variable</p>
+<div id="S3.SS2.Ex2" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex2.m1" class="ltx_math_unparsed" alttext="\boxed{R^{i}=\frac{S^{i}_{1}-S^{i}_{0}}{S^{i}_{0}},\qquad i=1,\ldots,n.}" display="block"><semantics><menclose notation="box"><mrow><msup><mi>R</mi><mi>i</mi></msup><mo>=</mo><mfrac><mrow><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><mo>−</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mfrac><mo rspace="2.357em">,</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{R^{i}=\frac{S^{i}_{1}-S^{i}_{0}}{S^{i}_{0}},\qquad i=1,\ldots,n.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">The return of the money market account is given by the deterministic
+interest rate, i.e.</p>
+<div id="S3.SS2.Ex3" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex3.m1" class="ltx_math_unparsed" alttext="\boxed{R^{0}=\frac{B_{1}-B_{0}}{B_{0}}=r.}" display="block"><semantics><menclose notation="box"><mrow><msup><mi>R</mi><mn>0</mn></msup><mo>=</mo><mfrac><mrow><msub><mi>B</mi><mn>1</mn></msub><mo>−</mo><msub><mi>B</mi><mn>0</mn></msub></mrow><msub><mi>B</mi><mn>0</mn></msub></mfrac><mo>=</mo><mi>r</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{R^{0}=\frac{B_{1}-B_{0}}{B_{0}}=r.}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Most computations in our single period market model can be done by
+using the returns instead of the actual stock prices. For example
+the gains process can be written as</p>
+<div id="S3.SS2.E1" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.E1.m1" class="ltx_Math" alttext="G(x,\phi)=\left(x-\sum_{i=1}^{n}\phi^{i}S^{i}_{0}\right)R^{0}+\sum_{i=1}^{n}%
+\phi^{i}S^{i}_{0}R^{i}." display="block"><semantics><mrow><mrow><mrow><mi>G</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo rspace="0.055em">−</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow></mrow></mrow><mo>)</mo></mrow><mo>⁢</mo><msup><mi>R</mi><mn>0</mn></msup></mrow><mo rspace="0.055em">+</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup><mo>⁢</mo><msup><mi>R</mi><mi>i</mi></msup></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">G(x,\phi)=\left(x-\sum_{i=1}^{n}\phi^{i}S^{i}_{0}\right)R^{0}+\sum_{i=1}^{n}%
+\phi^{i}S^{i}_{0}R^{i}.</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.2.1)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">The verification of the last equation is left as an exercise.</p>
+</div>
+<div id="S3.SS2.p3" class="ltx_para">
+<p class="ltx_p">To simplify the notation in the following we denote the investment
+<math id="S3.SS2.p3.m1" class="ltx_Math" alttext="x-\sum_{i=1}^{n}\phi^{i}S^{i}_{0}" display="inline"><semantics><mrow><mi>x</mi><mo rspace="0.055em">−</mo><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow></mrow></mrow><annotation encoding="application/x-tex">x-\sum_{i=1}^{n}\phi^{i}S^{i}_{0}</annotation></semantics></math> in the money market account
+implemented by the trading strategy <math id="S3.SS2.p3.m2" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math> with <math id="S3.SS2.p3.m3" class="ltx_Math" alttext="\phi^{0}" display="inline"><semantics><msup><mi>ϕ</mi><mn>0</mn></msup><annotation encoding="application/x-tex">\phi^{0}</annotation></semantics></math>. A
+trading strategy can then be represented by an <math id="S3.SS2.p3.m4" class="ltx_Math" alttext="n+1" display="inline"><semantics><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n+1</annotation></semantics></math>-dimensional
+vector <math id="S3.SS2.p3.m5" class="ltx_Math" alttext="\overline{\phi}=(\phi^{0},\phi^{1},...,\phi^{n})" display="inline"><semantics><mrow><mover accent="true"><mi>ϕ</mi><mo>¯</mo></mover><mo>=</mo><mrow><mo stretchy="false">(</mo><msup><mi>ϕ</mi><mn>0</mn></msup><mo>,</mo><msup><mi>ϕ</mi><mn>1</mn></msup><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msup><mi>ϕ</mi><mi>n</mi></msup><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\overline{\phi}=(\phi^{0},\phi^{1},...,\phi^{n})</annotation></semantics></math>. It follows
+from the second property in Definition <a href="Pt3.html#S1.SS2.Thmtheorem7" title="Definition 1.2.7. ‣ Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.7</span></a> of a risk
+neutral measure that</p>
+<div id="S3.SS2.Ex4" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex4.m1" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}(R^{i})=r,\qquad i=1,\ldots,n." display="block"><semantics><mrow><mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>r</mi></mrow><mo rspace="2.357em">,</mo><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}(R^{i})=r,\qquad i=1,\ldots,n.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">This can be seen as follows:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx37" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S3.SS2.Ex5"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS2.Ex5.m1" class="ltx_Math" alttext="\displaystyle\mathbb{E}_{\mathbb{Q}}(R^{i})=\mathbb{E}_{\mathbb{Q}}\bigg{(}%
+\frac{S^{i}_{1}-S^{i}_{0}}{S^{i}_{0}}\bigg{)}=\frac{\mathbb{E}_{\mathbb{Q}}(S^%
+{i}_{1})-S^{i}_{0}}{S^{i}_{0}}=\frac{S^{i}_{0}(1+r)-S^{i}_{0}}{S^{i}_{0}}=%
+\frac{rS^{i}_{0}}{S^{i}_{0}}=r." display="inline"><semantics><mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo maxsize="210%" minsize="210%">(</mo><mstyle displaystyle="true"><mfrac><mrow><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><mo>−</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mfrac></mstyle><mo maxsize="210%" minsize="210%">)</mo></mrow></mrow><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msubsup><mi>S</mi><mn>1</mn><mi>i</mi></msubsup><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>r</mi><mo>⁢</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mfrac></mstyle><mo>=</mo><mi>r</mi></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{E}_{\mathbb{Q}}(R^{i})=\mathbb{E}_{\mathbb{Q}}\bigg{(}%
+\frac{S^{i}_{1}-S^{i}_{0}}{S^{i}_{0}}\bigg{)}=\frac{\mathbb{E}_{\mathbb{Q}}(S^%
+{i}_{1})-S^{i}_{0}}{S^{i}_{0}}=\frac{S^{i}_{0}(1+r)-S^{i}_{0}}{S^{i}_{0}}=%
+\frac{rS^{i}_{0}}{S^{i}_{0}}=r.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">Here we used the fact that <math id="S3.SS2.p3.m6" class="ltx_Math" alttext="S^{i}_{0}" display="inline"><semantics><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup><annotation encoding="application/x-tex">S^{i}_{0}</annotation></semantics></math> is a number (not a random
+variable).</p>
+</div>
+<div id="S3.SS2.p4" class="ltx_para">
+<p class="ltx_p">We denote the mean return of the <math id="S3.SS2.p4.m1" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th stock by</p>
+<div id="S3.SS2.Ex6" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex6.m1" class="ltx_Math" alttext="\overline{R}^{i}=\mathbb{E}(R^{i})." display="block"><semantics><mrow><mrow><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mi>i</mi></msup><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\overline{R}^{i}=\mathbb{E}(R^{i}).</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Let us now consider the covariance of the returns with the state
+price density. We have</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx38" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S3.SS2.Ex9">
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS2.Ex7.m1" class="ltx_Math" alttext="\displaystyle\operatorname{Cov}(R^{i},L)" display="inline"><semantics><mrow><mi>Cov</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo>,</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Cov}(R^{i},L)</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS2.Ex7.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS2.Ex7.m3" class="ltx_Math" alttext="\displaystyle\mathbb{E}(R^{i}L)-\mathbb{E}(R^{i})\mathbb{E}(L)" display="inline"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi>R</mi><mi>i</mi></msup><mo>⁢</mo><mi>L</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{E}(R^{i}L)-\mathbb{E}(R^{i})\mathbb{E}(L)</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS2.Ex8.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS2.Ex8.m2" class="ltx_Math" alttext="\displaystyle\mathbb{E}_{\mathbb{Q}}(R^{i})-\mathbb{E}(R^{i})" display="inline"><semantics><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{E}_{\mathbb{Q}}(R^{i})-\mathbb{E}(R^{i})</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+<tr class="ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S3.SS2.Ex9.m1" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS2.Ex9.m2" class="ltx_Math" alttext="\displaystyle r-\overline{R}^{i}." display="inline"><semantics><mrow><mrow><mi>r</mi><mo>−</mo><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mi>i</mi></msup></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle r-\overline{R}^{i}.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="ltx_p">The difference <math id="S3.SS2.p4.m2" class="ltx_Math" alttext="\overline{R}^{i}-r" display="inline"><semantics><mrow><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mi>i</mi></msup><mo>−</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">\overline{R}^{i}-r</annotation></semantics></math> is called the <span class="ltx_text ltx_font_bold">risk
+premium</span>. Normally this is positive, because investors insist that
+the expected returns of the risky securities are higher than the
+returns of riskless securities such as money market accounts. Let us
+now consider the return of a portfolio, or more precisely the return
+induced by the value of a trading strategy:</p>
+<div id="S3.SS2.Ex10" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex10.m1" class="ltx_Math" alttext="R(x,\phi)=\frac{V_{1}(x,\phi)-V_{0}(x,\phi)}{V_{0}(x,\phi)}." display="block"><semantics><mrow><mrow><mrow><mi>R</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">R(x,\phi)=\frac{V_{1}(x,\phi)-V_{0}(x,\phi)}{V_{0}(x,\phi)}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">In the following we will omit the dependence of <math id="S3.SS2.p4.m3" class="ltx_Math" alttext="R(x,\phi)" display="inline"><semantics><mrow><mi>R</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">R(x,\phi)</annotation></semantics></math> and
+<math id="S3.SS2.p4.m4" class="ltx_Math" alttext="V(x,\phi)" display="inline"><semantics><mrow><mi>V</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V(x,\phi)</annotation></semantics></math> on the trading strategy <math id="S3.SS2.p4.m5" class="ltx_Math" alttext="(x,\phi)" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,\phi)</annotation></semantics></math> and just write <math id="S3.SS2.p4.m6" class="ltx_Math" alttext="R" display="inline"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+and <math id="S3.SS2.p4.m7" class="ltx_Math" alttext="V" display="inline"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>. Using the definition of <math id="S3.SS2.p4.m8" class="ltx_Math" alttext="V_{1}" display="inline"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_{1}</annotation></semantics></math> and (<a href="#S3.SS2.E1" title="In 3.2. Returns ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.2.1</span></a>) we
+obtain</p>
+<div id="S3.SS2.Ex11" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex11.m1" class="ltx_Math" alttext="R=\frac{\phi^{0}}{V_{0}}r+\sum_{i=1}^{n}\frac{\phi^{i}S^{i}_{0}}{V_{0}}R^{i}." display="block"><semantics><mrow><mrow><mi>R</mi><mo>=</mo><mrow><mrow><mfrac><msup><mi>ϕ</mi><mn>0</mn></msup><msub><mi>V</mi><mn>0</mn></msub></mfrac><mo>⁢</mo><mi>r</mi></mrow><mo rspace="0.055em">+</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mfrac><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow><msub><mi>V</mi><mn>0</mn></msub></mfrac><mo>⁢</mo><msup><mi>R</mi><mi>i</mi></msup></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">R=\frac{\phi^{0}}{V_{0}}r+\sum_{i=1}^{n}\frac{\phi^{i}S^{i}_{0}}{V_{0}}R^{i}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">It follows from the properties of the covariance and the previous
+discussion on the <math id="S3.SS2.p4.m9" class="ltx_Math" alttext="R^{i}" display="inline"><semantics><msup><mi>R</mi><mi>i</mi></msup><annotation encoding="application/x-tex">R^{i}</annotation></semantics></math> that</p>
+<div id="S3.SS2.E2" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.E2.m1" class="ltx_Math" alttext="\overline{R}-r=-\operatorname{Cov}(R,L)" display="block"><semantics><mrow><mrow><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mo>−</mo><mi>r</mi></mrow><mo>=</mo><mrow><mo rspace="0.167em">−</mo><mrow><mi>Cov</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo>,</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">\overline{R}-r=-\operatorname{Cov}(R,L)</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.2.2)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">where <math id="S3.SS2.p4.m10" class="ltx_Math" alttext="\overline{R}=\mathbb{E}(R)" display="inline"><semantics><mrow><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\overline{R}=\mathbb{E}(R)</annotation></semantics></math> is the expected return of the
+portfolio. We leave the details as an exercise.</p>
+</div>
+<div id="S3.SS2.p5" class="ltx_para">
+<p class="ltx_p">Let us now fix two scalars <math id="S3.SS2.p5.m1" class="ltx_Math" alttext="a" display="inline"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> and <math id="S3.SS2.p5.m2" class="ltx_Math" alttext="b" display="inline"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math> with <math id="S3.SS2.p5.m3" class="ltx_Math" alttext="b\neq 0" display="inline"><semantics><mrow><mi>b</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b\neq 0</annotation></semantics></math> and assume
+that the contingent claim <math id="S3.SS2.p5.m4" class="ltx_Math" alttext="a+bL" display="inline"><semantics><mrow><mi>a</mi><mo>+</mo><mrow><mi>b</mi><mo>⁢</mo><mi>L</mi></mrow></mrow><annotation encoding="application/x-tex">a+bL</annotation></semantics></math> is attainable. This might seem like a very arbitrary assumption, but we will see later on in this section that it holds for so called minimum-variance portfolios. In this case there
+exists a trading strategy <math id="S3.SS2.p5.m5" class="ltx_Math" alttext="(x^{\prime},\phi^{\prime})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mo>′</mo></msup><mo>,</mo><msup><mi>ϕ</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x^{\prime},\phi^{\prime})</annotation></semantics></math> such that the corresponding value
+process <math id="S3.SS2.p5.m6" class="ltx_Math" alttext="V_{t}^{\prime}=V_{t}(x^{\prime},\phi^{\prime})" display="inline"><semantics><mrow><msubsup><mi>V</mi><mi>t</mi><mo>′</mo></msubsup><mo>=</mo><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mo>′</mo></msup><mo>,</mo><msup><mi>ϕ</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">V_{t}^{\prime}=V_{t}(x^{\prime},\phi^{\prime})</annotation></semantics></math> for <math id="S3.SS2.p5.m7" class="ltx_Math" alttext="t=0,1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mn>1</mn></mrow></mrow><annotation encoding="application/x-tex">t=0,1</annotation></semantics></math> satisfies</p>
+<div id="S3.SS2.Ex12" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex12.m1" class="ltx_Math" alttext="V_{1}^{\prime}=a+bL." display="block"><semantics><mrow><mrow><msubsup><mi>V</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mrow><mi>a</mi><mo>+</mo><mrow><mi>b</mi><mo>⁢</mo><mi>L</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">V_{1}^{\prime}=a+bL.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Denoting with <math id="S3.SS2.p5.m8" class="ltx_Math" alttext="R^{\prime}" display="inline"><semantics><msup><mi>R</mi><mo>′</mo></msup><annotation encoding="application/x-tex">R^{\prime}</annotation></semantics></math> the return corresponding to <math id="S3.SS2.p5.m9" class="ltx_Math" alttext="V^{\prime}" display="inline"><semantics><msup><mi>V</mi><mo>′</mo></msup><annotation encoding="application/x-tex">V^{\prime}</annotation></semantics></math> we
+obtain</p>
+<div id="S3.SS2.Ex13" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex13.m1" class="ltx_Math" alttext="V_{0}^{\prime}(1+R^{\prime})=a+bL." display="block"><semantics><mrow><mrow><mrow><msubsup><mi>V</mi><mn>0</mn><mo>′</mo></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><msup><mi>R</mi><mo>′</mo></msup></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>a</mi><mo>+</mo><mrow><mi>b</mi><mo>⁢</mo><mi>L</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">V_{0}^{\prime}(1+R^{\prime})=a+bL.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Solving this equation for <math id="S3.SS2.p5.m10" class="ltx_Math" alttext="L" display="inline"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> gives</p>
+<div id="S3.SS2.Ex14" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex14.m1" class="ltx_Math" alttext="L=\frac{V_{0}^{\prime}(1+R^{\prime})-a}{b}." display="block"><semantics><mrow><mrow><mi>L</mi><mo>=</mo><mfrac><mrow><mrow><msubsup><mi>V</mi><mn>0</mn><mo>′</mo></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><msup><mi>R</mi><mo>′</mo></msup></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mi>a</mi></mrow><mi>b</mi></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">L=\frac{V_{0}^{\prime}(1+R^{\prime})-a}{b}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Using this form, we get from the linearity of covariance that</p>
+<div id="S3.SS2.E3" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.E3.m1" class="ltx_Math" alttext="\operatorname{Cov}(R,L)=\frac{V_{0}^{\prime}}{b}\operatorname{Cov}(R,R^{\prime%
+})." display="block"><semantics><mrow><mrow><mrow><mi>Cov</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo>,</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><msubsup><mi>V</mi><mn>0</mn><mo>′</mo></msubsup><mi>b</mi></mfrac><mo lspace="0.167em">⁢</mo><mrow><mi>Cov</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo>,</mo><msup><mi>R</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\operatorname{Cov}(R,L)=\frac{V_{0}^{\prime}}{b}\operatorname{Cov}(R,R^{\prime%
+}).</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.2.3)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">Here <math id="S3.SS2.p5.m11" class="ltx_Math" alttext="R" display="inline"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> still corresponds to an arbitrary trading strategy. We can
+therefore rewrite equation (<a href="#S3.SS2.E2" title="In 3.2. Returns ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.2.2</span></a>) as</p>
+<div id="S3.SS2.Ex15" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex15.m1" class="ltx_Math" alttext="\overline{R}-r=-\frac{V_{0}^{\prime}}{b}\operatorname{Cov}(R,R^{\prime})." display="block"><semantics><mrow><mrow><mrow><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mo>−</mo><mi>r</mi></mrow><mo>=</mo><mrow><mo>−</mo><mrow><mfrac><msubsup><mi>V</mi><mn>0</mn><mo>′</mo></msubsup><mi>b</mi></mfrac><mo lspace="0.167em">⁢</mo><mrow><mi>Cov</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo>,</mo><msup><mi>R</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\overline{R}-r=-\frac{V_{0}^{\prime}}{b}\operatorname{Cov}(R,R^{\prime}).</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">For the particular case of <math id="S3.SS2.p5.m12" class="ltx_Math" alttext="R=R^{\prime}" display="inline"><semantics><mrow><mi>R</mi><mo>=</mo><msup><mi>R</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">R=R^{\prime}</annotation></semantics></math> we obtain</p>
+<div id="S3.SS2.Ex16" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.Ex16.m1" class="ltx_Math" alttext="\overline{R}^{\prime}-r=-\frac{V_{0}^{\prime}}{b}\operatorname{Var}(R^{\prime})." display="block"><semantics><mrow><mrow><mrow><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>−</mo><mi>r</mi></mrow><mo>=</mo><mrow><mo>−</mo><mrow><mfrac><msubsup><mi>V</mi><mn>0</mn><mo>′</mo></msubsup><mi>b</mi></mfrac><mo lspace="0.167em">⁢</mo><mrow><mi>Var</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\overline{R}^{\prime}-r=-\frac{V_{0}^{\prime}}{b}\operatorname{Var}(R^{\prime}).</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">We can now use the last equality in order to substitute for
+<math id="S3.SS2.p5.m13" class="ltx_Math" alttext="\frac{V_{0}^{\prime}}{b}" display="inline"><semantics><mfrac><msubsup><mi>V</mi><mn>0</mn><mo>′</mo></msubsup><mi>b</mi></mfrac><annotation encoding="application/x-tex">\frac{V_{0}^{\prime}}{b}</annotation></semantics></math> in (<a href="#S3.SS2.E3" title="In 3.2. Returns ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.2.3</span></a>), which gives</p>
+<div id="S3.SS2.E4" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS2.E4.m1" class="ltx_math_unparsed" alttext="\boxed{\overline{R}-r=\frac{\operatorname{Cov}(R,R^{\prime})}{\operatorname{%
+Var}(R^{\prime})}(\overline{R^{\prime}}-r).}" display="block"><semantics><menclose notation="box"><mrow><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mo>−</mo><mi>r</mi><mo>=</mo><mfrac><mrow><mi>Cov</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo>,</mo><msup><mi>R</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>Var</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mfrac><mrow><mo stretchy="false">(</mo><mover accent="true"><msup><mi>R</mi><mo>′</mo></msup><mo>¯</mo></mover><mo>−</mo><mi>r</mi><mo stretchy="false">)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\overline{R}-r=\frac{\operatorname{Cov}(R,R^{\prime})}{\operatorname{%
+Var}(R^{\prime})}(\overline{R^{\prime}}-r).}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(3.2.4)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">Formula (<a href="#S3.SS2.E4" title="In 3.2. Returns ‣ Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.2.4</span></a>) holds whenever <math id="S3.SS2.p5.m14" class="ltx_Math" alttext="R^{\prime}" display="inline"><semantics><msup><mi>R</mi><mo>′</mo></msup><annotation encoding="application/x-tex">R^{\prime}</annotation></semantics></math> is the return
+process of the contingent claim <math id="S3.SS2.p5.m15" class="ltx_Math" alttext="a+bL" display="inline"><semantics><mrow><mi>a</mi><mo>+</mo><mrow><mi>b</mi><mo>⁢</mo><mi>L</mi></mrow></mrow><annotation encoding="application/x-tex">a+bL</annotation></semantics></math> and the latter is attainable.
+We will later see the importance of this formula in connection with
+the Capital Asset Pricing Model (CAPM). The ratio
+<math id="S3.SS2.p5.m16" class="ltx_Math" alttext="\frac{\operatorname{Cov}(R,R^{\prime})}{\operatorname{Var}(R^{\prime})}" display="inline"><semantics><mfrac><mrow><mi>Cov</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo>,</mo><msup><mi>R</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>Var</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mfrac><annotation encoding="application/x-tex">\frac{\operatorname{Cov}(R,R^{\prime})}{\operatorname{Var}(R^{\prime})}</annotation></semantics></math> is sometimes called the
+<span class="ltx_text ltx_font_bold">beta</span> of the trading strategy corresponding to <math id="S3.SS2.p5.m17" class="ltx_Math" alttext="R" display="inline"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> with
+respect to the trading strategy corresponding to <math id="S3.SS2.p5.m18" class="ltx_Math" alttext="R^{\prime}" display="inline"><semantics><msup><mi>R</mi><mo>′</mo></msup><annotation encoding="application/x-tex">R^{\prime}</annotation></semantics></math>. The
+formula says, that the risk premium is proportional to its beta with
+respect to a linear transformation of the state price density.</p>
+</div>
+</div>
+</section>
+<section id="S3.SS3" class="ltx_subsection normal">
+<div class="section level2">
+
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection header-section-number">3.3</span>. Mean-Variance Analysis</h2>
+
+<div id="S3.SS3.p1" class="ltx_para">
+<p class="ltx_p">We now come to a central issue in single period market models, the so called Mean-Variance approach to portfolio analysis, which goes back mainly to Markowitz. Harry Max Markowitz (born August 24, 1927) was (passed away in summer 2023) an influential economist at the Rady School of Management at the University of California, San Diego. Formerly at the RAND Corporation, Markowitz won the Nobel Prize in 1990 while a professor of finance at Baruch College of the City University of New York. He is best known for his pioneering work in modern portfolio theory, studying the effects of asset risk, correlation and diversification on expected investment portfolio returns. The main idea of his results is that when agents are offered two financial assets having the same expected return they would choose the asset that has the lower variance , i.e. is less risky.</p>
+</div>
+<div id="S3.SS3.p2" class="ltx_para">
+<p class="ltx_p">A few paragraphs ago we have already written the portfolio return as a weighted sum of individual returns, namely we wrote</p>
+<div id="S3.SS3.Ex1" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS3.Ex1.m1" class="ltx_Math" alttext="R=\frac{\phi^{0}}{V_{0}}r+\sum_{i=1}^{n}\frac{\phi^{i}S^{i}_{0}}{V_{0}}R^{i}." display="block"><semantics><mrow><mrow><mi>R</mi><mo>=</mo><mrow><mrow><mfrac><msup><mi>ϕ</mi><mn>0</mn></msup><msub><mi>V</mi><mn>0</mn></msub></mfrac><mo>⁢</mo><mi>r</mi></mrow><mo rspace="0.055em">+</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mfrac><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msubsup><mi>S</mi><mn>0</mn><mi>i</mi></msubsup></mrow><msub><mi>V</mi><mn>0</mn></msub></mfrac><mo>⁢</mo><msup><mi>R</mi><mi>i</mi></msup></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">R=\frac{\phi^{0}}{V_{0}}r+\sum_{i=1}^{n}\frac{\phi^{i}S^{i}_{0}}{V_{0}}R^{i}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">To that end, we now give these weights names</p>
+<div id="S3.SS3.Ex2" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS3.Ex2.m1" class="ltx_Math" alttext="w_{0}=\frac{\phi^{0}}{V_{0}(x,\phi)}" display="block"><semantics><mrow><msub><mi>w</mi><mn>0</mn></msub><mo>=</mo><mfrac><msup><mi>ϕ</mi><mn>0</mn></msup><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">w_{0}=\frac{\phi^{0}}{V_{0}(x,\phi)}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">and</p>
+<div id="S3.SS3.Ex3" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS3.Ex3.m1" class="ltx_Math" alttext="w_{i}=\frac{\phi^{i}S_{0}}{V_{0}(x,\phi)},\quad i=1,\dots,n," display="block"><semantics><mrow><mrow><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msup><mi>ϕ</mi><mi>i</mi></msup><mo>⁢</mo><msub><mi>S</mi><mn>0</mn></msub></mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow><mo rspace="1.267em">,</mo><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">w_{i}=\frac{\phi^{i}S_{0}}{V_{0}(x,\phi)},\quad i=1,\dots,n,</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">which we call the <em class="ltx_emph ltx_font_italic">portfolio weights</em> or <em class="ltx_emph ltx_font_italic">portfolio fractions</em>. With these weights, a portfolio return can then be written as a sum of individual asset returns</p>
+<div id="S3.SS3.Ex4" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS3.Ex4.m1" class="ltx_Math" alttext="R=w_{0}r+\sum_{i=1}^{n}w_{i}R^{i}." display="block"><semantics><mrow><mrow><mi>R</mi><mo>=</mo><mrow><mrow><msub><mi>w</mi><mn>0</mn></msub><mo>⁢</mo><mi>r</mi></mrow><mo rspace="0.055em">+</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>⁢</mo><msup><mi>R</mi><mi>i</mi></msup></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">R=w_{0}r+\sum_{i=1}^{n}w_{i}R^{i}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Using this and what we have already learned before, we can restate some of the results we have already established in this new language.</p>
+</div>
+<div id="S3.SS3.Thmtheorem1" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 3.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS3.Thmtheorem1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let the portfolio weights <math id="S3.SS3.Thmtheorem1.p1.m1" class="ltx_Math" alttext="w_{0},\dots,w_{n}" display="inline"><semantics><mrow><msub><mi>w</mi><mn>0</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>w</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">w_{0},\dots,w_{n}</annotation></semantics></math> be defined as above. Then, the weights and corresponding portfolio satisfy the following properties:</span></p>
+<ul id="S3.I5" class="ltx_itemize">
+<li id="S3.I5.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S3.I5.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S3.I5.i1.p1.m1" class="ltx_Math" alttext="\sum_{i=0}^{n}w_{i}=1" display="inline"><semantics><mrow><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></msubsup><msub><mi>w</mi><mi>i</mi></msub></mrow><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sum_{i=0}^{n}w_{i}=1</annotation></semantics></math><span class="ltx_text ltx_font_italic">,</span></p>
+</div>
+</li>
+<li id="S3.I5.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S3.I5.i2.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">the stock </span><math id="S3.I5.i2.p1.m1" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math><span class="ltx_text ltx_font_italic"> is shorted if and only if </span><math id="S3.I5.i2.p1.m2" class="ltx_Math" alttext="w_{i}&lt;0" display="inline"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">w_{i}&lt;0</annotation></semantics></math><span class="ltx_text ltx_font_italic">,</span></p>
+</div>
+</li>
+<li id="S3.I5.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S3.I5.i3.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">there are no short-sales of stocks in the portfolio if </span><math id="S3.I5.i3.p1.m1" class="ltx_Math" alttext="w_{1}\geq 0,\dots,w_{n}\geq 0" display="inline"><semantics><mrow><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>≥</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi></mrow></mrow><mo>,</mo><mrow><msub><mi>w</mi><mi>n</mi></msub><mo>≥</mo><mn>0</mn></mrow></mrow><annotation encoding="application/x-tex">w_{1}\geq 0,\dots,w_{n}\geq 0</annotation></semantics></math><span class="ltx_text ltx_font_italic">, and</span></p>
+</div>
+</li>
+<li id="S3.I5.i4" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S3.I5.i4.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">there are no short-sales and no borrowing if </span><math id="S3.I5.i4.p1.m1" class="ltx_Math" alttext="w_{0}\geq 0,\dots,w_{n}\geq 0" display="inline"><semantics><mrow><mrow><msub><mi>w</mi><mn>0</mn></msub><mo>≥</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi></mrow></mrow><mo>,</mo><mrow><msub><mi>w</mi><mi>n</mi></msub><mo>≥</mo><mn>0</mn></mrow></mrow><annotation encoding="application/x-tex">w_{0}\geq 0,\dots,w_{n}\geq 0</annotation></semantics></math><span class="ltx_text ltx_font_italic">.</span></p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div id="S3.SS3.p3" class="ltx_para">
+<p class="ltx_p">We leave the simple proof of this proposition as an exercise and proceed to state some very simple properties of how a portfolio return relates to the individual asset returns.</p>
+</div>
+<div id="S3.SS3.Thmtheorem2" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 3.3.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS3.Thmtheorem2.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Consider a portfolio with weights <math id="S3.SS3.Thmtheorem2.p1.m1" class="ltx_Math" alttext="w_{0},\dots,w_{n}" display="inline"><semantics><mrow><msub><mi>w</mi><mn>0</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>w</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">w_{0},\dots,w_{n}</annotation></semantics></math> and returns <math id="S3.SS3.Thmtheorem2.p1.m2" class="ltx_Math" alttext="R^{0},R^{1},\dots,R^{n}" display="inline"><semantics><mrow><msup><mi>R</mi><mn>0</mn></msup><mo>,</mo><msup><mi>R</mi><mn>1</mn></msup><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msup><mi>R</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">R^{0},R^{1},\dots,R^{n}</annotation></semantics></math> where <math id="S3.SS3.Thmtheorem2.p1.m3" class="ltx_Math" alttext="R^{0}" display="inline"><semantics><msup><mi>R</mi><mn>0</mn></msup><annotation encoding="application/x-tex">R^{0}</annotation></semantics></math> is the risk-free rate <math id="S3.SS3.Thmtheorem2.p1.m4" class="ltx_Math" alttext="r" display="inline"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>. The portfolio return <math id="S3.SS3.Thmtheorem2.p1.m5" class="ltx_Math" alttext="R=\sum_{i=0}^{n}w_{i}R^{i}" display="inline"><semantics><mrow><mi>R</mi><mo rspace="0.111em">=</mo><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></msubsup><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>⁢</mo><msup><mi>R</mi><mi>i</mi></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">R=\sum_{i=0}^{n}w_{i}R^{i}</annotation></semantics></math> then has the following properties:</span></p>
+<ul id="S3.I6" class="ltx_itemize">
+<li id="S3.I6.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S3.I6.i1.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">the expected portfolio return is</span></p>
+<div id="S3.SS3.Ex5" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS3.Ex5.m1" class="ltx_Math" alttext="\bar{R}=\mathbb{E}(R)=\sum_{i=0}^{n}\mathbb{E}(R^{i})=\sum_{i=0}^{n}\bar{R}^{i}," display="block"><semantics><mrow><mrow><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow></mrow><mo rspace="0.111em">=</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></munderover><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="0.111em">=</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></munderover><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mi>i</mi></msup></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\bar{R}=\mathbb{E}(R)=\sum_{i=0}^{n}\mathbb{E}(R^{i})=\sum_{i=0}^{n}\bar{R}^{i},</annotation></semantics></math></span>
+</div>
+</div>
+</li>
+<li id="S3.I6.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S3.I6.i2.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">the variance of the portfolio return is</span></p>
+<div id="S3.SS3.Ex6" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS3.Ex6.m1" class="ltx_Math" alttext="\sigma^{2}=\operatorname{Var}(R)=\sum_{i,j=0}^{n}w_{i}w_{j}\sigma_{ij}," display="block"><semantics><mrow><mrow><msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo><mrow><mi>Var</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow></mrow><mo rspace="0.111em">=</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>0</mn></mrow><mi>n</mi></munderover><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>⁢</mo><msub><mi>w</mi><mi>j</mi></msub><mo>⁢</mo><msub><mi>σ</mi><mrow><mi>i</mi><mo>⁢</mo><mi>j</mi></mrow></msub></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\sigma^{2}=\operatorname{Var}(R)=\sum_{i,j=0}^{n}w_{i}w_{j}\sigma_{ij},</annotation></semantics></math></span>
+</div>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">where </span><math id="S3.I6.i2.p1.m1" class="ltx_Math" alttext="\sigma_{ij}=\operatorname{Cov}(R^{i},R^{j})" display="inline"><semantics><mrow><msub><mi>σ</mi><mrow><mi>i</mi><mo>⁢</mo><mi>j</mi></mrow></msub><mo>=</mo><mrow><mi>Cov</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><msup><mi>R</mi><mi>i</mi></msup><mo>,</mo><msup><mi>R</mi><mi>j</mi></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\sigma_{ij}=\operatorname{Cov}(R^{i},R^{j})</annotation></semantics></math><span class="ltx_text ltx_font_italic">, and</span></p>
+</div>
+</li>
+<li id="S3.I6.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S3.I6.i3.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">the standard deviation of the portfolio return is</span></p>
+<div id="S3.SS3.Ex7" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS3.Ex7.m1" class="ltx_Math" alttext="\sigma=\sqrt{\operatorname{Var}(R)}=\sqrt{\sum_{i,j=0}^{n}w_{i}w_{j}\sigma_{ij%
+}}." display="block"><semantics><mrow><mrow><mi>σ</mi><mo>=</mo><msqrt><mrow><mi>Var</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow></mrow></msqrt><mo>=</mo><msqrt><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>0</mn></mrow><mi>n</mi></munderover><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>⁢</mo><msub><mi>w</mi><mi>j</mi></msub><mo>⁢</mo><msub><mi>σ</mi><mrow><mi>i</mi><mo>⁢</mo><mi>j</mi></mrow></msub></mrow></mrow></msqrt></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\sigma=\sqrt{\operatorname{Var}(R)}=\sqrt{\sum_{i,j=0}^{n}w_{i}w_{j}\sigma_{ij%
+}}.</annotation></semantics></math></span>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div id="S3.SS3.p4" class="ltx_para">
+<p class="ltx_p">These properties follow directly from the linearity of expectation and the definition of variance and covariance and are left as an exercise. It is helpful to notice that since the return <math id="S3.SS3.p4.m1" class="ltx_Math" alttext="R^{0}" display="inline"><semantics><msup><mi>R</mi><mn>0</mn></msup><annotation encoding="application/x-tex">R^{0}</annotation></semantics></math> isn’t actually random, all of the covariances involving it are always equal to <math id="S3.SS3.p4.m2" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math>, that is <math id="S3.SS3.p4.m3" class="ltx_Math" alttext="\sigma_{0i}=\sigma_{i0}=0" display="inline"><semantics><mrow><msub><mi>σ</mi><mrow><mn>0</mn><mo>⁢</mo><mi>i</mi></mrow></msub><mo>=</mo><msub><mi>σ</mi><mrow><mi>i</mi><mo>⁢</mo><mn>0</mn></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\sigma_{0i}=\sigma_{i0}=0</annotation></semantics></math> for all <math id="S3.SS3.p4.m4" class="ltx_Math" alttext="i\in\{0,\dots,n\}" display="inline"><semantics><mrow><mi>i</mi><mo>∈</mo><mrow><mo stretchy="false">{</mo><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">i\in\{0,\dots,n\}</annotation></semantics></math>.</p>
+</div>
+<div id="S3.SS3.Thmtheorem3" class="ltx_theorem ltx_theorem_example">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 3.3.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S3.SS3.Thmtheorem3.p1" class="ltx_para">
+<p class="ltx_p">Suppose our portfolio consists of two assets with returns <math id="S3.SS3.Thmtheorem3.p1.m1" class="ltx_Math" alttext="\bar{R}^{1}=0.12" display="inline"><semantics><mrow><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mn>1</mn></msup><mo>=</mo><mn>0.12</mn></mrow><annotation encoding="application/x-tex">\bar{R}^{1}=0.12</annotation></semantics></math> and <math id="S3.SS3.Thmtheorem3.p1.m2" class="ltx_Math" alttext="\bar{R}^{2}=0.15" display="inline"><semantics><mrow><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mn>2</mn></msup><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">\bar{R}^{2}=0.15</annotation></semantics></math>, standard deviations <math id="S3.SS3.Thmtheorem3.p1.m3" class="ltx_Math" alttext="\sigma_{1}=0.20" display="inline"><semantics><mrow><msub><mi>σ</mi><mn>1</mn></msub><mo>=</mo><mn>0.20</mn></mrow><annotation encoding="application/x-tex">\sigma_{1}=0.20</annotation></semantics></math> and <math id="S3.SS3.Thmtheorem3.p1.m4" class="ltx_Math" alttext="\sigma_{2}=0.18" display="inline"><semantics><mrow><msub><mi>σ</mi><mn>2</mn></msub><mo>=</mo><mn>0.18</mn></mrow><annotation encoding="application/x-tex">\sigma_{2}=0.18</annotation></semantics></math> and covariance <math id="S3.SS3.Thmtheorem3.p1.m5" class="ltx_Math" alttext="\sigma_{12}=0.01" display="inline"><semantics><mrow><msub><mi>σ</mi><mn>12</mn></msub><mo>=</mo><mn>0.01</mn></mrow><annotation encoding="application/x-tex">\sigma_{12}=0.01</annotation></semantics></math>. The weights of the two assets in our portfolio are <math id="S3.SS3.Thmtheorem3.p1.m6" class="ltx_Math" alttext="w_{1}=0.25" display="inline"><semantics><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">w_{1}=0.25</annotation></semantics></math> and <math id="S3.SS3.Thmtheorem3.p1.m7" class="ltx_Math" alttext="w_{2}=0.75" display="inline"><semantics><mrow><msub><mi>w</mi><mn>2</mn></msub><mo>=</mo><mn>0.75</mn></mrow><annotation encoding="application/x-tex">w_{2}=0.75</annotation></semantics></math>. We can calculate that the expected return of this portfolio is then</p>
+<div id="S3.SS3.Ex8" class="ltx_equation ltx_eqn_div">
+<span><math id="S3.SS3.Ex8.m1" class="ltx_Math" alttext="\bar{R}=w_{1}\bar{R}^{1}+w_{2}\bar{R}^{2}=0.25\cdot 0.12+0.75\cdot 0.15=0.1425" display="block"><semantics><mrow><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mo>=</mo><mrow><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>⁢</mo><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mn>1</mn></msup></mrow><mo>+</mo><mrow><msub><mi>w</mi><mn>2</mn></msub><mo>⁢</mo><msup><mover accent="true"><mi>R</mi><mo>¯</mo></mover><mn>2</mn></msup></mrow></mrow><mo>=</mo><mrow><mrow><mn>0.25</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0.12</mn></mrow><mo>+</mo><mrow><mn>0.75</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0.15</mn></mrow></mrow><mo>=</mo><mn>0.1425</mn></mrow><annotation encoding="application/x-tex">\bar{R}=w_{1}\bar{R}^{1}+w_{2}\bar{R}^{2}=0.25\cdot 0.12+0.75\cdot 0.15=0.1425</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">and its variance is</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx39" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S3.SS3.Ex9"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S3.SS3.Ex9.m1" class="ltx_Math" alttext="\displaystyle\sigma^{2}" display="inline"><semantics><msup><mi>σ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle\sigma^{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS3.Ex9.m2" class="ltx_Math" alttext="\displaystyle=w_{1}^{2}\sigma_{1}^{2}+w_{1}w_{2}\sigma_{12}+w_{2}w_{1}\sigma_{%
+21}+w_{2}^{2}\sigma_{2}^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><msubsup><mi>w</mi><mn>1</mn><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup></mrow><mo>+</mo><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>w</mi><mn>2</mn></msub><mo>⁢</mo><msub><mi>σ</mi><mn>12</mn></msub></mrow><mo>+</mo><mrow><msub><mi>w</mi><mn>2</mn></msub><mo>⁢</mo><msub><mi>w</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>σ</mi><mn>21</mn></msub></mrow><mo>+</mo><mrow><msubsup><mi>w</mi><mn>2</mn><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=w_{1}^{2}\sigma_{1}^{2}+w_{1}w_{2}\sigma_{12}+w_{2}w_{1}\sigma_{%
+21}+w_{2}^{2}\sigma_{2}^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S3.SS3.Ex10"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS3.Ex10.m1" class="ltx_Math" alttext="\displaystyle=0.25^{2}\cdot 0.20^{2}+0.25\cdot 0.75\cdot 0.01+0.75\cdot 0.25%
+\cdot 0.01+0.75^{2}\cdot 0.18^{2}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mrow><msup><mn>0.25</mn><mn>2</mn></msup><mo lspace="0.222em" rspace="0.222em">⋅</mo><msup><mn>0.20</mn><mn>2</mn></msup></mrow><mo>+</mo><mrow><mn>0.25</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0.75</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0.01</mn></mrow><mo>+</mo><mrow><mn>0.75</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0.25</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0.01</mn></mrow><mo>+</mo><mrow><msup><mn>0.75</mn><mn>2</mn></msup><mo lspace="0.222em" rspace="0.222em">⋅</mo><msup><mn>0.18</mn><mn>2</mn></msup></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=0.25^{2}\cdot 0.20^{2}+0.25\cdot 0.75\cdot 0.01+0.75\cdot 0.25%
+\cdot 0.01+0.75^{2}\cdot 0.18^{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S3.SS3.Ex11"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S3.SS3.Ex11.m1" class="ltx_Math" alttext="\displaystyle=0.024475," display="inline"><semantics><mrow><mrow><mi></mi><mo>=</mo><mn>0.024475</mn></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\displaystyle=0.024475,</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">so the standard deviation equals <math id="S3.SS3.Thmtheorem3.p1.m8" class="ltx_Math" alttext="0.1564" display="inline"><semantics><mn>0.1564</mn><annotation encoding="application/x-tex">0.1564</annotation></semantics></math>. Notice that this value is lower than both of the asset standard deviations, even though the two assets are nowhere near to being negatively correlated!</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</section>
+</div>
+</div>
+</div>
+<a href="Pt7.html" class="navigation navigation-prev" aria-label="Previous page"><i class="fa fa-angle-left"></i></a><a href="Pt9.html" class="navigation navigation-next" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+</div>
+</div>
+<script src="bookml/gitbook/js/app.min.js"></script>
+<script src="bookml/gitbook/js/jquery.highlight.js"></script>
+<script src="bookml/gitbook/js/plugin-search.js"></script>
+<script src="bookml/gitbook/js/plugin-fontsettings.js"></script>
+<script src="bookml/gitbook/js/plugin-bookdown.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+        MathJax = {
+          startup: {
+            ready() {
+              // do not process equations disabled with \bmlDisableMathJax (code suggested by Davide P. Cervone)
+              class bmlFindMathML extends MathJax._.input.mathml.FindMathML.FindMathML {
+                processMath(set) {
+                  const adaptor = this.adaptor;
+                  for (const node of set.values()) {
+                    if (adaptor.hasClass(node, 'bml_disable_mathjax')) {
+                      set.delete(node);
+                    }
+                  }
+                  return super.processMath(set);
+                }
+              }
+
+              MathJax._.components.global.combineDefaults(MathJax.config, 'mml', {FindMathML: new bmlFindMathML()});
+
+              MathJax.startup.defaultReady();
+
+              // preproces MathML to make MathJax aware of certain LaTeXML and BookML additional info
+              const mmlFilters = MathJax.startup.input[0].mmlFilters;
+
+              // convert the LaTeXML calligraphic (chancery) annotation to a form MathJax understands
+              // since the corresponding Unicode characters render as script (rounded)
+              const script2latin = {
+                '𝒜': 'A', 'ℬ': 'B', '𝒞': 'C', '𝒟': 'D', 'ℰ': 'E', 'ℱ': 'F', '𝒢': 'G',
+                'ℋ': 'H', 'ℐ': 'I', '𝒥': 'J', '𝒦': 'K', 'ℒ': 'L', 'ℳ': 'M', '𝒩': 'N',
+                '𝒪': 'O', '𝒫': 'P', '𝒬': 'Q', 'ℛ': 'R', '𝒮': 'S', '𝒯': 'T', '𝒰': 'U',
+                '𝒱': 'V', '𝒲': 'W', '𝒳': 'X', '𝒴': 'Y', '𝒵': 'Z',
+              };
+
+              mmlFilters.add((args) => {
+                for (const n of args.data.getElementsByClassName('ltx_font_mathcaligraphic')) {
+                  n.classList.add('MJX-tex-calligraphic');
+                  const letter = script2latin[n.textContent];
+                  if (letter !== undefined) { n.textContent = letter; }
+                }
+              });
+
+              // adjust characters based on Unicode variation sequences
+              const replacements = {
+                // MathJax renders the empty set as the U+FE00 variant, so the plain character needs adjusting
+                '∅': { variant: 'variant' },
+                // MathJax renders script characters in rounded style, which is fine for no variation and U+FE00
+                '𝒜\xFE00': { text: 'A', variant: 'tex-calligraphic' },
+                'ℬ\xFE00': { text: 'B', variant: 'tex-calligraphic' },
+                '𝒞\xFE00': { text: 'C', variant: 'tex-calligraphic' },
+                '𝒟\xFE00': { text: 'D', variant: 'tex-calligraphic' },
+                'ℰ\xFE00': { text: 'E', variant: 'tex-calligraphic' },
+                'ℱ\xFE00': { text: 'F', variant: 'tex-calligraphic' },
+                '𝒢\xFE00': { text: 'G', variant: 'tex-calligraphic' },
+                'ℋ\xFE00': { text: 'H', variant: 'tex-calligraphic' },
+                'ℐ\xFE00': { text: 'I', variant: 'tex-calligraphic' },
+                '𝒥\xFE00': { text: 'J', variant: 'tex-calligraphic' },
+                '𝒦\xFE00': { text: 'K', variant: 'tex-calligraphic' },
+                'ℒ\xFE00': { text: 'L', variant: 'tex-calligraphic' },
+                'ℳ\xFE00': { text: 'M', variant: 'tex-calligraphic' },
+                '𝒩\xFE00': { text: 'N', variant: 'tex-calligraphic' },
+                '𝒪\xFE00': { text: 'O', variant: 'tex-calligraphic' },
+                '𝒫\xFE00': { text: 'P', variant: 'tex-calligraphic' },
+                '𝒬\xFE00': { text: 'Q', variant: 'tex-calligraphic' },
+                'ℛ\xFE00': { text: 'R', variant: 'tex-calligraphic' },
+                '𝒮\xFE00': { text: 'S', variant: 'tex-calligraphic' },
+                '𝒯\xFE00': { text: 'T', variant: 'tex-calligraphic' },
+                '𝒰\xFE00': { text: 'U', variant: 'tex-calligraphic' },
+                '𝒱\xFE00': { text: 'V', variant: 'tex-calligraphic' },
+                '𝒲\xFE00': { text: 'W', variant: 'tex-calligraphic' },
+                '𝒳\xFE00': { text: 'X', variant: 'tex-calligraphic' },
+                '𝒴\xFE00': { text: 'Y', variant: 'tex-calligraphic' },
+                '𝒵\xFE00': { text: 'Z', variant: 'tex-calligraphic' }
+              };
+
+              mmlFilters.add((args) => {
+                let nodes = document.evaluate('.//m:mi | .//m:mn | .//m:mo | .//m:ms', args.data,
+                  () => 'http://www.w3.org/1998/Math/MathML', XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE);
+                for (let i = 0; i < nodes.snapshotLength; i++) {
+                  const n = nodes.snapshotItem(i);
+                  const repl = replacements[n.innerHTML];
+                  if (repl !== undefined) {
+                    const variant = repl['variant'];
+                    const text = repl['text'];
+                    if (variant !== undefined) { n.classList.add('MJX-' + variant); n.removeAttribute('mathvariant'); }
+                    if (text !== undefined) { n.innerHTML = text; }
+                  }
+                }
+              });
+            }
+          }
+        };
+      </script>
+<script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/mml-chtml.js"></script>
+<script type="text/javascript">
+                gitbook.require(["gitbook"], function(gitbook) {
+                gitbook.start({
+                  "fontsettings": {
+                    "theme": "white",
+                    "family": "sans",
+                    "size": 2
+                  },
+                  "download": [ [ "DiscreteTimeFinance.pdf", "PDF (serif)" ], [ "DiscreteTimeFinance-sans.pdf", "PDF (sans serif)" ], [ "DiscreteTimeFinance-sans-large.pdf", "PDF (sans serif, large)" ], ],
+                  "search": {
+                    "engine": "fuse"
+                  },
+                  "toc": {
+                    "collapse": "none"
+                  }
+                });
+              });
+            </script>
+</body>
+
+</html>
