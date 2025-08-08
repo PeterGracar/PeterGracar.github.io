@@ -1,0 +1,1082 @@
+<!DOCTYPE html><html lang="en-GB">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)</title>
+<!--Generated on Tue Dec  3 15:06:01 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on December 3, 2024.-->
+<style>:root { --bml-ltx-font-size: 10.95; }</style>
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-article.css" type="text/css">
+<link rel="stylesheet" href="ltx-amsart.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-table.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-search.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-bookdown.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-fontsettings.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook,plain.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook.css" type="text/css">
+<link rel="stylesheet" href="bmluser/colors.gitbook-DiscreteTimeFinance.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
+<link rel="up" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="start" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="prev" href="Pt4.html" title="Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="next" href="Pt6.html" title="Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt1.html" title="Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt2.html" title="Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt3.html" title="Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt4.html" title="Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt6.html" title="Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt7.html" title="Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt8.html" title="Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt9.html" title="Lecture IX 26/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt10.html" title="Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx1.html" title="Extra reading (non-examinable) ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx2.html" title="Literature list ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+</head>
+<body>
+<div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+<a href="#bml-main-content" tabindex="0" class="bml-skip-to-content">Skip to content.</a>
+<div class="book-summary"><nav class="ltx_page_navbar">
+<ul class="ltx_toclist summary">
+<li>
+<a href="index.html" title="" class="ltx_ref" rel="start">Lecture notes: Discrete Time Finance (MATH5320M)</a>
+</li>
+<li class="divider">
+<li data-level="I" data-path="Pt1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">I </span></b>01/10/2024</a></li>
+<li data-level="II" data-path="Pt2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">II </span></b>08/10/2024</a></li>
+<li data-level="III" data-path="Pt3.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt3.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">III </span></b>15/10/2024</a></li>
+<li data-level="IV" data-path="Pt4.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt4.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IV </span></b>22/10/2024</a></li>
+<li data-level="V" data-path="" class="ltx_tocentry ltx_tocentry_part ltx_ref_self  chapter active">
+<a href="" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">V </span></b>29/10/2024</a>
+<ol class="ltx_toclist ltx_toclist_part">
+<li data-level="2.2" data-path="" class="ltx_tocentry ltx_tocentry_subsection  chapter "><a href="#S2.SS2" title="In Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">2.2 </span></b>Properties of the general multi period market model</a></li>
+<li data-level="2.3" data-path="" class="ltx_tocentry ltx_tocentry_subsection  chapter "><a href="#S2.SS3" title="In Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">2.3 </span></b>Conditional expectation</a></li>
+</ol>
+</li>
+<li data-level="VI" data-path="Pt6.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt6.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VI </span></b>05/11/2024</a></li>
+<li data-level="VII" data-path="Pt7.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt7.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VII </span></b>12/11/2024</a></li>
+<li data-level="VIII" data-path="Pt8.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt8.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VIII </span></b>19/11/2024</a></li>
+<li data-level="IX" data-path="Pt9.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt9.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IX </span></b>26/11/2024</a></li>
+<li data-level="X" data-path="Pt10.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt10.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">X </span></b>03/12/2024</a></li>
+<li data-level="" data-path="Ptx1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Extra reading (non-examinable)</a></li>
+<li data-level="" data-path="Ptx2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Literature list</a></li>
+</ul>
+</nav></div>
+<div class="ltx_page_main book-body fixed">
+<div class="body-inner">
+<div class="book-header fixed" role="navigation"><h1>29/10/2024</h1></div>
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="ltx_page_content page-inner" id="bml-main-content">
+<section class="ltx_part normal" lang="en-GB">
+<div class="section level1">
+
+<h1 class="ltx_title ltx_title_part">
+<span class="ltx_tag ltx_tag_part header-section-number">Lecture V</span> 29/10/2024</h1>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">In order to specify our market model, we still have to define what trading strategies the agents in our model are allowed to use in order to trade on the market. As in Chapter 1 we assume that the market consists of a money market account (e.g. a bond) denoted by <math id="p1.m1" class="ltx_Math" alttext="B" display="inline"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>, which evolves deterministically as <math id="p1.m2" class="ltx_Math" alttext="B_{t+k}=B_{t}(1+r)^{k}" display="inline"><semantics><mrow><msub><mi>B</mi><mrow><mi>t</mi><mo>+</mo><mi>k</mi></mrow></msub><mo>=</mo><mrow><msub><mi>B</mi><mi>t</mi></msub><mo>⁢</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mi>k</mi></msup></mrow></mrow><annotation encoding="application/x-tex">B_{t+k}=B_{t}(1+r)^{k}</annotation></semantics></math>, where <math id="p1.m3" class="ltx_Math" alttext="r" display="inline"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math> is the interest rate (we can assume that <math id="p1.m4" class="ltx_Math" alttext="B_{0}=1" display="inline"><semantics><mrow><msub><mi>B</mi><mn>0</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">B_{0}=1</annotation></semantics></math> without loss of generality), and <math id="p1.m5" class="ltx_Math" alttext="n" display="inline"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> stocks <math id="p1.m6" class="ltx_Math" alttext="S^{1},\ldots,S^{n}" display="inline"><semantics><mrow><msup><mi>S</mi><mn>1</mn></msup><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msup><mi>S</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">S^{1},\ldots,S^{n}</annotation></semantics></math>, which are assumed to be stochastic processes on the underlying state space. A trading strategy is then given by an <math id="p1.m7" class="ltx_Math" alttext="\mathbb{R}^{n+1}" display="inline"><semantics><msup><mi>ℝ</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">\mathbb{R}^{n+1}</annotation></semantics></math> valued stochastic process <math id="p1.m8" class="ltx_Math" alttext="(\phi_{t})_{t=0,\ldots,T}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi></mrow></mrow></msub><annotation encoding="application/x-tex">(\phi_{t})_{t=0,\ldots,T}</annotation></semantics></math> whose components are denoted <math id="p1.m9" class="ltx_Math" alttext="\phi_{t}^{0},\phi_{t}^{1},...,\phi_{t}^{n}" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mi>t</mi><mn>0</mn></msubsup><mo>,</mo><msubsup><mi>ϕ</mi><mi>t</mi><mn>1</mn></msubsup><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msubsup><mi>ϕ</mi><mi>t</mi><mi>n</mi></msubsup></mrow><annotation encoding="application/x-tex">\phi_{t}^{0},\phi_{t}^{1},...,\phi_{t}^{n}</annotation></semantics></math> and where <math id="p1.m10" class="ltx_Math" alttext="\phi_{t}^{i}" display="inline"><semantics><msubsup><mi>ϕ</mi><mi>t</mi><mi>i</mi></msubsup><annotation encoding="application/x-tex">\phi_{t}^{i}</annotation></semantics></math> denotes the number of shares of the <math id="p1.m11" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th stock hold at time <math id="p1.m12" class="ltx_Math" alttext="t" display="inline"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> and <math id="p1.m13" class="ltx_Math" alttext="\phi_{t}^{0}" display="inline"><semantics><msubsup><mi>ϕ</mi><mi>t</mi><mn>0</mn></msubsup><annotation encoding="application/x-tex">\phi_{t}^{0}</annotation></semantics></math> the number of bonds at time <math id="p1.m14" class="ltx_Math" alttext="t" display="inline"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.</p>
+</div>
+<div id="S2.SS1.Thmtheorem13" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.1.13</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS1.Thmtheorem13.p1" class="ltx_para">
+<p class="ltx_p">The <span class="ltx_text ltx_font_bold">value process</span> corresponding to the trading strategy <math id="S2.SS1.Thmtheorem13.p1.m1" class="ltx_Math" alttext="\phi=(\phi_{t})_{0\leq t\leq T-1}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></mrow></msub></mrow><annotation encoding="application/x-tex">\phi=(\phi_{t})_{0\leq t\leq T-1}</annotation></semantics></math> is the stochastic process <math id="S2.SS1.Thmtheorem13.p1.m2" class="ltx_Math" alttext="\big{(}V_{t}(\phi)\big{)}_{0\leq t\leq T}" display="inline"><semantics><msub><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub><annotation encoding="application/x-tex">\big{(}V_{t}(\phi)\big{)}_{0\leq t\leq T}</annotation></semantics></math>, where</p>
+<p class="ltx_p ltx_align_center"><math id="S2.SS1.Thmtheorem13.p1.m3" class="ltx_Math ltx_framed ltx_framed_rectangle" display="block"><mrow><mrow><mrow><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msubsup><mi>ϕ</mi><mi>t</mi><mn>0</mn></msubsup><mo>⁢</mo><msub><mi>B</mi><mi>t</mi></msub></mrow><mo rspace="0.055em">+</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msubsup><mi>ϕ</mi><mi>t</mi><mi>i</mi></msubsup><mo>⁢</mo><msubsup><mi>S</mi><mi>t</mi><mi>i</mi></msubsup></mrow></mrow></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow></math></p>
+</div>
+</div>
+<div id="p2" class="ltx_para">
+<p class="ltx_p">It is unreasonable to allow all trading strategies. In particular, the choice of investment should be based on the available information and the capital in possession.</p>
+</div>
+<div id="S2.SS1.Thmtheorem14" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.1.14</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS1.Thmtheorem14.p1" class="ltx_para">
+<p class="ltx_p">A trading strategy <math id="S2.SS1.Thmtheorem14.p1.m1" class="ltx_Math" alttext="\phi=(\phi_{t})_{0\leq t\leq T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\phi=(\phi_{t})_{0\leq t\leq T}</annotation></semantics></math> is called <math id="S2.SS1.Thmtheorem14.p1.m2" class="ltx_Math" alttext="(\mathcal{F}_{t})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\mathcal{F}_{t})</annotation></semantics></math><span class="ltx_text ltx_font_bold">-adapted</span>, if the stochastic process
+<math id="S2.SS1.Thmtheorem14.p1.m3" class="ltx_Math" alttext="(\phi_{t})_{0\leq t\leq T}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub><annotation encoding="application/x-tex">(\phi_{t})_{0\leq t\leq T}</annotation></semantics></math> is adapted to the filtration <math id="S2.SS1.Thmtheorem14.p1.m4" class="ltx_Math" alttext="(\mathcal{F}_{t})_{0\leq t\leq T}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub><annotation encoding="application/x-tex">(\mathcal{F}_{t})_{0\leq t\leq T}</annotation></semantics></math>.</p>
+</div>
+</div>
+<div id="S2.SS1.Thmtheorem15" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.1.15</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS1.Thmtheorem15.p1" class="ltx_para">
+<p class="ltx_p">A trading strategy <math id="S2.SS1.Thmtheorem15.p1.m1" class="ltx_Math" alttext="\phi=(\phi_{t})_{0\leq t\leq T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\phi=(\phi_{t})_{0\leq t\leq T}</annotation></semantics></math> is called <span class="ltx_text ltx_font_bold">self financing</span>, if for all <math id="S2.SS1.Thmtheorem15.p1.m2" class="ltx_Math" alttext="t=0,...,T-1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></mrow></mrow><annotation encoding="application/x-tex">t=0,...,T-1</annotation></semantics></math></p>
+<div id="S2.SS1.E3" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.E3.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle\phi_{t}^{0}B_{t+1}+\sum_{i=1}^{n}\phi_{t}^{i}S_{t+1}^{i}=%
+\phi_{t+1}^{0}B_{t+1}+\sum_{i=1}^{n}\phi_{t+1}^{i}S_{t+1}^{i}.}" display="block"><semantics><menclose notation="box"><mrow><msubsup><mi>ϕ</mi><mi>t</mi><mn>0</mn></msubsup><msub><mi>B</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo rspace="0.055em">+</mo><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>ϕ</mi><mi>t</mi><mi>i</mi></msubsup><msubsup><mi>S</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup><mo>=</mo><msubsup><mi>ϕ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mn>0</mn></msubsup><msub><mi>B</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo rspace="0.055em">+</mo><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>ϕ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup><msubsup><mi>S</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle\phi_{t}^{0}B_{t+1}+\sum_{i=1}^{n}\phi_{t}^{i}S_{t+1}^{i}=%
+\phi_{t+1}^{0}B_{t+1}+\sum_{i=1}^{n}\phi_{t+1}^{i}S_{t+1}^{i}.}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.1.3)</span>
+            
+            
+          
+</div>
+</div>
+</div>
+<div id="p3" class="ltx_para">
+<p class="ltx_p">An agent who invests according to a self-financing portfolio, invests money into the strategy in time <math id="p3.m1" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> and in the following moments only rebalances his portfolio, neither withdrawing any money out of the market, nor investing new money into the market. The agent chooses his investments at time <math id="p3.m2" class="ltx_Math" alttext="t" display="inline"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> and does not change his portfolio in the time interval <math id="p3.m3" class="ltx_Math" alttext="[t,t+1)" display="inline"><semantics><mrow><mo stretchy="false">[</mo><mi>t</mi><mo>,</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">[t,t+1)</annotation></semantics></math>. The left-hand side of equation (<a href="#S2.SS1.E3" title="In Definition 2.1.15. ‣ Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.3</span></a>) represents the value of the agents portfolio immediately before time <math id="p3.m4" class="ltx_Math" alttext="t+1" display="inline"><semantics><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t+1</annotation></semantics></math>, whereas the right-hand side represents the value of his portfolio immediately after time <math id="p3.m5" class="ltx_Math" alttext="t+1" display="inline"><semantics><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t+1</annotation></semantics></math>, when rebalancing of his portfolio has taken place. The self financing assumption says that these two values must be equal, and this means that neither money is withdrawn nor new money is invested.</p>
+</div>
+<div id="p4" class="ltx_para">
+<p class="ltx_p">We are now able to set up our general multi period market model:</p>
+</div>
+<div id="S2.SS1.Thmtheorem16" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.1.16</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS1.Thmtheorem16.p1" class="ltx_para">
+<p class="ltx_p">A <span class="ltx_text ltx_font_bold">general multi period market model</span> is given by the following data:</p>
+<ol id="S2.I10" class="ltx_enumerate">
+<li id="S2.I10.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I10.i1.p1" class="ltx_para">​<p class="ltx_p">A probability space <math id="S2.I10.i1.p1.m1" class="ltx_Math" alttext="(\Omega,\mathbb{P})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi mathvariant="normal">Ω</mi><mo>,</mo><mi>ℙ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\Omega,\mathbb{P})</annotation></semantics></math> with the filtration <math id="S2.I10.i1.p1.m2" class="ltx_Math" alttext="(\mathcal{F}_{t})_{t=0,\ldots,T}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi></mrow></mrow></msub><annotation encoding="application/x-tex">(\mathcal{F}_{t})_{t=0,\ldots,T}</annotation></semantics></math>.</p>
+</div>
+</li>
+<li id="S2.I10.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I10.i2.p1" class="ltx_para">​<p class="ltx_p">A money market account <math id="S2.I10.i2.p1.m1" class="ltx_Math" alttext="(B_{t})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><msub><mi>B</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(B_{t})</annotation></semantics></math>, which evolves according to <math id="S2.I10.i2.p1.m2" class="ltx_Math" alttext="B_{t}=(1+r)^{t}" display="inline"><semantics><mrow><msub><mi>B</mi><mi>t</mi></msub><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mi>t</mi></msup></mrow><annotation encoding="application/x-tex">B_{t}=(1+r)^{t}</annotation></semantics></math>.</p>
+</div>
+</li>
+<li id="S2.I10.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S2.I10.i3.p1" class="ltx_para">​<p class="ltx_p">A collection of <math id="S2.I10.i3.p1.m1" class="ltx_Math" alttext="n" display="inline"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> financial assets whose prices are given by stochastic processes</p>
+<div id="S2.SS1.Ex32" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.Ex32.m1" class="ltx_Math" alttext="\big{(}(S_{t}^{1}),...,(S_{t}^{n})\big{)}_{t=0,\ldots,T}," display="block"><semantics><mrow><msub><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><mo stretchy="false">(</mo><msubsup><mi>S</mi><mi>t</mi><mn>1</mn></msubsup><mo stretchy="false">)</mo></mrow><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mo stretchy="false">(</mo><msubsup><mi>S</mi><mi>t</mi><mi>n</mi></msubsup><mo stretchy="false">)</mo></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi></mrow></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\big{(}(S_{t}^{1}),...,(S_{t}^{n})\big{)}_{t=0,\ldots,T},</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">which are assumed to be <math id="S2.I10.i3.p1.m2" class="ltx_Math" alttext="(\mathcal{F}_{t})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\mathcal{F}_{t})</annotation></semantics></math>-adapted.</p>
+</div>
+</li>
+<li id="S2.I10.i4" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(4)</span><div id="S2.I10.i4.p1" class="ltx_para">​<p class="ltx_p">A set <math id="S2.I10.i4.p1.m1" class="ltx_Math" alttext="\mathcal{T}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒯</mi><annotation encoding="application/x-tex">\mathcal{T}</annotation></semantics></math> of self financing and <math id="S2.I10.i4.p1.m2" class="ltx_Math" alttext="(\mathcal{F}_{t})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\mathcal{F}_{t})</annotation></semantics></math>-adapted trading strategies.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="p5" class="ltx_para">
+<p class="ltx_p">In practical applications the filtration <math id="p5.m1" class="ltx_Math" alttext="\mathcal{F}_{t}" display="inline"><semantics><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\mathcal{F}_{t}</annotation></semantics></math> is often taken to be generated by the prices of assets, so that it represents only the information that can be learnt from the market. Following Definition <a href="Pt4.html#S2.SS1.Thmtheorem10" title="Definition 2.1.10. ‣ 2.1. General Model Specifications ‣ 2. Multi-Period Market Models ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.10</span></a> we know how to construct such a filtration for one stochastic process (<math id="p5.m2" class="ltx_Math" alttext="n=1" display="inline"><semantics><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n=1</annotation></semantics></math>). If <math id="p5.m3" class="ltx_Math" alttext="n&gt;1" display="inline"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n&gt;1</annotation></semantics></math>, it is easiest to consider the approach following Definition <a href="Pt4.html#S2.SS1.Thmtheorem10" title="Definition 2.1.10. ‣ 2.1. General Model Specifications ‣ 2. Multi-Period Market Models ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.10</span></a> and to make use of partitions.
+If the filtration <math id="p5.m4" class="ltx_Math" alttext="(\mathcal{F}_{t})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\mathcal{F}_{t})</annotation></semantics></math> is generated by <math id="p5.m5" class="ltx_Math" alttext="\big{(}(S_{t}^{1}),...,(S_{t}^{n})\big{)}_{t=0,\ldots,T}" display="inline"><semantics><msub><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><mo stretchy="false">(</mo><msubsup><mi>S</mi><mi>t</mi><mn>1</mn></msubsup><mo stretchy="false">)</mo></mrow><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mo stretchy="false">(</mo><msubsup><mi>S</mi><mi>t</mi><mi>n</mi></msubsup><mo stretchy="false">)</mo></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi></mrow></mrow></msub><annotation encoding="application/x-tex">\big{(}(S_{t}^{1}),...,(S_{t}^{n})\big{)}_{t=0,\ldots,T}</annotation></semantics></math>, then</p>
+<div id="S2.SS1.Ex33" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.Ex33.m1" class="ltx_Math" alttext="\mathcal{F}_{t}=\{\text{the information generated by $S^{i}_{j}$, $i=1,\ldots,%
+n$, $j=0,\ldots,t$}\}." display="block"><semantics><mrow><mrow><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><mrow><mtext>the information generated by </mtext><msubsup><mi>S</mi><mi>j</mi><mi>i</mi></msubsup><mtext>, </mtext><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi></mrow></mrow><mtext>, </mtext><mrow><mi>j</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>t</mi></mrow></mrow></mrow><mo stretchy="false">}</mo></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathcal{F}_{t}=\{\text{the information generated by $S^{i}_{j}$, $i=1,\ldots,%
+n$, $j=0,\ldots,t$}\}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">As before we put all sets from the partitions of <math id="p5.m6" class="ltx_Math" alttext="\sigma" display="inline"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>-algebras generated by
+<math id="p5.m7" class="ltx_Math" alttext="S^{i}_{j}" display="inline"><semantics><msubsup><mi>S</mi><mi>j</mi><mi>i</mi></msubsup><annotation encoding="application/x-tex">S^{i}_{j}</annotation></semantics></math>, <math id="p5.m8" class="ltx_Math" alttext="i=1,\ldots,n" display="inline"><semantics><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi></mrow></mrow><annotation encoding="application/x-tex">i=1,\ldots,n</annotation></semantics></math>, <math id="p5.m9" class="ltx_Math" alttext="j=0,\ldots,t" display="inline"><semantics><mrow><mi>j</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>t</mi></mrow></mrow><annotation encoding="application/x-tex">j=0,\ldots,t</annotation></semantics></math> into one bag denoted by <math id="p5.m10" class="ltx_Math" alttext="\mathcal{G}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒢</mi><annotation encoding="application/x-tex">\mathcal{G}</annotation></semantics></math>. We find
+the <span class="ltx_text ltx_font_bold">smallest</span> collection of sets <math id="p5.m11" class="ltx_Math" alttext="(A_{i})_{i\in I}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mi>i</mi><mo>∈</mo><mi>I</mi></mrow></msub><annotation encoding="application/x-tex">(A_{i})_{i\in I}</annotation></semantics></math>, for some set of indexes <math id="p5.m12" class="ltx_Math" alttext="I" display="inline"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math>, that satisfies</p>
+<ol id="S2.I11" class="ltx_enumerate">
+<li id="S2.I11.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I11.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I11.i1.p1.m1" class="ltx_Math" alttext="A_{i}\neq\emptyset" display="inline"><semantics><mrow><msub><mi>A</mi><mi>i</mi></msub><mo>≠</mo><mi>∅︀</mi></mrow><annotation encoding="application/x-tex">A_{i}\neq\emptyset</annotation></semantics></math> for <math id="S2.I11.i1.p1.m2" class="ltx_Math" alttext="i\in I" display="inline"><semantics><mrow><mi>i</mi><mo>∈</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">i\in I</annotation></semantics></math>.</p>
+</div>
+</li>
+<li id="S2.I11.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I11.i2.p1" class="ltx_para">​<p class="ltx_p">Every set <math id="S2.I11.i2.p1.m1" class="ltx_Math" alttext="G\in\mathcal{G}" display="inline"><semantics><mrow><mi>G</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi></mrow><annotation encoding="application/x-tex">G\in\mathcal{G}</annotation></semantics></math> can be written as a union of some of the <math id="S2.I11.i2.p1.m2" class="ltx_Math" alttext="A_{i}" display="inline"><semantics><msub><mi>A</mi><mi>i</mi></msub><annotation encoding="application/x-tex">A_{i}</annotation></semantics></math>’s, i.e.
+<math id="S2.I11.i2.p1.m3" class="ltx_Math" alttext="G=\bigcup_{j\in J}A_{j}" display="inline"><semantics><mrow><mi>G</mi><mo rspace="0.111em">=</mo><mrow><msub><mo>⋃</mo><mrow><mi>j</mi><mo>∈</mo><mi>J</mi></mrow></msub><msub><mi>A</mi><mi>j</mi></msub></mrow></mrow><annotation encoding="application/x-tex">G=\bigcup_{j\in J}A_{j}</annotation></semantics></math> with <math id="S2.I11.i2.p1.m4" class="ltx_Math" alttext="J\subset I" display="inline"><semantics><mrow><mi>J</mi><mo>⊂</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">J\subset I</annotation></semantics></math>.</p>
+</div>
+</li>
+<li id="S2.I11.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S2.I11.i3.p1" class="ltx_para">​<p class="ltx_p">Sets <math id="S2.I11.i3.p1.m1" class="ltx_Math" alttext="A_{i}" display="inline"><semantics><msub><mi>A</mi><mi>i</mi></msub><annotation encoding="application/x-tex">A_{i}</annotation></semantics></math> are pairwise disjoint, i.e. <math id="S2.I11.i3.p1.m2" class="ltx_Math" alttext="A_{i}\cap A_{j}=\emptyset" display="inline"><semantics><mrow><mrow><msub><mi>A</mi><mi>i</mi></msub><mo>∩</mo><msub><mi>A</mi><mi>j</mi></msub></mrow><mo>=</mo><mi>∅︀</mi></mrow><annotation encoding="application/x-tex">A_{i}\cap A_{j}=\emptyset</annotation></semantics></math> whenever <math id="S2.I11.i3.p1.m3" class="ltx_Math" alttext="i\neq j" display="inline"><semantics><mrow><mi>i</mi><mo>≠</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i\neq j</annotation></semantics></math>.</p>
+</div>
+</li>
+</ol>
+<p class="ltx_p">We claim that this collection is a partition for <math id="p5.m13" class="ltx_Math" alttext="\mathcal{F}_{t}" display="inline"><semantics><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\mathcal{F}_{t}</annotation></semantics></math> (check it!).</p>
+</div>
+<div id="S2.SS1.Thmtheorem17" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 2.1.17</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS1.Thmtheorem17.p1" class="ltx_para">
+<p class="ltx_p">Consider a diagram given in Example <a href="Pt4.html#S2.SS1.Thmtheorem11" title="Example 2.1.11. ‣ 2.1. General Model Specifications ‣ 2. Multi-Period Market Models ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.11</span></a>. The underlying probability space is <math id="S2.SS1.Thmtheorem17.p1.m1" class="ltx_Math" alttext="\Omega=\{\omega_{1},\omega_{2},\omega_{3},\omega_{4}\}" display="inline"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>=</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">\Omega=\{\omega_{1},\omega_{2},\omega_{3},\omega_{4}\}</annotation></semantics></math>. The physical measure is encoded in the diagram above the arrows:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx19" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S2.SS1.Ex34"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS1.Ex34.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(\omega_{1})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(\omega_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS1.Ex34.m2" class="ltx_Math" alttext="\displaystyle=\frac{2}{5}\cdot\frac{3}{4},\qquad\mathbb{P}(\omega_{2})=\frac{2%
+}{5}\cdot\frac{1}{4}," display="inline"><semantics><mrow><mrow><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>2</mn><mn>5</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>3</mn><mn>4</mn></mfrac></mstyle></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>2</mn><mn>5</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>4</mn></mfrac></mstyle></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{2}{5}\cdot\frac{3}{4},\qquad\mathbb{P}(\omega_{2})=\frac{2%
+}{5}\cdot\frac{1}{4},</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS1.Ex35"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS1.Ex35.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(\omega_{3})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(\omega_{3})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS1.Ex35.m2" class="ltx_Math" alttext="\displaystyle=\frac{3}{5}\cdot\frac{2}{7},\qquad\mathbb{P}(\omega_{4})=\frac{3%
+}{5}\cdot\frac{5}{7}." display="inline"><semantics><mrow><mrow><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>3</mn><mn>5</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>2</mn><mn>7</mn></mfrac></mstyle></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>3</mn><mn>5</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>5</mn><mn>7</mn></mfrac></mstyle></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{3}{5}\cdot\frac{2}{7},\qquad\mathbb{P}(\omega_{4})=\frac{3%
+}{5}\cdot\frac{5}{7}.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">The filtration generated by the asset prices has been determined as</p>
+<div id="S2.SS1.Ex36" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.Ex36.m1" class="ltx_Math" alttext="\begin{split}\mathcal{F}_{0}&amp;=\{\emptyset,\Omega\},\\
+\mathcal{F}_{1}&amp;=\{\emptyset,\{\omega_{1},\omega_{2}\},\{\omega_{3},\omega_{4}%
+\},\Omega\},\\
+\mathcal{F}_{2}&amp;=\big{\{}\emptyset,\\
+&amp;\hskip 28.0pt\{\omega_{1}\},\{\omega_{2}\},\{\omega_{3}\},\{\omega_{4}\},\\
+&amp;\hskip 28.0pt\{\omega_{1},\omega_{2}\},\{\omega_{1},\omega_{3}\},\{\omega_{1}%
+,\omega_{4}\},\{\omega_{2},\omega_{3}\},\{\omega_{2},\omega_{4}\},\{\omega_{3}%
+,\omega_{4}\},\\
+&amp;\hskip 28.0pt\{\omega_{1},\omega_{2},\omega_{3}\},\{\omega_{1},\omega_{2},%
+\omega_{4}\},\{\omega_{1},\omega_{3},\omega_{4}\},\{\omega_{2},\omega_{3},%
+\omega_{4}\},\\
+&amp;\qquad\Omega\big{\}}.\end{split}" display="block"><semantics><mtable columnspacing="0pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_right" columnalign="right"><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>0</mn></msub></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo stretchy="false">{</mo><mi>∅︀</mi><mo>,</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">}</mo></mrow></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd class="ltx_align_right" columnalign="right"><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn></msub></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo stretchy="false">{</mo><mi>∅︀</mi><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">}</mo></mrow></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd class="ltx_align_right" columnalign="right"><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>2</mn></msub></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mo>=</mo><mrow><mo maxsize="120%" minsize="120%">{</mo><mi>∅︀</mi><mo>,</mo></mrow></mrow></mtd></mtr><mtr><mtd></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mi mathvariant="normal">Ω</mi><mo maxsize="120%" minsize="120%">}</mo><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{split}\mathcal{F}_{0}&amp;=\{\emptyset,\Omega\},\\
+\mathcal{F}_{1}&amp;=\{\emptyset,\{\omega_{1},\omega_{2}\},\{\omega_{3},\omega_{4}%
+\},\Omega\},\\
+\mathcal{F}_{2}&amp;=\big{\{}\emptyset,\\
+&amp;\hskip 28.0pt\{\omega_{1}\},\{\omega_{2}\},\{\omega_{3}\},\{\omega_{4}\},\\
+&amp;\hskip 28.0pt\{\omega_{1},\omega_{2}\},\{\omega_{1},\omega_{3}\},\{\omega_{1}%
+,\omega_{4}\},\{\omega_{2},\omega_{3}\},\{\omega_{2},\omega_{4}\},\{\omega_{3}%
+,\omega_{4}\},\\
+&amp;\hskip 28.0pt\{\omega_{1},\omega_{2},\omega_{3}\},\{\omega_{1},\omega_{2},%
+\omega_{4}\},\{\omega_{1},\omega_{3},\omega_{4}\},\{\omega_{2},\omega_{3},%
+\omega_{4}\},\\
+&amp;\qquad\Omega\big{\}}.\end{split}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="p6" class="ltx_para">
+<p class="ltx_p">It is often useful to represent the self financing condition in terms of the (multi period) gains process.</p>
+</div>
+<div id="S2.SS1.Thmtheorem18" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.1.18</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS1.Thmtheorem18.p1" class="ltx_para">
+<p class="ltx_p">Assume we are given a general multi period market model as described in Definition <a href="#S2.SS1.Thmtheorem13" title="Definition 2.1.13. ‣ Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.13</span></a>. The <span class="ltx_text ltx_font_bold">increment process</span> <math id="S2.SS1.Thmtheorem18.p1.m1" class="ltx_Math" alttext="(\Delta S_{t}^{i})_{1\leq t\leq T}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msubsup><mi>S</mi><mi>t</mi><mi>i</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow><mrow><mn>1</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub><annotation encoding="application/x-tex">(\Delta S_{t}^{i})_{1\leq t\leq T}</annotation></semantics></math> corresponding to the <math id="S2.SS1.Thmtheorem18.p1.m2" class="ltx_Math" alttext="i" display="inline"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th stock is defined by</p>
+<div id="S2.SS1.E4" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.E4.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle\Delta S_{t}^{i}:=S^{i}_{t}-S^{i}_{t-1},\qquad t=1,...,T.}" display="block"><semantics><menclose notation="box"><mrow><mi mathvariant="normal">Δ</mi><msubsup><mi>S</mi><mi>t</mi><mi>i</mi></msubsup><mo lspace="0.278em" rspace="0.278em">:=</mo><msubsup><mi>S</mi><mi>t</mi><mi>i</mi></msubsup><mo>−</mo><msubsup><mi>S</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow><mi>i</mi></msubsup><mo rspace="2.357em">,</mo><mi>t</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle\Delta S_{t}^{i}:=S^{i}_{t}-S^{i}_{t-1},\qquad t=1,...,T.}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.1.4)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">The increments of the money market account are given by</p>
+<div id="S2.SS1.Ex37" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.Ex37.m1" class="ltx_Math" alttext="\Delta B_{t}=B_{t}-B_{t-1}=(1+r)^{t-1}r=B_{t-1}r,\qquad t=1,\ldots,T." display="block"><semantics><mrow><mrow><mrow><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msub><mi>B</mi><mi>t</mi></msub></mrow><mo>=</mo><mrow><msub><mi>B</mi><mi>t</mi></msub><mo>−</mo><msub><mi>B</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><mo>=</mo><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>⁢</mo><mi>r</mi></mrow><mo>=</mo><mrow><msub><mi>B</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>⁢</mo><mi>r</mi></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mi>t</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\Delta B_{t}=B_{t}-B_{t-1}=(1+r)^{t-1}r=B_{t-1}r,\qquad t=1,\ldots,T.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Given a trading strategy <math id="S2.SS1.Thmtheorem18.p1.m3" class="ltx_Math" alttext="\phi" display="inline"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>, the corresponding <span class="ltx_text ltx_font_bold">gains process</span> <math id="S2.SS1.Thmtheorem18.p1.m4" class="ltx_Math" alttext="(G_{t}(\phi))_{0\leq t\leq T}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><mrow><msub><mi>G</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub><annotation encoding="application/x-tex">(G_{t}(\phi))_{0\leq t\leq T}</annotation></semantics></math> is given by
+<math id="S2.SS1.Thmtheorem18.p1.m5" class="ltx_Math" alttext="G_{0}(\phi)=0" display="inline"><semantics><mrow><mrow><msub><mi>G</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">G_{0}(\phi)=0</annotation></semantics></math> and</p>
+<div id="S2.SS1.E5" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.E5.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle G_{t}(\phi)=\sum_{s=0}^{t-1}\phi_{s}^{i}\Delta B_{s+1}+%
+\sum_{i=1}^{n}\sum_{s=0}^{t-1}\phi_{s}^{i}\Delta S^{i}_{s+1},\qquad t=1,\ldots%
+,T.}" display="block"><semantics><menclose notation="box"><mrow><msub><mi>G</mi><mi>t</mi></msub><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo rspace="0.111em">=</mo><munderover><mo movablelimits="false">∑</mo><mrow><mi>s</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></munderover><msubsup><mi>ϕ</mi><mi>s</mi><mi>i</mi></msubsup><mi mathvariant="normal">Δ</mi><msub><mi>B</mi><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></msub><mo rspace="0.055em">+</mo><munderover><mo movablelimits="false" rspace="0em">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><munderover><mo movablelimits="false">∑</mo><mrow><mi>s</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></munderover><msubsup><mi>ϕ</mi><mi>s</mi><mi>i</mi></msubsup><mi mathvariant="normal">Δ</mi><msubsup><mi>S</mi><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup><mo rspace="2.357em">,</mo><mi>t</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle G_{t}(\phi)=\sum_{s=0}^{t-1}\phi_{s}^{i}\Delta B_{s+1}+%
+\sum_{i=1}^{n}\sum_{s=0}^{t-1}\phi_{s}^{i}\Delta S^{i}_{s+1},\qquad t=1,\ldots%
+,T.}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.1.5)</span>
+            
+            
+          
+</div>
+</div>
+</div>
+<div id="p7" class="ltx_para">
+<p class="ltx_p">As in the single period market models, it is worthwhile to consider discounted counterparts of the price process, gains process and value process:</p>
+</div>
+<div id="S2.SS1.Thmtheorem19" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.1.19</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS1.Thmtheorem19.p1" class="ltx_para">
+<p class="ltx_p">Given a general multi period market model, the <span class="ltx_text ltx_font_bold">discounted prices</span> are given by</p>
+<div id="S2.SS1.E6" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.E6.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle\hat{S}_{t}^{i}=\frac{S_{t}^{i}}{B_{t}},}" display="block"><semantics><menclose notation="box"><mrow><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>t</mi><mi>i</mi></msubsup><mo>=</mo><mfrac><msubsup><mi>S</mi><mi>t</mi><mi>i</mi></msubsup><msub><mi>B</mi><mi>t</mi></msub></mfrac><mo>,</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle\hat{S}_{t}^{i}=\frac{S_{t}^{i}}{B_{t}},}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.1.6)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">the <span class="ltx_text ltx_font_bold">discounted gains</span> by</p>
+<div id="S2.SS1.E7" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.E7.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle\Delta\hat{S}_{t}^{i}=\hat{S}_{t}^{i}-\hat{S}_{t-1}^{i},}" display="block"><semantics><menclose notation="box"><mrow><mi mathvariant="normal">Δ</mi><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>t</mi><mi>i</mi></msubsup><mo>=</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>t</mi><mi>i</mi></msubsup><mo>−</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow><mi>i</mi></msubsup><mo>,</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle\Delta\hat{S}_{t}^{i}=\hat{S}_{t}^{i}-\hat{S}_{t-1}^{i},}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.1.7)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">the <span class="ltx_text ltx_font_bold">discounted value process</span> corresponding to a trading strategy <math id="S2.SS1.Thmtheorem19.p1.m1" class="ltx_Math" alttext="\phi=(\phi_{t})_{0\leq t\leq T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\phi=(\phi_{t})_{0\leq t\leq T}</annotation></semantics></math> by</p>
+<div id="S2.SS1.E8" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.E8.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle\hat{V}_{t}(\phi)=\frac{V_{t}(\phi)}{B_{t}},}" display="block"><semantics><menclose notation="box"><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mi>t</mi></msub><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><msub><mi>B</mi><mi>t</mi></msub></mfrac><mo>,</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle\hat{V}_{t}(\phi)=\frac{V_{t}(\phi)}{B_{t}},}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.1.8)</span>
+            
+            
+          
+</div>
+<p class="ltx_p">and the <span class="ltx_text ltx_font_bold">discounted gains process</span> corresponding to a trading strategy <math id="S2.SS1.Thmtheorem19.p1.m2" class="ltx_Math" alttext="\phi=(\phi_{t})_{0\leq t\leq T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\phi=(\phi_{t})_{0\leq t\leq T}</annotation></semantics></math> by
+<math id="S2.SS1.Thmtheorem19.p1.m3" class="ltx_Math" alttext="\hat{G}_{0}(\phi)=0" display="inline"><semantics><mrow><mrow><msub><mover accent="true"><mi>G</mi><mo>^</mo></mover><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat{G}_{0}(\phi)=0</annotation></semantics></math> and</p>
+<div id="S2.SS1.E9" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS1.E9.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle\hat{G}_{t}(\phi)=\sum_{i=1}^{n}\sum_{s=0}^{t-1}\phi_{s}^{%
+i}\Delta\hat{S}_{s+1}^{i},\qquad t=1,\ldots,T.}" display="block"><semantics><menclose notation="box"><mrow><msub><mover accent="true"><mi>G</mi><mo>^</mo></mover><mi>t</mi></msub><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo rspace="0.111em">=</mo><munderover><mo movablelimits="false" rspace="0em">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><munderover><mo movablelimits="false">∑</mo><mrow><mi>s</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></munderover><msubsup><mi>ϕ</mi><mi>s</mi><mi>i</mi></msubsup><mi mathvariant="normal">Δ</mi><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup><mo rspace="2.357em">,</mo><mi>t</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle\hat{G}_{t}(\phi)=\sum_{i=1}^{n}\sum_{s=0}^{t-1}\phi_{s}^{%
+i}\Delta\hat{S}_{s+1}^{i},\qquad t=1,\ldots,T.}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.1.9)</span>
+            
+            
+          
+</div>
+</div>
+</div>
+<div id="p8" class="ltx_para">
+<p class="ltx_p">The self financing condition (<a href="#S2.SS1.E3" title="In Definition 2.1.15. ‣ Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.3</span></a>) states that changes of the amount of capital invested are caused only by gains or losses incurred by investments in the market. Below is a formal statement of this intuition:</p>
+</div>
+<div id="S2.SS1.Thmtheorem20" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 2.1.20</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS1.Thmtheorem20.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">An adapted trading strategy <math id="S2.SS1.Thmtheorem20.p1.m1" class="ltx_Math" alttext="\phi=(\phi_{t})_{0\leq t\leq T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\phi=(\phi_{t})_{0\leq t\leq T}</annotation></semantics></math> is self financing, if and only if any of the two equivalent statements holds</span></p>
+<ol id="S2.I12" class="ltx_enumerate">
+<li id="S2.I12.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I12.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I12.i1.p1.m1" class="ltx_Math" alttext="V_{t}(\phi)=V_{0}(\phi)+G_{t}(\phi)," display="inline"><semantics><mrow><mrow><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msub><mi>G</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">V_{t}(\phi)=V_{0}(\phi)+G_{t}(\phi),</annotation></semantics></math><span class="ltx_text ltx_font_italic"> for all </span><math id="S2.I12.i1.p1.m2" class="ltx_Math" alttext="0\leq t\leq T" display="inline"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">0\leq t\leq T</annotation></semantics></math><span class="ltx_text ltx_font_italic">.</span></p>
+</div>
+</li>
+<li id="S2.I12.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I12.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I12.i2.p1.m1" class="ltx_Math" alttext="\hat{V}_{t}(\phi)=\hat{V}_{0}(\phi)+\hat{G}_{t}(\phi)," display="inline"><semantics><mrow><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msub><mover accent="true"><mi>G</mi><mo>^</mo></mover><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\hat{V}_{t}(\phi)=\hat{V}_{0}(\phi)+\hat{G}_{t}(\phi),</annotation></semantics></math><span class="ltx_text ltx_font_italic"> for all </span><math id="S2.I12.i2.p1.m2" class="ltx_Math" alttext="0\leq t\leq T" display="inline"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">0\leq t\leq T</annotation></semantics></math><span class="ltx_text ltx_font_italic">.</span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="ltx_proof">
+
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Proof.</h6>
+<div id="p9" class="ltx_para">
+<p class="ltx_p">Exercise !
+∎</p>
+</div>
+</div>
+<div class="ltx_pagination ltx_role_newpage"></div>
+<section id="S2.SS2" class="ltx_subsection normal">
+<div class="section level2">
+
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection header-section-number">2.2</span>. Properties of the general multi period market model</h2>
+
+<div id="S2.SS2.p1" class="ltx_para">
+<p class="ltx_p">In this section we redefine the general concepts of financial
+mathematics, such as arbitrage, hedging etc. in the framework of
+multi period market models. This is also a good repetition.</p>
+</div>
+<div id="S2.SS2.Thmtheorem1" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.2.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS2.Thmtheorem1.p1" class="ltx_para">
+<p class="ltx_p">A trading strategy <math id="S2.SS2.Thmtheorem1.p1.m1" class="ltx_Math" alttext="\phi=(\phi_{t})_{0\leq t\leq T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\phi=(\phi_{t})_{0\leq t\leq T}</annotation></semantics></math>
+in a general multi period market model is called an
+<span class="ltx_text ltx_font_bold">arbitrage</span> if</p>
+<ol id="S2.I13" class="ltx_enumerate">
+<li id="S2.I13.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I13.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I13.i1.p1.m1" class="ltx_Math" alttext="V_{0}(\phi)=0" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">V_{0}(\phi)=0</annotation></semantics></math></p>
+</div>
+</li>
+<li id="S2.I13.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I13.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I13.i2.p1.m1" class="ltx_Math" alttext="V_{T}(\phi)\geq 0" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mi>T</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">V_{T}(\phi)\geq 0</annotation></semantics></math></p>
+</div>
+</li>
+<li id="S2.I13.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S2.I13.i3.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I13.i3.p1.m1" class="ltx_Math" alttext="\mathbb{E}(V_{T}(\phi))&gt;0" display="inline"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>V</mi><mi>T</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{E}(V_{T}(\phi))&gt;0</annotation></semantics></math></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="S2.SS2.p2" class="ltx_para">
+<p class="ltx_p">As in a single period market model condition 3. can be replaced by:</p>
+<ul id="S2.I14" class="ltx_itemize">
+<li id="S2.I14.ix1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3’)</span><div id="S2.I14.ix1.p1" class="ltx_para">​<p class="ltx_p">there exists <math id="S2.I14.ix1.p1.m1" class="ltx_Math" alttext="\omega\in\Omega" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\omega\in\Omega</annotation></semantics></math> such that <math id="S2.I14.ix1.p1.m2" class="ltx_Math" alttext="V_{T}(\phi)(\omega)&gt;0" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mi>T</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">V_{T}(\phi)(\omega)&gt;0</annotation></semantics></math>.</p>
+</div>
+</li>
+</ul>
+<p class="ltx_p">Furthermore one can use the discounted value process or the
+discounted gains process in order to express the arbitrage
+conditions.</p>
+</div>
+<div id="S2.SS2.p3" class="ltx_para">
+<p class="ltx_p">We come back to the notion of a contingent claim and a hedging
+(replicating) strategy:</p>
+</div>
+<div id="S2.SS2.Thmtheorem2" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.2.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS2.Thmtheorem2.p1" class="ltx_para">
+<p class="ltx_p">A <span class="ltx_text ltx_font_bold">contingent claim</span> in a multi period market
+model is an <math id="S2.SS2.Thmtheorem2.p1.m1" class="ltx_Math" alttext="\mathcal{F}_{T}" display="inline"><semantics><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>T</mi></msub><annotation encoding="application/x-tex">\mathcal{F}_{T}</annotation></semantics></math>-measurable random variable <math id="S2.SS2.Thmtheorem2.p1.m2" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> on
+<math id="S2.SS2.Thmtheorem2.p1.m3" class="ltx_Math" alttext="\Omega" display="inline"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math> representing a payoff at the terminal time <math id="S2.SS2.Thmtheorem2.p1.m4" class="ltx_Math" alttext="T" display="inline"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>. A
+<span class="ltx_text ltx_font_bold">hedging strategy</span> for <math id="S2.SS2.Thmtheorem2.p1.m5" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> is a trading strategy <math id="S2.SS2.Thmtheorem2.p1.m6" class="ltx_Math" alttext="\phi\in\mathcal{T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒯</mi></mrow><annotation encoding="application/x-tex">\phi\in\mathcal{T}</annotation></semantics></math> s.t.</p>
+<div id="S2.SS2.Ex1" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex1.m1" class="ltx_Math" alttext="V_{T}(\phi)=X," display="block"><semantics><mrow><mrow><mrow><msub><mi>V</mi><mi>T</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>X</mi></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">V_{T}(\phi)=X,</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">i.e. the terminal value of the trading strategy is equal to the
+payoff of the contingent claim.</p>
+</div>
+</div>
+<div id="S2.SS2.p4" class="ltx_para">
+<p class="ltx_p">In a multi period market model it is reasonable to look for the
+price of a contingent claim in any time <math id="S2.SS2.p4.m1" class="ltx_Math" alttext="t&lt;T" display="inline"><semantics><mrow><mi>t</mi><mo>&lt;</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">t&lt;T</annotation></semantics></math>. This certainly
+includes <math id="S2.SS2.p4.m2" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math>. Therefore, instead of of talking about a price of
+the contingent claim we shall talk about a <span class="ltx_text ltx_font_bold">price process</span> of
+the contingent claim. We start with an application of the
+replication principle. If <math id="S2.SS2.p4.m3" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> is a contingent claim and <math id="S2.SS2.p4.m4" class="ltx_Math" alttext="\phi" display="inline"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> is
+the hedge for <math id="S2.SS2.p4.m5" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> then <math id="S2.SS2.p4.m6" class="ltx_Math" alttext="V_{t}(\phi)" display="inline"><semantics><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V_{t}(\phi)</annotation></semantics></math> is a proper price process of <math id="S2.SS2.p4.m7" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>.
+We will see later (Proposition <a href="Pt6.html#S2.SS4.Thmtheorem5" title="Proposition 2.4.5. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.5</span></a>) that this is the only
+price that does not introduce arbitrage opportunities in the market.</p>
+</div>
+<div id="S2.SS2.Thmtheorem3" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 2.2.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS2.Thmtheorem3.p1" class="ltx_para">
+<p class="ltx_p">Let us consider the two period model from Example
+<a href="Pt4.html#S2.SS1.Thmtheorem11" title="Example 2.1.11. ‣ 2.1. General Model Specifications ‣ 2. Multi-Period Market Models ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.11</span></a>:</p>
+<div id="S2.SS2.Ex2" class="ltx_equation ltx_eqn_div">
+<span><img src="bmlimages/DiscreteTimeFinance-5.svg" alt="" id="S2.SS2.Ex2.m1.g1" class="ltx_graphics ltx_markedasmath ltx_img_portrait" width="200" height="253"></span>
+</div>
+<p class="ltx_p">We assume that the interest rate is equal to zero, i.e. <math id="S2.SS2.Thmtheorem3.p1.m1" class="ltx_Math" alttext="B_{t}=1" display="inline"><semantics><mrow><msub><mi>B</mi><mi>t</mi></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">B_{t}=1</annotation></semantics></math> for
+<math id="S2.SS2.Thmtheorem3.p1.m2" class="ltx_Math" alttext="t=0,1,2" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn></mrow></mrow><annotation encoding="application/x-tex">t=0,1,2</annotation></semantics></math>. We consider a digital call in this model, which pays <math id="S2.SS2.Thmtheorem3.p1.m3" class="ltx_Math" alttext="1" display="inline"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>,
+if the stock price at time <math id="S2.SS2.Thmtheorem3.p1.m4" class="ltx_Math" alttext="t=2" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">t=2</annotation></semantics></math> is greater or equal than <math id="S2.SS2.Thmtheorem3.p1.m5" class="ltx_Math" alttext="8" display="inline"><semantics><mn>8</mn><annotation encoding="application/x-tex">8</annotation></semantics></math>, i.e.</p>
+<div id="S2.SS2.Ex3" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex3.m1" class="ltx_Math" alttext="X(\omega)=\begin{cases}1,&amp;S_{2}(\omega)\geq 8,\\
+0,&amp;S_{2}(\omega)&lt;8.\end{cases}" display="block"><semantics><mrow><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>{</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mn>1</mn><mo>,</mo></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>≥</mo><mn>8</mn></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mn>0</mn><mo>,</mo></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>&lt;</mo><mn>8</mn></mrow><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">X(\omega)=\begin{cases}1,&amp;S_{2}(\omega)\geq 8,\\
+0,&amp;S_{2}(\omega)&lt;8.\end{cases}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">In this model the contingent claim <math id="S2.SS2.Thmtheorem3.p1.m6" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> pays off <math id="S2.SS2.Thmtheorem3.p1.m7" class="ltx_Math" alttext="1" display="inline"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> if and only if
+the state of the world is <math id="S2.SS2.Thmtheorem3.p1.m8" class="ltx_Math" alttext="\omega_{1}" display="inline"><semantics><msub><mi>ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\omega_{1}</annotation></semantics></math>:</p>
+<div id="S2.SS2.Ex4" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex4.m1" class="ltx_Math" alttext="X(\omega)=\begin{cases}1,&amp;\omega=\omega_{1},\\
+0,&amp;\text{otherwise.}\end{cases}" display="block"><semantics><mrow><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>{</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mn>1</mn><mo>,</mo></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mi>ω</mi><mo>=</mo><msub><mi>ω</mi><mn>1</mn></msub></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mn>0</mn><mo>,</mo></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mtext>otherwise.</mtext></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">X(\omega)=\begin{cases}1,&amp;\omega=\omega_{1},\\
+0,&amp;\text{otherwise.}\end{cases}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">How can one find a self financing hedging strategy for <math id="S2.SS2.Thmtheorem3.p1.m9" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>, i.e. a
+self financing strategy satisfying</p>
+<div id="S2.SS2.Ex5" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex5.m1" class="ltx_Math" alttext="V_{2}(\phi)(\omega)=\phi_{2}^{0}(\omega)+\phi_{2}^{1}(\omega)S_{2}(\omega)=X(%
+\omega)." display="block"><semantics><mrow><mrow><mrow><msub><mi>V</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msubsup><mi>ϕ</mi><mn>2</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msubsup><mi>ϕ</mi><mn>2</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">V_{2}(\phi)(\omega)=\phi_{2}^{0}(\omega)+\phi_{2}^{1}(\omega)S_{2}(\omega)=X(%
+\omega).</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Since there are four states of the world, these are four equations
+for the eight variables <math id="S2.SS2.Thmtheorem3.p1.m10" class="ltx_Math" alttext="\phi_{2}^{0}(\omega_{i})" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mn>2</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi_{2}^{0}(\omega_{i})</annotation></semantics></math> and
+<math id="S2.SS2.Thmtheorem3.p1.m11" class="ltx_Math" alttext="\phi_{2}^{1}(\omega_{i})" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mn>2</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi_{2}^{1}(\omega_{i})</annotation></semantics></math>. The solution may not be unique. However,
+because of the self financing condition, we have</p>
+<div id="S2.SS2.Ex6" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex6.m1" class="ltx_Math" alttext="\phi_{2}^{0}(\omega)+\phi_{2}^{1}(\omega)S_{2}(\omega)=\phi_{1}^{0}(\omega)+%
+\phi_{1}^{1}(\omega)S_{2}(\omega)" display="block"><semantics><mrow><mrow><mrow><msubsup><mi>ϕ</mi><mn>2</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msubsup><mi>ϕ</mi><mn>2</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mrow><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">\phi_{2}^{0}(\omega)+\phi_{2}^{1}(\omega)S_{2}(\omega)=\phi_{1}^{0}(\omega)+%
+\phi_{1}^{1}(\omega)S_{2}(\omega)</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">so the same equations hold for the <math id="S2.SS2.Thmtheorem3.p1.m12" class="ltx_Math" alttext="\phi_{1}^{0}(\omega)" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi_{1}^{0}(\omega)</annotation></semantics></math>’s and
+<math id="S2.SS2.Thmtheorem3.p1.m13" class="ltx_Math" alttext="\phi_{1}^{1}(\omega)" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi_{1}^{1}(\omega)</annotation></semantics></math>’s:</p>
+<div id="S2.SS2.Ex7" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex7.m1" class="ltx_Math" alttext="\phi_{1}^{0}(\omega)+\phi_{1}^{1}(\omega)S_{2}(\omega)=X(\omega)." display="block"><semantics><mrow><mrow><mrow><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\phi_{1}^{0}(\omega)+\phi_{1}^{1}(\omega)S_{2}(\omega)=X(\omega).</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Therefore if we use self financing trading strategies the terminal
+share holdings <math id="S2.SS2.Thmtheorem3.p1.m14" class="ltx_Math" alttext="\phi_{T}" display="inline"><semantics><msub><mi>ϕ</mi><mi>T</mi></msub><annotation encoding="application/x-tex">\phi_{T}</annotation></semantics></math> does not play any role: e.g. we can simply
+choose the <math id="S2.SS2.Thmtheorem3.p1.m15" class="ltx_Math" alttext="\phi_{2}^{0}(\omega)" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mn>2</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi_{2}^{0}(\omega)</annotation></semantics></math>’s and <math id="S2.SS2.Thmtheorem3.p1.m16" class="ltx_Math" alttext="\phi_{2}^{1}(\omega)" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mn>2</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi_{2}^{1}(\omega)</annotation></semantics></math>’s equal to
+the <math id="S2.SS2.Thmtheorem3.p1.m17" class="ltx_Math" alttext="\phi_{1}^{0}(\omega)" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi_{1}^{0}(\omega)</annotation></semantics></math>’s and <math id="S2.SS2.Thmtheorem3.p1.m18" class="ltx_Math" alttext="\phi_{1}^{1}(\omega)" display="inline"><semantics><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi_{1}^{1}(\omega)</annotation></semantics></math>’s.</p>
+</div>
+<div id="S2.SS2.Thmtheorem3.p2" class="ltx_para">
+<p class="ltx_p">The trick now is to decompose the model into single period market
+models. In this case we have three, one starting at time <math id="S2.SS2.Thmtheorem3.p2.m1" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> going
+until time <math id="S2.SS2.Thmtheorem3.p2.m2" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> with price <math id="S2.SS2.Thmtheorem3.p2.m3" class="ltx_Math" alttext="S_{0}=5" display="inline"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">S_{0}=5</annotation></semantics></math>, one starting at time <math id="S2.SS2.Thmtheorem3.p2.m4" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> with
+price <math id="S2.SS2.Thmtheorem3.p2.m5" class="ltx_Math" alttext="S_{1}=8" display="inline"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">S_{1}=8</annotation></semantics></math> and one starting at time <math id="S2.SS2.Thmtheorem3.p2.m6" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> with price <math id="S2.SS2.Thmtheorem3.p2.m7" class="ltx_Math" alttext="S_{1}=4" display="inline"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">S_{1}=4</annotation></semantics></math>.
+Let us first solve the hedging problem in the <math id="S2.SS2.Thmtheorem3.p2.m8" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> model with
+<math id="S2.SS2.Thmtheorem3.p2.m9" class="ltx_Math" alttext="S_{1}=8" display="inline"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">S_{1}=8</annotation></semantics></math>:</p>
+<div id="S2.SS2.Ex8" class="ltx_equation ltx_eqn_div">
+<span><img src="bmlimages/DiscreteTimeFinance-6.svg" alt="" id="S2.SS2.Ex8.m1.g1" class="ltx_graphics ltx_markedasmath ltx_img_square" width="100" height="95"></span>
+</div>
+<p class="ltx_p">This model is in fact an elementary single period market model, as in Section <a href="Pt1.html#S1.SS1" title="1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1</span></a> and therefore the Delta hedging formula (<a href="Pt2.html#S1.SS1.E3" title="In Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.3</span></a>) applies. Denoting the still unknown hedging strategy with <math id="S2.SS2.Thmtheorem3.p2.m10" class="ltx_Math" alttext="\phi=(\phi_{t})_{0\leq t\leq 2}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>=</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>ϕ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\phi=(\phi_{t})_{0\leq t\leq 2}</annotation></semantics></math> we find</p>
+<div id="S2.SS2.Ex9" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex9.m1" class="ltx_Math" alttext="\phi_{1}^{1}(\omega)=\frac{1-0}{9-6}=\frac{1}{3},\qquad\text{for }\omega=%
+\omega_{1},\omega_{2}." display="block"><semantics><mrow><mrow><mrow><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mn>0</mn></mrow><mrow><mn>9</mn><mo>−</mo><mn>6</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow><mo rspace="2.357em">,</mo><mrow><mrow><mtext>for </mtext><mo>⁢</mo><mi>ω</mi></mrow><mo>=</mo><mrow><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\phi_{1}^{1}(\omega)=\frac{1-0}{9-6}=\frac{1}{3},\qquad\text{for }\omega=%
+\omega_{1},\omega_{2}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">In this case, the rest of the money available at time <math id="S2.SS2.Thmtheorem3.p2.m11" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>, i.e.
+<math id="S2.SS2.Thmtheorem3.p2.m12" class="ltx_Math" alttext="V_{1}(\phi)-\frac{1}{3}\cdot 8" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mfrac><mn>1</mn><mn>3</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>8</mn></mrow></mrow><annotation encoding="application/x-tex">V_{1}(\phi)-\frac{1}{3}\cdot 8</annotation></semantics></math> is invested in the money market
+account. Let us compute <math id="S2.SS2.Thmtheorem3.p2.m13" class="ltx_Math" alttext="V_{1}(\phi)" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V_{1}(\phi)</annotation></semantics></math>. Since <math id="S2.SS2.Thmtheorem3.p2.m14" class="ltx_Math" alttext="\phi" display="inline"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> is a hedge, we
+have</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx20" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S2.SS2.Ex10"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS2.Ex10.m1" class="ltx_Math" alttext="\displaystyle\left(V_{1}(\phi)(\omega_{1})-\frac{1}{3}\cdot 8\right)+\frac{1}{%
+3}\cdot 9" display="inline"><semantics><mrow><mrow><mo>(</mo><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>3</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>8</mn></mrow></mrow><mo>)</mo></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>3</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>9</mn></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\left(V_{1}(\phi)(\omega_{1})-\frac{1}{3}\cdot 8\right)+\frac{1}{%
+3}\cdot 9</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S2.SS2.Ex10.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS2.Ex10.m3" class="ltx_Math" alttext="\displaystyle 1" display="inline"><semantics><mn>1</mn><annotation encoding="application/x-tex">\displaystyle 1</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS2.Ex11"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS2.Ex11.m1" class="ltx_Math" alttext="\displaystyle\left(V_{1}(\phi)(\omega_{2})-\frac{1}{3}\cdot 8\right)+\frac{1}{%
+3}\cdot 6" display="inline"><semantics><mrow><mrow><mo>(</mo><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>3</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>8</mn></mrow></mrow><mo>)</mo></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>3</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>6</mn></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\left(V_{1}(\phi)(\omega_{2})-\frac{1}{3}\cdot 8\right)+\frac{1}{%
+3}\cdot 6</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S2.SS2.Ex11.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS2.Ex11.m3" class="ltx_Math" alttext="\displaystyle 0." display="inline"><semantics><mrow><mn>0</mn><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle 0.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">These equations are satisfied for <math id="S2.SS2.Thmtheorem3.p2.m15" class="ltx_math_unparsed" alttext="V_{1}(\phi)(\omega_{1})=\frac{2}{3}=(V_{1}(\phi)(\omega_{2})" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>=</mo><mrow><mo stretchy="false">(</mo><msub><mi>V</mi><mn>1</mn></msub><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">V_{1}(\phi)(\omega_{1})=\frac{2}{3}=(V_{1}(\phi)(\omega_{2})</annotation></semantics></math>. Equality of the value process under the two
+states <math id="S2.SS2.Thmtheorem3.p2.m16" class="ltx_Math" alttext="\omega_{1}" display="inline"><semantics><msub><mi>ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\omega_{1}</annotation></semantics></math> and <math id="S2.SS2.Thmtheorem3.p2.m17" class="ltx_Math" alttext="\omega_{2}" display="inline"><semantics><msub><mi>ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\omega_{2}</annotation></semantics></math> is no coincidence, it is a must,
+because <math id="S2.SS2.Thmtheorem3.p2.m18" class="ltx_Math" alttext="V_{1}(\phi)" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V_{1}(\phi)</annotation></semantics></math> has to be <math id="S2.SS2.Thmtheorem3.p2.m19" class="ltx_Math" alttext="\mathcal{F}_{1}^{S}" display="inline"><semantics><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup><annotation encoding="application/x-tex">\mathcal{F}_{1}^{S}</annotation></semantics></math> measurable (it
+results from Definition <a href="#S2.SS1.Thmtheorem13" title="Definition 2.1.13. ‣ Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.13</span></a>). We then have</p>
+<div id="S2.SS2.Ex12" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex12.m1" class="ltx_Math" alttext="\phi_{1}^{0}(\omega)=\frac{2}{3}-\frac{1}{3}\cdot 8=-2,\qquad\text{for }\omega%
+=\omega_{1},\omega_{2}." display="block"><semantics><mrow><mrow><mrow><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>−</mo><mrow><mfrac><mn>1</mn><mn>3</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>8</mn></mrow></mrow><mo>=</mo><mrow><mo>−</mo><mn>2</mn></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mrow><mtext>for </mtext><mo>⁢</mo><mi>ω</mi></mrow><mo>=</mo><mrow><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\phi_{1}^{0}(\omega)=\frac{2}{3}-\frac{1}{3}\cdot 8=-2,\qquad\text{for }\omega%
+=\omega_{1},\omega_{2}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Let us now come to the hedging problem at time <math id="S2.SS2.Thmtheorem3.p2.m20" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> when the stock
+price is <math id="S2.SS2.Thmtheorem3.p2.m21" class="ltx_Math" alttext="S_{1}=4" display="inline"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">S_{1}=4</annotation></semantics></math>:</p>
+<div id="S2.SS2.Ex13" class="ltx_equation ltx_eqn_div">
+<span><img src="bmlimages/DiscreteTimeFinance-7.svg" alt="" id="S2.SS2.Ex13.m1.g1" class="ltx_graphics ltx_markedasmath ltx_img_square" width="100" height="95"></span>
+</div>
+<p class="ltx_p">The state of the world is here either <math id="S2.SS2.Thmtheorem3.p2.m22" class="ltx_Math" alttext="\omega_{3}" display="inline"><semantics><msub><mi>ω</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\omega_{3}</annotation></semantics></math> or <math id="S2.SS2.Thmtheorem3.p2.m23" class="ltx_Math" alttext="\omega_{4}" display="inline"><semantics><msub><mi>ω</mi><mn>4</mn></msub><annotation encoding="application/x-tex">\omega_{4}</annotation></semantics></math>.
+There is no chance that the digital call will pay off anything else
+than zero. The hedging strategy for this payoff is easy, invest zero
+in the money market account and invest zero in the stock. We
+therefore have</p>
+<div id="S2.SS2.Ex14" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex14.m1" class="ltx_Math" alttext="\phi_{1}^{0}(\omega)=0=\phi_{1}^{1}(\omega),\qquad\text{for }\omega=\omega_{3}%
+,\omega_{4}." display="block"><semantics><mrow><mrow><mrow><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn><mo>=</mo><mrow><msubsup><mi>ϕ</mi><mn>1</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mrow><mtext>for </mtext><mo>⁢</mo><mi>ω</mi></mrow><mo>=</mo><mrow><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\phi_{1}^{0}(\omega)=0=\phi_{1}^{1}(\omega),\qquad\text{for }\omega=\omega_{3}%
+,\omega_{4}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Let us now consider the hedging problem at time <math id="S2.SS2.Thmtheorem3.p2.m24" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> with price
+<math id="S2.SS2.Thmtheorem3.p2.m25" class="ltx_Math" alttext="S_{0}=5" display="inline"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">S_{0}=5</annotation></semantics></math>:</p>
+<div id="S2.SS2.Ex15" class="ltx_equation ltx_eqn_div">
+<span><img src="bmlimages/DiscreteTimeFinance-8.svg" alt="" id="S2.SS2.Ex15.m1.g1" class="ltx_graphics ltx_markedasmath ltx_img_square" width="100" height="95"></span>
+</div>
+<p class="ltx_p">Here we don’t have to hedge the digital call, since it pays off at
+time <math id="S2.SS2.Thmtheorem3.p2.m26" class="ltx_Math" alttext="t=2" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">t=2</annotation></semantics></math>, but we have to find a hedge for the contingent claim
+that pays off <math id="S2.SS2.Thmtheorem3.p2.m27" class="ltx_Math" alttext="V_{1}(\phi)" display="inline"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V_{1}(\phi)</annotation></semantics></math> at <math id="S2.SS2.Thmtheorem3.p2.m28" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>:</p>
+<div id="S2.SS2.Ex16" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex16.m1" class="ltx_Math" alttext="V_{1}(\phi)=\begin{cases}\frac{2}{3},&amp;\mbox{ if }\omega=\omega_{1},\omega_{2},%
+\\
+0,&amp;\mbox{ if }\omega=\omega_{3},\omega_{4}.\end{cases}" display="block"><semantics><mrow><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>{</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mstyle displaystyle="false"><mfrac><mn>2</mn><mn>3</mn></mfrac></mstyle><mo>,</mo></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><mtext> if </mtext><mo>⁢</mo><mi>ω</mi></mrow><mo>=</mo><mrow><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub></mrow></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mn>0</mn><mo>,</mo></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><mtext> if </mtext><mo>⁢</mo><mi>ω</mi></mrow><mo>=</mo><mrow><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub></mrow></mrow><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">V_{1}(\phi)=\begin{cases}\frac{2}{3},&amp;\mbox{ if }\omega=\omega_{1},\omega_{2},%
+\\
+0,&amp;\mbox{ if }\omega=\omega_{3},\omega_{4}.\end{cases}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">The reason why we do this, is because if we hedge this contingent
+claim in the one period from time <math id="S2.SS2.Thmtheorem3.p2.m29" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> to time <math id="S2.SS2.Thmtheorem3.p2.m30" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>, and then
+follow the strategy we computed at time <math id="S2.SS2.Thmtheorem3.p2.m31" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math>, we are done. Solving
+this hedging problem is easy again. We can apply the delta hedging
+formula once more in order to obtain</p>
+<div id="S2.SS2.Ex17" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex17.m1" class="ltx_Math" alttext="\phi_{0}^{1}(\omega)=\frac{\frac{2}{3}-0}{8-4}=\frac{1}{6},\qquad\omega=\omega%
+_{1},\omega_{2},\omega_{3},\omega_{4}." display="block"><semantics><mrow><mrow><mrow><mrow><msubsup><mi>ϕ</mi><mn>0</mn><mn>1</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>−</mo><mn>0</mn></mrow><mrow><mn>8</mn><mo>−</mo><mn>4</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac></mrow><mo rspace="2.357em">,</mo><mrow><mi>ω</mi><mo>=</mo><mrow><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\phi_{0}^{1}(\omega)=\frac{\frac{2}{3}-0}{8-4}=\frac{1}{6},\qquad\omega=\omega%
+_{1},\omega_{2},\omega_{3},\omega_{4}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">In order to hedge we must have</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx21" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tbody id="S2.SS2.Ex18"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS2.Ex18.m1" class="ltx_Math" alttext="\displaystyle\left(V_{0}(\phi)(\omega)-\frac{1}{6}\cdot 5\right)+\frac{1}{6}\cdot
+8" display="inline"><semantics><mrow><mrow><mo>(</mo><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>6</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>5</mn></mrow></mrow><mo>)</mo></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>6</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>8</mn></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\left(V_{0}(\phi)(\omega)-\frac{1}{6}\cdot 5\right)+\frac{1}{6}\cdot
+8</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S2.SS2.Ex18.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS2.Ex18.m3" class="ltx_Math" alttext="\displaystyle\frac{2}{3},\quad\omega=\omega_{1},\omega_{2}" display="inline"><semantics><mrow><mrow><mrow><mstyle displaystyle="true"><mfrac><mn>2</mn><mn>3</mn></mfrac></mstyle><mo rspace="1.267em">,</mo><mi>ω</mi></mrow><mo>=</mo><msub><mi>ω</mi><mn>1</mn></msub></mrow><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\displaystyle\frac{2}{3},\quad\omega=\omega_{1},\omega_{2}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS2.Ex19"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS2.Ex19.m1" class="ltx_Math" alttext="\displaystyle\left(V_{0}(\phi)(\omega)-\frac{1}{6}\cdot 5\right)+\frac{1}{6}\cdot
+4" display="inline"><semantics><mrow><mrow><mo>(</mo><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>6</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>5</mn></mrow></mrow><mo>)</mo></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>6</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>4</mn></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\left(V_{0}(\phi)(\omega)-\frac{1}{6}\cdot 5\right)+\frac{1}{6}\cdot
+4</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S2.SS2.Ex19.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo>=</mo><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS2.Ex19.m3" class="ltx_Math" alttext="\displaystyle 0,\quad\omega=\omega_{3},\omega_{4}." display="inline"><semantics><mrow><mrow><mrow><mrow><mn>0</mn><mo rspace="1.267em">,</mo><mi>ω</mi></mrow><mo>=</mo><msub><mi>ω</mi><mn>3</mn></msub></mrow><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle 0,\quad\omega=\omega_{3},\omega_{4}.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">Both equations are satisfied for <math id="S2.SS2.Thmtheorem3.p2.m32" class="ltx_Math" alttext="V_{0}(\phi)(\omega)=\frac{1}{6}" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac></mrow><annotation encoding="application/x-tex">V_{0}(\phi)(\omega)=\frac{1}{6}</annotation></semantics></math>
+for all <math id="S2.SS2.Thmtheorem3.p2.m33" class="ltx_Math" alttext="\omega\in\Omega" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\omega\in\Omega</annotation></semantics></math>. This yields</p>
+<div id="S2.SS2.Ex20" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS2.Ex20.m1" class="ltx_Math" alttext="\phi_{0}^{0}(\omega)=\frac{1}{6}-\frac{1}{6}\cdot 5=-\frac{4}{6},\qquad\omega=%
+\omega_{1},\omega_{2},\omega_{3},\omega_{4}." display="block"><semantics><mrow><mrow><mrow><mrow><msubsup><mi>ϕ</mi><mn>0</mn><mn>0</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>−</mo><mrow><mfrac><mn>1</mn><mn>6</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>5</mn></mrow></mrow><mo>=</mo><mrow><mo>−</mo><mfrac><mn>4</mn><mn>6</mn></mfrac></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mi>ω</mi><mo>=</mo><mrow><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\phi_{0}^{0}(\omega)=\frac{1}{6}-\frac{1}{6}\cdot 5=-\frac{4}{6},\qquad\omega=%
+\omega_{1},\omega_{2},\omega_{3},\omega_{4}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">The price process of the digital call is given by <math id="S2.SS2.Thmtheorem3.p2.m34" class="ltx_Math" alttext="V_{t}(\phi)" display="inline"><semantics><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V_{t}(\phi)</annotation></semantics></math>,
+<math id="S2.SS2.Thmtheorem3.p2.m35" class="ltx_Math" alttext="t=0,1,2" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn></mrow></mrow><annotation encoding="application/x-tex">t=0,1,2</annotation></semantics></math>, where <math id="S2.SS2.Thmtheorem3.p2.m36" class="ltx_Math" alttext="\phi" display="inline"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> is the above trading strategy. The price at
+<math id="S2.SS2.Thmtheorem3.p2.m37" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> is equal to <math id="S2.SS2.Thmtheorem3.p2.m38" class="ltx_Math" alttext="\frac{1}{6}" display="inline"><semantics><mfrac><mn>1</mn><mn>6</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{6}</annotation></semantics></math>. The price at <math id="S2.SS2.Thmtheorem3.p2.m39" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> depends on the
+state of the market. If <math id="S2.SS2.Thmtheorem3.p2.m40" class="ltx_Math" alttext="S^{1}=8" display="inline"><semantics><mrow><msup><mi>S</mi><mn>1</mn></msup><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">S^{1}=8</annotation></semantics></math>, it is equal to <math id="S2.SS2.Thmtheorem3.p2.m41" class="ltx_Math" alttext="\frac{2}{3}" display="inline"><semantics><mfrac><mn>2</mn><mn>3</mn></mfrac><annotation encoding="application/x-tex">\frac{2}{3}</annotation></semantics></math>. If
+<math id="S2.SS2.Thmtheorem3.p2.m42" class="ltx_Math" alttext="S^{1}=4" display="inline"><semantics><mrow><msup><mi>S</mi><mn>1</mn></msup><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">S^{1}=4</annotation></semantics></math>, it is equal to <math id="S2.SS2.Thmtheorem3.p2.m43" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math>. The price at <math id="S2.SS2.Thmtheorem3.p2.m44" class="ltx_Math" alttext="t=2" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">t=2</annotation></semantics></math> is simply equal to
+the payoff of the digital option under consideration.</p>
+</div>
+<div id="S2.SS2.Thmtheorem3.p3" class="ltx_para">
+<p class="ltx_p">We can present the hedging strategy in a concise way in a table:</p>
+<div class="bml-overflow-wrapper">
+<table class="ltx_tabular ltx_centering ltx_align_middle">
+<tr class="ltx_tr">
+<td class="ltx_td ltx_border_r" style="padding-bottom:2.0pt;"></td>
+<td class="ltx_td ltx_align_right ltx_border_r" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m1" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center" style="padding-bottom:2.0pt;" colspan="4"><math id="S2.SS2.Thmtheorem3.p3.m2" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_border_r" style="padding-bottom:2.0pt;"></td>
+<td class="ltx_td ltx_border_r" style="padding-bottom:2.0pt;"></td>
+<td class="ltx_td ltx_align_right ltx_border_r" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m3" class="ltx_Math" alttext="\omega_{1}" display="inline"><semantics><msub><mi>ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\omega_{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m4" class="ltx_Math" alttext="\omega_{2}" display="inline"><semantics><msub><mi>ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\omega_{2}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m5" class="ltx_Math" alttext="\omega_{3}" display="inline"><semantics><msub><mi>ω</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\omega_{3}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m6" class="ltx_Math" alttext="\omega_{4}" display="inline"><semantics><msub><mi>ω</mi><mn>4</mn></msub><annotation encoding="application/x-tex">\omega_{4}</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_right ltx_border_r ltx_border_t" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m7" class="ltx_Math" alttext="\phi^{0}" display="inline"><semantics><msup><mi>ϕ</mi><mn>0</mn></msup><annotation encoding="application/x-tex">\phi^{0}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r ltx_border_t" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m8" class="ltx_Math" alttext="-\frac{4}{6}" display="inline"><semantics><mrow><mo>−</mo><mfrac><mn>4</mn><mn>6</mn></mfrac></mrow><annotation encoding="application/x-tex">-\frac{4}{6}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r ltx_border_t" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m9" class="ltx_Math" alttext="-2" display="inline"><semantics><mrow><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r ltx_border_t" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m10" class="ltx_Math" alttext="-2" display="inline"><semantics><mrow><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r ltx_border_t" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m11" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r ltx_border_t" style="padding-bottom:2.0pt;"><math id="S2.SS2.Thmtheorem3.p3.m12" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_right ltx_border_r"><math id="S2.SS2.Thmtheorem3.p3.m13" class="ltx_Math" alttext="\phi^{1}" display="inline"><semantics><msup><mi>ϕ</mi><mn>1</mn></msup><annotation encoding="application/x-tex">\phi^{1}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r"><math id="S2.SS2.Thmtheorem3.p3.m14" class="ltx_Math" alttext="\frac{1}{6}" display="inline"><semantics><mfrac><mn>1</mn><mn>6</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{6}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r"><math id="S2.SS2.Thmtheorem3.p3.m15" class="ltx_Math" alttext="\frac{1}{3}" display="inline"><semantics><mfrac><mn>1</mn><mn>3</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{3}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r"><math id="S2.SS2.Thmtheorem3.p3.m16" class="ltx_Math" alttext="\frac{1}{3}" display="inline"><semantics><mfrac><mn>1</mn><mn>3</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{3}</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r"><math id="S2.SS2.Thmtheorem3.p3.m17" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math></td>
+<td class="ltx_td ltx_align_right ltx_border_r"><math id="S2.SS2.Thmtheorem3.p3.m18" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math></td>
+</tr>
+</table>
+</div>
+<p class="ltx_p">It is now easy to check that this an adapted and self-financing
+trading strategy. ∎</p>
+</div>
+</div>
+<div id="S2.SS2.p5" class="ltx_para">
+<p class="ltx_p">Due to the replication principle (and above example) we know a
+method to price contingent claims for which there exists a hedging
+strategy. As in general single period market models there may be
+contingent claims for which there is no hedging strategy in
+<math id="S2.SS2.p5.m1" class="ltx_Math" alttext="\mathcal{T}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒯</mi><annotation encoding="application/x-tex">\mathcal{T}</annotation></semantics></math>. We have then analogous definitions as in the single
+period case.</p>
+</div>
+<div id="S2.SS2.Thmtheorem4" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.2.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS2.Thmtheorem4.p1" class="ltx_para">
+<p class="ltx_p">A contingent claim <math id="S2.SS2.Thmtheorem4.p1.m1" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> is called <span class="ltx_text ltx_font_bold">attainable</span>
+in <math id="S2.SS2.Thmtheorem4.p1.m2" class="ltx_Math" alttext="\mathcal{T}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒯</mi><annotation encoding="application/x-tex">\mathcal{T}</annotation></semantics></math>, if there exists a trading strategy <math id="S2.SS2.Thmtheorem4.p1.m3" class="ltx_Math" alttext="\phi\in\mathcal{T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒯</mi></mrow><annotation encoding="application/x-tex">\phi\in\mathcal{T}</annotation></semantics></math> which replicates <math id="S2.SS2.Thmtheorem4.p1.m4" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>, i.e. satisfies <math id="S2.SS2.Thmtheorem4.p1.m5" class="ltx_Math" alttext="V_{T}(\phi)=X" display="inline"><semantics><mrow><mrow><msub><mi>V</mi><mi>T</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">V_{T}(\phi)=X</annotation></semantics></math>.</p>
+</div>
+</div>
+<div id="S2.SS2.Thmtheorem5" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.2.5</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS2.Thmtheorem5.p1" class="ltx_para">
+<p class="ltx_p">A general multi period market model is called
+<span class="ltx_text ltx_font_bold">complete</span>, if and only if every contingent claim is
+attainable. A model that is not complete is called
+<span class="ltx_text ltx_font_bold">incomplete</span>.</p>
+</div>
+</div>
+<div id="S2.SS2.Thmtheorem6" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 2.2.6</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS2.Thmtheorem6.p1" class="ltx_para">
+<p class="ltx_p">A multi period version of the stochastic volatility model in Example
+<a href="Pt3.html#S1.SS2.Thmtheorem15" title="Example 1.2.15. ‣ Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.15</span></a> is an incomplete multi period market model. ∎</p>
+</div>
+</div>
+</div>
+</section>
+<section id="S2.SS3" class="ltx_subsection normal">
+<div class="section level2">
+
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection header-section-number">2.3</span>. Conditional expectation</h2>
+
+<div id="S2.SS3.p1" class="ltx_para">
+<p class="ltx_p">In order to extend the notion of risk neutral probability measure to
+the multi period case, we need the concept of conditional
+expectation. This is due to the dynamic character of the multi
+period model.</p>
+</div>
+<div id="S2.SS3.Thmtheorem1" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS3.Thmtheorem1.p1" class="ltx_para">
+<p class="ltx_p">Let <math id="S2.SS3.Thmtheorem1.p1.m1" class="ltx_Math" alttext="(\Omega,\mathbb{P})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi mathvariant="normal">Ω</mi><mo>,</mo><mi>ℙ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\Omega,\mathbb{P})</annotation></semantics></math> be a finite probability
+space, <math id="S2.SS3.Thmtheorem1.p1.m2" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> a random variable and <math id="S2.SS3.Thmtheorem1.p1.m3" class="ltx_Math" alttext="\mathcal{G}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒢</mi><annotation encoding="application/x-tex">\mathcal{G}</annotation></semantics></math> a <math id="S2.SS3.Thmtheorem1.p1.m4" class="ltx_Math" alttext="\sigma" display="inline"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>-algebra of
+sets of <math id="S2.SS3.Thmtheorem1.p1.m5" class="ltx_Math" alttext="\Omega" display="inline"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>. Denoting the unique partition of <math id="S2.SS3.Thmtheorem1.p1.m6" class="ltx_Math" alttext="\mathcal{G}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒢</mi><annotation encoding="application/x-tex">\mathcal{G}</annotation></semantics></math>
+with <math id="S2.SS3.Thmtheorem1.p1.m7" class="ltx_Math" alttext="(A_{i})_{i\in I}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mi>i</mi><mo>∈</mo><mi>I</mi></mrow></msub><annotation encoding="application/x-tex">(A_{i})_{i\in I}</annotation></semantics></math> the <span class="ltx_text ltx_font_bold">conditional expectation</span>
+<math id="S2.SS3.Thmtheorem1.p1.m8" class="ltx_Math" alttext="\mathbb{E}(X|\mathcal{G})" display="inline"><semantics><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo fence="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}(X|\mathcal{G})</annotation></semantics></math> of <math id="S2.SS3.Thmtheorem1.p1.m9" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> with respect to <math id="S2.SS3.Thmtheorem1.p1.m10" class="ltx_Math" alttext="\mathcal{G}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒢</mi><annotation encoding="application/x-tex">\mathcal{G}</annotation></semantics></math> is
+defined as the random variable which satisfies</p>
+<div id="S2.SS3.E1" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.E1.m1" class="ltx_math_unparsed" alttext="\boxed{\mathbb{E}(X|\mathcal{G})(\omega)=\sum_{x}x\,\mathbb{P}(X=x|A_{i}),%
+\quad\omega\in A_{i}.}" display="block"><semantics><menclose notation="box"><mrow><mi>𝔼</mi><mrow><mo stretchy="false">(</mo><mi>X</mi><mo fence="false" rspace="0.167em" stretchy="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo rspace="0.111em">=</mo><munder><mo movablelimits="false">∑</mo><mi>x</mi></munder><mi>x</mi><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><mi>X</mi><mo>=</mo><mi>x</mi><mo fence="false" rspace="0.167em" stretchy="false">|</mo><msub><mi>A</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo rspace="1.267em">,</mo><mi>ω</mi><mo>∈</mo><msub><mi>A</mi><mi>i</mi></msub><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{E}(X|\mathcal{G})(\omega)=\sum_{x}x\,\mathbb{P}(X=x|A_{i}),%
+\quad\omega\in A_{i}.}</annotation></semantics></math></span>
+              <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.3.1)</span>
+              
+              
+            
+</div>
+<p class="ltx_p">Here</p>
+<div id="S2.SS3.Ex1" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.Ex1.m1" class="ltx_Math" alttext="\mathbb{P}(X=x|A_{i})=\frac{\mathbb{P}(\{X=x\}\cap A_{i})}{\mathbb{P}(A_{i})}" display="block"><semantics><mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo>=</mo><mrow><mi>x</mi><mo fence="false">|</mo><msub><mi>A</mi><mi>i</mi></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><mo stretchy="false">{</mo><mrow><mi>X</mi><mo>=</mo><mi>x</mi></mrow><mo stretchy="false">}</mo></mrow><mo>∩</mo><msub><mi>A</mi><mi>i</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">\mathbb{P}(X=x|A_{i})=\frac{\mathbb{P}(\{X=x\}\cap A_{i})}{\mathbb{P}(A_{i})}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">denotes the conditional probability of the event <math id="S2.SS3.Thmtheorem1.p1.m11" class="ltx_Math" alttext="\{\omega|X(\omega)=x\}" display="inline"><semantics><mrow><mo stretchy="false">{</mo><mi>ω</mi><mo lspace="0em" rspace="0em">|</mo><mrow><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>x</mi></mrow><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{\omega|X(\omega)=x\}</annotation></semantics></math> given the event <math id="S2.SS3.Thmtheorem1.p1.m12" class="ltx_Math" alttext="A_{i}" display="inline"><semantics><msub><mi>A</mi><mi>i</mi></msub><annotation encoding="application/x-tex">A_{i}</annotation></semantics></math>.</p>
+</div>
+</div>
+<div id="S2.SS3.p2" class="ltx_para">
+<p class="ltx_p">It is worth to mention that <math id="S2.SS3.p2.m1" class="ltx_Math" alttext="\mathbb{E}(X|\mathcal{G})" display="inline"><semantics><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo fence="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}(X|\mathcal{G})</annotation></semantics></math> is a random
+variable. It has the same value on each set of the partition, i.e.
+<math id="S2.SS3.p2.m2" class="ltx_Math" alttext="\mathbb{E}(X|\mathcal{G})(\omega)=\mathbb{E}(X|\mathcal{G})(\omega^{\prime})" display="inline"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo fence="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo fence="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>ω</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}(X|\mathcal{G})(\omega)=\mathbb{E}(X|\mathcal{G})(\omega^{\prime})</annotation></semantics></math> if there exists <math id="S2.SS3.p2.m3" class="ltx_Math" alttext="i\in I" display="inline"><semantics><mrow><mi>i</mi><mo>∈</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">i\in I</annotation></semantics></math> such
+that <math id="S2.SS3.p2.m4" class="ltx_Math" alttext="\omega,\omega^{\prime}\in A_{i}" display="inline"><semantics><mrow><mrow><mi>ω</mi><mo>,</mo><msup><mi>ω</mi><mo>′</mo></msup></mrow><mo>∈</mo><msub><mi>A</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\omega,\omega^{\prime}\in A_{i}</annotation></semantics></math>. Notice, however, that for <math id="S2.SS3.p2.m5" class="ltx_Math" alttext="\omega" display="inline"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>’s
+in different sets of the partition values can be different. Until
+now it seems that the conditional expectation is a purely artificial
+construct. Not at all. The intuitive meaning is the following: the
+conditional expectation gives the average of values of <math id="S2.SS3.p2.m6" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> (weighted
+by their probabilities) on each set <math id="S2.SS3.p2.m7" class="ltx_Math" alttext="A_{i}" display="inline"><semantics><msub><mi>A</mi><mi>i</mi></msub><annotation encoding="application/x-tex">A_{i}</annotation></semantics></math> of the partition. It is
+somehow ”the expected value” of <math id="S2.SS3.p2.m8" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> on each set of the partition
+of <math id="S2.SS3.p2.m9" class="ltx_Math" alttext="\mathcal{G}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒢</mi><annotation encoding="application/x-tex">\mathcal{G}</annotation></semantics></math>. It follows from Proposition <a href="Pt4.html#S2.SS1.Thmtheorem5" title="Proposition 2.1.5. ‣ 2.1. General Model Specifications ‣ 2. Multi-Period Market Models ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.5</span></a> that
+<math id="S2.SS3.p2.m10" class="ltx_Math" alttext="\mathbb{E}(X|\mathcal{G})" display="inline"><semantics><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo fence="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}(X|\mathcal{G})</annotation></semantics></math> is a <math id="S2.SS3.p2.m11" class="ltx_Math" alttext="\mathcal{G}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒢</mi><annotation encoding="application/x-tex">\mathcal{G}</annotation></semantics></math>-measurable random
+variable. The verification of the following identity is left as an
+exercise: for any <math id="S2.SS3.p2.m12" class="ltx_Math" alttext="G\in\mathcal{G}" display="inline"><semantics><mrow><mi>G</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi></mrow><annotation encoding="application/x-tex">G\in\mathcal{G}</annotation></semantics></math> one has</p>
+<div id="S2.SS3.E2" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.E2.m1" class="ltx_math_unparsed" alttext="\boxed{\sum_{\omega\in G}X(\omega)\mathbb{P}(\omega)=\sum_{\omega\in G}\mathbb%
+{E}(X|\mathcal{G})(\omega)\mathbb{P}(\omega).}" display="block"><semantics><menclose notation="box"><mrow><munder><mo movablelimits="false">∑</mo><mrow><mi>ω</mi><mo>∈</mo><mi>G</mi></mrow></munder><mi>X</mi><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo rspace="0.111em">=</mo><munder><mo movablelimits="false">∑</mo><mrow><mi>ω</mi><mo>∈</mo><mi>G</mi></mrow></munder><mi>𝔼</mi><mrow><mo stretchy="false">(</mo><mi>X</mi><mo fence="false" rspace="0.167em" stretchy="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mi>ℙ</mi><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\sum_{\omega\in G}X(\omega)\mathbb{P}(\omega)=\sum_{\omega\in G}\mathbb%
+{E}(X|\mathcal{G})(\omega)\mathbb{P}(\omega).}</annotation></semantics></math></span>
+            <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.3.2)</span>
+            
+            
+          
+</div>
+</div>
+<div id="S2.SS3.Thmtheorem2" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 2.3.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS3.Thmtheorem2.p1" class="ltx_para">
+<p class="ltx_p">In the context of Example <a href="Pt4.html#S2.SS1.Thmtheorem11" title="Example 2.1.11. ‣ 2.1. General Model Specifications ‣ 2. Multi-Period Market Models ‣ Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.11</span></a>, we want to
+compute <math id="S2.SS3.Thmtheorem2.p1.m1" class="ltx_Math" alttext="\mathbb{E}(S_{2}|\mathcal{F}_{1}^{S})" display="inline"><semantics><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo fence="false">|</mo><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}(S_{2}|\mathcal{F}_{1}^{S})</annotation></semantics></math>, where, as we have already
+shown,</p>
+<div id="S2.SS3.Ex2" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.Ex2.m1" class="ltx_Math" alttext="\mathcal{F}_{1}^{S}=\{\emptyset,\{\omega_{1},\omega_{2}\},\{\omega_{3},\omega_%
+{4}\},\Omega\}." display="block"><semantics><mrow><mrow><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup><mo>=</mo><mrow><mo stretchy="false">{</mo><mi>∅︀</mi><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo>,</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">}</mo></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathcal{F}_{1}^{S}=\{\emptyset,\{\omega_{1},\omega_{2}\},\{\omega_{3},\omega_%
+{4}\},\Omega\}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Sets <math id="S2.SS3.Thmtheorem2.p1.m2" class="ltx_Math" alttext="A_{1}=\{\omega_{1},\omega_{2}\}" display="inline"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">A_{1}=\{\omega_{1},\omega_{2}\}</annotation></semantics></math> and <math id="S2.SS3.Thmtheorem2.p1.m3" class="ltx_Math" alttext="A_{2}=\{\omega_{3},\omega_{4}\}" display="inline"><semantics><mrow><msub><mi>A</mi><mn>2</mn></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">A_{2}=\{\omega_{3},\omega_{4}\}</annotation></semantics></math>
+form a partition of <math id="S2.SS3.Thmtheorem2.p1.m4" class="ltx_Math" alttext="\mathcal{F}_{1}^{S}" display="inline"><semantics><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup><annotation encoding="application/x-tex">\mathcal{F}_{1}^{S}</annotation></semantics></math>. We have</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx22" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S2.SS3.Ex3"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex3.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(S_{2}=9|A_{1})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mrow><mn>9</mn><mo fence="false">|</mo><msub><mi>A</mi><mn>1</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(S_{2}=9|A_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS3.Ex3.m2" class="ltx_Math" alttext="\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{1}\mbox{ s.t. }S_{2}(\omega)=9\}%
+)}{\mathbb{P}(A_{1})}=\frac{\mathbb{P}(\omega_{1})}{\mathbb{P}(\{\omega_{1},%
+\omega_{2}\})}=\frac{\frac{2}{5}\cdot\frac{3}{4}}{\frac{2}{5}}=\frac{3}{4}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><mrow><mi>ω</mi><mo>∈</mo><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>⁢</mo><mtext> s.t. </mtext><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>9</mn></mrow><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mfrac><mn>2</mn><mn>5</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></mrow><mfrac><mn>2</mn><mn>5</mn></mfrac></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>3</mn><mn>4</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{1}\mbox{ s.t. }S_{2}(\omega)=9\}%
+)}{\mathbb{P}(A_{1})}=\frac{\mathbb{P}(\omega_{1})}{\mathbb{P}(\{\omega_{1},%
+\omega_{2}\})}=\frac{\frac{2}{5}\cdot\frac{3}{4}}{\frac{2}{5}}=\frac{3}{4}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS3.Ex4"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex4.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(S_{2}=6|A_{1})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mrow><mn>6</mn><mo fence="false">|</mo><msub><mi>A</mi><mn>1</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(S_{2}=6|A_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS3.Ex4.m2" class="ltx_Math" alttext="\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{1}\mbox{ s.t. }S_{2}(\omega)=6\}%
+)}{\mathbb{P}(A_{1})}=\frac{\mathbb{P}(\omega_{2})}{\mathbb{P}(\{\omega_{1},%
+\omega_{2}\})}=\frac{\frac{2}{5}\cdot\frac{1}{4}}{\frac{2}{5}}=\frac{1}{4}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><mrow><mi>ω</mi><mo>∈</mo><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>⁢</mo><mtext> s.t. </mtext><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>6</mn></mrow><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mfrac><mn>2</mn><mn>5</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></mrow><mfrac><mn>2</mn><mn>5</mn></mfrac></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>4</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{1}\mbox{ s.t. }S_{2}(\omega)=6\}%
+)}{\mathbb{P}(A_{1})}=\frac{\mathbb{P}(\omega_{2})}{\mathbb{P}(\{\omega_{1},%
+\omega_{2}\})}=\frac{\frac{2}{5}\cdot\frac{1}{4}}{\frac{2}{5}}=\frac{1}{4}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS3.Ex5"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex5.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(S_{2}=3|A_{1})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mrow><mn>3</mn><mo fence="false">|</mo><msub><mi>A</mi><mn>1</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(S_{2}=3|A_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS3.Ex5.m2" class="ltx_Math" alttext="\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{1}\mbox{ s.t. }S_{2}(\omega)=3\}%
+)}{\mathbb{P}(A_{1})}=\frac{\mathbb{P}(\emptyset)}{\mathbb{P}(\{\omega_{1},%
+\omega_{2}\})}=0" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><mrow><mi>ω</mi><mo>∈</mo><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>⁢</mo><mtext> s.t. </mtext><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>3</mn></mrow><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>∅︀</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{1}\mbox{ s.t. }S_{2}(\omega)=3\}%
+)}{\mathbb{P}(A_{1})}=\frac{\mathbb{P}(\emptyset)}{\mathbb{P}(\{\omega_{1},%
+\omega_{2}\})}=0</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS3.Ex6"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex6.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(S_{2}=9|A_{2})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mrow><mn>9</mn><mo fence="false">|</mo><msub><mi>A</mi><mn>2</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(S_{2}=9|A_{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS3.Ex6.m2" class="ltx_Math" alttext="\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{2}\mbox{ s.t. }S_{2}(\omega)=9\}%
+)}{\mathbb{P}(A_{2})}=\frac{\mathbb{P}(\emptyset)}{\mathbb{P}(\{\omega_{3},%
+\omega_{4}\})}=0" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><mrow><mi>ω</mi><mo>∈</mo><mrow><msub><mi>A</mi><mn>2</mn></msub><mo>⁢</mo><mtext> s.t. </mtext><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>9</mn></mrow><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>∅︀</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{2}\mbox{ s.t. }S_{2}(\omega)=9\}%
+)}{\mathbb{P}(A_{2})}=\frac{\mathbb{P}(\emptyset)}{\mathbb{P}(\{\omega_{3},%
+\omega_{4}\})}=0</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS3.Ex7"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex7.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(S_{2}=6|A_{2})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mrow><mn>6</mn><mo fence="false">|</mo><msub><mi>A</mi><mn>2</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(S_{2}=6|A_{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS3.Ex7.m2" class="ltx_Math" alttext="\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{2}\mbox{ s.t. }S_{2}(\omega)=6\}%
+)}{\mathbb{P}(A_{2})}=\frac{\mathbb{P}(\omega_{3})}{\mathbb{P}(\{\omega_{3},%
+\omega_{4}\})}=\frac{\frac{3}{5}\cdot\frac{2}{7}}{\frac{3}{5}}=\frac{2}{7}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><mrow><mi>ω</mi><mo>∈</mo><mrow><msub><mi>A</mi><mn>2</mn></msub><mo>⁢</mo><mtext> s.t. </mtext><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>6</mn></mrow><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mfrac><mn>3</mn><mn>5</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>2</mn><mn>7</mn></mfrac></mrow><mfrac><mn>3</mn><mn>5</mn></mfrac></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>2</mn><mn>7</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{2}\mbox{ s.t. }S_{2}(\omega)=6\}%
+)}{\mathbb{P}(A_{2})}=\frac{\mathbb{P}(\omega_{3})}{\mathbb{P}(\{\omega_{3},%
+\omega_{4}\})}=\frac{\frac{3}{5}\cdot\frac{2}{7}}{\frac{3}{5}}=\frac{2}{7}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS3.Ex8"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex8.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(S_{2}=3|A_{2})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mrow><mn>3</mn><mo fence="false">|</mo><msub><mi>A</mi><mn>2</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(S_{2}=3|A_{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS3.Ex8.m2" class="ltx_Math" alttext="\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{2}\mbox{ s.t. }S_{2}(\omega)=3\}%
+)}{\mathbb{P}(A_{2})}=\frac{\mathbb{P}(\omega_{4})}{\mathbb{P}(\{\omega_{3},%
+\omega_{4}\})}=\frac{\frac{3}{5}\cdot\frac{5}{7}}{\frac{3}{5}}=\frac{5}{7}." display="inline"><semantics><mrow><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><mrow><mi>ω</mi><mo>∈</mo><mrow><msub><mi>A</mi><mn>2</mn></msub><mo>⁢</mo><mtext> s.t. </mtext><mo>⁢</mo><msub><mi>S</mi><mn>2</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>3</mn></mrow><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mfrac><mn>3</mn><mn>5</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>5</mn><mn>7</mn></mfrac></mrow><mfrac><mn>3</mn><mn>5</mn></mfrac></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>5</mn><mn>7</mn></mfrac></mstyle></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{\mathbb{P}(\{\omega\in A_{2}\mbox{ s.t. }S_{2}(\omega)=3\}%
+)}{\mathbb{P}(A_{2})}=\frac{\mathbb{P}(\omega_{4})}{\mathbb{P}(\{\omega_{3},%
+\omega_{4}\})}=\frac{\frac{3}{5}\cdot\frac{5}{7}}{\frac{3}{5}}=\frac{5}{7}.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">A more concise way of writing the above equalities is the following:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx23" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S2.SS3.Ex9"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex9.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(S_{2}=9|A_{1})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mrow><mn>9</mn><mo fence="false">|</mo><msub><mi>A</mi><mn>1</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(S_{2}=9|A_{1})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS3.Ex9.m2" class="ltx_Math" alttext="\displaystyle=\frac{\mathbb{P}(A_{1}\cap\{S_{2}=9\})}{\mathbb{P}(A_{1})}=\frac%
+{\mathbb{P}(\omega_{1})}{\mathbb{P}(\{\omega_{1},\omega_{2}\})}=\frac{\frac{2}%
+{5}\cdot\frac{3}{4}}{\frac{2}{5}}=\frac{3}{4}" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>∩</mo><mrow><mo stretchy="false">{</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mn>9</mn></mrow><mo stretchy="false">}</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mfrac><mn>2</mn><mn>5</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></mrow><mfrac><mn>2</mn><mn>5</mn></mfrac></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>3</mn><mn>4</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{\mathbb{P}(A_{1}\cap\{S_{2}=9\})}{\mathbb{P}(A_{1})}=\frac%
+{\mathbb{P}(\omega_{1})}{\mathbb{P}(\{\omega_{1},\omega_{2}\})}=\frac{\frac{2}%
+{5}\cdot\frac{3}{4}}{\frac{2}{5}}=\frac{3}{4}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS3.Ex10"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex10.m1" class="ltx_Math" alttext="\displaystyle\vdots" display="inline"><semantics><mi mathvariant="normal">⋮</mi><annotation encoding="application/x-tex">\displaystyle\vdots</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright" colspan="2"></td>
+</tr></tbody>
+<tbody id="S2.SS3.Ex11"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS3.Ex11.m1" class="ltx_Math" alttext="\displaystyle\mathbb{P}(S_{2}=3|A_{2})" display="inline"><semantics><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mrow><mn>3</mn><mo fence="false">|</mo><msub><mi>A</mi><mn>2</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{P}(S_{2}=3|A_{2})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS3.Ex11.m2" class="ltx_Math" alttext="\displaystyle=\frac{\mathbb{P}(A_{2}\cap\{S_{2}=3\})}{\mathbb{P}(A_{2})}=\frac%
+{\mathbb{P}(\omega_{4})}{\mathbb{P}(\{\omega_{3},\omega_{4}\})}=\frac{\frac{3}%
+{5}\cdot\frac{5}{7}}{\frac{3}{5}}=\frac{5}{7}." display="inline"><semantics><mrow><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>A</mi><mn>2</mn></msub><mo>∩</mo><mrow><mo stretchy="false">{</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mn>3</mn></mrow><mo stretchy="false">}</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>ℙ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mfrac><mn>3</mn><mn>5</mn></mfrac><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>5</mn><mn>7</mn></mfrac></mrow><mfrac><mn>3</mn><mn>5</mn></mfrac></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>5</mn><mn>7</mn></mfrac></mstyle></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle=\frac{\mathbb{P}(A_{2}\cap\{S_{2}=3\})}{\mathbb{P}(A_{2})}=\frac%
+{\mathbb{P}(\omega_{4})}{\mathbb{P}(\{\omega_{3},\omega_{4}\})}=\frac{\frac{3}%
+{5}\cdot\frac{5}{7}}{\frac{3}{5}}=\frac{5}{7}.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">It then follows from equation (<a href="#S2.SS3.E1" title="In Definition 2.3.1. ‣ 2.3. Conditional expectation ‣ Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.3.1</span></a>), that for <math id="S2.SS3.Thmtheorem2.p1.m5" class="ltx_Math" alttext="\omega\in A_{1}" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><msub><mi>A</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\omega\in A_{1}</annotation></semantics></math></p>
+<div id="S2.SS3.Ex12" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.Ex12.m1" class="ltx_Math" alttext="\mathbb{E}(S_{2}|\mathcal{F}_{1}^{S})(\omega)=9\cdot\frac{3}{4}+6\cdot\frac{1}%
+{4}+3\cdot 0=\frac{33}{4}" display="block"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo fence="false">|</mo><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mn>9</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></mrow><mo>+</mo><mrow><mn>6</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></mrow><mo>+</mo><mrow><mn>3</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0</mn></mrow></mrow><mo>=</mo><mfrac><mn>33</mn><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">\mathbb{E}(S_{2}|\mathcal{F}_{1}^{S})(\omega)=9\cdot\frac{3}{4}+6\cdot\frac{1}%
+{4}+3\cdot 0=\frac{33}{4}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">and for <math id="S2.SS3.Thmtheorem2.p1.m6" class="ltx_Math" alttext="\omega\in A_{2}" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><msub><mi>A</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\omega\in A_{2}</annotation></semantics></math></p>
+<div id="S2.SS3.Ex13" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.Ex13.m1" class="ltx_Math" alttext="\mathbb{E}(S_{2}|\mathcal{F}_{1}^{S})(\omega)=9\cdot 0+6\cdot\frac{2}{7}+3%
+\cdot\frac{5}{7}=\frac{27}{7}." display="block"><semantics><mrow><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo fence="false">|</mo><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mn>9</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0</mn></mrow><mo>+</mo><mrow><mn>6</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>2</mn><mn>7</mn></mfrac></mrow><mo>+</mo><mrow><mn>3</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><mn>5</mn><mn>7</mn></mfrac></mrow></mrow><mo>=</mo><mfrac><mn>27</mn><mn>7</mn></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}(S_{2}|\mathcal{F}_{1}^{S})(\omega)=9\cdot 0+6\cdot\frac{2}{7}+3%
+\cdot\frac{5}{7}=\frac{27}{7}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">This is enough to define the conditional expectation</p>
+<div id="S2.SS3.Ex14" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.Ex14.m1" class="ltx_Math" alttext="\mathbb{E}(S_{2}|\mathcal{F}_{1}^{S})=\begin{cases}\frac{33}{4},&amp;\mbox{ if }%
+\omega=\omega_{1},\omega_{2},\\
+\frac{27}{7},&amp;\mbox{ if }\omega=\omega_{3},\omega_{4}.\end{cases}" display="block"><semantics><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mn>2</mn></msub><mo fence="false">|</mo><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>{</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mstyle displaystyle="false"><mfrac><mn>33</mn><mn>4</mn></mfrac></mstyle><mo>,</mo></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><mtext> if </mtext><mo>⁢</mo><mi>ω</mi></mrow><mo>=</mo><mrow><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub></mrow></mrow><mo>,</mo></mrow></mtd></mtr><mtr><mtd class="ltx_align_left" columnalign="left"><mrow><mstyle displaystyle="false"><mfrac><mn>27</mn><mn>7</mn></mfrac></mstyle><mo>,</mo></mrow></mtd><mtd class="ltx_align_left" columnalign="left"><mrow><mrow><mrow><mtext> if </mtext><mo>⁢</mo><mi>ω</mi></mrow><mo>=</mo><mrow><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub></mrow></mrow><mo lspace="0em">.</mo></mrow></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E}(S_{2}|\mathcal{F}_{1}^{S})=\begin{cases}\frac{33}{4},&amp;\mbox{ if }%
+\omega=\omega_{1},\omega_{2},\\
+\frac{27}{7},&amp;\mbox{ if }\omega=\omega_{3},\omega_{4}.\end{cases}</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="S2.SS3.p3" class="ltx_para">
+<p class="ltx_p">The following properties of the conditional expectation are very
+important and useful. The proofs are omitted.</p>
+</div>
+<div id="S2.SS3.Thmtheorem3" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 2.3.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS3.Thmtheorem3.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Assume we have a probability space
+<math id="S2.SS3.Thmtheorem3.p1.m1" class="ltx_Math" alttext="(\Omega,\mathbb{P})" display="inline"><semantics><mrow><mo stretchy="false">(</mo><mi mathvariant="normal">Ω</mi><mo>,</mo><mi>ℙ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\Omega,\mathbb{P})</annotation></semantics></math> and <math id="S2.SS3.Thmtheorem3.p1.m2" class="ltx_Math" alttext="\sigma" display="inline"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>-algebras <math id="S2.SS3.Thmtheorem3.p1.m3" class="ltx_Math" alttext="\mathcal{G}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒢</mi><annotation encoding="application/x-tex">\mathcal{G}</annotation></semantics></math>,
+<math id="S2.SS3.Thmtheorem3.p1.m4" class="ltx_Math" alttext="\mathcal{G}_{1}" display="inline"><semantics><msub><mi class="ltx_font_mathcaligraphic">𝒢</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\mathcal{G}_{1}</annotation></semantics></math> and <math id="S2.SS3.Thmtheorem3.p1.m5" class="ltx_Math" alttext="\mathcal{G}_{2}" display="inline"><semantics><msub><mi class="ltx_font_mathcaligraphic">𝒢</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\mathcal{G}_{2}</annotation></semantics></math> of subsets of <math id="S2.SS3.Thmtheorem3.p1.m6" class="ltx_Math" alttext="\Omega" display="inline"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>. Assume
+furthermore that <math id="S2.SS3.Thmtheorem3.p1.m7" class="ltx_Math" alttext="\mathcal{G}_{2}\subset\mathcal{G}_{1}" display="inline"><semantics><mrow><msub><mi class="ltx_font_mathcaligraphic">𝒢</mi><mn>2</mn></msub><mo>⊂</mo><msub><mi class="ltx_font_mathcaligraphic">𝒢</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\mathcal{G}_{2}\subset\mathcal{G}_{1}</annotation></semantics></math>. Then</span></p>
+<ol id="S2.I15" class="ltx_enumerate">
+<li id="S2.I15.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I15.i1.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">If </span><math id="S2.I15.i1.p1.m1" class="ltx_Math" alttext="X:\Omega\to\mathbb{R}" display="inline"><semantics><mrow><mi>X</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mi mathvariant="normal">Ω</mi><mo stretchy="false">→</mo><mi>ℝ</mi></mrow></mrow><annotation encoding="application/x-tex">X:\Omega\to\mathbb{R}</annotation></semantics></math><span class="ltx_text ltx_font_italic"> is a random variable then</span></p>
+<div id="S2.SS3.E3" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.E3.m1" class="ltx_Math" alttext="\boxed{\mathbb{E}(X|\mathcal{G}_{2})=\mathbb{E}(\mathbb{E}(X|\mathcal{G}_{1})|%
+\mathcal{G}_{2})}" display="block"><semantics><menclose notation="box"><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo fence="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒢</mi><mn>2</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo fence="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒢</mi><mn>1</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo fence="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒢</mi><mn>2</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{E}(X|\mathcal{G}_{2})=\mathbb{E}(\mathbb{E}(X|\mathcal{G}_{1})|%
+\mathcal{G}_{2})}</annotation></semantics></math></span>
+                    <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.3.3)</span>
+                    
+                    
+                  
+</div>
+</div>
+</li>
+<li id="S2.I15.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I15.i2.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">If </span><math id="S2.I15.i2.p1.m1" class="ltx_Math" alttext="Y:\Omega\to\mathbb{R}" display="inline"><semantics><mrow><mi>Y</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mi mathvariant="normal">Ω</mi><mo stretchy="false">→</mo><mi>ℝ</mi></mrow></mrow><annotation encoding="application/x-tex">Y:\Omega\to\mathbb{R}</annotation></semantics></math><span class="ltx_text ltx_font_italic"> is a </span><math id="S2.I15.i2.p1.m2" class="ltx_Math" alttext="\mathcal{G}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒢</mi><annotation encoding="application/x-tex">\mathcal{G}</annotation></semantics></math><span class="ltx_text ltx_font_italic">-measurable random variable, then</span></p>
+<div id="S2.SS3.E4" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.E4.m1" class="ltx_math_unparsed" alttext="\boxed{\mathbb{E}(YX|\mathcal{G})=Y\,\mathbb{E}(X|\mathcal{G}).}" display="block"><semantics><menclose notation="box"><mrow><mi>𝔼</mi><mrow><mo stretchy="false">(</mo><mi>Y</mi><mi>X</mi><mo fence="false" rspace="0.167em" stretchy="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>Y</mi><mi>𝔼</mi><mrow><mo stretchy="false">(</mo><mi>X</mi><mo fence="false" rspace="0.167em" stretchy="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi><mo stretchy="false">)</mo></mrow><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{E}(YX|\mathcal{G})=Y\,\mathbb{E}(X|\mathcal{G}).}</annotation></semantics></math></span>
+                    <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.3.4)</span>
+                    
+                    
+                  
+</div>
+</div>
+</li>
+<li id="S2.I15.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S2.I15.i3.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">If </span><math id="S2.I15.i3.p1.m1" class="ltx_Math" alttext="\mathcal{G}=\{\emptyset,\Omega\}" display="inline"><semantics><mrow><mi class="ltx_font_mathcaligraphic">𝒢</mi><mo>=</mo><mrow><mo stretchy="false">{</mo><mi>∅︀</mi><mo>,</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{G}=\{\emptyset,\Omega\}</annotation></semantics></math><span class="ltx_text ltx_font_italic"> is the trivial </span><math id="S2.I15.i3.p1.m2" class="ltx_Math" alttext="\sigma" display="inline"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math><span class="ltx_text ltx_font_italic">-algebra, then</span></p>
+<div id="S2.SS3.E5" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS3.E5.m1" class="ltx_Math" alttext="\boxed{\mathbb{E}(X|\mathcal{G})=\mathbb{E}(X)}" display="block"><semantics><menclose notation="box"><mrow><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo fence="false">|</mo><mi class="ltx_font_mathcaligraphic">𝒢</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>𝔼</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></menclose><annotation encoding="application/x-tex">\boxed{\mathbb{E}(X|\mathcal{G})=\mathbb{E}(X)}</annotation></semantics></math></span>
+                    <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.3.5)</span>
+                    
+                    
+                  
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+</div>
+</section>
+</div>
+</div>
+</div>
+<a href="Pt4.html" class="navigation navigation-prev" aria-label="Previous page"><i class="fa fa-angle-left"></i></a><a href="Pt6.html" class="navigation navigation-next" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+</div>
+</div>
+<script src="bookml/gitbook/js/app.min.js"></script>
+<script src="bookml/gitbook/js/jquery.highlight.js"></script>
+<script src="bookml/gitbook/js/plugin-search.js"></script>
+<script src="bookml/gitbook/js/plugin-fontsettings.js"></script>
+<script src="bookml/gitbook/js/plugin-bookdown.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+        MathJax = {
+          startup: {
+            ready() {
+              // do not process equations disabled with \bmlDisableMathJax (code suggested by Davide P. Cervone)
+              class bmlFindMathML extends MathJax._.input.mathml.FindMathML.FindMathML {
+                processMath(set) {
+                  const adaptor = this.adaptor;
+                  for (const node of set.values()) {
+                    if (adaptor.hasClass(node, 'bml_disable_mathjax')) {
+                      set.delete(node);
+                    }
+                  }
+                  return super.processMath(set);
+                }
+              }
+
+              MathJax._.components.global.combineDefaults(MathJax.config, 'mml', {FindMathML: new bmlFindMathML()});
+
+              MathJax.startup.defaultReady();
+
+              // preproces MathML to make MathJax aware of certain LaTeXML and BookML additional info
+              const mmlFilters = MathJax.startup.input[0].mmlFilters;
+
+              // convert the LaTeXML calligraphic (chancery) annotation to a form MathJax understands
+              // since the corresponding Unicode characters render as script (rounded)
+              const script2latin = {
+                '𝒜': 'A', 'ℬ': 'B', '𝒞': 'C', '𝒟': 'D', 'ℰ': 'E', 'ℱ': 'F', '𝒢': 'G',
+                'ℋ': 'H', 'ℐ': 'I', '𝒥': 'J', '𝒦': 'K', 'ℒ': 'L', 'ℳ': 'M', '𝒩': 'N',
+                '𝒪': 'O', '𝒫': 'P', '𝒬': 'Q', 'ℛ': 'R', '𝒮': 'S', '𝒯': 'T', '𝒰': 'U',
+                '𝒱': 'V', '𝒲': 'W', '𝒳': 'X', '𝒴': 'Y', '𝒵': 'Z',
+              };
+
+              mmlFilters.add((args) => {
+                for (const n of args.data.getElementsByClassName('ltx_font_mathcaligraphic')) {
+                  n.classList.add('MJX-tex-calligraphic');
+                  const letter = script2latin[n.textContent];
+                  if (letter !== undefined) { n.textContent = letter; }
+                }
+              });
+
+              // adjust characters based on Unicode variation sequences
+              const replacements = {
+                // MathJax renders the empty set as the U+FE00 variant, so the plain character needs adjusting
+                '∅': { variant: 'variant' },
+                // MathJax renders script characters in rounded style, which is fine for no variation and U+FE00
+                '𝒜\xFE00': { text: 'A', variant: 'tex-calligraphic' },
+                'ℬ\xFE00': { text: 'B', variant: 'tex-calligraphic' },
+                '𝒞\xFE00': { text: 'C', variant: 'tex-calligraphic' },
+                '𝒟\xFE00': { text: 'D', variant: 'tex-calligraphic' },
+                'ℰ\xFE00': { text: 'E', variant: 'tex-calligraphic' },
+                'ℱ\xFE00': { text: 'F', variant: 'tex-calligraphic' },
+                '𝒢\xFE00': { text: 'G', variant: 'tex-calligraphic' },
+                'ℋ\xFE00': { text: 'H', variant: 'tex-calligraphic' },
+                'ℐ\xFE00': { text: 'I', variant: 'tex-calligraphic' },
+                '𝒥\xFE00': { text: 'J', variant: 'tex-calligraphic' },
+                '𝒦\xFE00': { text: 'K', variant: 'tex-calligraphic' },
+                'ℒ\xFE00': { text: 'L', variant: 'tex-calligraphic' },
+                'ℳ\xFE00': { text: 'M', variant: 'tex-calligraphic' },
+                '𝒩\xFE00': { text: 'N', variant: 'tex-calligraphic' },
+                '𝒪\xFE00': { text: 'O', variant: 'tex-calligraphic' },
+                '𝒫\xFE00': { text: 'P', variant: 'tex-calligraphic' },
+                '𝒬\xFE00': { text: 'Q', variant: 'tex-calligraphic' },
+                'ℛ\xFE00': { text: 'R', variant: 'tex-calligraphic' },
+                '𝒮\xFE00': { text: 'S', variant: 'tex-calligraphic' },
+                '𝒯\xFE00': { text: 'T', variant: 'tex-calligraphic' },
+                '𝒰\xFE00': { text: 'U', variant: 'tex-calligraphic' },
+                '𝒱\xFE00': { text: 'V', variant: 'tex-calligraphic' },
+                '𝒲\xFE00': { text: 'W', variant: 'tex-calligraphic' },
+                '𝒳\xFE00': { text: 'X', variant: 'tex-calligraphic' },
+                '𝒴\xFE00': { text: 'Y', variant: 'tex-calligraphic' },
+                '𝒵\xFE00': { text: 'Z', variant: 'tex-calligraphic' }
+              };
+
+              mmlFilters.add((args) => {
+                let nodes = document.evaluate('.//m:mi | .//m:mn | .//m:mo | .//m:ms', args.data,
+                  () => 'http://www.w3.org/1998/Math/MathML', XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE);
+                for (let i = 0; i < nodes.snapshotLength; i++) {
+                  const n = nodes.snapshotItem(i);
+                  const repl = replacements[n.innerHTML];
+                  if (repl !== undefined) {
+                    const variant = repl['variant'];
+                    const text = repl['text'];
+                    if (variant !== undefined) { n.classList.add('MJX-' + variant); n.removeAttribute('mathvariant'); }
+                    if (text !== undefined) { n.innerHTML = text; }
+                  }
+                }
+              });
+            }
+          }
+        };
+      </script>
+<script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/mml-chtml.js"></script>
+<script type="text/javascript">
+                gitbook.require(["gitbook"], function(gitbook) {
+                gitbook.start({
+                  "fontsettings": {
+                    "theme": "white",
+                    "family": "sans",
+                    "size": 2
+                  },
+                  "download": [ [ "DiscreteTimeFinance.pdf", "PDF (serif)" ], [ "DiscreteTimeFinance-sans.pdf", "PDF (sans serif)" ], [ "DiscreteTimeFinance-sans-large.pdf", "PDF (sans serif, large)" ], ],
+                  "search": {
+                    "engine": "fuse"
+                  },
+                  "toc": {
+                    "collapse": "none"
+                  }
+                });
+              });
+            </script>
+</body>
+
+</html>
