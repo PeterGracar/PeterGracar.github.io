@@ -1,0 +1,806 @@
+<!DOCTYPE html><html lang="en-GB">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)</title>
+<!--Generated on Tue Dec  3 15:06:01 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on December 3, 2024.-->
+<style>:root { --bml-ltx-font-size: 10.95; }</style>
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-article.css" type="text/css">
+<link rel="stylesheet" href="ltx-amsart.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-table.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-search.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-bookdown.css" type="text/css">
+<link rel="stylesheet" href="bookml/gitbook/css/plugin-fontsettings.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook,plain.css" type="text/css">
+<link rel="stylesheet" href="bookml/CSS/style.gitbook.css" type="text/css">
+<link rel="stylesheet" href="bmluser/colors.gitbook-DiscreteTimeFinance.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
+<link rel="up" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="start" href="index.html" title="Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="prev" href="Pt5.html" title="Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="next" href="Pt7.html" title="Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt1.html" title="Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt2.html" title="Lecture II 08/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt3.html" title="Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt4.html" title="Lecture IV 22/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt5.html" title="Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt7.html" title="Lecture VII 12/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt8.html" title="Lecture VIII 19/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt9.html" title="Lecture IX 26/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Pt10.html" title="Lecture X 03/12/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx1.html" title="Extra reading (non-examinable) ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+<link rel="part" href="Ptx2.html" title="Literature list ‣ Lecture notes: Discrete Time Finance (MATH5320M)">
+</head>
+<body>
+<div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+<a href="#bml-main-content" tabindex="0" class="bml-skip-to-content">Skip to content.</a>
+<div class="book-summary"><nav class="ltx_page_navbar">
+<ul class="ltx_toclist summary">
+<li>
+<a href="index.html" title="" class="ltx_ref" rel="start">Lecture notes: Discrete Time Finance (MATH5320M)</a>
+</li>
+<li class="divider">
+<li data-level="I" data-path="Pt1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">I </span></b>01/10/2024</a></li>
+<li data-level="II" data-path="Pt2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">II </span></b>08/10/2024</a></li>
+<li data-level="III" data-path="Pt3.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt3.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">III </span></b>15/10/2024</a></li>
+<li data-level="IV" data-path="Pt4.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt4.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IV </span></b>22/10/2024</a></li>
+<li data-level="V" data-path="Pt5.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt5.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">V </span></b>29/10/2024</a></li>
+<li data-level="VI" data-path="" class="ltx_tocentry ltx_tocentry_part ltx_ref_self  chapter active">
+<a href="" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VI </span></b>05/11/2024</a>
+<ol class="ltx_toclist ltx_toclist_part">
+<li data-level="2.4" data-path="" class="ltx_tocentry ltx_tocentry_subsection  chapter "><a href="#S2.SS4" title="In Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">2.4 </span></b>Risk neutral probability measures: arbitrage and pricing</a></li>
+<li data-level="2.5" data-path="" class="ltx_tocentry ltx_tocentry_subsection  chapter "><a href="#S2.SS5" title="In Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">2.5 </span></b>Exotic options</a></li>
+</ol>
+</li>
+<li data-level="VII" data-path="Pt7.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt7.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VII </span></b>12/11/2024</a></li>
+<li data-level="VIII" data-path="Pt8.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt8.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">VIII </span></b>19/11/2024</a></li>
+<li data-level="IX" data-path="Pt9.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt9.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">IX </span></b>26/11/2024</a></li>
+<li data-level="X" data-path="Pt10.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Pt10.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><b><span class="ltx_tag ltx_tag_ref">X </span></b>03/12/2024</a></li>
+<li data-level="" data-path="Ptx1.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx1.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Extra reading (non-examinable)</a></li>
+<li data-level="" data-path="Ptx2.html" class="ltx_tocentry ltx_tocentry_part  chapter "><a href="Ptx2.html" title="In Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref">Literature list</a></li>
+</ul>
+</nav></div>
+<div class="ltx_page_main book-body fixed">
+<div class="body-inner">
+<div class="book-header fixed" role="navigation"><h1>05/11/2024</h1></div>
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="ltx_page_content page-inner" id="bml-main-content">
+<section class="ltx_part normal" lang="en-GB">
+<div class="section level1">
+
+<h1 class="ltx_title ltx_title_part">
+<span class="ltx_tag ltx_tag_part header-section-number">Lecture VI</span> 05/11/2024</h1>
+
+<section id="S2.SS4" class="ltx_subsection normal">
+<div class="section level2">
+
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection header-section-number">2.4</span>. Risk neutral probability measures: arbitrage and pricing</h2>
+
+<div id="S2.SS4.p1" class="ltx_para">
+<p class="ltx_p">Using the concept of conditional expectation, we can now define a
+risk neutral probability measure in the multi period framework.</p>
+</div>
+<div id="S2.SS4.Thmtheorem1" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.4.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS4.Thmtheorem1.p1" class="ltx_para">
+<p class="ltx_p">A measure <math id="S2.SS4.Thmtheorem1.p1.m1" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> on <math id="S2.SS4.Thmtheorem1.p1.m2" class="ltx_Math" alttext="\Omega" display="inline"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math> is called a
+<span class="ltx_text ltx_font_bold">risk neutral probability measure</span> for a general multi period
+market model if</p>
+<ol id="S2.I16" class="ltx_enumerate">
+<li id="S2.I16.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I16.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I16.i1.p1.m1" class="ltx_Math" alttext="\mathbb{Q}(\omega)&gt;0" display="inline"><semantics><mrow><mrow><mi>ℚ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{Q}(\omega)&gt;0</annotation></semantics></math> for all <math id="S2.I16.i1.p1.m2" class="ltx_Math" alttext="\omega\in\Omega" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\omega\in\Omega</annotation></semantics></math>.</p>
+</div>
+</li>
+<li id="S2.I16.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I16.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I16.i2.p1.m1" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}(\Delta\hat{S}_{t}^{i}|\mathcal{F}_{t-1})=0" display="inline"><semantics><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>t</mi><mi>i</mi></msubsup></mrow><mo fence="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}(\Delta\hat{S}_{t}^{i}|\mathcal{F}_{t-1})=0</annotation></semantics></math> for <math id="S2.I16.i2.p1.m2" class="ltx_math_unparsed" alttext="i=1,..,n" display="inline"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo lspace="0em" rspace="0.0835em">.</mo><mo lspace="0.0835em" rspace="0.167em">.</mo><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">i=1,..,n</annotation></semantics></math> and for all <math id="S2.I16.i2.p1.m3" class="ltx_Math" alttext="1\leq t\leq T" display="inline"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">1\leq t\leq T</annotation></semantics></math>.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="S2.SS4.p2" class="ltx_para">
+<p class="ltx_p">Another way of formulating the second condition is:</p>
+<div id="S2.SS4.Ex1" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex1.m1" class="ltx_math_unparsed" alttext="\boxed{\displaystyle\mathbb{E}_{\mathbb{Q}}\left.\left(\frac{1}{1+r}S_{t+1}^{i%
+}\right|\mathcal{F}_{t}\right)=S_{t}^{i},\quad 0\leq t\leq T-1.}" display="block"><semantics><menclose notation="box"><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow></mfrac><msubsup><mi>S</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup><mo fence="false" rspace="0.167em">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub><mo>)</mo></mrow><mo>=</mo><msubsup><mi>S</mi><mi>t</mi><mi>i</mi></msubsup><mo rspace="1.267em">,</mo><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi><mo>−</mo><mn>1</mn><mo lspace="0em">.</mo></mrow></menclose><annotation encoding="application/x-tex">\boxed{\displaystyle\mathbb{E}_{\mathbb{Q}}\left.\left(\frac{1}{1+r}S_{t+1}^{i%
+}\right|\mathcal{F}_{t}\right)=S_{t}^{i},\quad 0\leq t\leq T-1.}</annotation></semantics></math></span>
+</div>
+</div>
+<div id="S2.SS4.p3" class="ltx_para">
+<p class="ltx_p">The Fundamental Theorem of asset pricing is valid in the framework of multi period market models. The proof is similar to the one we presented for the single period market model. Here, we only prove the implication "risk neutral measure <math id="S2.SS4.p3.m1" class="ltx_Math" alttext="\Rightarrow" display="inline"><semantics><mo stretchy="false">⇒</mo><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math> no arbitrage". The proof of the inverse implication relies on the separating hyperplane theorem as in the single period case, but one has to deal with some technicalities that do not really help with the intuition.</p>
+</div>
+<div id="S2.SS4.Thmtheorem2" class="ltx_theorem ltx_theorem_theorem">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Theorem 2.4.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS4.Thmtheorem2.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold ltx_font_italic">Fundamental Theorem of Asset Pricing<span class="ltx_text ltx_font_medium">. The
+following statements are equivalent in the framework of the multi
+period market model:</span></span></p>
+<ol id="S2.I17" class="ltx_enumerate">
+<li id="S2.I17.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I17.i1.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">There are no arbitrages in the set </span><math id="S2.I17.i1.p1.m1" class="ltx_Math" alttext="\mathcal{T}" display="inline"><semantics><mi class="ltx_font_mathcaligraphic">𝒯</mi><annotation encoding="application/x-tex">\mathcal{T}</annotation></semantics></math><span class="ltx_text ltx_font_italic"> of self-financing and adapted trading strategies.</span></p>
+</div>
+</li>
+<li id="S2.I17.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I17.i2.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_italic">There exists a risk neutral probability measure.</span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="ltx_proof">
+
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Proof.</h6>
+<div id="S2.SS4.p4" class="ltx_para">
+<p class="ltx_p">As we said, we shall only prove the implication: 2. <math id="S2.SS4.p4.m1" class="ltx_Math" alttext="\implies" display="inline"><semantics><mo stretchy="false">⟹</mo><annotation encoding="application/x-tex">\implies</annotation></semantics></math> 1.
+Assume that <math id="S2.SS4.p4.m2" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> is a risk neutral measure for a general
+multi period market model. We shall prove that the model is
+arbitrage free by contradiction. Assume therefore that there exists
+an arbitrage strategy <math id="S2.SS4.p4.m3" class="ltx_Math" alttext="\phi\in\mathcal{T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒯</mi></mrow><annotation encoding="application/x-tex">\phi\in\mathcal{T}</annotation></semantics></math>. Such a strategy
+satisfies:</p>
+<ol id="S2.I18" class="ltx_enumerate">
+<li id="S2.I18.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I18.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I18.i1.p1.m1" class="ltx_Math" alttext="\hat{V}_{0}=0" display="inline"><semantics><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mn>0</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat{V}_{0}=0</annotation></semantics></math>.</p>
+</div>
+</li>
+<li id="S2.I18.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I18.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I18.i2.p1.m1" class="ltx_Math" alttext="\hat{G}_{T}\geq 0" display="inline"><semantics><mrow><msub><mover accent="true"><mi>G</mi><mo>^</mo></mover><mi>T</mi></msub><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat{G}_{T}\geq 0</annotation></semantics></math>.</p>
+</div>
+</li>
+<li id="S2.I18.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S2.I18.i3.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I18.i3.p1.m1" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}(\hat{G}_{T})&gt;0" display="inline"><semantics><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mover accent="true"><mi>G</mi><mo>^</mo></mover><mi>T</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}(\hat{G}_{T})&gt;0</annotation></semantics></math>.</p>
+</div>
+</li>
+</ol>
+<p class="ltx_p">On the other hand using the definition of the discounted gains
+process as well as property 2. of a risk neutral measure and
+properties 1., 2. and 3. of the conditional expectation we obtain</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx24" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S2.SS4.Ex2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS4.Ex2.m1" class="ltx_Math" alttext="\displaystyle\mathbb{E}_{\mathbb{Q}}(\hat{G}_{T})" display="inline"><semantics><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mover accent="true"><mi>G</mi><mo>^</mo></mover><mi>T</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{E}_{\mathbb{Q}}(\hat{G}_{T})</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS4.Ex2.m2" class="ltx_Math" alttext="\displaystyle=\mathbb{E}_{\mathbb{Q}}\left(\sum_{i=1}^{n}\sum_{s=0}^{T-1}\phi_%
+{s}^{i}\Delta\hat{S}_{s+1}^{i}\right)" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mstyle displaystyle="true"><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><mstyle displaystyle="true"><munderover><mo movablelimits="false">∑</mo><mrow><mi>s</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msubsup><mi>ϕ</mi><mi>s</mi><mi>i</mi></msubsup><mo>⁢</mo><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup></mrow></mrow></mrow><mo>)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=\mathbb{E}_{\mathbb{Q}}\left(\sum_{i=1}^{n}\sum_{s=0}^{T-1}\phi_%
+{s}^{i}\Delta\hat{S}_{s+1}^{i}\right)</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS4.Ex3"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS4.Ex3.m1" class="ltx_Math" alttext="\displaystyle=\sum_{i=1}^{n}\sum_{s=0}^{T-1}\mathbb{E}_{\mathbb{Q}}(\phi_{s}^{%
+i}\Delta\hat{S}_{s+1}^{i})" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><mstyle displaystyle="true"><munderover><mo movablelimits="false">∑</mo><mrow><mi>s</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msubsup><mi>ϕ</mi><mi>s</mi><mi>i</mi></msubsup><mo>⁢</mo><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=\sum_{i=1}^{n}\sum_{s=0}^{T-1}\mathbb{E}_{\mathbb{Q}}(\phi_{s}^{%
+i}\Delta\hat{S}_{s+1}^{i})</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS4.Ex4"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS4.Ex4.m1" class="ltx_Math" alttext="\displaystyle=\sum_{i=1}^{n}\sum_{s=0}^{T-1}\mathbb{E}_{\mathbb{Q}}(\mathbb{E}%
+_{\mathbb{Q}}(\phi_{s}^{i}\Delta\hat{S}_{s+1}^{i}|\mathcal{F}_{s}))" display="inline"><semantics><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><mstyle displaystyle="true"><munderover><mo movablelimits="false">∑</mo><mrow><mi>s</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><msubsup><mi>ϕ</mi><mi>s</mi><mi>i</mi></msubsup><mo>⁢</mo><mi mathvariant="normal">Δ</mi><mo>⁢</mo><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup></mrow><mo fence="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>s</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=\sum_{i=1}^{n}\sum_{s=0}^{T-1}\mathbb{E}_{\mathbb{Q}}(\mathbb{E}%
+_{\mathbb{Q}}(\phi_{s}^{i}\Delta\hat{S}_{s+1}^{i}|\mathcal{F}_{s}))</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS4.Ex5"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS4.Ex5.m1" class="ltx_math_unparsed" alttext="\displaystyle=\sum_{i=1}^{n}\sum_{s=0}^{T-1}\mathbb{E}_{\mathbb{Q}}\phi_{s}^{i%
+}(\underbrace{\mathbb{E}_{\mathbb{Q}}(\Delta\hat{S}_{s+1}^{i}|\mathcal{F}_{s})%
+)}_{=0}" display="inline"><semantics><mrow><mo>=</mo><mstyle displaystyle="true"><munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mstyle displaystyle="true"><munderover><mo movablelimits="false">∑</mo><mrow><mi>s</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></munderover></mstyle><msub><mi>𝔼</mi><mi>ℚ</mi></msub><msubsup><mi>ϕ</mi><mi>s</mi><mi>i</mi></msubsup><mrow><mo stretchy="false">(</mo><munder><munder accentunder="true"><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mrow><mo stretchy="false">(</mo><mi mathvariant="normal">Δ</mi><msubsup><mover accent="true"><mi>S</mi><mo>^</mo></mover><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mi>i</mi></msubsup><mo fence="false" rspace="0.167em" stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>s</mi></msub><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow><mo>⏟</mo></munder><mrow><mi></mi><mo>=</mo><mn>0</mn></mrow></munder></mrow></mrow><annotation encoding="application/x-tex">\displaystyle=\sum_{i=1}^{n}\sum_{s=0}^{T-1}\mathbb{E}_{\mathbb{Q}}\phi_{s}^{i%
+}(\underbrace{\mathbb{E}_{\mathbb{Q}}(\Delta\hat{S}_{s+1}^{i}|\mathcal{F}_{s})%
+)}_{=0}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS4.Ex6"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS4.Ex6.m1" class="ltx_Math" alttext="\displaystyle=0." display="inline"><semantics><mrow><mrow><mi></mi><mo>=</mo><mn>0</mn></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\displaystyle=0.</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">This contradicts (3.), which implies that the market model is
+arbitrage free.
+∎</p>
+</div>
+</div>
+<div id="S2.SS4.p5" class="ltx_para">
+<p class="ltx_p">Let us now come back to pricing of contingent claims. Recall that it
+is easy to find prices of attainable contingent claims using the
+replication principle. The following proposition gives a hint how to
+use risk neutral measures for this task (the proof is left as an
+exercise; it is practically shown in the proof of Theorem
+<a href="#S2.SS4.Thmtheorem2" title="Theorem 2.4.2. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.2</span></a>).</p>
+</div>
+<div id="S2.SS4.Thmtheorem3" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 2.4.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS4.Thmtheorem3.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">If <math id="S2.SS4.Thmtheorem3.p1.m1" class="ltx_Math" alttext="\phi" display="inline"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> is an adapted and self-financing trading strategy and <math id="S2.SS4.Thmtheorem3.p1.m2" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> is a risk neutral measure, then</span></p>
+<div id="S2.SS4.Ex7" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex7.m1" class="ltx_Math" alttext="\hat{V}_{s}(\phi)=\mathbb{E}_{\mathbb{Q}}\big{(}\hat{V}_{t}(\phi)|\mathcal{F}_%
+{s}\big{)},\qquad 0\leq s\leq t\leq T." display="block"><semantics><mrow><mrow><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mi>s</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo maxsize="120%" minsize="120%">(</mo><mrow><mrow><msub><mover accent="true"><mi>V</mi><mo>^</mo></mover><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo fence="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>s</mi></msub></mrow><mo maxsize="120%" minsize="120%">)</mo></mrow></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mn>0</mn><mo>≤</mo><mi>s</mi><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\hat{V}_{s}(\phi)=\mathbb{E}_{\mathbb{Q}}\big{(}\hat{V}_{t}(\phi)|\mathcal{F}_%
+{s}\big{)},\qquad 0\leq s\leq t\leq T.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">In particular,</span></p>
+<div id="S2.SS4.Ex8" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex8.m1" class="ltx_Math" alttext="V_{t}(\phi)=B_{t}\,\mathbb{E}_{\mathbb{Q}}\bigg{(}\frac{V_{T}(\phi)}{B_{T}}%
+\bigg{|}\mathcal{F}_{t}\bigg{)},\qquad t=0,1,\ldots,T." display="block"><semantics><mrow><mrow><mrow><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mi>B</mi><mi>t</mi></msub><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo maxsize="210%" minsize="210%">(</mo><mrow><mfrac><mrow><msub><mi>V</mi><mi>T</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><msub><mi>B</mi><mi>T</mi></msub></mfrac><mo fence="false" mathsize="210%">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub></mrow><mo maxsize="210%" minsize="210%">)</mo></mrow></mrow></mrow><mo rspace="2.357em">,</mo><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>T</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">V_{t}(\phi)=B_{t}\,\mathbb{E}_{\mathbb{Q}}\bigg{(}\frac{V_{T}(\phi)}{B_{T}}%
+\bigg{|}\mathcal{F}_{t}\bigg{)},\qquad t=0,1,\ldots,T.</annotation></semantics></math></span>
+</div>
+</div>
+</div>
+<div id="S2.SS4.p6" class="ltx_para">
+<p class="ltx_p">Let <math id="S2.SS4.p6.m1" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> be an attainable contingent claim. By virtue of Proposition
+<a href="#S2.SS4.Thmtheorem3" title="Proposition 2.4.3. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.3</span></a> we can find the price process for <math id="S2.SS4.p6.m2" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> without
+computiation of the hedging (replicating) strategy. Indeed, the
+price ar <math id="S2.SS4.p6.m3" class="ltx_Math" alttext="t" display="inline"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> is equal to</p>
+<div id="S2.SS4.Ex9" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex9.m1" class="ltx_Math" alttext="B_{t}\,\mathbb{E}_{\mathbb{Q}}\bigg{(}\frac{X}{B_{T}}\bigg{|}\mathcal{F}_{t}%
+\bigg{)}." display="block"><semantics><mrow><mrow><msub><mi>B</mi><mi>t</mi></msub><mo lspace="0.170em">⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo maxsize="210%" minsize="210%">(</mo><mrow><mfrac><mi>X</mi><msub><mi>B</mi><mi>T</mi></msub></mfrac><mo fence="false" mathsize="210%">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub></mrow><mo maxsize="210%" minsize="210%">)</mo></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">B_{t}\,\mathbb{E}_{\mathbb{Q}}\bigg{(}\frac{X}{B_{T}}\bigg{|}\mathcal{F}_{t}%
+\bigg{)}.</annotation></semantics></math></span>
+</div>
+</div>
+<div id="S2.SS4.p7" class="ltx_para">
+<p class="ltx_p">Consider now a general contingent claim <math id="S2.SS4.p7.m1" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>, attainable or not. As
+in the single period market model we introduce the following
+definition:</p>
+</div>
+<div id="S2.SS4.Thmtheorem4" class="ltx_theorem ltx_theorem_definition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Definition 2.4.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS4.Thmtheorem4.p1" class="ltx_para">
+<p class="ltx_p">We say that an adapted stochastic process
+<math id="S2.SS4.Thmtheorem4.p1.m1" class="ltx_Math" alttext="(X_{t})_{t=0,\ldots,T-1}" display="inline"><semantics><msub><mrow><mo stretchy="false">(</mo><msub><mi>X</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mi>t</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></mrow></mrow></msub><annotation encoding="application/x-tex">(X_{t})_{t=0,\ldots,T-1}</annotation></semantics></math> is a price process for the contingent
+claim <math id="S2.SS4.Thmtheorem4.p1.m2" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> which <span class="ltx_text ltx_font_bold">complies with the no arbitrage principle</span>,
+if there is no arbitrage strategy in the extended model, which
+consists of:</p>
+<ul id="S2.I19" class="ltx_itemize">
+<li id="S2.I19.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S2.I19.i1.p1" class="ltx_para">​<p class="ltx_p">the original stocks <math id="S2.I19.i1.p1.m1" class="ltx_Math" alttext="B_{t}" display="inline"><semantics><msub><mi>B</mi><mi>t</mi></msub><annotation encoding="application/x-tex">B_{t}</annotation></semantics></math> and <math id="S2.I19.i1.p1.m2" class="ltx_Math" alttext="(S_{t}^{1}),...,(S^{n}_{t})" display="inline"><semantics><mrow><mrow><mo stretchy="false">(</mo><msubsup><mi>S</mi><mi>t</mi><mn>1</mn></msubsup><mo stretchy="false">)</mo></mrow><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mo stretchy="false">(</mo><msubsup><mi>S</mi><mi>t</mi><mi>n</mi></msubsup><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">(S_{t}^{1}),...,(S^{n}_{t})</annotation></semantics></math>, and</p>
+</div>
+</li>
+<li id="S2.I19.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S2.I19.i2.p1" class="ltx_para">​<p class="ltx_p">an additional asset given by <math id="S2.I19.i2.p1.m1" class="ltx_Math" alttext="S^{n+1}_{t}=X_{t}" display="inline"><semantics><mrow><msubsup><mi>S</mi><mi>t</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msubsup><mo>=</mo><msub><mi>X</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">S^{n+1}_{t}=X_{t}</annotation></semantics></math> for <math id="S2.I19.i2.p1.m2" class="ltx_Math" alttext="0\leq t\leq T-1" display="inline"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></mrow><annotation encoding="application/x-tex">0\leq t\leq T-1</annotation></semantics></math> and <math id="S2.I19.i2.p1.m3" class="ltx_Math" alttext="S_{T}^{n+1}=X" display="inline"><semantics><mrow><msubsup><mi>S</mi><mi>T</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msubsup><mo>=</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">S_{T}^{n+1}=X</annotation></semantics></math>.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div id="S2.SS4.p8" class="ltx_para">
+<p class="ltx_p">Clearly, we can formulate a useful result whose proof is very easy
+and left as an exercise.</p>
+</div>
+<div id="S2.SS4.Thmtheorem5" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 2.4.5</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS4.Thmtheorem5.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S2.SS4.Thmtheorem5.p1.m1" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> be a contingent claim in a multi period
+market model. If <math id="S2.SS4.Thmtheorem5.p1.m2" class="ltx_Math" alttext="\phi\in\mathcal{T}" display="inline"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒯</mi></mrow><annotation encoding="application/x-tex">\phi\in\mathcal{T}</annotation></semantics></math> be a hedging strategy for
+<math id="S2.SS4.Thmtheorem5.p1.m3" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>, then the only price of <math id="S2.SS4.Thmtheorem5.p1.m4" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> at time <math id="S2.SS4.Thmtheorem5.p1.m5" class="ltx_Math" alttext="t" display="inline"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> which complies with the
+no arbitrage principle is <math id="S2.SS4.Thmtheorem5.p1.m6" class="ltx_Math" alttext="V_{t}(\phi)" display="inline"><semantics><mrow><msub><mi>V</mi><mi>t</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ϕ</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">V_{t}(\phi)</annotation></semantics></math>. In particular, the price at
+the beginning of the trading period at time <math id="S2.SS4.Thmtheorem5.p1.m7" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> is the total
+initial investment in the hedge.</span></p>
+</div>
+</div>
+<div id="S2.SS4.p9" class="ltx_para">
+<p class="ltx_p">As in the single period market model, we can easily distinguish
+between complete and incomplete markets. However, the proof is
+rather difficult as we skip it.</p>
+</div>
+<div id="S2.SS4.Thmtheorem6" class="ltx_theorem ltx_theorem_theorem">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Theorem 2.4.6</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS4.Thmtheorem6.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Assume that the multi period market model is arbitrage free. Then it is complete if and only if there exists exactly one risk neutral probability measure.</span></p>
+</div>
+</div>
+<div id="S2.SS4.p10" class="ltx_para">
+<p class="ltx_p">Due to Fundamental Theorem of Asset Pricing, the market model is
+arbitrage free if and only if there exists a risk neutral measure.
+If the set <math id="S2.SS4.p10.m1" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> of risk neutral measures consists of one
+element, then the model is complete. If the set <math id="S2.SS4.p10.m2" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> is
+bigger, then the model is incomplete, i.e. there exists an
+unattainable contingent claim. To sum it up, there are only three
+possibilities:</p>
+<ul id="S2.I20" class="ltx_itemize">
+<li id="S2.I20.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S2.I20.i1.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I20.i1.p1.m1" class="ltx_Math" alttext="\mathbb{M}=\emptyset" display="inline"><semantics><mrow><mi>𝕄</mi><mo>=</mo><mi>∅︀</mi></mrow><annotation encoding="application/x-tex">\mathbb{M}=\emptyset</annotation></semantics></math> if and only if there is an arbitrage.</p>
+</div>
+</li>
+<li id="S2.I20.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S2.I20.i2.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I20.i2.p1.m1" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> has one element if and only if the model is arbitrage free and complete.</p>
+</div>
+</li>
+<li id="S2.I20.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span><div id="S2.I20.i3.p1" class="ltx_para">​<p class="ltx_p"><math id="S2.I20.i3.p1.m1" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> is infinite if and only if the model is arbitrage free but incomplete.</p>
+</div>
+</li>
+</ul>
+<p class="ltx_p">The set <math id="S2.SS4.p10.m3" class="ltx_Math" alttext="\mathbb{M}" display="inline"><semantics><mi>𝕄</mi><annotation encoding="application/x-tex">\mathbb{M}</annotation></semantics></math> cannot consist of more than one element and be
+finite (check it using convex combinations of risk neutral
+measures).</p>
+</div>
+<div id="S2.SS4.p11" class="ltx_para">
+<p class="ltx_p">Notice that in the definition of completeness we do not assume that
+the model is arbitrage free. So there is a big class of models that
+allow arbitrage and are complete or incomplete. Hence, we cannot use
+risk neutral measures to classify them. Fortunately, these models
+are of no interest to us during this lecture.</p>
+</div>
+<div id="S2.SS4.p12" class="ltx_para">
+<p class="ltx_p">Let us now move to incomplete models. If <math id="S2.SS4.p12.m1" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> is not attainable, we
+cannot use the replication principle. However, the arbitrage pricing
+concept is still in effect and yields</p>
+</div>
+<div id="S2.SS4.Thmtheorem7" class="ltx_theorem ltx_theorem_proposition">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Proposition 2.4.7</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS4.Thmtheorem7.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S2.SS4.Thmtheorem7.p1.m1" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> be a possibly unattainable contingent claim
+and <math id="S2.SS4.Thmtheorem7.p1.m2" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> a risk neutral measure for a general multi period
+market model. Then</span></p>
+<div id="S2.SS4.E1" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.E1.m1" class="ltx_Math" alttext="\boxed{X_{t}=B_{t}\mathbb{E}_{\mathbb{Q}}\left.\left(\frac{1}{B_{T}}X\right|%
+\mathcal{F}_{t}\right)}" display="block"><semantics><menclose notation="box"><mrow><msub><mi>X</mi><mi>t</mi></msub><mo>=</mo><mrow><msub><mi>B</mi><mi>t</mi></msub><mo>⁢</mo><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mfrac><mn>1</mn><msub><mi>B</mi><mi>T</mi></msub></mfrac><mo>⁢</mo><mi>X</mi></mrow><mo fence="false" stretchy="true">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>t</mi></msub></mrow><mo>)</mo></mrow></mrow></mrow></menclose><annotation encoding="application/x-tex">\boxed{X_{t}=B_{t}\mathbb{E}_{\mathbb{Q}}\left.\left(\frac{1}{B_{T}}X\right|%
+\mathcal{F}_{t}\right)}</annotation></semantics></math></span>
+              <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.4.1)</span>
+              
+              
+            
+</div>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">defines a price process for the contingent claim <math id="S2.SS4.Thmtheorem7.p1.m3" class="ltx_Math" alttext="X" display="inline"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> which complies
+with the no arbitrage principle.</span></p>
+</div>
+</div>
+<div id="S2.SS4.p13" class="ltx_para">
+<p class="ltx_p">The proof of the above result is almost the same as the proof of
+Proposition <a href="Pt3.html#S1.SS2.Thmtheorem21" title="Proposition 1.2.21. ‣ Lecture III 15/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.21</span></a>.</p>
+</div>
+<div id="S2.SS4.Thmtheorem8" class="ltx_theorem ltx_theorem_exercise">
+
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem header-section-number"><span class="ltx_text ltx_font_bold">Example 2.4.8</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.SS4.Thmtheorem8.p1" class="ltx_para">
+<p class="ltx_p">Let us come back to Example <a href="Pt5.html#S2.SS2.Thmtheorem3" title="Example 2.2.3. ‣ 2.2. Properties of the general multi period market model ‣ Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.2.3</span></a> and
+consider again the digital call. As before we assume that the
+interest rate is equal to zero, i.e. <math id="S2.SS4.Thmtheorem8.p1.m1" class="ltx_Math" alttext="r=0" display="inline"><semantics><mrow><mi>r</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r=0</annotation></semantics></math>. We already know that an
+arbitrage free price price is given by <math id="S2.SS4.Thmtheorem8.p1.m2" class="ltx_Math" alttext="x=\frac{1}{6}" display="inline"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac></mrow><annotation encoding="application/x-tex">x=\frac{1}{6}</annotation></semantics></math>, and that
+this price is in fact unique, because the contingent claim can be
+hedged. However, alternatively, let us compute the price by using
+risk neutral measures. In order to do this, we first compute a set
+of risk neutral measures. Let <math id="S2.SS4.Thmtheorem8.p1.m3" class="ltx_Math" alttext="\mathbb{Q}=(q_{1},q_{2},q_{3},q_{4})^{\top}" display="inline"><semantics><mrow><mi>ℚ</mi><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><msub><mi>q</mi><mn>1</mn></msub><mo>,</mo><msub><mi>q</mi><mn>2</mn></msub><mo>,</mo><msub><mi>q</mi><mn>3</mn></msub><mo>,</mo><msub><mi>q</mi><mn>4</mn></msub><mo stretchy="false">)</mo></mrow><mo>⊤</mo></msup></mrow><annotation encoding="application/x-tex">\mathbb{Q}=(q_{1},q_{2},q_{3},q_{4})^{\top}</annotation></semantics></math> be
+the risk neutral measure we are looking for. The following two
+conditions for the <math id="S2.SS4.Thmtheorem8.p1.m4" class="ltx_Math" alttext="q_{i}" display="inline"><semantics><msub><mi>q</mi><mi>i</mi></msub><annotation encoding="application/x-tex">q_{i}</annotation></semantics></math> are due to the fact that <math id="S2.SS4.Thmtheorem8.p1.m5" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> is a
+probability measure and satisfies condition 1. in Definition
+<a href="#S2.SS4.Thmtheorem1" title="Definition 2.4.1. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.1</span></a>:</p>
+<div id="S2.SS4.Ex10" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex10.m1" class="ltx_Math" alttext="q_{1}+q_{2}+q_{3}+q_{4}=1,\quad q_{1},q_{2},q_{3},q_{4}&gt;0." display="block"><semantics><mrow><mrow><mrow><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>+</mo><msub><mi>q</mi><mn>2</mn></msub><mo>+</mo><msub><mi>q</mi><mn>3</mn></msub><mo>+</mo><msub><mi>q</mi><mn>4</mn></msub></mrow><mo>=</mo><mrow><mn>1</mn><mo rspace="1.267em">,</mo><msub><mi>q</mi><mn>1</mn></msub><mo>,</mo><msub><mi>q</mi><mn>2</mn></msub><mo>,</mo><msub><mi>q</mi><mn>3</mn></msub></mrow></mrow><mo>,</mo><mrow><msub><mi>q</mi><mn>4</mn></msub><mo>&gt;</mo><mn>0</mn></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">q_{1}+q_{2}+q_{3}+q_{4}=1,\quad q_{1},q_{2},q_{3},q_{4}&gt;0.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Note that since the interest rate is equal to zero prices agree with
+the discounted prices. Due to condition 2. of Definition
+<a href="#S2.SS4.Thmtheorem1" title="Definition 2.4.1. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.1</span></a> we obtain</p>
+<div id="S2.SS4.Ex11" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex11.m1" class="ltx_Math" alttext="5=\mathbb{E}_{\mathbb{Q}}(\hat{S_{1}}|\mathcal{F}_{0})=\mathbb{E}_{\mathbb{Q}}%
+(\hat{S_{1}})=q_{1}\cdot 8+q_{2}\cdot 8+q_{3}\cdot 4+q_{4}\cdot 4." display="block"><semantics><mrow><mrow><mn>5</mn><mo>=</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mover accent="true"><msub><mi>S</mi><mn>1</mn></msub><mo>^</mo></mover><mo fence="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>0</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true"><msub><mi>S</mi><mn>1</mn></msub><mo>^</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msub><mi>q</mi><mn>1</mn></msub><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>8</mn></mrow><mo>+</mo><mrow><msub><mi>q</mi><mn>2</mn></msub><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>8</mn></mrow><mo>+</mo><mrow><msub><mi>q</mi><mn>3</mn></msub><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>4</mn></mrow><mo>+</mo><mrow><msub><mi>q</mi><mn>4</mn></msub><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>4</mn></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">5=\mathbb{E}_{\mathbb{Q}}(\hat{S_{1}}|\mathcal{F}_{0})=\mathbb{E}_{\mathbb{Q}}%
+(\hat{S_{1}})=q_{1}\cdot 8+q_{2}\cdot 8+q_{3}\cdot 4+q_{4}\cdot 4.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Substitution of <math id="S2.SS4.Thmtheorem8.p1.m6" class="ltx_Math" alttext="q_{4}=1-q_{1}-q_{2}-q_{3}" display="inline"><semantics><mrow><msub><mi>q</mi><mn>4</mn></msub><mo>=</mo><mrow><mn>1</mn><mo>−</mo><msub><mi>q</mi><mn>1</mn></msub><mo>−</mo><msub><mi>q</mi><mn>2</mn></msub><mo>−</mo><msub><mi>q</mi><mn>3</mn></msub></mrow></mrow><annotation encoding="application/x-tex">q_{4}=1-q_{1}-q_{2}-q_{3}</annotation></semantics></math> into this equation gives</p>
+<div id="S2.SS4.Ex12" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex12.m1" class="ltx_Math" alttext="5=4+4(q_{1}+q_{2})," display="block"><semantics><mrow><mrow><mn>5</mn><mo>=</mo><mrow><mn>4</mn><mo>+</mo><mrow><mn>4</mn><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>+</mo><msub><mi>q</mi><mn>2</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">5=4+4(q_{1}+q_{2}),</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">which is equivalent to</p>
+<div id="S2.SS4.E2" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.E2.m1" class="ltx_Math" alttext="q_{1}+q_{2}=\frac{1}{4}." display="block"><semantics><mrow><mrow><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>+</mo><msub><mi>q</mi><mn>2</mn></msub></mrow><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">q_{1}+q_{2}=\frac{1}{4}.</annotation></semantics></math></span>
+              <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.4.2)</span>
+              
+              
+            
+</div>
+<p class="ltx_p">This also implies that</p>
+<div id="S2.SS4.E3" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.E3.m1" class="ltx_Math" alttext="q_{3}+q_{4}=\frac{3}{4}." display="block"><semantics><mrow><mrow><mrow><msub><mi>q</mi><mn>3</mn></msub><mo>+</mo><msub><mi>q</mi><mn>4</mn></msub></mrow><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">q_{3}+q_{4}=\frac{3}{4}.</annotation></semantics></math></span>
+              <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.4.3)</span>
+              
+              
+            
+</div>
+<p class="ltx_p">Recall that the partition of <math id="S2.SS4.Thmtheorem8.p1.m7" class="ltx_Math" alttext="\mathcal{F}^{S}_{1}" display="inline"><semantics><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup><annotation encoding="application/x-tex">\mathcal{F}^{S}_{1}</annotation></semantics></math> is given by two sets <math id="S2.SS4.Thmtheorem8.p1.m8" class="ltx_Math" alttext="A_{1}=\{\omega_{1},\omega_{2}\}" display="inline"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">A_{1}=\{\omega_{1},\omega_{2}\}</annotation></semantics></math> and <math id="S2.SS4.Thmtheorem8.p1.m9" class="ltx_Math" alttext="A_{2}=\{\omega_{3},\omega_{4}\}" display="inline"><semantics><mrow><msub><mi>A</mi><mn>2</mn></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><msub><mi>ω</mi><mn>3</mn></msub><mo>,</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">A_{2}=\{\omega_{3},\omega_{4}\}</annotation></semantics></math>. Using the
+definition of the conditional expectation, we see that for <math id="S2.SS4.Thmtheorem8.p1.m10" class="ltx_Math" alttext="\omega\in A_{1}" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><msub><mi>A</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\omega\in A_{1}</annotation></semantics></math>, we have</p>
+<div id="S2.SS4.Ex13" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex13.m1" class="ltx_Math" alttext="8=\mathbb{E}_{\mathbb{Q}}(\hat{S}_{2}|\mathcal{F}_{1}^{S})(\omega)=9\cdot\frac%
+{q_{1}}{q_{1}+q_{2}}+6\frac{q_{2}}{q_{1}+q_{2}}=36q_{1}+24q_{2}." display="block"><semantics><mrow><mrow><mn>8</mn><mo>=</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>2</mn></msub><mo fence="false">|</mo><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mn>9</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><msub><mi>q</mi><mn>1</mn></msub><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>+</mo><msub><mi>q</mi><mn>2</mn></msub></mrow></mfrac></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><mfrac><msub><mi>q</mi><mn>2</mn></msub><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>+</mo><msub><mi>q</mi><mn>2</mn></msub></mrow></mfrac></mrow></mrow><mo>=</mo><mrow><mrow><mn>36</mn><mo>⁢</mo><msub><mi>q</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><mn>24</mn><mo>⁢</mo><msub><mi>q</mi><mn>2</mn></msub></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">8=\mathbb{E}_{\mathbb{Q}}(\hat{S}_{2}|\mathcal{F}_{1}^{S})(\omega)=9\cdot\frac%
+{q_{1}}{q_{1}+q_{2}}+6\frac{q_{2}}{q_{1}+q_{2}}=36q_{1}+24q_{2}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">This gives</p>
+<div id="S2.SS4.E4" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.E4.m1" class="ltx_Math" alttext="9q_{1}+6q_{2}=2." display="block"><semantics><mrow><mrow><mrow><mrow><mn>9</mn><mo>⁢</mo><msub><mi>q</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><msub><mi>q</mi><mn>2</mn></msub></mrow></mrow><mo>=</mo><mn>2</mn></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">9q_{1}+6q_{2}=2.</annotation></semantics></math></span>
+              <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.4.4)</span>
+              
+              
+            
+</div>
+<p class="ltx_p">Furthermore for <math id="S2.SS4.Thmtheorem8.p1.m11" class="ltx_Math" alttext="\omega\in A_{2}" display="inline"><semantics><mrow><mi>ω</mi><mo>∈</mo><msub><mi>A</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\omega\in A_{2}</annotation></semantics></math> we have</p>
+<div id="S2.SS4.Ex14" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex14.m1" class="ltx_Math" alttext="4=\mathbb{E}_{\mathbb{Q}}(\hat{S}_{2}|\mathcal{F}_{1}^{S})(\omega)=6\cdot\frac%
+{q_{3}}{q_{3}+q_{4}}+3\frac{q_{4}}{q_{3}+q_{4}}=8q_{3}+4q_{4}." display="block"><semantics><mrow><mrow><mn>4</mn><mo>=</mo><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mover accent="true"><mi>S</mi><mo>^</mo></mover><mn>2</mn></msub><mo fence="false">|</mo><msubsup><mi class="ltx_font_mathcaligraphic">ℱ</mi><mn>1</mn><mi>S</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mn>6</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mfrac><msub><mi>q</mi><mn>3</mn></msub><mrow><msub><mi>q</mi><mn>3</mn></msub><mo>+</mo><msub><mi>q</mi><mn>4</mn></msub></mrow></mfrac></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><mfrac><msub><mi>q</mi><mn>4</mn></msub><mrow><msub><mi>q</mi><mn>3</mn></msub><mo>+</mo><msub><mi>q</mi><mn>4</mn></msub></mrow></mfrac></mrow></mrow><mo>=</mo><mrow><mrow><mn>8</mn><mo>⁢</mo><msub><mi>q</mi><mn>3</mn></msub></mrow><mo>+</mo><mrow><mn>4</mn><mo>⁢</mo><msub><mi>q</mi><mn>4</mn></msub></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">4=\mathbb{E}_{\mathbb{Q}}(\hat{S}_{2}|\mathcal{F}_{1}^{S})(\omega)=6\cdot\frac%
+{q_{3}}{q_{3}+q_{4}}+3\frac{q_{4}}{q_{3}+q_{4}}=8q_{3}+4q_{4}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">This gives</p>
+<div id="S2.SS4.E5" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.E5.m1" class="ltx_Math" alttext="2q_{3}+q_{4}=1." display="block"><semantics><mrow><mrow><mrow><mrow><mn>2</mn><mo>⁢</mo><msub><mi>q</mi><mn>3</mn></msub></mrow><mo>+</mo><msub><mi>q</mi><mn>4</mn></msub></mrow><mo>=</mo><mn>1</mn></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">2q_{3}+q_{4}=1.</annotation></semantics></math></span>
+              <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.4.5)</span>
+              
+              
+            
+</div>
+<p class="ltx_p">Now we have four linear equations
+(<a href="#S2.SS4.E2" title="In Example 2.4.8. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.2</span></a>),(<a href="#S2.SS4.E3" title="In Example 2.4.8. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.3</span></a>),(<a href="#S2.SS4.E4" title="In Example 2.4.8. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.4</span></a>), and
+(<a href="#S2.SS4.E5" title="In Example 2.4.8. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.5</span></a>), and four unknown variables <math id="S2.SS4.Thmtheorem8.p1.m12" class="ltx_Math" alttext="q_{1},q_{2},q_{3}" display="inline"><semantics><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>,</mo><msub><mi>q</mi><mn>2</mn></msub><mo>,</mo><msub><mi>q</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">q_{1},q_{2},q_{3}</annotation></semantics></math> and <math id="S2.SS4.Thmtheorem8.p1.m13" class="ltx_Math" alttext="q_{4}" display="inline"><semantics><msub><mi>q</mi><mn>4</mn></msub><annotation encoding="application/x-tex">q_{4}</annotation></semantics></math>:</p>
+<div id="S2.SS4.Ex15" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex15.m1" class="ltx_Math" alttext="9q_{1}+6q_{2}=2,\qquad 2q_{3}+q_{4}=1,\qquad q_{3}+q_{4}=\frac{3}{4},\qquad q_%
+{1}+q_{2}=\frac{1}{4}." display="block"><semantics><mrow><mrow><mrow><mrow><mrow><mn>9</mn><mo>⁢</mo><msub><mi>q</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><msub><mi>q</mi><mn>2</mn></msub></mrow></mrow><mo>=</mo><mn>2</mn></mrow><mo rspace="2.357em">,</mo><mrow><mrow><mrow><mrow><mn>2</mn><mo>⁢</mo><msub><mi>q</mi><mn>3</mn></msub></mrow><mo>+</mo><msub><mi>q</mi><mn>4</mn></msub></mrow><mo>=</mo><mn>1</mn></mrow><mo rspace="2.357em">,</mo><mrow><mrow><mrow><msub><mi>q</mi><mn>3</mn></msub><mo>+</mo><msub><mi>q</mi><mn>4</mn></msub></mrow><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></mrow><mo rspace="2.357em">,</mo><mrow><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>+</mo><msub><mi>q</mi><mn>2</mn></msub></mrow><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></mrow></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">9q_{1}+6q_{2}=2,\qquad 2q_{3}+q_{4}=1,\qquad q_{3}+q_{4}=\frac{3}{4},\qquad q_%
+{1}+q_{2}=\frac{1}{4}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">The unique solution of this system is</p>
+<div id="S2.SS4.E6" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.E6.m1" class="ltx_Math" alttext="\mathbb{Q}=(q_{1},q_{2},q_{3},q_{4})^{\top}=\left(\frac{1}{6},\frac{1}{12},%
+\frac{1}{4},\frac{1}{2}\right)^{\top}." display="block"><semantics><mrow><mrow><mi>ℚ</mi><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><msub><mi>q</mi><mn>1</mn></msub><mo>,</mo><msub><mi>q</mi><mn>2</mn></msub><mo>,</mo><msub><mi>q</mi><mn>3</mn></msub><mo>,</mo><msub><mi>q</mi><mn>4</mn></msub><mo stretchy="false">)</mo></mrow><mo>⊤</mo></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>12</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>⊤</mo></msup></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\mathbb{Q}=(q_{1},q_{2},q_{3},q_{4})^{\top}=\left(\frac{1}{6},\frac{1}{12},%
+\frac{1}{4},\frac{1}{2}\right)^{\top}.</annotation></semantics></math></span>
+              <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.4.6)</span>
+              
+              
+            
+</div>
+<p class="ltx_p">We check that this solution satisfies the inequalities:</p>
+<div id="S2.SS4.Ex16" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex16.m1" class="ltx_Math" alttext="q_{1},q_{2},q_{3},q_{4}&gt;0." display="block"><semantics><mrow><mrow><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>,</mo><msub><mi>q</mi><mn>2</mn></msub><mo>,</mo><msub><mi>q</mi><mn>3</mn></msub><mo>,</mo><msub><mi>q</mi><mn>4</mn></msub></mrow><mo>&gt;</mo><mn>0</mn></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">q_{1},q_{2},q_{3},q_{4}&gt;0.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">We therefore see that the market model is arbitrage free. By virtue
+of Theorem <a href="#S2.SS4.Thmtheorem6" title="Theorem 2.4.6. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.6</span></a> it is also complete.</p>
+</div>
+<div id="S2.SS4.Thmtheorem8.p2" class="ltx_para">
+<p class="ltx_p">Let us now compute the risk neutral measure using the trick that we
+already benefited in Example <a href="Pt5.html#S2.SS2.Thmtheorem3" title="Example 2.2.3. ‣ 2.2. Properties of the general multi period market model ‣ Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.2.3</span></a>, namely the decomposition
+of our multi period market model into single period market models.
+We have three embedded single period market models: one starting at
+time <math id="S2.SS4.Thmtheorem8.p2.m1" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> going until time <math id="S2.SS4.Thmtheorem8.p2.m2" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> with price <math id="S2.SS4.Thmtheorem8.p2.m3" class="ltx_Math" alttext="S_{0}=5" display="inline"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">S_{0}=5</annotation></semantics></math>, one starting
+at time <math id="S2.SS4.Thmtheorem8.p2.m4" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> with price <math id="S2.SS4.Thmtheorem8.p2.m5" class="ltx_Math" alttext="S_{1}=8" display="inline"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">S_{1}=8</annotation></semantics></math> and one starting at time <math id="S2.SS4.Thmtheorem8.p2.m6" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> with
+price <math id="S2.SS4.Thmtheorem8.p2.m7" class="ltx_Math" alttext="S_{1}=4" display="inline"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">S_{1}=4</annotation></semantics></math>. Let us first find a risk neutral measure <math id="S2.SS4.Thmtheorem8.p2.m8" class="ltx_Math" alttext="(q^{*}_{1},1-q^{*}_{1})^{T}" display="inline"><semantics><msup><mrow><mo stretchy="false">(</mo><msubsup><mi>q</mi><mn>1</mn><mo>∗</mo></msubsup><mo>,</mo><mrow><mn>1</mn><mo>−</mo><msubsup><mi>q</mi><mn>1</mn><mo>∗</mo></msubsup></mrow><mo stretchy="false">)</mo></mrow><mi>T</mi></msup><annotation encoding="application/x-tex">(q^{*}_{1},1-q^{*}_{1})^{T}</annotation></semantics></math> in the <math id="S2.SS4.Thmtheorem8.p2.m9" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> model with <math id="S2.SS4.Thmtheorem8.p2.m10" class="ltx_Math" alttext="S_{1}=8" display="inline"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">S_{1}=8</annotation></semantics></math>:</p>
+<div id="S2.SS4.Ex17" class="ltx_equation ltx_eqn_div">
+<span><img src="bmlimages/DiscreteTimeFinance-9.svg" alt="" id="S2.SS4.Ex17.m1.g1" class="ltx_graphics ltx_markedasmath ltx_img_square" width="100" height="95"></span>
+</div>
+<p class="ltx_p">This model is in fact an elementary single period market model, as
+in Section <a href="Pt1.html#S1.SS1" title="1.1. The most elementary market model ‣ 1. Single-Period Market Models ‣ Lecture I 01/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1</span></a> and therefore the risk neutral measure is
+given by the formula (recall that <math id="S2.SS4.Thmtheorem8.p2.m11" class="ltx_Math" alttext="r=0" display="inline"><semantics><mrow><mi>r</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r=0</annotation></semantics></math>):</p>
+<div id="S2.SS4.Ex18" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex18.m1" class="ltx_Math" alttext="q^{*}_{1}=\frac{8\cdot(1+0)-6}{9-6}=\frac{2}{3}." display="block"><semantics><mrow><mrow><msubsup><mi>q</mi><mn>1</mn><mo>∗</mo></msubsup><mo>=</mo><mfrac><mrow><mrow><mn>8</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mn>0</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>6</mn></mrow><mrow><mn>9</mn><mo>−</mo><mn>6</mn></mrow></mfrac><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">q^{*}_{1}=\frac{8\cdot(1+0)-6}{9-6}=\frac{2}{3}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">The single period model at time <math id="S2.SS4.Thmtheorem8.p2.m12" class="ltx_Math" alttext="t=1" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t=1</annotation></semantics></math> when the stock price is
+<math id="S2.SS4.Thmtheorem8.p2.m13" class="ltx_Math" alttext="S_{1}=4" display="inline"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">S_{1}=4</annotation></semantics></math> is given by</p>
+<div id="S2.SS4.Ex19" class="ltx_equation ltx_eqn_div">
+<span><img src="bmlimages/DiscreteTimeFinance-10.svg" alt="" id="S2.SS4.Ex19.m1.g1" class="ltx_graphics ltx_markedasmath ltx_img_square" width="100" height="95"></span>
+</div>
+<p class="ltx_p">The risk neutral measure <math id="S2.SS4.Thmtheorem8.p2.m14" class="ltx_Math" alttext="(q^{*}_{2},1-q^{*}_{2})^{T}" display="inline"><semantics><msup><mrow><mo stretchy="false">(</mo><msubsup><mi>q</mi><mn>2</mn><mo>∗</mo></msubsup><mo>,</mo><mrow><mn>1</mn><mo>−</mo><msubsup><mi>q</mi><mn>2</mn><mo>∗</mo></msubsup></mrow><mo stretchy="false">)</mo></mrow><mi>T</mi></msup><annotation encoding="application/x-tex">(q^{*}_{2},1-q^{*}_{2})^{T}</annotation></semantics></math> is defined by the
+formula</p>
+<div id="S2.SS4.Ex20" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex20.m1" class="ltx_Math" alttext="q^{*}_{2}=\frac{4\cdot(1+0)-3}{6-3}=\frac{1}{3}." display="block"><semantics><mrow><mrow><msubsup><mi>q</mi><mn>2</mn><mo>∗</mo></msubsup><mo>=</mo><mfrac><mrow><mrow><mn>4</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mn>0</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>3</mn></mrow><mrow><mn>6</mn><mo>−</mo><mn>3</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">q^{*}_{2}=\frac{4\cdot(1+0)-3}{6-3}=\frac{1}{3}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">Similarly, at time <math id="S2.SS4.Thmtheorem8.p2.m15" class="ltx_Math" alttext="t=0" display="inline"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math> with price <math id="S2.SS4.Thmtheorem8.p2.m16" class="ltx_Math" alttext="S_{0}=5" display="inline"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">S_{0}=5</annotation></semantics></math> we have</p>
+<div id="S2.SS4.Ex21" class="ltx_equation ltx_eqn_div">
+<span><img src="bmlimages/DiscreteTimeFinance-11.svg" alt="" id="S2.SS4.Ex21.m1.g1" class="ltx_graphics ltx_markedasmath ltx_img_square" width="100" height="95"></span>
+</div>
+<p class="ltx_p">where</p>
+<div id="S2.SS4.Ex22" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex22.m1" class="ltx_Math" alttext="q^{*}_{0}=\frac{5\cdot(1+0)-4}{8-4}=\frac{1}{4}." display="block"><semantics><mrow><mrow><msubsup><mi>q</mi><mn>0</mn><mo>∗</mo></msubsup><mo>=</mo><mfrac><mrow><mrow><mn>5</mn><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mn>0</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mn>4</mn></mrow><mrow><mn>8</mn><mo>−</mo><mn>4</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">q^{*}_{0}=\frac{5\cdot(1+0)-4}{8-4}=\frac{1}{4}.</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">We put the computed values into the diagram (see Figure
+<a href="#S2.F2" title="Figure 2 ‣ Example 2.4.8. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2</span></a>).</p>
+</div>
+<figure id="S2.F2" class="ltx_figure">
+<div id="S2.SS4.Ex23" class="ltx_equation ltx_eqn_div">
+<span><img src="bmlimages/DiscreteTimeFinance-12.svg" alt="Diagram with the risk neutral measure
+" id="S2.SS4.Ex23.m1.g1" class="ltx_graphics ltx_markedasmath ltx_img_portrait" width="200" height="253"></span>
+</div>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">Figure 2. </span>Diagram with the risk neutral measure
+<math id="S2.F2.m2" class="ltx_Math" alttext="\mathbb{Q}" display="inline"><semantics><mi>ℚ</mi><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math>.</figcaption>
+</figure>
+<div id="S2.SS4.Thmtheorem8.p3" class="ltx_para">
+<p class="ltx_p">Let us compute the probabilities of <math id="S2.SS4.Thmtheorem8.p3.m1" class="ltx_Math" alttext="\omega" display="inline"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>’s as in Example
+<a href="Pt5.html#S2.SS1.Thmtheorem17" title="Example 2.1.17. ‣ Lecture V 29/10/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.17</span></a>:</p>
+<div class="bml-overflow-wrapper">
+<table id="S4.EGx25" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S2.SS4.Ex24"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS4.Ex24.m1" class="ltx_Math" alttext="\displaystyle\mathbb{Q}(\omega_{1})=\frac{1}{4}\cdot\frac{2}{3}=\frac{1}{6},\qquad" display="inline"><semantics><mrow><mrow><mrow><mi>ℚ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>4</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>2</mn><mn>3</mn></mfrac></mstyle></mrow><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>6</mn></mfrac></mstyle></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{Q}(\omega_{1})=\frac{1}{4}\cdot\frac{2}{3}=\frac{1}{6},\qquad</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS4.Ex24.m2" class="ltx_Math" alttext="\displaystyle\mathbb{Q}(\omega_{2})=\frac{1}{4}\cdot\frac{1}{3}=\frac{1}{12}," display="inline"><semantics><mrow><mrow><mrow><mi>ℚ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>4</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>3</mn></mfrac></mstyle></mrow><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>12</mn></mfrac></mstyle></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{Q}(\omega_{2})=\frac{1}{4}\cdot\frac{1}{3}=\frac{1}{12},</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="S2.SS4.Ex25"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.SS4.Ex25.m1" class="ltx_Math" alttext="\displaystyle\mathbb{Q}(\omega_{3})=\frac{3}{4}\cdot\frac{1}{3}=\frac{1}{4},\qquad" display="inline"><semantics><mrow><mrow><mrow><mi>ℚ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>3</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>3</mn><mn>4</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>3</mn></mfrac></mstyle></mrow><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>4</mn></mfrac></mstyle></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{Q}(\omega_{3})=\frac{3}{4}\cdot\frac{1}{3}=\frac{1}{4},\qquad</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.SS4.Ex25.m2" class="ltx_Math" alttext="\displaystyle\mathbb{Q}(\omega_{4})=\frac{3}{4}\cdot\frac{2}{3}=\frac{1}{2}," display="inline"><semantics><mrow><mrow><mrow><mi>ℚ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>ω</mi><mn>4</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>3</mn><mn>4</mn></mfrac></mstyle><mo lspace="0.222em" rspace="0.222em">⋅</mo><mstyle displaystyle="true"><mfrac><mn>2</mn><mn>3</mn></mfrac></mstyle></mrow><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{Q}(\omega_{4})=\frac{3}{4}\cdot\frac{2}{3}=\frac{1}{2},</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+<p class="ltx_p">which is exactly the result obtained in (<a href="#S2.SS4.E6" title="In Example 2.4.8. ‣ 2.4. Risk neutral probability measures: arbitrage and pricing ‣ Lecture VI 05/11/2024 ‣ Lecture notes: Discrete Time Finance (MATH5320M)" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.6</span></a>). Remember
+that after computations one always has to check whether all
+probabilities are greater than zero!</p>
+</div>
+<div id="S2.SS4.Thmtheorem8.p4" class="ltx_para">
+<p class="ltx_p">In order to compute the price of the digital call <math id="S2.SS4.Thmtheorem8.p4.m1" class="ltx_math_unparsed" alttext="X={\bf 1}_{\{S_{2}|\geq 8\}}" display="inline"><semantics><mrow><mi>X</mi><mo>=</mo><msub><mn>𝟏</mn><mrow><mo stretchy="false">{</mo><msub><mi>S</mi><mn>2</mn></msub><mo fence="false" stretchy="false">|</mo><mo lspace="0.167em">≥</mo><mn>8</mn><mo stretchy="false">}</mo></mrow></msub></mrow><annotation encoding="application/x-tex">X={\bf 1}_{\{S_{2}|\geq 8\}}</annotation></semantics></math> we observe that <math id="S2.SS4.Thmtheorem8.p4.m2" class="ltx_Math" alttext="X(\omega)" display="inline"><semantics><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>ω</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">X(\omega)</annotation></semantics></math> is <math id="S2.SS4.Thmtheorem8.p4.m3" class="ltx_Math" alttext="1" display="inline"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> for <math id="S2.SS4.Thmtheorem8.p4.m4" class="ltx_Math" alttext="\omega=\omega_{1}" display="inline"><semantics><mrow><mi>ω</mi><mo>=</mo><msub><mi>ω</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\omega=\omega_{1}</annotation></semantics></math>
+and <math id="S2.SS4.Thmtheorem8.p4.m5" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math> for all other <math id="S2.SS4.Thmtheorem8.p4.m6" class="ltx_Math" alttext="\omega" display="inline"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>’s. The only price at time <math id="S2.SS4.Thmtheorem8.p4.m7" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math> that
+complies with the no arbitrage principle is equal to</p>
+<div id="S2.SS4.Ex26" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS4.Ex26.m1" class="ltx_Math" alttext="\mathbb{E}_{\mathbb{Q}}\bigg{(}\frac{X}{(1+r)^{2}}\bigg{)}=q_{1}\cdot 1+q_{2}%
+\cdot 0+q_{3}\cdot 0+q_{4}\cdot 0=\frac{1}{6}," display="block"><semantics><mrow><mrow><mrow><msub><mi>𝔼</mi><mi>ℚ</mi></msub><mo>⁢</mo><mrow><mo maxsize="210%" minsize="210%">(</mo><mfrac><mi>X</mi><msup><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><mi>r</mi></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></mfrac><mo maxsize="210%" minsize="210%">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msub><mi>q</mi><mn>1</mn></msub><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>1</mn></mrow><mo>+</mo><mrow><msub><mi>q</mi><mn>2</mn></msub><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0</mn></mrow><mo>+</mo><mrow><msub><mi>q</mi><mn>3</mn></msub><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0</mn></mrow><mo>+</mo><mrow><msub><mi>q</mi><mn>4</mn></msub><mo lspace="0.222em" rspace="0.222em">⋅</mo><mn>0</mn></mrow></mrow><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\mathbb{Q}}\bigg{(}\frac{X}{(1+r)^{2}}\bigg{)}=q_{1}\cdot 1+q_{2}%
+\cdot 0+q_{3}\cdot 0+q_{4}\cdot 0=\frac{1}{6},</annotation></semantics></math></span>
+</div>
+<p class="ltx_p">since <math id="S2.SS4.Thmtheorem8.p4.m8" class="ltx_Math" alttext="r=0" display="inline"><semantics><mrow><mi>r</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r=0</annotation></semantics></math>. ∎</p>
+</div>
+</div>
+<div class="ltx_pagination ltx_role_newpage"></div>
+</div>
+</section>
+<section id="S2.SS5" class="ltx_subsection normal">
+<div class="section level2">
+
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection header-section-number">2.5</span>. Exotic options</h2>
+
+<div id="S2.SS5.p1" class="ltx_para">
+<p class="ltx_p">The options we have considered so far, were of the type <math id="S2.SS5.p1.m1" class="ltx_Math" alttext="h(S_{T})" display="inline"><semantics><mrow><mi>h</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>S</mi><mi>T</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">h(S_{T})</annotation></semantics></math>,
+where <math id="S2.SS5.p1.m2" class="ltx_Math" alttext="h" display="inline"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math> is a pay off function depending on the terminal stock
+price <math id="S2.SS5.p1.m3" class="ltx_Math" alttext="S_{T}" display="inline"><semantics><msub><mi>S</mi><mi>T</mi></msub><annotation encoding="application/x-tex">S_{T}</annotation></semantics></math>, but not on the stock prices at times strictly before
+<math id="S2.SS5.p1.m4" class="ltx_Math" alttext="T" display="inline"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>. Such options are called path independent. However there are
+also path dependent options. Here are some examples:</p>
+<ol id="S2.I21" class="ltx_enumerate">
+<li id="S2.I21.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(1)</span><div id="S2.I21.i1.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">Asian option</span>: An Asian option is in a way a European call option on the average stock price. There are two kinds which are mainly traded:</p>
+<ol id="S2.I21.i1.I1" class="ltx_enumerate">
+<li id="S2.I21.i1.I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(a)</span><div id="S2.I21.i1.I1.i1.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">arithmetic average option</span>:</p>
+<div id="S2.SS5.E1" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS5.E1.m1" class="ltx_Math" alttext="X=\left(\frac{1}{T+1}\sum_{t=0}^{T}S_{t}-K\right)^{+}" display="block"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mrow><mo>(</mo><mrow><mrow><mfrac><mn>1</mn><mrow><mi>T</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>⁢</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><mi>T</mi></munderover><msub><mi>S</mi><mi>t</mi></msub></mrow></mrow><mo>−</mo><mi>K</mi></mrow><mo>)</mo></mrow><mo>+</mo></msup></mrow><annotation encoding="application/x-tex">X=\left(\frac{1}{T+1}\sum_{t=0}^{T}S_{t}-K\right)^{+}</annotation></semantics></math></span>
+                        <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.5.1)</span>
+                        
+                        
+                      
+</div>
+</div>
+</li>
+<li id="S2.I21.i1.I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(b)</span><div id="S2.I21.i1.I1.i2.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">geometric average option</span>:</p>
+<div id="S2.SS5.E2" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS5.E2.m1" class="ltx_Math" alttext="X=\left(\left(\prod_{t=0}^{T}S_{t}\right)^{\frac{1}{T+1}}-K\right)^{+}" display="block"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mrow><mo>(</mo><mrow><msup><mrow><mo>(</mo><mrow><munderover><mo lspace="0em" movablelimits="false">∏</mo><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><mi>T</mi></munderover><msub><mi>S</mi><mi>t</mi></msub></mrow><mo>)</mo></mrow><mfrac><mn>1</mn><mrow><mi>T</mi><mo>+</mo><mn>1</mn></mrow></mfrac></msup><mo>−</mo><mi>K</mi></mrow><mo>)</mo></mrow><mo>+</mo></msup></mrow><annotation encoding="application/x-tex">X=\left(\left(\prod_{t=0}^{T}S_{t}\right)^{\frac{1}{T+1}}-K\right)^{+}</annotation></semantics></math></span>
+                        <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.5.2)</span>
+                        
+                        
+                      
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="S2.I21.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(2)</span><div id="S2.I21.i2.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">Barrier options</span>: Barrier options are options which are activated or deactivated if the stock price hits a certain barrier. As an example we consider so called "knock out" barrier options. There are two types of these:</p>
+<ol id="S2.I21.i2.I1" class="ltx_enumerate">
+<li id="S2.I21.i2.I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(a)</span><div id="S2.I21.i2.I1.i1.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">Down and Out call</span>:</p>
+<div id="S2.SS5.E3" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS5.E3.m1" class="ltx_Math" alttext="X=(S_{T}-K_{1})^{+}\cdot{\bf 1}_{\{\min_{0\leq t\leq T}S_{t}&gt;K_{2}\}}" display="block"><semantics><mrow><mi>X</mi><mo>=</mo><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mi>T</mi></msub><mo>−</mo><msub><mi>K</mi><mn>1</mn></msub></mrow><mo rspace="0.055em" stretchy="false">)</mo></mrow><mo>+</mo></msup><mo rspace="0.222em">⋅</mo><msub><mn>𝟏</mn><mrow><mo stretchy="false">{</mo><mrow><mrow><msub><mi>min</mi><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub><mo lspace="0.167em">⁡</mo><msub><mi>S</mi><mi>t</mi></msub></mrow><mo>&gt;</mo><msub><mi>K</mi><mn>2</mn></msub></mrow><mo stretchy="false">}</mo></mrow></msub></mrow></mrow><annotation encoding="application/x-tex">X=(S_{T}-K_{1})^{+}\cdot{\bf 1}_{\{\min_{0\leq t\leq T}S_{t}&gt;K_{2}\}}</annotation></semantics></math></span>
+                        <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.5.3)</span>
+                        
+                        
+                      
+</div>
+<p class="ltx_p">This option has the same payoff as a European call with strike
+<math id="S2.I21.i2.I1.i1.p1.m1" class="ltx_Math" alttext="K_{1}" display="inline"><semantics><msub><mi>K</mi><mn>1</mn></msub><annotation encoding="application/x-tex">K_{1}</annotation></semantics></math>, but only if the stock price remains over the barrier level of
+<math id="S2.I21.i2.I1.i1.p1.m2" class="ltx_Math" alttext="K_{2}" display="inline"><semantics><msub><mi>K</mi><mn>2</mn></msub><annotation encoding="application/x-tex">K_{2}</annotation></semantics></math> on the time interval <math id="S2.I21.i2.I1.i1.p1.m3" class="ltx_Math" alttext="[0,T]" display="inline"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi>T</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,T]</annotation></semantics></math>. Otherwise it pays off <math id="S2.I21.i2.I1.i1.p1.m4" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math>.</p>
+</div>
+</li>
+<li id="S2.I21.i2.I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(b)</span><div id="S2.I21.i2.I1.i2.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">Down and In call</span>:</p>
+<div id="S2.SS5.E4" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS5.E4.m1" class="ltx_Math" alttext="X=(S_{T}-K_{1})^{+}\cdot{\bf 1}_{\{\min_{0\leq t\leq T}S_{t}\leq K_{2}\}}" display="block"><semantics><mrow><mi>X</mi><mo>=</mo><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><msub><mi>S</mi><mi>T</mi></msub><mo>−</mo><msub><mi>K</mi><mn>1</mn></msub></mrow><mo rspace="0.055em" stretchy="false">)</mo></mrow><mo>+</mo></msup><mo rspace="0.222em">⋅</mo><msub><mn>𝟏</mn><mrow><mo stretchy="false">{</mo><mrow><mrow><msub><mi>min</mi><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></msub><mo lspace="0.167em">⁡</mo><msub><mi>S</mi><mi>t</mi></msub></mrow><mo>≤</mo><msub><mi>K</mi><mn>2</mn></msub></mrow><mo stretchy="false">}</mo></mrow></msub></mrow></mrow><annotation encoding="application/x-tex">X=(S_{T}-K_{1})^{+}\cdot{\bf 1}_{\{\min_{0\leq t\leq T}S_{t}\leq K_{2}\}}</annotation></semantics></math></span>
+                        <span class="ltx_tag ltx_tag_equation ltx_align_right">(2.5.4)</span>
+                        
+                        
+                      
+</div>
+<p class="ltx_p">This option has the same payoff as a European call with strike
+<math id="S2.I21.i2.I1.i2.p1.m1" class="ltx_Math" alttext="K_{1}" display="inline"><semantics><msub><mi>K</mi><mn>1</mn></msub><annotation encoding="application/x-tex">K_{1}</annotation></semantics></math>, but only if the stock price falls below the barrier level of
+<math id="S2.I21.i2.I1.i2.p1.m2" class="ltx_Math" alttext="K_{2}" display="inline"><semantics><msub><mi>K</mi><mn>2</mn></msub><annotation encoding="application/x-tex">K_{2}</annotation></semantics></math> on the time interval <math id="S2.I21.i2.I1.i2.p1.m3" class="ltx_Math" alttext="[0,T]" display="inline"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi>T</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,T]</annotation></semantics></math>. Otherwise it pays off <math id="S2.I21.i2.I1.i2.p1.m4" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math>.</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="S2.I21.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(3)</span><div id="S2.I21.i3.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">Look back option</span>: A look back option is an option on a maximum or a minimum of the stock price on the interval <math id="S2.I21.i3.p1.m1" class="ltx_Math" alttext="[0,T]" display="inline"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi>T</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,T]</annotation></semantics></math>. As an example consider call options:</p>
+<ol id="S2.I21.i3.I1" class="ltx_enumerate">
+<li id="S2.I21.i3.I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(a)</span><div id="S2.I21.i3.I1.i1.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">Call option on maximum</span>:</p>
+<div id="S2.SS5.Ex1" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS5.Ex1.m1" class="ltx_Math" alttext="X=\left(\max_{0\leq t\leq T}S_{t}-K\right)^{+}" display="block"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mrow><mo>(</mo><mrow><mrow><munder><mi>max</mi><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></munder><mo lspace="0.167em">⁡</mo><msub><mi>S</mi><mi>t</mi></msub></mrow><mo>−</mo><mi>K</mi></mrow><mo>)</mo></mrow><mo>+</mo></msup></mrow><annotation encoding="application/x-tex">X=\left(\max_{0\leq t\leq T}S_{t}-K\right)^{+}</annotation></semantics></math></span>
+</div>
+</div>
+</li>
+<li id="S2.I21.i3.I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(b)</span><div id="S2.I21.i3.I1.i2.p1" class="ltx_para">​<p class="ltx_p"><span class="ltx_text ltx_font_bold">Call option on minimum</span>:</p>
+<div id="S2.SS5.Ex2" class="ltx_equation ltx_eqn_div">
+<span><math id="S2.SS5.Ex2.m1" class="ltx_Math" alttext="X=\left(\min_{0\leq t\leq T}S_{t}-K\right)^{+}" display="block"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mrow><mo>(</mo><mrow><mrow><munder><mi>min</mi><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>T</mi></mrow></munder><mo lspace="0.167em">⁡</mo><msub><mi>S</mi><mi>t</mi></msub></mrow><mo>−</mo><mi>K</mi></mrow><mo>)</mo></mrow><mo>+</mo></msup></mrow><annotation encoding="application/x-tex">X=\left(\min_{0\leq t\leq T}S_{t}-K\right)^{+}</annotation></semantics></math></span>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div id="S2.SS5.p2" class="ltx_para">
+<p class="ltx_p">The main difference of the path dependent options and a standard
+European options is that their payoff does not only depend on the
+terminal stock price <math id="S2.SS5.p2.m1" class="ltx_Math" alttext="S_{T}" display="inline"><semantics><msub><mi>S</mi><mi>T</mi></msub><annotation encoding="application/x-tex">S_{T}</annotation></semantics></math> but on the whole path that the stock
+price has taken in the interval <math id="S2.SS5.p2.m2" class="ltx_Math" alttext="[0,T]" display="inline"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi>T</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,T]</annotation></semantics></math>. Notice that our pricing
+rules are ready to deal with path dependent options, because all
+contingent claims above depend on asset prices up to time <math id="S2.SS5.p2.m3" class="ltx_Math" alttext="T" display="inline"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math> and
+hence they are <math id="S2.SS5.p2.m4" class="ltx_Math" alttext="\mathcal{F}_{T}" display="inline"><semantics><msub><mi class="ltx_font_mathcaligraphic">ℱ</mi><mi>T</mi></msub><annotation encoding="application/x-tex">\mathcal{F}_{T}</annotation></semantics></math> measurable. Therefore, one simply has to
+compute the expected value of <math id="S2.SS5.p2.m5" class="ltx_Math" alttext="\frac{X}{B_{T}}" display="inline"><semantics><mfrac><mi>X</mi><msub><mi>B</mi><mi>T</mi></msub></mfrac><annotation encoding="application/x-tex">\frac{X}{B_{T}}</annotation></semantics></math> under the risk neutral
+measure.</p>
+</div>
+</div>
+</section>
+</div>
+</section>
+</div>
+</div>
+</div>
+<a href="Pt5.html" class="navigation navigation-prev" aria-label="Previous page"><i class="fa fa-angle-left"></i></a><a href="Pt7.html" class="navigation navigation-next" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+</div>
+</div>
+<script src="bookml/gitbook/js/app.min.js"></script>
+<script src="bookml/gitbook/js/jquery.highlight.js"></script>
+<script src="bookml/gitbook/js/plugin-search.js"></script>
+<script src="bookml/gitbook/js/plugin-fontsettings.js"></script>
+<script src="bookml/gitbook/js/plugin-bookdown.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+        MathJax = {
+          startup: {
+            ready() {
+              // do not process equations disabled with \bmlDisableMathJax (code suggested by Davide P. Cervone)
+              class bmlFindMathML extends MathJax._.input.mathml.FindMathML.FindMathML {
+                processMath(set) {
+                  const adaptor = this.adaptor;
+                  for (const node of set.values()) {
+                    if (adaptor.hasClass(node, 'bml_disable_mathjax')) {
+                      set.delete(node);
+                    }
+                  }
+                  return super.processMath(set);
+                }
+              }
+
+              MathJax._.components.global.combineDefaults(MathJax.config, 'mml', {FindMathML: new bmlFindMathML()});
+
+              MathJax.startup.defaultReady();
+
+              // preproces MathML to make MathJax aware of certain LaTeXML and BookML additional info
+              const mmlFilters = MathJax.startup.input[0].mmlFilters;
+
+              // convert the LaTeXML calligraphic (chancery) annotation to a form MathJax understands
+              // since the corresponding Unicode characters render as script (rounded)
+              const script2latin = {
+                '𝒜': 'A', 'ℬ': 'B', '𝒞': 'C', '𝒟': 'D', 'ℰ': 'E', 'ℱ': 'F', '𝒢': 'G',
+                'ℋ': 'H', 'ℐ': 'I', '𝒥': 'J', '𝒦': 'K', 'ℒ': 'L', 'ℳ': 'M', '𝒩': 'N',
+                '𝒪': 'O', '𝒫': 'P', '𝒬': 'Q', 'ℛ': 'R', '𝒮': 'S', '𝒯': 'T', '𝒰': 'U',
+                '𝒱': 'V', '𝒲': 'W', '𝒳': 'X', '𝒴': 'Y', '𝒵': 'Z',
+              };
+
+              mmlFilters.add((args) => {
+                for (const n of args.data.getElementsByClassName('ltx_font_mathcaligraphic')) {
+                  n.classList.add('MJX-tex-calligraphic');
+                  const letter = script2latin[n.textContent];
+                  if (letter !== undefined) { n.textContent = letter; }
+                }
+              });
+
+              // adjust characters based on Unicode variation sequences
+              const replacements = {
+                // MathJax renders the empty set as the U+FE00 variant, so the plain character needs adjusting
+                '∅': { variant: 'variant' },
+                // MathJax renders script characters in rounded style, which is fine for no variation and U+FE00
+                '𝒜\xFE00': { text: 'A', variant: 'tex-calligraphic' },
+                'ℬ\xFE00': { text: 'B', variant: 'tex-calligraphic' },
+                '𝒞\xFE00': { text: 'C', variant: 'tex-calligraphic' },
+                '𝒟\xFE00': { text: 'D', variant: 'tex-calligraphic' },
+                'ℰ\xFE00': { text: 'E', variant: 'tex-calligraphic' },
+                'ℱ\xFE00': { text: 'F', variant: 'tex-calligraphic' },
+                '𝒢\xFE00': { text: 'G', variant: 'tex-calligraphic' },
+                'ℋ\xFE00': { text: 'H', variant: 'tex-calligraphic' },
+                'ℐ\xFE00': { text: 'I', variant: 'tex-calligraphic' },
+                '𝒥\xFE00': { text: 'J', variant: 'tex-calligraphic' },
+                '𝒦\xFE00': { text: 'K', variant: 'tex-calligraphic' },
+                'ℒ\xFE00': { text: 'L', variant: 'tex-calligraphic' },
+                'ℳ\xFE00': { text: 'M', variant: 'tex-calligraphic' },
+                '𝒩\xFE00': { text: 'N', variant: 'tex-calligraphic' },
+                '𝒪\xFE00': { text: 'O', variant: 'tex-calligraphic' },
+                '𝒫\xFE00': { text: 'P', variant: 'tex-calligraphic' },
+                '𝒬\xFE00': { text: 'Q', variant: 'tex-calligraphic' },
+                'ℛ\xFE00': { text: 'R', variant: 'tex-calligraphic' },
+                '𝒮\xFE00': { text: 'S', variant: 'tex-calligraphic' },
+                '𝒯\xFE00': { text: 'T', variant: 'tex-calligraphic' },
+                '𝒰\xFE00': { text: 'U', variant: 'tex-calligraphic' },
+                '𝒱\xFE00': { text: 'V', variant: 'tex-calligraphic' },
+                '𝒲\xFE00': { text: 'W', variant: 'tex-calligraphic' },
+                '𝒳\xFE00': { text: 'X', variant: 'tex-calligraphic' },
+                '𝒴\xFE00': { text: 'Y', variant: 'tex-calligraphic' },
+                '𝒵\xFE00': { text: 'Z', variant: 'tex-calligraphic' }
+              };
+
+              mmlFilters.add((args) => {
+                let nodes = document.evaluate('.//m:mi | .//m:mn | .//m:mo | .//m:ms', args.data,
+                  () => 'http://www.w3.org/1998/Math/MathML', XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE);
+                for (let i = 0; i < nodes.snapshotLength; i++) {
+                  const n = nodes.snapshotItem(i);
+                  const repl = replacements[n.innerHTML];
+                  if (repl !== undefined) {
+                    const variant = repl['variant'];
+                    const text = repl['text'];
+                    if (variant !== undefined) { n.classList.add('MJX-' + variant); n.removeAttribute('mathvariant'); }
+                    if (text !== undefined) { n.innerHTML = text; }
+                  }
+                }
+              });
+            }
+          }
+        };
+      </script>
+<script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/mml-chtml.js"></script>
+<script type="text/javascript">
+                gitbook.require(["gitbook"], function(gitbook) {
+                gitbook.start({
+                  "fontsettings": {
+                    "theme": "white",
+                    "family": "sans",
+                    "size": 2
+                  },
+                  "download": [ [ "DiscreteTimeFinance.pdf", "PDF (serif)" ], [ "DiscreteTimeFinance-sans.pdf", "PDF (sans serif)" ], [ "DiscreteTimeFinance-sans-large.pdf", "PDF (sans serif, large)" ], ],
+                  "search": {
+                    "engine": "fuse"
+                  },
+                  "toc": {
+                    "collapse": "none"
+                  }
+                });
+              });
+            </script>
+</body>
+
+</html>
