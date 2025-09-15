@@ -5,6 +5,13 @@
     document.getElementById(id + '-placeholder').innerHTML = html;
   }));
 
+  const filename = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('nav a').forEach(a => {
+    if (a.getAttribute('href') === filename) {
+      a.classList.add('active');
+    }
+  });
+
   // Theme handled via CSS prefers-color-scheme
 
   // Setup tooltips
