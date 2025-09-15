@@ -5,9 +5,11 @@
     document.getElementById(id + '-placeholder').innerHTML = html;
   }));
 
-  const filename = window.location.pathname.split('/').pop() || 'index.html';
+  const path = window.location.pathname.replace(/\/$/, '');
+  const filename = path.split('/').pop().replace(/\.html$/, '') || 'index';
   document.querySelectorAll('nav a').forEach(a => {
-    if (a.getAttribute('href') === filename) {
+    const link = a.getAttribute('href').replace(/\.html$/, '');
+    if (link === filename) {
       a.classList.add('active');
     }
   });
