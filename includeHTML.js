@@ -32,27 +32,37 @@
 
 function adjustTooltipPosition(el) {
   const tt = el.querySelector('.hover-img');
+
   // Lazy load image: only set src from data-src when the tooltip is first shown
-  // This prevents downloading large images until they are actually needed.
   if (tt.dataset.src && !tt.src) {
-    tt.src = tt.dataset.src;
+    // Check if we are already loading
+    if (tt.dataset.loading) return;
+
+    tt.dataset.loading = "true";
+    tt.style.visibility = 'hidden'; // Hide while loading
+
+    const img = new Image();
+    img.onload = () => {
+        tt.src = tt.dataset.src;
+        delete tt.dataset.loading;
+        tt.style.visibility = '';
+        adjustTooltipPosition(el);
+    };
+    img.onerror = () => {
+        // If loading fails, show the broken image/alt text
+        tt.src = tt.dataset.src;
+        delete tt.dataset.loading;
+        tt.style.visibility = '';
+        adjustTooltipPosition(el);
+    };
+    img.src = tt.dataset.src;
+    return;
   }
 
-  // If the image is still loading, wait for it to complete.
-  // This prevents the tooltip from appearing at the wrong position (0x0 size)
-  // and then jumping when the image loads.
-  if (tt.dataset.src && !tt.complete) {
-    tt.style.visibility = 'hidden';
-    // Ensure we only attach the listener once
-    if (!tt.hasAttribute('data-loading-listener')) {
-      tt.setAttribute('data-loading-listener', 'true');
-      tt.addEventListener('load', () => {
-        tt.removeAttribute('data-loading-listener');
-        tt.style.visibility = ''; // Unhide so positioning logic can run/show it
-        adjustTooltipPosition(el);
-      }, { once: true });
-    }
-    return;
+  // If still loading (async race condition where adjustTooltipPosition called again), wait
+  if (tt.dataset.loading) {
+      tt.style.visibility = 'hidden';
+      return;
   }
 
   tt.style.display = 'block'; tt.style.visibility = 'hidden';
