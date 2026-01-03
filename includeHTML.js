@@ -54,6 +54,24 @@ function adjustTooltipPosition(el) {
   if (tt.dataset.src && !tt.src) {
     tt.src = tt.dataset.src;
   }
+
+  // If the image is still loading, wait for it to complete.
+  // This prevents the tooltip from appearing at the wrong position (0x0 size)
+  // and then jumping when the image loads.
+  if (tt.dataset.src && !tt.complete) {
+    tt.style.visibility = 'hidden';
+    // Ensure we only attach the listener once
+    if (!tt.hasAttribute('data-loading-listener')) {
+      tt.setAttribute('data-loading-listener', 'true');
+      tt.addEventListener('load', () => {
+        tt.removeAttribute('data-loading-listener');
+        tt.style.visibility = ''; // Unhide so positioning logic can run/show it
+        adjustTooltipPosition(el);
+      }, { once: true });
+    }
+    return;
+  }
+
   tt.style.display = 'block'; tt.style.visibility = 'hidden';
   const t = tt.getBoundingClientRect(), e = el.getBoundingClientRect();
   const spaces = { bottom: window.innerHeight-e.bottom, top: e.top, right: window.innerWidth-e.right, left: e.left };
