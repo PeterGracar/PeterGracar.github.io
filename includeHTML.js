@@ -18,28 +18,11 @@
 
   // Setup tooltips
   document.querySelectorAll('.hover-image').forEach(el => {
-    // Accessibility improvements
-    el.setAttribute('tabindex', '0');
-    el.setAttribute('role', 'button');
-    el.setAttribute('aria-expanded', 'false');
-
     el.addEventListener('click', e => {
       e.stopPropagation();
       adjustTooltipPosition(el);
-      const isActive = el.classList.toggle('active');
-      el.setAttribute('aria-expanded', isActive);
+      el.classList.toggle('active');
     });
-
-    el.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        e.stopPropagation();
-        adjustTooltipPosition(el);
-        const isActive = el.classList.toggle('active');
-        el.setAttribute('aria-expanded', isActive);
-      }
-    });
-
     el.addEventListener('mouseenter', () => adjustTooltipPosition(el));
   });
   document.addEventListener('click', () =>
