@@ -49,11 +49,6 @@
 
 function adjustTooltipPosition(el) {
   const tt = el.querySelector('.hover-img');
-  // Lazy load image: only set src from data-src when the tooltip is first shown
-  // This prevents downloading large images until they are actually needed.
-  if (tt.dataset.src && !tt.src) {
-    tt.src = tt.dataset.src;
-  }
   tt.style.display = 'block'; tt.style.visibility = 'hidden';
   const t = tt.getBoundingClientRect(), e = el.getBoundingClientRect();
   const spaces = { bottom: window.innerHeight-e.bottom, top: e.top, right: window.innerWidth-e.right, left: e.left };
