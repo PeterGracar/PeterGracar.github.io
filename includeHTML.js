@@ -17,17 +17,22 @@
   // Theme handled via CSS prefers-color-scheme
 
   // Setup tooltips
+  const closeTooltips = () => {
+    document.querySelectorAll('.hover-image').forEach(el => el.classList.remove('active'));
+  };
   document.querySelectorAll('.hover-image').forEach(el => {
     el.addEventListener('click', e => {
       e.stopPropagation();
       adjustTooltipPosition(el);
       el.classList.toggle('active');
     });
+    el.addEventListener('touchstart', e => {
+      e.stopPropagation();
+    }, { passive: true });
     el.addEventListener('mouseenter', () => adjustTooltipPosition(el));
   });
-  document.addEventListener('click', () =>
-    document.querySelectorAll('.hover-image').forEach(el => el.classList.remove('active'))
-  );
+  document.addEventListener('click', closeTooltips);
+  document.addEventListener('touchstart', closeTooltips, { passive: true });
 })();
 
 function adjustTooltipPosition(el) {
