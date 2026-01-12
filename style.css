@@ -29,7 +29,15 @@ footer {
 	--leeds-grey-dark: #6a645d;
 	--leeds-black: #212121;
 	--leeds-white: #ffffff;
+	--surface-light: #f7f5f3;
+	--surface-dark: #181616;
+	--shadow-soft: 0 10px 30px rgba(12,8,8,0.08);
+	--shadow-strong: 0 20px 40px rgba(12,8,8,0.16);
+	--radius-lg: 18px;
+	--radius-md: 12px;
+	--radius-sm: 8px;
 	--color-background: var(--leeds-white);
+	--color-surface: var(--surface-light);
 	--color-text: var(--leeds-black-dark);
 	--nav-bg: var(--leeds-red);
 	--nav-text: var(--leeds-white);
@@ -43,6 +51,7 @@ footer {
 @media (prefers-color-scheme:dark) {
 	:root {
 		--color-background: var(--leeds-black);
+		--color-surface: var(--surface-dark);
 		--color-text: var(--leeds-white);
 		--nav-bg: var(--leeds-black-dark);
 		--nav-text: var(--leeds-white);
@@ -64,13 +73,13 @@ html {
 	margin: 0;
 	padding: 0;
 	overflow-x: hidden;
-	background: var(--color-background);
+	background: radial-gradient(circle at top, rgba(255,78,54,0.05), transparent 45%), var(--color-background);
 	color: var(--color-text);
-	font-family: system-ui,sans-serif;
+	font-family: "Inter", "Segoe UI", system-ui, sans-serif;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	line-height: 1.6;
+	line-height: 1.65;
 	text-size-adjust: none;
 	  -webkit-text-size-adjust: none;
       /* Disable font boosting in Mobile Safari */
@@ -100,6 +109,13 @@ a {
 a:hover {
 	color: var(--link-hover)
 }
+.banner,
+nav ul,
+footer,
+main,
+section {
+	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease
+}
 .banner {
 	background: url("banner.webp") center/cover no-repeat;
 	min-height: 30vh;
@@ -117,8 +133,9 @@ a:hover {
 	margin: 0;
 	padding: 0 1rem;
 	color: var(--leeds-white);
-	font-size: 3em;
-	text-shadow: 0 2px 5px rgba(0,0,0,0.7)
+	font-size: clamp(2.2rem, 4vw, 3.4rem);
+	text-shadow: 0 10px 30px rgba(0,0,0,0.55);
+	letter-spacing: 0.02em
 }
 .media,
 .media img,
@@ -134,13 +151,16 @@ h4 {
 nav ul {
 	justify-content: center;
 	flex-wrap: wrap;
-	padding: 0.5rem 0;
+	padding: 0.65rem 1rem;
 	background: var(--nav-bg);
 	margin: 0
 }
 nav ul li a {
 	color: var(--nav-text);
-	font-weight: bold
+	font-weight: 600;
+	padding: 0.35rem 0.55rem;
+	border-radius: var(--radius-sm);
+	display: inline-block
 }
 nav ul li a.active {
 	color: var(--nav-hover);
@@ -152,6 +172,19 @@ nav ul li a:hover {
 .media,
 main {
 	max-width: var(--content-max-width)
+}
+main {
+	padding: 1.5rem 1rem 2.5rem
+}
+section {
+	padding: 1rem 0;
+	border-radius: var(--radius-lg);
+	background: var(--color-surface);
+	box-shadow: var(--shadow-soft);
+	margin: 1.5rem 0
+}
+section:first-of-type {
+	margin-top: 1rem
 }
 .media {
 	flex-direction: row;
@@ -176,9 +209,9 @@ main {
 	display: none;
 	position: absolute;
 	background: var(--color-background);
-	border: 1px solid var(--leeds-grey-medium);
+	border: 1px solid rgba(0,0,0,0.08);
 	padding: 0.25rem;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+	box-shadow: var(--shadow-strong);
 	z-index: 10;
 	max-width: min(600px, 60vw);
 	width: auto;
@@ -192,9 +225,9 @@ main {
 	overflow: auto;
 	position: absolute!important;
 	background: var(--color-background)!important;
-	border: 1px solid var(--leeds-grey-medium)!important;
+	border: 1px solid rgba(0,0,0,0.08)!important;
 	padding: 0.25rem!important;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.15)!important;
+	box-shadow: var(--shadow-strong)!important;
 	z-index: 9999!important;
 	max-width: min(600px, 90vw)!important
 }
@@ -237,7 +270,8 @@ footer {
 	padding: 1rem;
 	background: var(--footer-bg);
 	color: var(--footer-text);
-	font-size: 0.9rem
+	font-size: 0.9rem;
+	box-shadow: 0 -10px 30px rgba(0,0,0,0.12)
 }
 .media {
 	display: flex;
@@ -248,6 +282,12 @@ footer {
 	.media {
 		flex-direction: column!important;
 		align-items: center!important
+	}
+	main {
+		padding: 1.25rem 0.9rem 2rem
+	}
+	section {
+		padding: 1rem
 	}
 }
 @media (min-width:601px) {
