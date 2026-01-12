@@ -29,13 +29,6 @@ footer {
 	--leeds-grey-dark: #6a645d;
 	--leeds-black: #212121;
 	--leeds-white: #ffffff;
-	--surface: #ffffff;
-	--surface-muted: #f6f4f2;
-	--border-subtle: rgba(33,33,33,0.08);
-	--shadow-soft: 0 8px 24px rgba(10,2,2,0.12);
-	--shadow-hover: 0 12px 30px rgba(10,2,2,0.18);
-	--radius-lg: 18px;
-	--radius-md: 12px;
 	--color-background: var(--leeds-white);
 	--color-text: var(--leeds-black-dark);
 	--nav-bg: var(--leeds-red);
@@ -58,12 +51,7 @@ footer {
 		--footer-text: var(--leeds-grey-medium);
 		--link-color: var(--leeds-red-bright);
 		--link-hover: var(--leeds-red);
-		--banner-overlay: rgba(0,0,0,0.7);
-		--surface: #1b1b1b;
-		--surface-muted: #131313;
-		--border-subtle: rgba(255,255,255,0.08);
-		--shadow-soft: 0 8px 24px rgba(0,0,0,0.45);
-		--shadow-hover: 0 12px 30px rgba(0,0,0,0.6)
+		--banner-overlay: rgba(0,0,0,0.7)
 	}
 }
 *,
@@ -76,9 +64,9 @@ html {
 	margin: 0;
 	padding: 0;
 	overflow-x: hidden;
-	background: linear-gradient(180deg,var(--surface-muted),var(--color-background));
+	background: var(--color-background);
 	color: var(--color-text);
-	font-family: "Inter","Segoe UI",system-ui,sans-serif;
+	font-family: system-ui,sans-serif;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -107,8 +95,7 @@ nav ul {
 }
 a {
 	color: var(--link-color);
-	text-decoration: none;
-	transition: color 0.2s ease
+	text-decoration: none
 }
 a:hover {
 	color: var(--link-hover)
@@ -130,8 +117,7 @@ a:hover {
 	margin: 0;
 	padding: 0 1rem;
 	color: var(--leeds-white);
-	font-size: clamp(2.3rem, 3vw + 1.2rem, 3.4rem);
-	letter-spacing: 0.02em;
+	font-size: 3em;
 	text-shadow: 0 2px 5px rgba(0,0,0,0.7)
 }
 .media,
@@ -148,36 +134,24 @@ h4 {
 nav ul {
 	justify-content: center;
 	flex-wrap: wrap;
-	padding: 0.75rem 1rem;
+	padding: 0.5rem 0;
 	background: var(--nav-bg);
 	margin: 0
 }
 nav ul li a {
 	color: var(--nav-text);
-	font-weight: 600;
-	padding: 0.35rem 0.6rem;
-	border-radius: 999px;
-	transition: color 0.2s ease, background-color 0.2s ease
+	font-weight: bold
 }
 nav ul li a.active {
 	color: var(--nav-hover);
 	text-decoration: underline
 }
 nav ul li a:hover {
-	color: var(--nav-hover);
-	background: rgba(255,255,255,0.12)
+	color: var(--nav-hover)
 }
 .media,
 main {
 	max-width: var(--content-max-width)
-}
-main {
-	background: var(--surface);
-	border-radius: var(--radius-lg);
-	box-shadow: var(--shadow-soft);
-	padding: clamp(1.5rem, 2vw + 1rem, 2.5rem);
-	margin: 2rem auto 2.5rem;
-	border: 1px solid var(--border-subtle)
 }
 .media {
 	flex-direction: row;
@@ -253,12 +227,11 @@ main {
 	display: block
 }
 h2 {
-	color: var(--leeds-red);
-	letter-spacing: 0.01em
+	color: var(--leeds-red)
 }
 section ul {
 	list-style-position: inside;
-	margin: 0.75rem 0
+	margin: 0.5rem 0
 }
 footer {
 	padding: 1rem;
