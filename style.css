@@ -38,7 +38,12 @@ footer {
 	--footer-text: var(--leeds-white);
 	--link-color: var(--leeds-red-dark);
 	--link-hover: var(--leeds-black-dark);
-	--banner-overlay: rgba(0,0,0,0.5)
+	--banner-overlay: rgba(0,0,0,0.5);
+	--card-bg: #f7f5f2;
+	--card-border: rgba(10,2,2,0.08);
+	--shadow-soft: 0 12px 30px rgba(10,2,2,0.08);
+	--radius-lg: 18px;
+	--radius-md: 12px
 }
 @media (prefers-color-scheme:dark) {
 	:root {
@@ -51,7 +56,10 @@ footer {
 		--footer-text: var(--leeds-grey-medium);
 		--link-color: var(--leeds-red-bright);
 		--link-hover: var(--leeds-red);
-		--banner-overlay: rgba(0,0,0,0.7)
+		--banner-overlay: rgba(0,0,0,0.7);
+		--card-bg: #151111;
+		--card-border: rgba(255,255,255,0.08);
+		--shadow-soft: 0 16px 40px rgba(0,0,0,0.45)
 	}
 }
 *,
@@ -66,16 +74,17 @@ html {
 	overflow-x: hidden;
 	background: var(--color-background);
 	color: var(--color-text);
-	font-family: system-ui,sans-serif;
+	font-family: "Inter","SF Pro Text","Segoe UI",system-ui,sans-serif;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	line-height: 1.6;
+	line-height: 1.7;
 	text-size-adjust: none;
-	  -webkit-text-size-adjust: none;
-      /* Disable font boosting in Mobile Safari */
-  -ms-text-size-adjust: none;
-      /* For older IE on Windows Phone */
+	-webkit-text-size-adjust: none;
+	/* Disable font boosting in Mobile Safari */
+	-ms-text-size-adjust: none;
+	/* For older IE on Windows Phone */
+	letter-spacing: 0.01em
 }
 .media {
 	display: flex!important;
@@ -95,7 +104,8 @@ nav ul {
 }
 a {
 	color: var(--link-color);
-	text-decoration: none
+	text-decoration: none;
+	transition: color 0.2s ease
 }
 a:hover {
 	color: var(--link-hover)
@@ -117,7 +127,7 @@ a:hover {
 	margin: 0;
 	padding: 0 1rem;
 	color: var(--leeds-white);
-	font-size: 3em;
+	font-size: clamp(2.4rem, 4vw, 3.4rem);
 	text-shadow: 0 2px 5px rgba(0,0,0,0.7)
 }
 .media,
@@ -134,13 +144,16 @@ h4 {
 nav ul {
 	justify-content: center;
 	flex-wrap: wrap;
-	padding: 0.5rem 0;
+	padding: 0.75rem 0.5rem;
 	background: var(--nav-bg);
-	margin: 0
+	margin: 0;
+	gap: 0.75rem 1.25rem;
+	box-shadow: 0 8px 20px rgba(10,2,2,0.1)
 }
 nav ul li a {
 	color: var(--nav-text);
-	font-weight: bold
+	font-weight: 600;
+	letter-spacing: 0.01em
 }
 nav ul li a.active {
 	color: var(--nav-hover);
@@ -149,9 +162,33 @@ nav ul li a.active {
 nav ul li a:hover {
 	color: var(--nav-hover)
 }
+.banner,
+nav ul,
+section {
+	border-bottom: 1px solid var(--card-border)
+}
+.banner {
+	border-bottom: none
+}
 .media,
 main {
 	max-width: var(--content-max-width)
+}
+main {
+	padding: 2.5rem 1.5rem 3rem;
+	flex: 1
+}
+section {
+	background: var(--card-bg);
+	border-radius: var(--radius-lg);
+	padding: 2rem;
+	box-shadow: var(--shadow-soft);
+	margin: 1.5rem auto
+}
+h2,
+h3,
+h4 {
+	letter-spacing: 0.01em
 }
 .media {
 	flex-direction: row;
@@ -178,7 +215,7 @@ main {
 	background: var(--color-background);
 	border: 1px solid var(--leeds-grey-medium);
 	padding: 0.25rem;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+	box-shadow: 0 12px 25px rgba(0,0,0,0.25);
 	z-index: 10;
 	max-width: min(600px, 60vw);
 	width: auto;
@@ -194,7 +231,7 @@ main {
 	background: var(--color-background)!important;
 	border: 1px solid var(--leeds-grey-medium)!important;
 	padding: 0.25rem!important;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.15)!important;
+	box-shadow: 0 12px 25px rgba(0,0,0,0.25)!important;
 	z-index: 9999!important;
 	max-width: min(600px, 90vw)!important
 }
@@ -248,6 +285,15 @@ footer {
 	.media {
 		flex-direction: column!important;
 		align-items: center!important
+	}
+	main {
+		padding: 1.75rem 1rem 2.5rem
+	}
+	section {
+		padding: 1.5rem
+	}
+	.banner h1 {
+		font-size: clamp(2rem, 9vw, 2.8rem)
 	}
 }
 @media (min-width:601px) {
