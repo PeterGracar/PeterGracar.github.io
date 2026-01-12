@@ -3,7 +3,6 @@ h3,
 h4,
 section p,
 section ul {
-	padding: 0 0.5rem;
 	word-wrap: pretty;
 }
 nav ul,
@@ -31,6 +30,7 @@ footer {
 	--leeds-white: #ffffff;
 	--color-background: var(--leeds-white);
 	--color-text: var(--leeds-black-dark);
+	--color-muted: #3f3a35;
 	--nav-bg: var(--leeds-red);
 	--nav-text: var(--leeds-white);
 	--nav-hover: var(--leeds-red-bright);
@@ -38,12 +38,18 @@ footer {
 	--footer-text: var(--leeds-white);
 	--link-color: var(--leeds-red-dark);
 	--link-hover: var(--leeds-black-dark);
-	--banner-overlay: rgba(0,0,0,0.5)
+	--banner-overlay: rgba(0,0,0,0.5);
+	--surface-bg: #ffffff;
+	--surface-border: rgba(106, 100, 93, 0.2);
+	--shadow-soft: 0 10px 30px rgba(10, 2, 2, 0.08);
+	--shadow-nav: 0 6px 18px rgba(10, 2, 2, 0.15);
+	--radius-lg: 18px
 }
 @media (prefers-color-scheme:dark) {
 	:root {
 		--color-background: var(--leeds-black);
 		--color-text: var(--leeds-white);
+		--color-muted: var(--leeds-grey-medium);
 		--nav-bg: var(--leeds-black-dark);
 		--nav-text: var(--leeds-white);
 		--nav-hover: var(--leeds-red-bright);
@@ -51,7 +57,11 @@ footer {
 		--footer-text: var(--leeds-grey-medium);
 		--link-color: var(--leeds-red-bright);
 		--link-hover: var(--leeds-red);
-		--banner-overlay: rgba(0,0,0,0.7)
+		--banner-overlay: rgba(0,0,0,0.7);
+		--surface-bg: #1a1a1a;
+		--surface-border: rgba(255, 255, 255, 0.08);
+		--shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.35);
+		--shadow-nav: 0 6px 18px rgba(0, 0, 0, 0.45)
 	}
 }
 *,
@@ -66,7 +76,7 @@ html {
 	overflow-x: hidden;
 	background: var(--color-background);
 	color: var(--color-text);
-	font-family: system-ui,sans-serif;
+	font-family: "Inter", "Segoe UI", system-ui, sans-serif;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -95,14 +105,27 @@ nav ul {
 }
 a {
 	color: var(--link-color);
-	text-decoration: none
+	text-decoration: none;
+	transition: color 0.2s ease
 }
 a:hover {
 	color: var(--link-hover)
 }
+main {
+	width: 100%;
+	max-width: var(--content-max-width);
+	padding: 2.5rem 1.5rem 3rem
+}
+.media,
+main {
+	margin: 0 auto
+}
+.media {
+	width: 100%
+}
 .banner {
 	background: url("banner.webp") center/cover no-repeat;
-	min-height: 30vh;
+	min-height: 32vh;
 	align-items: center;
 	justify-content: center
 }
@@ -117,14 +140,13 @@ a:hover {
 	margin: 0;
 	padding: 0 1rem;
 	color: var(--leeds-white);
-	font-size: 3em;
-	text-shadow: 0 2px 5px rgba(0,0,0,0.7)
+	font-size: clamp(2.25rem, 4vw, 3.5rem);
+	text-shadow: 0 6px 18px rgba(0,0,0,0.4);
+	letter-spacing: 0.02em
 }
-.media,
 .media img,
 main {
-	width: 100%;
-	margin: 0 auto
+	width: 100%
 }
 h2,
 h3,
@@ -134,24 +156,27 @@ h4 {
 nav ul {
 	justify-content: center;
 	flex-wrap: wrap;
-	padding: 0.5rem 0;
+	padding: 0.85rem 1rem;
 	background: var(--nav-bg);
-	margin: 0
+	margin: 0;
+	box-shadow: var(--shadow-nav);
+	gap: 0.5rem
 }
 nav ul li a {
 	color: var(--nav-text);
-	font-weight: bold
+	font-weight: 600;
+	padding: 0.35rem 0.85rem;
+	border-radius: 999px;
+	transition: color 0.2s ease, background 0.2s ease
 }
 nav ul li a.active {
 	color: var(--nav-hover);
-	text-decoration: underline
+	text-decoration: none;
+	background: rgba(255, 255, 255, 0.15)
 }
 nav ul li a:hover {
-	color: var(--nav-hover)
-}
-.media,
-main {
-	max-width: var(--content-max-width)
+	color: var(--nav-hover);
+	background: rgba(255, 255, 255, 0.1)
 }
 .media {
 	flex-direction: row;
@@ -165,7 +190,9 @@ main {
 .media img {
 	max-width: 200px;
 	height: auto;
-	flex-shrink: 0
+	flex-shrink: 0;
+	border-radius: 16px;
+	box-shadow: var(--shadow-soft)
 }
 .hover-image {
 	cursor: help;
@@ -229,9 +256,24 @@ main {
 h2 {
 	color: var(--leeds-red)
 }
+section {
+	background: var(--surface-bg);
+	border: 1px solid var(--surface-border);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-soft);
+	padding: 1.75rem;
+	margin: 1.5rem 0
+}
+section p,
 section ul {
-	list-style-position: inside;
-	margin: 0.5rem 0
+	padding: 0;
+	margin: 0 0 1rem
+}
+section ul {
+	list-style-position: inside
+}
+section ul li {
+	margin-bottom: 0.35rem
 }
 footer {
 	padding: 1rem;
