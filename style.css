@@ -3,6 +3,7 @@ h3,
 h4,
 section p,
 section ul {
+	padding: 0 0.5rem;
 	word-wrap: pretty;
 }
 nav ul,
@@ -30,7 +31,6 @@ footer {
 	--leeds-white: #ffffff;
 	--color-background: var(--leeds-white);
 	--color-text: var(--leeds-black-dark);
-	--color-muted: #3f3a35;
 	--nav-bg: var(--leeds-red);
 	--nav-text: var(--leeds-white);
 	--nav-hover: var(--leeds-red-bright);
@@ -38,18 +38,12 @@ footer {
 	--footer-text: var(--leeds-white);
 	--link-color: var(--leeds-red-dark);
 	--link-hover: var(--leeds-black-dark);
-	--banner-overlay: rgba(0,0,0,0.5);
-	--surface-bg: #ffffff;
-	--surface-border: rgba(106, 100, 93, 0.2);
-	--shadow-soft: 0 10px 30px rgba(10, 2, 2, 0.08);
-	--shadow-nav: 0 6px 18px rgba(10, 2, 2, 0.15);
-	--radius-lg: 18px
+	--banner-overlay: rgba(0,0,0,0.5)
 }
 @media (prefers-color-scheme:dark) {
 	:root {
 		--color-background: var(--leeds-black);
 		--color-text: var(--leeds-white);
-		--color-muted: var(--leeds-grey-medium);
 		--nav-bg: var(--leeds-black-dark);
 		--nav-text: var(--leeds-white);
 		--nav-hover: var(--leeds-red-bright);
@@ -57,11 +51,7 @@ footer {
 		--footer-text: var(--leeds-grey-medium);
 		--link-color: var(--leeds-red-bright);
 		--link-hover: var(--leeds-red);
-		--banner-overlay: rgba(0,0,0,0.7);
-		--surface-bg: #1a1a1a;
-		--surface-border: rgba(255, 255, 255, 0.08);
-		--shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.35);
-		--shadow-nav: 0 6px 18px rgba(0, 0, 0, 0.45)
+		--banner-overlay: rgba(0,0,0,0.7)
 	}
 }
 *,
@@ -76,7 +66,7 @@ html {
 	overflow-x: hidden;
 	background: var(--color-background);
 	color: var(--color-text);
-	font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+	font-family: system-ui,sans-serif;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -105,27 +95,14 @@ nav ul {
 }
 a {
 	color: var(--link-color);
-	text-decoration: none;
-	transition: color 0.2s ease
+	text-decoration: none
 }
 a:hover {
 	color: var(--link-hover)
 }
-main {
-	width: 100%;
-	max-width: var(--content-max-width);
-	padding: 2.5rem 1.5rem 3rem
-}
-.media,
-main {
-	margin: 0 auto
-}
-.media {
-	width: 100%
-}
 .banner {
 	background: url("banner.webp") center/cover no-repeat;
-	min-height: 32vh;
+	min-height: 30vh;
 	align-items: center;
 	justify-content: center
 }
@@ -140,13 +117,14 @@ main {
 	margin: 0;
 	padding: 0 1rem;
 	color: var(--leeds-white);
-	font-size: clamp(2.25rem, 4vw, 3.5rem);
-	text-shadow: 0 6px 18px rgba(0,0,0,0.4);
-	letter-spacing: 0.02em
+	font-size: 3em;
+	text-shadow: 0 2px 5px rgba(0,0,0,0.7)
 }
+.media,
 .media img,
 main {
-	width: 100%
+	width: 100%;
+	margin: 0 auto
 }
 h2,
 h3,
@@ -156,27 +134,24 @@ h4 {
 nav ul {
 	justify-content: center;
 	flex-wrap: wrap;
-	padding: 0.85rem 1rem;
+	padding: 0.5rem 0;
 	background: var(--nav-bg);
-	margin: 0;
-	box-shadow: var(--shadow-nav);
-	gap: 0.5rem
+	margin: 0
 }
 nav ul li a {
 	color: var(--nav-text);
-	font-weight: 600;
-	padding: 0.35rem 0.85rem;
-	border-radius: 999px;
-	transition: color 0.2s ease, background 0.2s ease
+	font-weight: bold
 }
 nav ul li a.active {
 	color: var(--nav-hover);
-	text-decoration: none;
-	background: rgba(255, 255, 255, 0.15)
+	text-decoration: underline
 }
 nav ul li a:hover {
-	color: var(--nav-hover);
-	background: rgba(255, 255, 255, 0.1)
+	color: var(--nav-hover)
+}
+.media,
+main {
+	max-width: var(--content-max-width)
 }
 .media {
 	flex-direction: row;
@@ -190,9 +165,7 @@ nav ul li a:hover {
 .media img {
 	max-width: 200px;
 	height: auto;
-	flex-shrink: 0;
-	border-radius: 16px;
-	box-shadow: var(--shadow-soft)
+	flex-shrink: 0
 }
 .hover-image {
 	cursor: help;
@@ -256,24 +229,9 @@ nav ul li a:hover {
 h2 {
 	color: var(--leeds-red)
 }
-section {
-	background: var(--surface-bg);
-	border: 1px solid var(--surface-border);
-	border-radius: var(--radius-lg);
-	box-shadow: var(--shadow-soft);
-	padding: 1.75rem;
-	margin: 1.5rem 0
-}
-section p,
 section ul {
-	padding: 0;
-	margin: 0 0 1rem
-}
-section ul {
-	list-style-position: inside
-}
-section ul li {
-	margin-bottom: 0.35rem
+	list-style-position: inside;
+	margin: 0.5rem 0
 }
 footer {
 	padding: 1rem;
