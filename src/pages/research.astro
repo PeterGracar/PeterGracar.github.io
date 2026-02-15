@@ -1,0 +1,89 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import HoverPreview from '@components/HoverPreview.astro';
+import { publicationSections, coauthors, talks } from '@data/publications';
+---
+
+<BaseLayout
+  title="Research"
+  description="Research profile, publications, collaborators, and talks by Peter Gracar."
+  canonicalPath="/research.html"
+>
+  <div class="content-shell stack">
+    <section class="panel reveal flow">
+      <h1 class="page-title">Research</h1>
+      <p>
+        My research explores
+        <HoverPreview
+          label="geometric random graphs"
+          imageSrc="/img/sumkernel.webp"
+          imageAlt="Illustrative image related to geometric random graphs"
+          width={1723}
+          height={1541}
+        />
+        and their implications for random processes. I also study
+        <HoverPreview
+          label="dependent percolation"
+          imageSrc="/img/lipschitz.webp"
+          imageAlt="Illustrative image related to dependent percolation"
+          width={2129}
+          height={1102}
+        />
+        using multi-scale techniques.
+      </p>
+      <p>
+        Publications and preprints are listed below. You can also browse my
+        <strong><a href="https://arxiv.org/a/gracar_p_1">arXiv profile</a></strong> and
+        <strong><a href="https://orcid.org/0000-0001-8340-8340">ORCID profile</a></strong>.
+      </p>
+    </section>
+
+    {
+      publicationSections.map((section, sectionIndex) => (
+        <section class={`card publication-section reveal ${sectionIndex > 0 ? 'reveal-delay' : ''}`}>
+          <h2>{section.title}</h2>
+          <ul class="publication-list">
+            {section.items.map((item) => (
+              <li class="publication-item">
+                <h3>{item.pdfUrl ? <a href={item.pdfUrl}>{item.title}</a> : item.title}</h3>
+                <p class="publication-meta">{item.coauthors}</p>
+                <p class="publication-meta">
+                  {item.detailUrl ? <a href={item.detailUrl}>{item.venue}</a> : item.venue}
+                  {' '}({item.yearLabel})
+                </p>
+                {item.note ? <p class="publication-meta">{item.note}</p> : null}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+
+    <section class="card reveal">
+      <h2>Co-authors</h2>
+      <ul class="chip-row">
+        {
+          coauthors.map((author) => (
+            <li>
+              <a class="chip" href={author.url}>{author.name}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="card reveal">
+      <h2>Selected Talks and Workshops</h2>
+      <ul class="meta-list">
+        {
+          talks.map((talk) => (
+            <li>
+              <a href={talk.url}>{talk.title}</a>
+              <div class="muted">{talk.location}</div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
