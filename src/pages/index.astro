@@ -1,0 +1,72 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import HoverPreview from '@components/HoverPreview.astro';
+---
+
+<BaseLayout
+  title="Homepage"
+  description="Personal homepage of Peter Gracar, Lecturer in Probability at the University of Leeds."
+  canonicalPath="/index.html"
+>
+  <div class="content-shell stack">
+    <section class="panel reveal">
+      <h1 class="page-title">About</h1>
+      <div class="intro-grid flow">
+        <img
+          src="/img/avatar.webp"
+          width="420"
+          height="420"
+          alt="Photo of Peter Gracar"
+          class="profile-photo"
+          loading="eager"
+          decoding="async"
+        />
+        <div class="flow">
+          <p>
+            Hi, my name is Peter and I am a
+            <strong><a href="https://eps.leeds.ac.uk/maths/staff/13156/dr-peter-gracar">Lecturer in Probability</a></strong>
+            in the Statistics Department of the
+            <strong><a href="https://eps.leeds.ac.uk/maths">School of Mathematics</a></strong> at the
+            <strong><a href="https://www.leeds.ac.uk">University of Leeds</a></strong>.
+          </p>
+          <p>
+            My research focuses on random geometric graphs, particle systems, and percolation theory. More
+            details and publication information are available on the
+            <strong><a href="/research.html">research page</a></strong>.
+          </p>
+          <p>
+            If you are looking for office directions, you can check this
+            <HoverPreview
+              label="map"
+              imageSrc="/img/Map.webp"
+              imageAlt="Map showing directions to office 9.10p1 in the EC Stoner building"
+              width={1764}
+              height={1372}
+            />
+            or visit the <strong><a href="/contact.html">contact page</a></strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card reveal reveal-delay">
+      <h2>Short CV</h2>
+      <ul class="meta-list">
+        <li><strong>2023-present</strong>: Lecturer in Probability, University of Leeds</li>
+        <li>
+          <strong>2017-2023</strong>: PostDoc in the
+          <a href="http://www.mi.uni-koeln.de/agmoerters/">Research Group of Peter Mörters</a>, University
+          of Cologne
+        </li>
+        <li>
+          <strong>2014-2017</strong>: PhD in Probability (supervisor:
+          <a href="https://sites.google.com/site/alexandrestauffer/home">Alexandre Stauffer</a>), University
+          of Bath
+        </li>
+        <li><strong>2013-2014</strong>: Forensic consultant, Deloitte AG, Zurich</li>
+        <li><strong>2011-2013</strong>: MSc in Quantitative Finance, University of Zurich and ETH Zurich</li>
+        <li><strong>2005-2011</strong>: University diploma in Applied Mathematics, University of Ljubljana</li>
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
