@@ -1,0 +1,36 @@
+---
+interface Props {
+  label: string;
+  imageSrc: string;
+  imageAlt: string;
+  width?: number;
+  height?: number;
+}
+
+const { label, imageSrc, imageAlt, width, height } = Astro.props;
+const id = `preview-${Math.random().toString(36).slice(2, 11)}`;
+---
+
+<span class="hover-preview" data-hover-preview>
+  <button
+    type="button"
+    class="hover-preview__trigger"
+    data-hover-trigger
+    aria-controls={id}
+    aria-expanded="false"
+  >
+    <span>{label}</span>
+    <span class="sr-only">Open image preview</span>
+  </button>
+  <span class="hover-preview__panel" id={id} role="dialog" aria-label={`${label} preview`}>
+    <img
+      src={imageSrc}
+      alt={imageAlt}
+      width={width}
+      height={height}
+      loading="lazy"
+      decoding="async"
+      class="hover-preview__image"
+    />
+  </span>
+</span>
