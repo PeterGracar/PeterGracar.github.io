@@ -1,0 +1,17 @@
+.flow > * + * {
+  margin-top: var(--space-md);
+}
+
+.muted {
+  color: var(--color-muted);
+}
+
+.compact {
+  margin: 0;
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
