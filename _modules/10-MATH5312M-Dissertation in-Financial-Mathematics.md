@@ -1,7 +1,7 @@
 ---
 code: "MATH5312M"
-title: "Discrete Time Finance"
-role: "Module leader"
+title: "Dissertation in Financial Mathematics"
+role: "Supervisor"
 active: true
 order: 10
 ---
