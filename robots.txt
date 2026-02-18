@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://gracar.org/sitemap.xml
