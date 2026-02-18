@@ -1,0 +1,11 @@
+collections:
+  publications:
+    output: false
+  coauthors:
+    output: false
+  talks:
+    output: false
+  modules:
+    output: false
+  mini_cv:
+    output: false
