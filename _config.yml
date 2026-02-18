@@ -1,0 +1,7 @@
+collections:
+  publications:
+    output: false
+  talks:
+    output: false
+  modules:
+    output: false
