@@ -1,0 +1,178 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f8f4ee" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111216" media="(prefers-color-scheme: dark)">
+  <title>Research | Peter Gracar</title>
+  <meta name="description" content="Research profile and publication list of Peter Gracar, including preprints, accepted papers, collaborations, and talks in probability and random geometric systems.">
+  <link rel="canonical" href="https://gracar.org/research.html">
+
+  <meta property="og:site_name" content="Peter Gracar">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Research | Peter Gracar">
+  <meta property="og:description" content="Preprints, publications, collaborators, and talks in probability and random geometric systems.">
+  <meta property="og:url" content="https://gracar.org/research.html">
+  <meta property="og:image" content="https://gracar.org/banner.webp">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Research | Peter Gracar">
+  <meta name="twitter:description" content="Preprints, publications, collaborators, and talks in probability and random geometric systems.">
+  <meta name="twitter:image" content="https://gracar.org/banner.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap">
+  <link rel="preload" as="image" href="banner.webp">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PY7PCVWS5X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-PY7PCVWS5X');
+  </script>
+  <script src="site.js" defer></script>
+</head>
+<body data-page="research">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <p class="site-kicker">University of Leeds · School of Mathematics</p>
+      <p class="site-name"><a href="index.html">Peter Gracar</a></p>
+      <p class="site-tagline">Probability, random geometric graphs, dependent percolation, and related stochastic processes.</p>
+    </div>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a data-page-link="home" href="index.html">About</a></li>
+        <li><a data-page-link="research" href="research.html">Research</a></li>
+        <li><a data-page-link="teaching" href="teaching.html">Teaching</a></li>
+        <li><a data-page-link="contact" href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="page-section">
+      <p class="eyebrow">Research</p>
+      <h1>Research profile</h1>
+      <p class="lead">I study
+        <button class="hover-image" type="button" aria-label="Preview figure for geometric random graphs">geometric random graphs
+          <img src="img/sumkernel.webp" alt="Preview of sum kernel random graph model" class="hover-img" width="1723" height="1541" loading="lazy">
+        </button>
+        and
+        <button class="hover-image" type="button" aria-label="Preview figure for dependent percolation">dependent percolation
+          <img src="img/lipschitz.webp" alt="Preview of Lipschitz percolation figure" class="hover-img" width="2129" height="1102" loading="lazy">
+        </button>
+        using multi-scale and geometric techniques. You can also browse my profiles on <a href="https://arxiv.org/a/gracar_p_1">arXiv</a> and <a href="https://orcid.org/0000-0001-8340-8340">ORCID</a>.
+      </p>
+    </section>
+
+    {% assign publications_by_date = site.publications | sort: "date" | reverse %}
+    {% assign publications_by_title = site.publications | sort: "title" %}
+
+    <section class="page-section">
+      <h2>Submitted papers and preprints</h2>
+      <ul class="publication-list">
+        {% for publication in publications_by_date %}
+          {% if publication.status == "preprint" %}
+            {% include publication_item.html publication=publication coauthors=site.coauthors %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="page-section">
+      <h2>Published and accepted papers</h2>
+      <ul class="publication-list">
+        {% for publication in publications_by_title %}
+          {% if publication.status == "accepted" %}
+            {% if publication.date == nil %}
+              {% include publication_item.html publication=publication coauthors=site.coauthors %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {% for publication in publications_by_date %}
+          {% if publication.date %}
+            {% if publication.status == "accepted" %}
+              {% include publication_item.html publication=publication coauthors=site.coauthors %}
+            {% endif %}
+            {% if publication.status == "published" %}
+              {% include publication_item.html publication=publication coauthors=site.coauthors %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+
+    {% assign sorted_coauthors = site.coauthors | sort: "name" | sort: "last_name" %}
+    {% assign used_coauthor_ids = "|" %}
+    {% for publication in site.publications %}
+      {% if publication.coauthors %}
+        {% for coauthor_id in publication.coauthors %}
+          {% capture coauthor_marker %}|{{ coauthor_id }}|{% endcapture %}
+          {% unless used_coauthor_ids contains coauthor_marker %}
+            {% assign used_coauthor_ids = used_coauthor_ids | append: coauthor_id | append: "|" %}
+          {% endunless %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+    <section class="page-section">
+      <h2>Collaborators</h2>
+      {% assign collaborator_count = 0 %}
+      {% capture collaborator_markup %}{% endcapture %}
+      {% for coauthor in sorted_coauthors %}
+        {% if coauthor.coauthor_id %}
+          {% if coauthor.name %}
+            {% if coauthor.last_name %}
+              {% capture coauthor_marker %}|{{ coauthor.coauthor_id }}|{% endcapture %}
+              {% if used_coauthor_ids contains coauthor_marker %}
+                {% assign collaborator_count = collaborator_count | plus: 1 %}
+                {% capture collaborator_markup %}
+                  {{ collaborator_markup }}{% if collaborator_count > 1 %}, {% endif %}{% assign coauthor_profile_url = coauthor.profile_url | default: "" | strip %}{% if coauthor_profile_url != "" %}<a href="{{ coauthor_profile_url }}">{{ coauthor.name }}</a>{% else %}{{ coauthor.name }}{% endif %}
+                {% endcapture %}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <p class="reading-width">{{ collaborator_markup | strip }}</p>
+    </section>
+
+    {% assign talks = site.talks | sort: "date" | reverse %}
+    <section class="page-section">
+      <h2>Selected talks and workshops</h2>
+      <ul class="talk-list">
+        {% for talk in talks %}
+          {% if talk.title %}
+            {% if talk.event_url %}
+              {% if talk.date %}
+                {% if talk.location %}
+                  <li><strong><a href="{{ talk.event_url }}">{{ talk.title }}</a></strong>, {{ talk.location }}</li>
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">&copy; <span data-year></span> Peter Gracar</div>
+  </footer>
+</body>
+</html>
