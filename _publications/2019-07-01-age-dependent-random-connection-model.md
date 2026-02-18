@@ -1,0 +1,22 @@
+---
+title: "The age-dependent random connection model"
+title_url: "https://link.springer.com/content/pdf/10.1007/s11134-019-09625-y.pdf"
+status: "published"
+date: "2019-07-01"
+coauthors:
+  - id: "arne-grauer"
+    name: "Arne Grauer"
+    last_name: "Grauer"
+    url: "https://sites.google.com/view/arnegrauer/home"
+  - id: "lukas-luechtrath"
+    name: "Lukas Lüchtrath"
+    last_name: "Lüchtrath"
+    url: "https://wias-berlin.de/people/luechtrath/?lang=1"
+  - id: "peter-moerters"
+    name: "Peter Mörters"
+    last_name: "Mörters"
+    url: "https://www.mi.uni-koeln.de/~moerters/"
+outlet_name: "Queueing Systems"
+outlet_url: "https://link.springer.com/article/10.1007/s11134-019-09625-y"
+citation_text: "93: 309-331 (2019)"
+---
