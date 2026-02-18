@@ -1,0 +1,77 @@
+{% assign publication = include.publication %}
+{% if publication.title %}
+  {% if publication.title_url %}
+    {% if publication.status %}
+  {% assign requires_date = false %}
+  {% if publication.status == "preprint" %}
+    {% assign requires_date = true %}
+  {% endif %}
+  {% if publication.status == "published" %}
+    {% assign requires_date = true %}
+  {% endif %}
+
+  {% if requires_date == false %}
+    {% assign should_render = true %}
+  {% else %}
+    {% assign should_render = false %}
+    {% if publication.date %}
+      {% assign should_render = true %}
+    {% endif %}
+  {% endif %}
+
+  {% if should_render %}
+    {% assign valid_coauthor_count = 0 %}
+    {% if publication.coauthors %}
+      {% for coauthor_id in publication.coauthors %}
+        {% assign matched_coauthors = include.coauthors | where: "coauthor_id", coauthor_id %}
+        {% assign coauthor = matched_coauthors | first %}
+        {% if coauthor %}
+          {% if coauthor.name %}
+            {% if coauthor.last_name %}
+              {% assign valid_coauthor_count = valid_coauthor_count | plus: 1 %}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% capture detail_line %}
+      {% if publication.outlet_name %}
+        <em>{% if publication.outlet_url %}<a href="{{ publication.outlet_url }}">{{ publication.outlet_name }}</a>{% else %}{{ publication.outlet_name }}{% endif %}</em>{% if publication.citation_text %}, {{ publication.citation_text }}{% endif %}
+      {% elsif publication.preprint_label %}
+        <em>{% if publication.preprint_url %}<a href="{{ publication.preprint_url }}">{{ publication.preprint_label }}</a>{% else %}{{ publication.preprint_label }}{% endif %}</em>
+      {% endif %}
+    {% endcapture %}
+    {% assign detail_line = detail_line | strip %}
+
+    <li>
+      <strong><a href="{{ publication.title_url }}">{{ publication.title }}</a></strong>
+      {% if valid_coauthor_count > 0 %}
+        <br>with
+        {% assign printed_coauthor_count = 0 %}
+        {% for coauthor_id in publication.coauthors %}
+          {% assign matched_coauthors = include.coauthors | where: "coauthor_id", coauthor_id %}
+          {% assign coauthor = matched_coauthors | first %}
+          {% if coauthor %}
+            {% if coauthor.name %}
+              {% if coauthor.last_name %}
+                {% assign printed_coauthor_count = printed_coauthor_count | plus: 1 %}
+                {% if printed_coauthor_count > 1 %}{% if printed_coauthor_count == valid_coauthor_count %} and {% else %}, {% endif %}{% endif %}
+                {% assign coauthor_profile_url = coauthor.profile_url | default: "" | strip %}
+                {% if coauthor_profile_url != "" %}<a href="{{ coauthor_profile_url }}">{{ coauthor.name }}</a>{% else %}{{ coauthor.name }}{% endif %}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {% if detail_line != "" %}, {{ detail_line }}{% endif %}
+      {% elsif detail_line != "" %}
+        <br>{{ detail_line }}
+      {% endif %}
+      {% if publication.note %}
+        <br><em>{{ publication.note }}</em>
+      {% endif %}
+    </li>
+  {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}
