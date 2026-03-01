@@ -1,0 +1,45 @@
+---
+layout: default
+page_id: "teaching"
+title: "Teaching | Peter Gracar"
+description: "Current teaching and supervision responsibilities of Peter Gracar at the University of Leeds."
+canonical: "https://gracar.org/teaching.html"
+og_description: "Current modules and supervision responsibilities at the University of Leeds."
+---
+  <main id="main-content">
+    <section class="page-section">
+      <p class="eyebrow">Teaching</p>
+      <h1>Modules and supervision</h1>
+      <p class="lead">Information and teaching material are shared through the respective module pages on <a href="https://minerva.leeds.ac.uk">Minerva</a>.</p>
+      <p class="reading-width">Current teaching and supervision commitments are listed below.</p>
+    </section>
+
+    {% assign active_modules = site.modules | where: "active", true | sort: "code" %}
+    {% assign active_modules_by_order = active_modules | sort: "code" | sort: "order" %}
+
+    <section class="page-section">
+      <h2>Current modules</h2>
+      <ul class="module-list">
+        {% for module in active_modules_by_order %}
+          {% if module.order and module.code and module.title and module.role %}
+            <li class="module-item">
+              <div>
+                <h3><code>{{ module.code }}</code> {{ module.title }}</h3>
+              </div>
+              <span class="role-badge">{{ module.role }}</span>
+            </li>
+          {% endif %}
+        {% endfor %}
+        {% for module in active_modules %}
+          {% if module.order == nil and module.code and module.title and module.role %}
+            <li class="module-item">
+              <div>
+                <h3><code>{{ module.code }}</code> {{ module.title }}</h3>
+              </div>
+              <span class="role-badge">{{ module.role }}</span>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
