@@ -1,0 +1,25 @@
+url: "https://gracar.org"
+title: "Peter Gracar"
+description: "Lecturer in Probability at the University of Leeds"
+
+plugins:
+  - jekyll-sitemap
+
+exclude:
+  - CONTENT_GUIDE.md
+  - "**/.DS_Store"
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+
+collections:
+  publications:
+    output: false
+  coauthors:
+    output: false
+  talks:
+    output: false
+  modules:
+    output: false
+  mini_cv:
+    output: false
