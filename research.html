@@ -173,7 +173,7 @@ layout: null
             {% if talk.event_url %}
               {% if talk.date %}
                 {% if talk.location %}
-                  <li><strong><a href="{{ talk.event_url }}">{{ talk.title }}</a></strong>, {{ talk.location }}</li>
+                  <li><strong><a href="{{ talk.event_url }}">{{ talk.title }}</a></strong>, {{ talk.location }} ({{ talk.date | date: "%Y" }})</li>
                 {% endif %}
               {% endif %}
             {% endif %}
