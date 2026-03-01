@@ -1,0 +1,61 @@
+---
+layout: default
+page_id: "home"
+title: "Peter Gracar | Probability Research and Teaching"
+description: "Homepage of Peter Gracar, Lecturer in Probability at the University of Leeds. Explore research, publications, teaching modules, and contact information."
+canonical: "https://gracar.org/"
+og_description: "Homepage of Peter Gracar, Lecturer in Probability at the University of Leeds."
+twitter_description: "Research, publications, teaching modules, and contact information."
+---
+  <main id="main-content">
+    <section class="page-section home-hero">
+      <div>
+        <p class="eyebrow">About</p>
+        <h1>Research and teaching in probability</h1>
+        <p class="lead">Hi, I am Peter Gracar, Lecturer in Probability in the Statistics Department of the School of Mathematics at the University of Leeds.</p>
+        <p class="reading-width">My research focuses on random geometric graphs, particle systems, and broader percolation theory. You can find preprints, publications, and collaborators on the research page.</p>
+        <p class="reading-width">If you are visiting campus and need directions, check the contact page or open this
+          <button class="hover-image" type="button" aria-label="Preview office map">map preview
+            <img src="img/Map.webp" alt="Map preview for the office location" class="hover-img" width="1764" height="1372" loading="lazy">
+          </button>.
+        </p>
+      </div>
+      <figure class="portrait">
+        <img src="img/avatar.webp" alt="Portrait of Peter Gracar" width="420" height="420" loading="eager" fetchpriority="high">
+      </figure>
+    </section>
+
+    <section class="page-section">
+      <h2>At a glance</h2>
+      <div class="quick-links">
+        <article class="panel">
+          <h3><a href="research.html">Research</a></h3>
+          <p>Current preprints, published papers, collaborators, and selected talks.</p>
+        </article>
+        <article class="panel">
+          <h3><a href="teaching.html">Teaching</a></h3>
+          <p>Modules and supervision details for current teaching commitments.</p>
+        </article>
+        <article class="panel">
+          <h3><a href="contact.html">Contact</a></h3>
+          <p>Email, office location, and practical directions for meetings.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <h2>Short CV</h2>
+      {% assign mini_cv_entries = site.mini_cv | sort: "order" %}
+      <ul class="timeline">
+        {% for entry in mini_cv_entries %}
+          {% if entry.period and entry.content and entry.content != "" %}
+            {% assign entry_text = entry.content | markdownify | strip | remove: "<p>" | remove: "</p>" %}
+            <li>
+              <span class="timeline-year">{{ entry.period }}</span>
+              <span>{{ entry_text }}</span>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
