@@ -34,28 +34,10 @@
     button.setAttribute("aria-expanded", "false");
   };
 
-  const positionTooltip = (button) => {
-    const tooltip = button.querySelector(".hover-img");
-    if (!tooltip) {
-      return;
-    }
-    button.removeAttribute("data-tip-side");
-
-    const btnRect = button.getBoundingClientRect();
-    const tipRect = tooltip.getBoundingClientRect();
-
-    const spaceBelow = window.innerHeight - btnRect.bottom;
-    const spaceAbove = btnRect.top;
-    if (spaceBelow < tipRect.height + 20 && spaceAbove > spaceBelow) {
-      button.dataset.tipSide = "top";
-    }
-  };
-
   const openTooltip = (button) => {
     if (activeButton && activeButton !== button) {
       closeTooltip(activeButton);
     }
-    positionTooltip(button);
     button.classList.add("is-open");
     button.setAttribute("aria-expanded", "true");
     activeButton = button;
@@ -145,9 +127,4 @@
     }
   });
 
-  window.addEventListener("resize", () => {
-    if (activeButton) {
-      positionTooltip(activeButton);
-    }
-  });
 })();
