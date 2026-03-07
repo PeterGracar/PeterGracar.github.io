@@ -1,12 +1,14 @@
 ---
+layout: null
 sitemap: false
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {%- assign sitemap_pages = site.pages | where_exp: "p", "p.sitemap != false and p.no_index != true" | sort: "url" -%}
-  {%- for p in sitemap_pages %}
+{%- for p in site.pages %}
+  {%- unless p.no_index or p.url contains "sitemap" %}
   <url>
     <loc>{{ site.url }}{{ p.url }}</loc>
   </url>
-  {%- endfor %}
+  {%- endunless %}
+{%- endfor %}
 </urlset>
