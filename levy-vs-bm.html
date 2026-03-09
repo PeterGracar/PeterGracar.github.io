@@ -53,7 +53,7 @@ no_index: true
     padding: 20px;
     border-radius: var(--radius-md);
     border: 1px solid var(--lbm-panel-border);
-    width: 340px;
+    width: min(340px, calc(100% - 20px));
     box-shadow: var(--shadow-soft);
     user-select: none;
     max-height: calc(100% - 40px);
@@ -147,6 +147,34 @@ no_index: true
 
   .export-section { border-top: 1px solid var(--color-border); padding-top: 12px; margin-top: 12px; }
 
+  /* ── Mobile toggle button ── */
+  #lbm-toggle {
+    display: none;
+    position: absolute;
+    bottom: 1rem; left: 1rem; z-index: 20;
+    background: var(--color-accent); color: #fff;
+    border: none; border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem; font-weight: 600; font-family: var(--font-body);
+    cursor: pointer; box-shadow: var(--shadow-soft);
+  }
+
+  /* ── Close button inside panel (mobile only) ── */
+  #lbm-close {
+    display: none;
+    background: none; border: none; cursor: pointer;
+    color: var(--color-text-muted); font-size: 1.1rem; line-height: 1;
+    padding: 0.25rem; border-radius: var(--radius-sm);
+  }
+  #lbm-close:hover { color: var(--color-text); }
+
+  @media (max-width: 767px) {
+    .sim-controls { display: none; }
+    .sim-controls.is-open { display: block; }
+    #lbm-toggle { display: block; }
+    #lbm-close  { display: block; }
+  }
+
   /* ── Status indicator ── */
   #statusIndicator {
     position: absolute; top: 20px; right: 20px;
@@ -168,9 +196,14 @@ no_index: true
 
     <div id="statusIndicator">Manual Control Active</div>
 
+    <button id="lbm-toggle" aria-label="Open controls" aria-expanded="false">⚙ Controls</button>
+
     <!-- Floating controls -->
     <div class="sim-controls">
-      <h2 class="text-xl font-bold mb-4" style="color: var(--color-text); font-family: var(--font-heading); margin-top: 0;">Lévy Flight Sim</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="text-xl font-bold" style="color: var(--color-text); font-family: var(--font-heading); margin: 0;">Lévy Flight Sim</h2>
+        <button id="lbm-close" aria-label="Close controls">✕</button>
+      </div>
 
       <div class="slider-container">
         <div class="slider-label">
@@ -750,6 +783,33 @@ no_index: true
     window.addEventListener('mousemove', doDrag);
     window.addEventListener('mouseup', endDrag);
     View.canvas.addEventListener('wheel', zoom, { passive: false });
+
+    // Touch pan for canvas
+    let lastTouch = null;
+    View.canvas.addEventListener('touchstart', e => {
+      lastTouch = e.touches[0]; interactionTimer();
+    }, { passive: true });
+    View.canvas.addEventListener('touchmove', e => {
+      if (!lastTouch) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      View.camera.x -= (t.clientX - lastTouch.clientX) / View.camera.zoom;
+      View.camera.y -= (t.clientY - lastTouch.clientY) / View.camera.zoom;
+      lastTouch = t;
+      interactionTimer();
+    }, { passive: false });
+    View.canvas.addEventListener('touchend', () => { lastTouch = null; }, { passive: true });
+
+    // Mobile controls toggle
+    const lbmToggle = document.getElementById('lbm-toggle');
+    const lbmPanel  = document.querySelector('.sim-controls');
+    const lbmClose  = document.getElementById('lbm-close');
+    if (lbmToggle) {
+      const openPanel  = () => { lbmPanel.classList.add('is-open'); lbmToggle.setAttribute('aria-expanded', 'true'); };
+      const closePanel = () => { lbmPanel.classList.remove('is-open'); lbmToggle.setAttribute('aria-expanded', 'false'); };
+      lbmToggle.addEventListener('click', openPanel);
+      if (lbmClose) lbmClose.addEventListener('click', closePanel);
+    }
 
     updateRadius();
   }

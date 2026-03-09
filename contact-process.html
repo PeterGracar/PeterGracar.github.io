@@ -89,13 +89,49 @@ no_index: true
   .param-section { margin-bottom: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem; }
   .param-section:first-child { border-top: none; padding-top: 0; }
 
+  /* ── Mobile toggle button ── */
+  #controls-toggle {
+    display: none;
+    position: absolute;
+    bottom: 1rem; right: 1rem; z-index: 30;
+    background: var(--color-accent); color: #fff;
+    border: none; border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem; font-weight: 600; font-family: var(--font-body);
+    cursor: pointer; box-shadow: var(--shadow-soft);
+  }
+
+  /* ── Backdrop ── */
+  #controls-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 40;
+  }
+  #controls-backdrop.is-open { display: block; }
+
   /* ── Mobile layout ── */
   @media (max-width: 767px) {
     main#main-content { flex-direction: column; }
-    .sim-left  { flex: 0 0 60% !important; min-height: 0; }
-    .sim-right { flex: 0 0 40% !important; min-height: 0;
-                 border-left: none !important;
-                 border-top: 1px solid var(--color-border) !important; }
+
+    /* Canvas fills all available space */
+    .sim-left { flex: 1 !important; min-height: 0; position: relative; }
+
+    /* Controls slide in from the right as a fixed overlay */
+    .sim-right {
+      position: fixed !important;
+      top: 0; right: 0; bottom: 0;
+      width: min(320px, 100%);
+      flex: none !important;
+      border-left: 1px solid var(--color-border) !important;
+      border-top: none !important;
+      z-index: 50;
+      transform: translateX(100%);
+      transition: transform 0.28s ease;
+    }
+    .sim-right.is-open { transform: translateX(0); }
+
+    #controls-toggle { display: block; }
   }
 </style>
 
@@ -133,6 +169,7 @@ no_index: true
            style="color: var(--color-text-muted);">
         Tap to infect &bull; Periodic boundaries active &bull; Amber notch&nbsp;= critical value (\(R_0 \approx 1\))
       </div>
+      <button id="controls-toggle" aria-label="Open parameters" aria-expanded="false">⚙ Parameters</button>
     </div>
 
     <!-- Chart -->
@@ -237,6 +274,7 @@ no_index: true
     </div>
 
   </div>
+  <div id="controls-backdrop"></div>
 </main>
 
 <script>
@@ -622,6 +660,17 @@ no_index: true
     });
     els.btnReset.addEventListener('click', initSimulation);
     window.addEventListener('resize', resize);
+
+    // Mobile controls toggle
+    const mToggle   = document.getElementById('controls-toggle');
+    const mPanel    = document.querySelector('.sim-right');
+    const mBackdrop = document.getElementById('controls-backdrop');
+    if (mToggle) {
+      const openPanel  = () => { mPanel.classList.add('is-open'); mBackdrop.classList.add('is-open'); mToggle.setAttribute('aria-expanded', 'true'); };
+      const closePanel = () => { mPanel.classList.remove('is-open'); mBackdrop.classList.remove('is-open'); mToggle.setAttribute('aria-expanded', 'false'); };
+      mToggle.addEventListener('click', openPanel);
+      mBackdrop.addEventListener('click', closePanel);
+    }
     setupInputs();
     resize();
     initSimulation();
