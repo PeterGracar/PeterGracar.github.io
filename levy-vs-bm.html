@@ -707,7 +707,7 @@ no_index: true
   }
 
   function setupInputs() {
-    window.addEventListener('resize', () => View.resize());
+    new ResizeObserver(() => View.resize()).observe(document.getElementById('sim-container'));
 
     const updateRadius = () => {
       const val = parseFloat(document.getElementById('radiusSlider').value);
