@@ -1,0 +1,762 @@
+---
+layout: default
+title: "Lévy Flight vs Brownian Motion — Peter Gracar"
+description: "Interactive simulation comparing Lévy flights and Brownian motion, including sausage coverage and path statistics."
+og_description: "Interactive comparison of Lévy flight and Brownian motion trajectories, with coverage statistics and sausage mode."
+canonical: "https://gracar.org/levy-vs-bm.html"
+mathjax: true
+no_index: true
+---
+<style>
+  /* ── Full-bleed layout override ── */
+  body { height: 100vh; overflow: hidden; }
+  main#main-content {
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+    position: relative;
+  }
+
+  /* ── Simulation colour tokens ── */
+  :root {
+    --lbm-panel-bg:     rgba(248, 244, 238, 0.93);
+    --lbm-panel-border: var(--color-border);
+    --lbm-trace:        rgba(40, 25, 15, 0.13);
+    --lbm-brownian:     rgba(30, 20, 12, 0.88);
+    --lbm-legend-bg:    rgba(241, 235, 225, 0.90);
+    --lbm-hue-lightness: 42;
+    --lbm-hue-sat-base: 85;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --lbm-panel-bg:     rgba(26, 30, 36, 0.93);
+      --lbm-trace:        rgba(148, 163, 184, 0.15);
+      --lbm-brownian:     rgba(255, 255, 255, 1.0);
+      --lbm-legend-bg:    rgba(26, 30, 36, 0.90);
+      --lbm-hue-lightness: 60;
+      --lbm-hue-sat-base: 100;
+    }
+  }
+
+  /* ── Floating controls panel ── */
+  .sim-controls {
+    position: absolute;
+    top: 20px; left: 20px;
+    background: var(--lbm-panel-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--lbm-panel-border);
+    width: 340px;
+    box-shadow: var(--shadow-soft);
+    user-select: none;
+    max-height: calc(100% - 40px);
+    overflow-y: auto;
+    z-index: 10;
+    font-family: var(--font-body);
+    color: var(--color-text);
+  }
+
+  .sim-controls::-webkit-scrollbar { width: 6px; }
+  .sim-controls::-webkit-scrollbar-track { background: transparent; }
+  .sim-controls::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+
+  /* ── Slider ── */
+  .slider-container { margin-bottom: 16px; }
+  .slider-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.875rem; margin-bottom: 4px; font-weight: 500;
+    color: var(--color-text);
+  }
+
+  input[type=range] {
+    width: 100%; height: 6px; background: var(--color-border);
+    border-radius: 3px; outline: none; -webkit-appearance: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px;
+    background: var(--color-accent); border-radius: 50%;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { opacity: 0.8; }
+
+  input[type=text] {
+    width: 100%; background: var(--color-surface-soft);
+    border: 1px solid var(--color-border);
+    color: var(--color-text); padding: 6px 10px;
+    border-radius: var(--radius-sm); font-size: 0.875rem;
+    outline: none; font-family: monospace; margin-bottom: 12px;
+  }
+  input[type=text]:focus { border-color: var(--color-accent); }
+  input[type=text]::placeholder { color: var(--color-text-muted); }
+
+  /* ── Toggle ── */
+  .toggle-container { display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; }
+  .toggle-switch {
+    position: relative; width: 44px; height: 24px;
+    background: var(--color-border); border-radius: 12px;
+    transition: 0.3s; margin-right: 12px; flex-shrink: 0;
+  }
+  .toggle-switch::after {
+    content: ''; position: absolute; top: 2px; left: 2px;
+    width: 20px; height: 20px; background: var(--color-surface);
+    border-radius: 50%; transition: 0.3s;
+  }
+  input[type="checkbox"]:checked + .toggle-switch { background: #10b981; }
+  input[type="checkbox"]:checked + .toggle-switch::after { transform: translateX(20px); }
+  input[type="checkbox"] { display: none; }
+
+  /* ── Stats & legend ── */
+  .sim-legend { margin-top: 16px; border-top: 1px solid var(--color-border); padding-top: 12px; font-size: 0.8rem; }
+  .legend-item { display: flex; align-items: center; margin-bottom: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+
+  .stats-box {
+    margin-top: 16px; padding: 12px;
+    background: var(--color-surface-soft);
+    border-radius: var(--radius-sm); font-size: 0.8rem;
+    border: 1px solid var(--color-border);
+  }
+  .stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .stat-label { color: var(--color-text-muted); }
+  .stat-val { font-family: monospace; color: var(--color-accent); font-weight: bold; }
+  .stat-highlight { color: var(--color-accent-soft); }
+
+  /* ── Buttons ── */
+  button.sim-btn {
+    width: 100%; padding: 8px 16px; border: none;
+    border-radius: var(--radius-sm); font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s; margin-top: 8px;
+    font-family: var(--font-body); font-size: 0.9rem;
+  }
+  .sim-btn-primary { background: var(--color-accent); color: #fff; }
+  .sim-btn-primary:hover { opacity: 0.85; }
+  .sim-btn-pause  { background: #d97706; color: #fff; }
+  .sim-btn-resume { background: #059669; color: #fff; }
+  .sim-btn-export { background: var(--color-accent-soft); color: #fff; }
+  .sim-btn-export:hover { opacity: 0.85; }
+
+  .btn-group { display: flex; gap: 10px; margin-top: 8px; }
+  .btn-group .sim-btn { flex: 1; }
+
+  .export-section { border-top: 1px solid var(--color-border); padding-top: 12px; margin-top: 12px; }
+
+  /* ── Status indicator ── */
+  #statusIndicator {
+    position: absolute; top: 20px; right: 20px;
+    font-size: 0.8rem; font-family: monospace;
+    color: var(--color-text-muted);
+    background: var(--lbm-panel-bg);
+    padding: 4px 10px; border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    opacity: 0; pointer-events: none; z-index: 10;
+    transition: opacity 500ms ease;
+    backdrop-filter: blur(6px);
+  }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<main id="main-content">
+  <div id="sim-container" style="position: relative; flex: 1; overflow: hidden; min-height: 0;">
+
+    <div id="statusIndicator">Manual Control Active</div>
+
+    <!-- Floating controls -->
+    <div class="sim-controls">
+      <h2 class="text-xl font-bold mb-4" style="color: var(--color-text); font-family: var(--font-heading); margin-top: 0;">Lévy Flight Sim</h2>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Lévy Index ($\alpha$)</span>
+          <span id="alphaVal" style="color: var(--color-accent);">1.0</span>
+        </div>
+        <input type="range" id="alphaSlider" min="0.1" max="1.99" step="0.01" value="1.0">
+        <p class="text-xs mt-1 leading-relaxed" style="color: var(--color-text-muted);">
+          Tail index: \( P(\text{step} > x) \sim x^{-\alpha} \)<br>
+          Small \(\alpha\) = heavier tails (super-diffusion).
+        </p>
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Simulation Speed</span>
+          <span id="speedVal">5</span>
+        </div>
+        <input type="range" id="speedSlider" min="1" max="20" step="1" value="5">
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Sausage Radius (\(p\)-th quantile)</span>
+          <span id="radiusVal" class="text-xs font-mono" style="color: var(--color-accent);">R=5.0 (p=50%)</span>
+        </div>
+        <input type="range" id="radiusSlider" min="0" max="100" step="1" value="50">
+        <p class="text-xs mt-1 leading-relaxed" style="color: var(--color-text-muted);">
+          Radius scales with jump size distribution:<br>
+          \( R(p) \propto (1-p)^{-1/\alpha} \)
+        </p>
+      </div>
+
+      <label class="toggle-container">
+        <input type="checkbox" id="brownianToggle">
+        <div class="toggle-switch"></div>
+        <span class="text-sm font-medium">Compare Brownian Motion</span>
+      </label>
+
+      <label class="toggle-container">
+        <input type="checkbox" id="sausageToggle">
+        <div class="toggle-switch"></div>
+        <span class="text-sm font-medium">Sausage Mode (Balls)</span>
+      </label>
+
+      <div class="slider-container" style="margin-top: 12px; margin-bottom: 4px;">
+        <div class="slider-label"><span>Random Seed</span></div>
+        <input type="text" id="seedInput" placeholder="Empty = Random">
+      </div>
+
+      <div class="btn-group">
+        <button id="pauseBtn" class="sim-btn sim-btn-pause" onclick="Sim.togglePause()">Pause</button>
+        <button class="sim-btn sim-btn-primary" onclick="Sim.reset()">Reset</button>
+      </div>
+
+      <div class="export-section">
+        <label class="toggle-container">
+          <input type="checkbox" id="optimiseExport" checked>
+          <div class="toggle-switch"></div>
+          <span class="text-sm font-medium">Optimise Size (HD)</span>
+        </label>
+        <button class="sim-btn sim-btn-export" onclick="Sim.exportImage()">Export Image</button>
+      </div>
+
+      <div class="stats-box">
+        <div class="stat-row" title="Area covered by landing points only">
+          <span class="stat-label">Lévy (Points):</span>
+          <span id="levyAreaStat" class="stat-val">0</span>
+        </div>
+        <div class="stat-row" title="Area covered by points AND connecting lines">
+          <span class="stat-label">Lévy (Path):</span>
+          <span id="levyPathStat" class="stat-val stat-highlight">0</span>
+        </div>
+        <div class="stat-row" id="brownianAreaRow" style="opacity: 0.3;">
+          <span class="stat-label">Brownian (Path):</span>
+          <span id="brownianAreaStat" class="stat-val">0</span>
+        </div>
+      </div>
+    </div>
+
+    <canvas id="simCanvas" style="display: block; cursor: grab; position: absolute; top: 0; left: 0;"></canvas>
+  </div>
+</main>
+
+<script>
+  /**
+   * Lévy Flight vs Brownian Motion — adapted for gracar.org
+   */
+
+  // ── Theme helper ──────────────────────────────────────────────────────────
+  function getLBMColors() {
+    const s = getComputedStyle(document.documentElement);
+    const g = n => s.getPropertyValue(n).trim();
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return {
+      bg:          g('--color-bg'),
+      trace:       g('--lbm-trace'),
+      brownian:    g('--lbm-brownian'),
+      legendBg:    g('--lbm-legend-bg'),
+      text:        g('--color-text'),
+      hueLightness: parseFloat(g('--lbm-hue-lightness')) || (isDark ? 60 : 42),
+      hueSatBase:   parseFloat(g('--lbm-hue-sat-base'))  || (isDark ? 100 : 85),
+      isDark,
+    };
+  }
+
+  // Current frame colors (updated at start of each animate() call)
+  let C = getLBMColors();
+
+  // ── 1. Configuration ──────────────────────────────────────────────────────
+  const Config = {
+    baseScale: 5,
+    colorSpeedFactor: 0.05,
+    get cyclePeriod() { return (360 / this.colorSpeedFactor) * 4; },
+    chunkSize: 1000,
+  };
+
+  // ── 2. PRNG ───────────────────────────────────────────────────────────────
+  const PRNG = {
+    rand: Math.random,
+    xmur3: function(str) {
+      for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++) {
+        h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+        h = h << 13 | h >>> 19;
+      }
+      return function() {
+        h = Math.imul(h ^ h >>> 16, 2246822507);
+        h = Math.imul(h ^ h >>> 13, 3266489909);
+        return (h ^= h >>> 16) >>> 0;
+      };
+    },
+    mulberry32: function(a) {
+      return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    },
+    init: function(seedStr) {
+      if (!seedStr) seedStr = Date.now().toString() + Math.random().toString();
+      this.rand = this.mulberry32(this.xmur3(seedStr)());
+    },
+    gaussian: function() {
+      let u = 0, v = 0;
+      while (u === 0) u = this.rand();
+      while (v === 0) v = this.rand();
+      return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    }
+  };
+
+  // ── 3. State ──────────────────────────────────────────────────────────────
+  const State = {
+    width: 0, height: 0, time: 0,
+    alpha: 1.0, speed: 5, sausageRadius: 5.0,
+    showBrownian: false, showSausage: false,
+    isPaused: false, isInteracting: false,
+    levy:     { pos: {x:0,y:0}, active: [], buffer: [], chunks: [] },
+    brownian: { pos: {x:0,y:0}, active: [], buffer: [], chunks: [] },
+    stats: {
+      levyPoints: new Set(),
+      levyPath:   new Set(),
+      brownian:   new Set(),
+    },
+    reset: function() {
+      this.time = 0;
+      this.levy     = { pos: {x:0,y:0}, active: [{x:0,y:0,time:0}], buffer: [], chunks: [] };
+      this.brownian = { pos: {x:0,y:0}, active: [{x:0,y:0,time:0}], buffer: [], chunks: [] };
+      this.stats.levyPoints.clear(); this.stats.levyPath.clear(); this.stats.brownian.clear();
+      Stats.updateCoverage(0, 0, this.sausageRadius, this.stats.levyPoints);
+      Stats.updateCoverage(0, 0, this.sausageRadius, this.stats.levyPath);
+      if (this.showBrownian) Stats.updateCoverage(0, 0, this.sausageRadius, this.stats.brownian);
+    }
+  };
+
+  // ── 4. View ───────────────────────────────────────────────────────────────
+  const View = {
+    camera: { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0 },
+    canvas: document.getElementById('simCanvas'),
+    ctx:    document.getElementById('simCanvas').getContext('2d'),
+
+    resize: function() {
+      const container = document.getElementById('sim-container');
+      State.width  = container.clientWidth;
+      State.height = container.clientHeight;
+      this.canvas.width  = State.width;
+      this.canvas.height = State.height;
+      this.canvas.style.width  = State.width  + 'px';
+      this.canvas.style.height = State.height + 'px';
+    },
+
+    updateCamera: function() {
+      if (State.isPaused || State.isInteracting) return;
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      const check  = list   => { for (let p of list) { if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x; if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y; } };
+      const checkC = chunks => { for (let c of chunks) { if(c.minX<minX)minX=c.minX; if(c.maxX>maxX)maxX=c.maxX; if(c.minY<minY)minY=c.minY; if(c.maxY>maxY)maxY=c.maxY; } };
+      checkC(State.levy.chunks); check(State.levy.active);
+      if (State.showBrownian) { checkC(State.brownian.chunks); check(State.brownian.active); }
+      if (minX === Infinity) { minX = -100; maxX = 100; minY = -100; maxY = 100; }
+      const pad = State.showSausage ? State.sausageRadius : 0;
+      minX -= pad; maxX += pad; minY -= pad; maxY += pad;
+      let cW = Math.max(maxX - minX, 100), cH = Math.max(maxY - minY, 100);
+      const uiSafe = 380, margin = 50;
+      let availW = State.width - margin * 2, shiftX = 0;
+      if (State.width > uiSafe + 200) { availW = State.width - uiSafe - margin; shiftX = (uiSafe + availW / 2) - (State.width / 2); }
+      const availH = State.height - margin * 2;
+      const targetZoom = Math.min(availW / cW, availH / cH);
+      this.camera.targetX = ((minX + maxX) / 2) - (shiftX / targetZoom);
+      this.camera.targetY = (minY + maxY) / 2;
+      const lerp = (s, e, f) => s + (e - s) * f;
+      this.camera.zoom = lerp(this.camera.zoom, targetZoom, 0.05);
+      this.camera.x    = lerp(this.camera.x, this.camera.targetX, 0.05);
+      this.camera.y    = lerp(this.camera.y, this.camera.targetY, 0.05);
+    }
+  };
+
+  // ── 5. Statistics ─────────────────────────────────────────────────────────
+  const Stats = {
+    updateCoverage: function(x, y, r, set) {
+      const cell = r / 2, rSq = r * r;
+      const gx0 = Math.floor((x - r) / cell), gx1 = Math.floor((x + r) / cell);
+      const gy0 = Math.floor((y - r) / cell), gy1 = Math.floor((y + r) / cell);
+      for (let gx = gx0; gx <= gx1; gx++) {
+        for (let gy = gy0; gy <= gy1; gy++) {
+          const cx = Math.max(gx*cell,   Math.min(x, (gx+1)*cell));
+          const cy = Math.max(gy*cell,   Math.min(y, (gy+1)*cell));
+          if ((x-cx)**2 + (y-cy)**2 < rSq) set.add(`${gx},${gy}`);
+        }
+      }
+    },
+    walkLineCoverage: function(x1, y1, x2, y2, r, set) {
+      const dx = x2 - x1, dy = y2 - y1;
+      const steps = Math.ceil(Math.sqrt(dx*dx + dy*dy) / (r / 2));
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        this.updateCoverage(x1 + dx*t, y1 + dy*t, r, set);
+      }
+    },
+    format: function(area) {
+      if (area < 1000)    return Math.round(area);
+      if (area < 1000000) return (area / 1000).toFixed(1) + 'k';
+      return (area / 1000000).toFixed(2) + 'M';
+    },
+    updateUI: function() {
+      const ca = (State.sausageRadius / 2) ** 2;
+      document.getElementById('levyAreaStat').textContent  = this.format(State.stats.levyPoints.size * ca);
+      document.getElementById('levyPathStat').textContent  = this.format(State.stats.levyPath.size   * ca);
+      if (State.showBrownian)
+        document.getElementById('brownianAreaStat').textContent = this.format(State.stats.brownian.size * ca);
+    },
+    recalculateAll: function() {
+      State.stats.levyPoints.clear(); State.stats.levyPath.clear(); State.stats.brownian.clear();
+      const traverse = (data, cb) => {
+        let px = 0, py = 0;
+        const proc = list => { for (let p of list) { cb(px,py,p.x,p.y); px=p.x; py=p.y; } };
+        for (let c of data.chunks) proc(c.points);
+        proc(data.buffer); proc(data.active);
+      };
+      traverse(State.levy, (px,py,cx,cy) => {
+        this.updateCoverage(cx,cy,State.sausageRadius,State.stats.levyPoints);
+        this.walkLineCoverage(px,py,cx,cy,State.sausageRadius,State.stats.levyPath);
+      });
+      if (State.showBrownian)
+        traverse(State.brownian, (px,py,cx,cy) =>
+          this.walkLineCoverage(px,py,cx,cy,State.sausageRadius,State.stats.brownian));
+      this.updateUI();
+    }
+  };
+
+  // ── 6. Simulation ─────────────────────────────────────────────────────────
+  const Sim = {
+    archivePoint: function(point, buffer, chunks) {
+      buffer.push(point);
+      if (buffer.length >= Config.chunkSize) {
+        let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+        for (let p of buffer) {
+          if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x;
+          if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y;
+        }
+        chunks.push({ points: buffer, minX, maxX, minY, maxY });
+        return [];
+      }
+      return buffer;
+    },
+
+    step: function() {
+      const cutoff = State.time - Config.cyclePeriod;
+      for (let i = 0; i < State.speed; i++) {
+        State.time++;
+        const theta = PRNG.rand() * 2 * Math.PI;
+        const dirX = Math.cos(theta), dirY = Math.sin(theta);
+
+        let u = PRNG.rand(); if (u === 0) u = 0.00001;
+        let stepLevy = Math.min(Config.baseScale * Math.pow(u, -1 / State.alpha), 1e6);
+        const plx = State.levy.pos.x, ply = State.levy.pos.y;
+        State.levy.pos.x += dirX * stepLevy;
+        State.levy.pos.y += dirY * stepLevy;
+        State.levy.active.push({ x: State.levy.pos.x, y: State.levy.pos.y, time: State.time });
+        Stats.updateCoverage(State.levy.pos.x, State.levy.pos.y, State.sausageRadius, State.stats.levyPoints);
+        Stats.walkLineCoverage(plx, ply, State.levy.pos.x, State.levy.pos.y, State.sausageRadius, State.stats.levyPath);
+
+        if (State.showBrownian) {
+          let stepBrown = Math.abs(PRNG.gaussian()) * Config.baseScale;
+          const pbx = State.brownian.pos.x, pby = State.brownian.pos.y;
+          State.brownian.pos.x += dirX * stepBrown;
+          State.brownian.pos.y += dirY * stepBrown;
+          State.brownian.active.push({ x: State.brownian.pos.x, y: State.brownian.pos.y, time: State.time });
+          Stats.walkLineCoverage(pbx, pby, State.brownian.pos.x, State.brownian.pos.y, State.sausageRadius, State.stats.brownian);
+        }
+      }
+
+      const archive = agent => {
+        while (agent.active.length > 0 && agent.active[0].time < cutoff) {
+          agent.buffer = this.archivePoint({ x: agent.active[0].x, y: agent.active[0].y }, agent.buffer, agent.chunks);
+          agent.active.shift();
+        }
+      };
+      archive(State.levy);
+      if (State.showBrownian) archive(State.brownian);
+    },
+
+    reset: function() {
+      PRNG.init(document.getElementById('seedInput').value.trim());
+      State.reset();
+      View.camera = { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0 };
+      if (State.isPaused) this.togglePause();
+    },
+
+    togglePause: function() {
+      State.isPaused = !State.isPaused;
+      const btn = document.getElementById('pauseBtn');
+      btn.textContent = State.isPaused ? 'Resume' : 'Pause';
+      btn.className = State.isPaused ? 'sim-btn sim-btn-resume' : 'sim-btn sim-btn-pause';
+    },
+
+    exportImage: function() {
+      const optimise = document.getElementById('optimiseExport').checked;
+      const pad = State.sausageRadius * 4;
+      let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+      const check  = list   => { for(let p of list){if(p.x<minX)minX=p.x;if(p.x>maxX)maxX=p.x;if(p.y<minY)minY=p.y;if(p.y>maxY)maxY=p.y;} };
+      const checkC = chunks => { for(let c of chunks){if(c.minX<minX)minX=c.minX;if(c.maxX>maxX)maxX=c.maxX;if(c.minY<minY)minY=c.minY;if(c.maxY>maxY)maxY=c.maxY;} };
+      checkC(State.levy.chunks); check(State.levy.active); check(State.levy.buffer);
+      if (State.showBrownian) { checkC(State.brownian.chunks); check(State.brownian.active); check(State.brownian.buffer); }
+      if (minX === Infinity) return;
+      minX -= pad; maxX += pad; minY -= pad; maxY += pad;
+      const cW = maxX - minX, cH = maxY - minY;
+      let tw, th, tz;
+      if (optimise) {
+        const MAX = 3840, ratio = cW / cH;
+        if (ratio >= 1) { tw = MAX; th = Math.round(MAX / ratio); } else { th = MAX; tw = Math.round(MAX * ratio); }
+        tz = tw / cW;
+      } else {
+        tw = Math.ceil(cW); th = Math.ceil(cH); tz = 1;
+        const MAX = 16384;
+        if (tw > MAX || th > MAX) { const s = Math.min(MAX/tw, MAX/th); tw = Math.round(tw*s); th = Math.round(th*s); tz = s; }
+      }
+      const off = document.createElement('canvas');
+      off.width = tw; off.height = th;
+      const oc = off.getContext('2d');
+      const exportC = getLBMColors();
+      oc.fillStyle = exportC.bg;
+      oc.fillRect(0, 0, tw, th);
+      oc.translate(tw/2, th/2); oc.scale(tz, tz); oc.translate(-(minX+maxX)/2, -(minY+maxY)/2);
+      const exportCam = { x: (minX+maxX)/2, y: (minY+maxY)/2, zoom: tz };
+      if (State.showBrownian) Renderer.drawSystem(oc, tw, th, exportCam, State.brownian, false, true, exportC);
+      Renderer.drawSystem(oc, tw, th, exportCam, State.levy, true, true, exportC);
+      oc.setTransform(1,0,0,1,0,0);
+      Renderer.drawLegend(oc, tw, th, exportC);
+      const link = document.createElement('a');
+      link.download = `levy_flight_alpha${State.alpha}.png`;
+      link.href = off.toDataURL('image/png');
+      link.click();
+    }
+  };
+
+  // ── 7. Renderer ───────────────────────────────────────────────────────────
+  const Renderer = {
+    drawSystem: function(ctx, w, h, cam, agent, isLevy, isExport, colors) {
+      colors = colors || C;
+      const PI2 = Math.PI * 2;
+      const sPS = 3 / cam.zoom, halfSPS = sPS / 2;
+      const pad = State.showSausage ? State.sausageRadius : sPS / 2;
+      const vMinX = cam.x - (w/2)/cam.zoom, vMaxX = cam.x + (w/2)/cam.zoom;
+      const vMinY = cam.y - (h/2)/cam.zoom, vMaxY = cam.y + (h/2)/cam.zoom;
+
+      // Pass 1: trace underlay
+      ctx.fillStyle = colors.trace;
+      for (let chunk of agent.chunks) {
+        if (!isExport) {
+          if (chunk.maxX+pad < vMinX || chunk.minX-pad > vMaxX || chunk.maxY+pad < vMinY || chunk.minY-pad > vMaxY) continue;
+          if (!State.isPaused) {
+            const sw = ((chunk.maxX-chunk.minX)+2*pad)*cam.zoom, sh = ((chunk.maxY-chunk.minY)+2*pad)*cam.zoom;
+            if (sw < 2 && sh < 2) {
+              ctx.fillRect(((chunk.minX+chunk.maxX)/2)-1/cam.zoom,((chunk.minY+chunk.maxY)/2)-1/cam.zoom,2/cam.zoom,2/cam.zoom);
+              continue;
+            }
+          }
+        }
+        ctx.beginPath();
+        for (let p of chunk.points) {
+          if (State.showSausage) { ctx.moveTo(p.x+State.sausageRadius,p.y); ctx.arc(p.x,p.y,State.sausageRadius,0,PI2); }
+          else ctx.rect(p.x-halfSPS, p.y-halfSPS, sPS, sPS);
+        }
+        ctx.fill();
+      }
+      ctx.beginPath();
+      for (let p of agent.buffer.concat(agent.active)) {
+        if (State.showSausage) { ctx.moveTo(p.x+State.sausageRadius,p.y); ctx.arc(p.x,p.y,State.sausageRadius,0,PI2); }
+        else ctx.rect(p.x-halfSPS, p.y-halfSPS, sPS, sPS);
+      }
+      ctx.fill();
+
+      // Pass 2: colour overlay
+      for (let p of agent.active) {
+        const ageRatio = (State.time - p.time) / Config.cyclePeriod;
+        let alpha = 1.0 - ageRatio; if (alpha <= 0) continue;
+        if (isLevy) {
+          const hue   = (p.time * Config.colorSpeedFactor) % 360;
+          const sat   = colors.hueSatBase   * (1 - ageRatio * 0.5);
+          const light = colors.hueLightness + 10 * ageRatio;
+          ctx.fillStyle = `hsla(${hue},${sat}%,${light}%,${alpha})`;
+        } else {
+          // Replace alpha in the CSS variable rgba string, fallback for safety
+          const base = colors.brownian || (C.isDark ? 'rgba(255,255,255,1)' : 'rgba(30,20,12,1)');
+          ctx.fillStyle = base.replace(/,\s*[\d.]+\)$/, `,${alpha})`);
+        }
+        ctx.beginPath();
+        if (State.showSausage) ctx.arc(p.x, p.y, State.sausageRadius, 0, PI2);
+        else ctx.fillRect(p.x-halfSPS, p.y-halfSPS, sPS, sPS);
+        ctx.fill();
+      }
+    },
+
+    drawLegend: function(ctx, w, h, colors) {
+      colors = colors || C;
+      const minDim = Math.min(w, h);
+      const barW  = Math.max(200, minDim * 0.4);
+      const barH  = Math.max(15,  minDim * 0.025);
+      const startX = w - barW - (w * 0.03);
+      const startY = h - barH - (h * 0.03);
+
+      ctx.fillStyle = colors.legendBg;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(startX-10, startY-barH*1.5, barW+20, barH*2.5+5, 8);
+      else ctx.rect(startX-10, startY-barH*1.5, barW+20, barH*2.5+5);
+      ctx.fill();
+
+      // Gray base
+      ctx.fillStyle = colors.isDark ? 'rgba(148,163,184,0.5)' : 'rgba(100,80,65,0.3)';
+      ctx.fillRect(startX, startY, barW, barH);
+
+      // Hue gradient
+      const steps = 60, sliceW = barW / steps;
+      for (let i = 0; i < steps; i++) {
+        const ageRatio = 1.0 - (i / (steps - 1));
+        const ptTime = State.time - ageRatio * Config.cyclePeriod;
+        const hue   = (ptTime * Config.colorSpeedFactor) % 360;
+        const sat   = colors.hueSatBase   * (1 - ageRatio * 0.5);
+        const light = colors.hueLightness + 10 * ageRatio;
+        let a = 1.0 - ageRatio; if (a < 0) a = 0;
+        ctx.fillStyle = `hsla(${hue},${sat}%,${light}%,${a})`;
+        ctx.fillRect(startX + i * sliceW, startY, sliceW + 1, barH);
+      }
+
+      const fontSize = Math.max(12, barH * 0.9);
+      ctx.font = `bold ${fontSize}px var(--font-body, 'Segoe UI', sans-serif)`;
+      ctx.fillStyle = colors.isDark ? '#e2e8f0' : '#1f1b18';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+      ctx.fillText('Past (Trace)', startX, startY - 5);
+      ctx.textAlign = 'right';
+      ctx.fillText('Present', startX + barW, startY - 5);
+    }
+  };
+
+  // ── 8. Loop & handlers ────────────────────────────────────────────────────
+  function animate() {
+    if (!State.isPaused) {
+      Sim.step();
+      if (State.time % 10 === 0) Stats.updateUI();
+    }
+    View.updateCamera();
+
+    C = getLBMColors(); // refresh theme each frame
+
+    const ctx = View.ctx;
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, State.width, State.height);
+
+    ctx.translate(State.width/2, State.height/2);
+    ctx.scale(View.camera.zoom, View.camera.zoom);
+    ctx.translate(-View.camera.x, -View.camera.y);
+
+    if (State.showBrownian) Renderer.drawSystem(ctx, State.width, State.height, View.camera, State.brownian, false, false, C);
+    Renderer.drawSystem(ctx, State.width, State.height, View.camera, State.levy, true, false, C);
+
+    ctx.setTransform(1,0,0,1,0,0);
+    Renderer.drawLegend(ctx, State.width, State.height, C);
+
+    requestAnimationFrame(animate);
+  }
+
+  function setupInputs() {
+    window.addEventListener('resize', () => View.resize());
+
+    const updateRadius = () => {
+      const val = parseFloat(document.getElementById('radiusSlider').value);
+      const p = (val / 100) * 0.9999;
+      State.sausageRadius = Config.baseScale * Math.pow(1.0 - p, -1 / State.alpha);
+      let rText = State.sausageRadius < 10 ? State.sausageRadius.toFixed(1) :
+                  State.sausageRadius < 1000 ? Math.round(State.sausageRadius*10)/10 :
+                  (State.sausageRadius/1000).toFixed(1) + 'k';
+      document.getElementById('radiusVal').textContent = `R=${rText} (p=${(p*100).toFixed(1)}%)`;
+    };
+
+    document.getElementById('alphaSlider').addEventListener('input', e => {
+      State.alpha = parseFloat(e.target.value);
+      document.getElementById('alphaVal').textContent = State.alpha.toFixed(2);
+      updateRadius();
+    });
+    document.getElementById('speedSlider').addEventListener('input', e => {
+      State.speed = parseInt(e.target.value);
+      document.getElementById('speedVal').textContent = State.speed;
+    });
+    document.getElementById('radiusSlider').addEventListener('input', updateRadius);
+    document.getElementById('radiusSlider').addEventListener('change', () => Stats.recalculateAll());
+
+    document.getElementById('brownianToggle').addEventListener('change', e => {
+      State.showBrownian = e.target.checked;
+      // brownianLegend is rendered on canvas; brownianAreaRow is the DOM element
+      const bRow = document.getElementById('brownianAreaRow');
+      if (bRow) bRow.style.opacity = State.showBrownian ? '1' : '0.3';
+      if (State.showBrownian) {
+        State.brownian.pos = { ...State.levy.pos };
+        State.brownian.active  = [{x: State.levy.pos.x, y: State.levy.pos.y, time: State.time}];
+        State.brownian.chunks  = []; State.brownian.buffer = [];
+        State.stats.brownian.clear();
+        Stats.updateCoverage(State.brownian.pos.x, State.brownian.pos.y, State.sausageRadius, State.stats.brownian);
+      } else {
+        State.brownian.active = []; State.brownian.chunks = [];
+        State.stats.brownian.clear();
+      }
+      Stats.updateUI();
+    });
+
+    document.getElementById('sausageToggle').addEventListener('change', e => State.showSausage = e.target.checked);
+
+    // Pan / zoom
+    const startDrag = e => { State.isInteracting = State.isDragging = true; State.lastMouseX = e.clientX; State.lastMouseY = e.clientY; interactionTimer(); };
+    const doDrag    = e => {
+      if (!State.isDragging) return; interactionTimer();
+      View.camera.x -= (e.clientX - State.lastMouseX) / View.camera.zoom;
+      View.camera.y -= (e.clientY - State.lastMouseY) / View.camera.zoom;
+      State.lastMouseX = e.clientX; State.lastMouseY = e.clientY;
+    };
+    const endDrag = () => { State.isDragging = false; };
+
+    let iTimer = null;
+    const interactionTimer = () => {
+      State.isInteracting = true;
+      document.getElementById('statusIndicator').style.opacity = '1';
+      clearTimeout(iTimer);
+      iTimer = setTimeout(() => { State.isInteracting = false; document.getElementById('statusIndicator').style.opacity = '0'; }, 10000);
+    };
+
+    const zoom = e => {
+      e.preventDefault(); interactionTimer();
+      const d = e.deltaY > 0 ? 0.9 : 1.1;
+      const mx = e.clientX - State.width/2, my = e.clientY - State.height/2;
+      const wx = mx / View.camera.zoom, wy = my / View.camera.zoom;
+      View.camera.zoom = Math.min(100, Math.max(1e-4, View.camera.zoom * d));
+      View.camera.x += wx - mx / View.camera.zoom;
+      View.camera.y += wy - my / View.camera.zoom;
+    };
+
+    View.canvas.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', doDrag);
+    window.addEventListener('mouseup', endDrag);
+    View.canvas.addEventListener('wheel', zoom, { passive: false });
+
+    updateRadius();
+  }
+
+  // ── 9. Bootstrap ──────────────────────────────────────────────────────────
+  setupInputs();
+  View.resize();
+  Sim.reset();
+  animate();
+</script>
