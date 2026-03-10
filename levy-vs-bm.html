@@ -411,12 +411,23 @@ no_index: true
       if (State.width > uiSafe + 200) { availW = State.width - uiSafe - margin; shiftX = (uiSafe + availW / 2) - (State.width / 2); }
       const availH = State.height - margin * 2;
       const targetZoom = Math.min(availW / cW, availH / cH);
-      this.camera.targetX = ((minX + maxX) / 2) - (shiftX / targetZoom);
-      this.camera.targetY = (minY + maxY) / 2;
+      const centerX = (minX + maxX) / 2, centerY = (minY + maxY) / 2;
+      this.camera.targetY = centerY;
       const lerp = (s, e, f) => s + (e - s) * f;
-      this.camera.zoom = lerp(this.camera.zoom, targetZoom, 0.05);
-      this.camera.x    = lerp(this.camera.x, this.camera.targetX, 0.05);
-      this.camera.y    = lerp(this.camera.y, this.camera.targetY, 0.05);
+      const zoomRatio = Math.max(this.camera.zoom / targetZoom, targetZoom / this.camera.zoom);
+      if (zoomRatio > 4) {
+        // Big jump: snap immediately to avoid the inconsistent lerp state that hides particles
+        this.camera.zoom = targetZoom;
+        this.camera.x = this.camera.targetX = centerX - (shiftX / targetZoom);
+        this.camera.y = centerY;
+      } else {
+        // Smooth lerp: compute targetX for the *lerped* zoom so position and zoom stay consistent
+        const newZoom = lerp(this.camera.zoom, targetZoom, 0.05);
+        this.camera.targetX = centerX - (shiftX / newZoom);
+        this.camera.zoom = newZoom;
+        this.camera.x = lerp(this.camera.x, this.camera.targetX, 0.05);
+        this.camera.y = lerp(this.camera.y, centerY, 0.05);
+      }
     }
   };
 
