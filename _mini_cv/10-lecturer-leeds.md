@@ -2,4 +2,4 @@
 period: "2023-present"
 order: 10
 ---
-Lecturer in Probability, University of Leeds
+Lecturer (Assistant Professor) in Probability, University of Leeds
