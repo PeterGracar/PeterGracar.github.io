@@ -224,23 +224,12 @@ main {
 }
 
 .page-section {
-  animation: section-reveal 0.5s ease both;
-  animation-play-state: paused;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.page-section.is-visible {
-  animation-play-state: running;
-}
-
-@keyframes section-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.page-section:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(1rem);
 }
 
 .eyebrow {
