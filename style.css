@@ -343,8 +343,10 @@ li + li {
 }
 
 .timeline {
+  --track-x: 0.45rem;
+  --tl-pad: 1.5rem;
   list-style: none;
-  padding: 0 0 0 1.5rem;
+  padding: 0 0 0 var(--tl-pad);
   display: grid;
   gap: 0.85rem;
   position: relative;
@@ -353,7 +355,7 @@ li + li {
 .timeline::before {
   content: '';
   position: absolute;
-  left: calc(0.1rem + 0.25rem + 3px);
+  left: var(--track-x);
   top: 0.5rem;
   bottom: 0.5rem;
   width: 2px;
@@ -376,7 +378,7 @@ li + li {
 .timeline li::before {
   content: '';
   position: absolute;
-  left: calc(-1.5rem + 0.1rem);
+  left: calc(var(--track-x) - var(--tl-pad) - 1px - 0.25rem - 2px);
   top: 1rem;
   width: 0.5rem;
   height: 0.5rem;
