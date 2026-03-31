@@ -353,12 +353,13 @@ li + li {
 .timeline::before {
   content: '';
   position: absolute;
-  left: 0.35rem;
+  left: calc(0.1rem + 0.25rem + 1px);
   top: 0.5rem;
   bottom: 0.5rem;
   width: 2px;
   background: var(--color-border);
   border-radius: 1px;
+  translate: -50% 0;
 }
 
 .timeline li {
