@@ -353,7 +353,7 @@ li + li {
 .timeline::before {
   content: '';
   position: absolute;
-  left: calc(0.1rem + 0.25rem + 2px);
+  left: calc(0.1rem + 0.25rem + 3px);
   top: 0.5rem;
   bottom: 0.5rem;
   width: 2px;
