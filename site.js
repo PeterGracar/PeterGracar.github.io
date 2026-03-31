@@ -4,21 +4,6 @@
     return;
   }
 
-  const sections = document.querySelectorAll('.page-section');
-  if (sections.length && 'IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    sections.forEach(s => observer.observe(s));
-  } else {
-    sections.forEach(s => s.classList.add('is-visible'));
-  }
-
   const emailSlot = document.getElementById('e9');
   if (emailSlot) {
     const email = atob('UC5HcmFjYXJAbGVlZHMuYWMudWs=');
@@ -54,13 +39,6 @@
     if (!button) {
       return;
     }
-    const img = button._hoverImg;
-    if (img) {
-      img.classList.remove("is-open");
-      if (img.parentNode === body) {
-        button.append(img);
-      }
-    }
     button.classList.remove("is-open");
     button.setAttribute("aria-expanded", "false");
   };
@@ -68,11 +46,6 @@
   const openTooltip = (button) => {
     if (activeButton && activeButton !== button) {
       closeTooltip(activeButton);
-    }
-    const img = button._hoverImg;
-    if (img) {
-      body.append(img);
-      img.classList.add("is-open");
     }
     button.classList.add("is-open");
     button.setAttribute("aria-expanded", "true");
@@ -85,7 +58,6 @@
       return;
     }
 
-    button._hoverImg = tooltip;
     const tooltipId = tooltip.id || `tooltip-${index + 1}`;
     tooltip.id = tooltipId;
     tooltip.setAttribute("role", "tooltip");

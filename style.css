@@ -59,7 +59,6 @@
     --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
     --shadow-card: 0 6px 18px rgba(0, 0, 0, 0.22);
   }
-
 }
 
 * {
@@ -92,23 +91,13 @@ img {
 
 a {
   color: var(--color-accent);
-  text-decoration: none;
-  background-image: linear-gradient(var(--color-accent-strong), var(--color-accent-strong));
-  background-size: 0% 1.5px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: color var(--transition-fast), background-size var(--transition-base);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
 }
 
 a:hover {
   color: var(--color-accent-strong);
-  background-size: 100% 1.5px;
-}
-
-.site-nav a,
-.site-name a,
-.button-link {
-  background-image: none;
 }
 
 a:focus-visible,
@@ -223,15 +212,6 @@ main {
   margin-top: clamp(2.2rem, 3vw, 3.2rem);
 }
 
-.page-section {
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.page-section:not(.is-visible) {
-  opacity: 0;
-  transform: translateY(1rem);
-}
-
 .eyebrow {
   margin: 0;
   color: var(--color-text-muted);
@@ -339,29 +319,13 @@ li + li {
 }
 
 .timeline {
-  --track-x: 0.45rem;
-  --tl-pad: 1.5rem;
   list-style: none;
-  padding: 0 0 0 var(--tl-pad);
+  padding: 0;
   display: grid;
   gap: 0.85rem;
-  position: relative;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: var(--track-x);
-  top: 0.5rem;
-  bottom: 0.5rem;
-  width: 2px;
-  background: var(--color-border);
-  border-radius: 1px;
-  translate: -50% 0;
 }
 
 .timeline li {
-  position: relative;
   display: grid;
   gap: 0.22rem;
   background: var(--color-surface);
@@ -369,19 +333,6 @@ li + li {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   padding: 0.82rem 0.95rem;
-}
-
-.timeline li::before {
-  content: '';
-  position: absolute;
-  left: calc(var(--track-x) - var(--tl-pad) - 1px - 0.25rem - 2px);
-  top: 1rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--color-accent);
-  border: 2px solid var(--color-surface);
-  box-shadow: 0 0 0 1px var(--color-border);
 }
 
 .timeline-year {
@@ -557,8 +508,7 @@ li + li {
   transition: opacity 420ms ease;
 }
 
-.hover-image.is-open .hover-img,
-.hover-img.is-open {
+.hover-image.is-open .hover-img {
   opacity: 1;
 }
 
