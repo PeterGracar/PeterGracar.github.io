@@ -221,19 +221,26 @@ main {
 
 .page-section + .page-section {
   margin-top: clamp(2.2rem, 3vw, 3.2rem);
-  content-visibility: auto;
-  contain-intrinsic-size: auto 500px;
 }
 
 .page-section {
-  opacity: 0;
-  transform: translateY(1rem);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  animation: section-reveal 0.5s ease both;
+  animation-play-state: paused;
 }
 
 .page-section.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  animation-play-state: running;
+}
+
+@keyframes section-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .eyebrow {
