@@ -4,6 +4,30 @@
     return;
   }
 
+  const sections = document.querySelectorAll('.page-section');
+  if (sections.length && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    sections.forEach(s => observer.observe(s));
+  } else {
+    sections.forEach(s => s.classList.add('is-visible'));
+  }
+
+  const emailSlot = document.getElementById('e9');
+  if (emailSlot) {
+    const email = atob('UC5HcmFjYXJAbGVlZHMuYWMudWs=');
+    const link = document.createElement('a');
+    link.href = `${atob('bWFpbHRvOg==')}${email}`;
+    link.textContent = email;
+    emailSlot.append(link);
+  }
+
   const page = body.dataset.page;
   if (page) {
     document.querySelectorAll("[data-page-link]").forEach((link) => {

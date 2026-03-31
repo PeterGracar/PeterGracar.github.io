@@ -23,7 +23,7 @@ canonical: "https://gracar.org/contact.html"
             9.10p1, Maths Research Deck, EC Stoner Building.
             You can follow this
             <button class="hover-image" type="button" aria-label="Preview office map">map preview
-              <img src="img/Map.webp" alt="Map preview for reaching office 9.10p1" class="hover-img" width="1764" height="1372">
+              <img src="img/Map.webp" alt="Map preview for reaching office 9.10p1" class="hover-img" width="1764" height="1372" loading="lazy">
             </button>
             or use the dedicated <a href="map.html">directions page</a>.
           </dd>
@@ -36,13 +36,3 @@ canonical: "https://gracar.org/contact.html"
   	</section>
     </section>
   </main>
-
-  <script>
-    const encoded = "UC5HcmFjYXJAbGVlZHMuYWMudWs=";
-    const email = atob(encoded);
-    const mailto = atob("bWFpbHRvOg==");
-    const emailLink = document.createElement("a");
-    emailLink.href = `${mailto}${email}`;
-    emailLink.textContent = email;
-    document.getElementById("e9").append(emailLink);
-  </script>
