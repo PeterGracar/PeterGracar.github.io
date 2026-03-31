@@ -557,7 +557,8 @@ li + li {
   transition: opacity 420ms ease;
 }
 
-.hover-image.is-open .hover-img {
+.hover-image.is-open .hover-img,
+.hover-img.is-open {
   opacity: 1;
 }
 
