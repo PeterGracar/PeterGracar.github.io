@@ -55,7 +55,7 @@
         {% assign detail_line = detail_line | strip %}
 
         <li>
-          <strong><a href="{{ publication.title_url }}">{{ publication.title }}</a></strong>
+          <strong><a href="{{ publication.title_url }}">{{ publication.title }}</a></strong>{% if publication.status == "preprint" %} <span class="pub-badge pub-badge--preprint">Preprint</span>{% elsif publication.status == "published" %} <span class="pub-badge pub-badge--published">Published</span>{% endif %}
           {% if valid_coauthor_count > 0 %}
             {% assign printed_coauthor_count = 0 %}
             {% capture coauthor_markup %}{% endcapture %}
