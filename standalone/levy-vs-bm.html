@@ -8,6 +8,7 @@
     MathJax = { tex: { inlineMath: [['\(','\)'], ['$','$']] } };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  <script>(function(){var t=localStorage.getItem('sim-theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);})();</script>
   <style>
 
   :root {
@@ -285,6 +286,42 @@
     transition: opacity 500ms ease;
     backdrop-filter: blur(6px);
   }
+
+  /* ── Manual theme overrides (data-theme attribute wins over media query) ── */
+  :root[data-theme="light"] {
+    --color-bg: #f8f4ee;
+    --color-surface: #ffffff;
+    --color-surface-soft: #f1ebe1;
+    --color-text: #1f1b18;
+    --color-text-muted: #554e47;
+    --color-border: #d8cec1;
+    --color-accent: #950000;
+    --color-accent-soft: #cf6a54;
+    --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+    --lbm-panel-bg:     rgba(248, 244, 238, 0.93);
+    --lbm-trace:        rgba(40, 25, 15, 0.13);
+    --lbm-brownian:     rgba(30, 20, 12, 0.88);
+    --lbm-legend-bg:    rgba(241, 235, 225, 0.90);
+    --lbm-hue-lightness: 42;
+    --lbm-hue-sat-base: 85;
+  }
+  :root[data-theme="dark"] {
+    --color-bg: #111216;
+    --color-surface: #1a1e24;
+    --color-surface-soft: #232831;
+    --color-text: #ece4d9;
+    --color-text-muted: #b7afa3;
+    --color-border: #3a4049;
+    --color-accent: #ff7558;
+    --color-accent-soft: #ff9f87;
+    --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+    --lbm-panel-bg:     rgba(26, 30, 36, 0.93);
+    --lbm-trace:        rgba(148, 163, 184, 0.15);
+    --lbm-brownian:     rgba(255, 255, 255, 1.0);
+    --lbm-legend-bg:    rgba(26, 30, 36, 0.90);
+    --lbm-hue-lightness: 60;
+    --lbm-hue-sat-base: 100;
+  }
 </style>
 
 
@@ -300,7 +337,10 @@
     <div class="sim-controls">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h2 class="text-xl font-bold" style="color: var(--color-text); font-family: var(--font-heading); margin: 0;">Lévy Flight Sim</h2>
-        <button id="lbm-close" aria-label="Close controls">✕</button>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button id="theme-toggle" style="background: none; border: 1px solid var(--color-border); color: var(--color-text-muted); cursor: pointer; font-size: 1rem; line-height: 1; padding: 0.25rem 0.4rem; border-radius: var(--radius-sm); transition: color 0.15s;" title="System theme" aria-label="System theme"><span class="theme-icon">⊙</span></button>
+          <button id="lbm-close" aria-label="Close controls">✕</button>
+        </div>
       </div>
 
       <div class="slider-container">
@@ -928,6 +968,33 @@
   View.resize();
   Sim.reset();
   animate();
+
+  // ── Theme toggle ──────────────────────────────────────────────────────────
+  (function () {
+    const THEMES = ['system', 'light', 'dark'];
+    const ICONS  = { system: '⊙', light: '☀', dark: '☾' };
+    const LABELS = { system: 'System theme', light: 'Light theme', dark: 'Dark theme' };
+    let current  = localStorage.getItem('sim-theme') || 'system';
+
+    function applyTheme(t) {
+      const html = document.documentElement;
+      if (t === 'system') html.removeAttribute('data-theme');
+      else html.setAttribute('data-theme', t);
+      const btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.querySelector('.theme-icon').textContent = ICONS[t];
+        btn.title = LABELS[t];
+        btn.setAttribute('aria-label', LABELS[t]);
+      }
+    }
+
+    applyTheme(current);
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+      current = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
+      localStorage.setItem('sim-theme', current);
+      applyTheme(current);
+    });
+  })();
 </script>
 </body>
 </html>
