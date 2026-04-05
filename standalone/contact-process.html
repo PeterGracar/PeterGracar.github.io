@@ -8,6 +8,7 @@
     MathJax = { tex: { inlineMath: [['\(','\)'], ['$','$']] } };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  <script>(function(){var t=localStorage.getItem('sim-theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);})();</script>
   <style>
 
   :root {
@@ -231,6 +232,40 @@
 
     #controls-toggle { display: block; }
   }
+
+  /* ── Manual theme overrides (data-theme attribute wins over media query) ── */
+  :root[data-theme="light"] {
+    --color-bg: #f8f4ee;
+    --color-surface: #ffffff;
+    --color-surface-soft: #f1ebe1;
+    --color-text: #1f1b18;
+    --color-text-muted: #554e47;
+    --color-border: #d8cec1;
+    --color-accent: #950000;
+    --color-accent-soft: #cf6a54;
+    --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+    --sim-susceptible-core: #1d4ed8;
+    --sim-susceptible-fill: rgba(29, 78, 216, 0.12);
+    --sim-infected-core:    #950000;
+    --sim-infected-fill:    rgba(149, 0, 0, 0.18);
+    --sim-edge:             rgba(100, 80, 65, 0.50);
+  }
+  :root[data-theme="dark"] {
+    --color-bg: #111216;
+    --color-surface: #1a1e24;
+    --color-surface-soft: #232831;
+    --color-text: #ece4d9;
+    --color-text-muted: #b7afa3;
+    --color-border: #3a4049;
+    --color-accent: #ff7558;
+    --color-accent-soft: #ff9f87;
+    --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+    --sim-susceptible-core: #38bdf8;
+    --sim-susceptible-fill: rgba(56, 189, 248, 0.10);
+    --sim-infected-core:    #ff7558;
+    --sim-infected-fill:    rgba(255, 117, 88, 0.28);
+    --sim-edge:             rgba(100, 116, 139, 0.70);
+  }
 </style>
 
 
@@ -286,6 +321,7 @@
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-lg font-bold m-0" style="font-family: var(--font-heading); color: var(--color-text);">Parameters</h2>
       <div class="flex gap-2">
+        <button id="theme-toggle" class="p-2 rounded transition" style="background: var(--color-surface-soft); color: var(--color-text-muted); border: 1px solid var(--color-border); cursor: pointer; font-size: 1rem; line-height: 1; min-width: 2rem;" title="System theme" aria-label="System theme"><span class="theme-icon">⊙</span></button>
         <button id="btn-pause" class="p-2 rounded transition" style="background: var(--color-surface-soft); color: var(--color-text); border: 1px solid var(--color-border);" title="Pause/Play">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
         </button>
@@ -773,6 +809,33 @@
     initSimulation();
     tick();
   });
+
+  // ── Theme toggle ──────────────────────────────────────────────────────────
+  (function () {
+    const THEMES = ['system', 'light', 'dark'];
+    const ICONS  = { system: '⊙', light: '☀', dark: '☾' };
+    const LABELS = { system: 'System theme', light: 'Light theme', dark: 'Dark theme' };
+    let current  = localStorage.getItem('sim-theme') || 'system';
+
+    function applyTheme(t) {
+      const html = document.documentElement;
+      if (t === 'system') html.removeAttribute('data-theme');
+      else html.setAttribute('data-theme', t);
+      const btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.querySelector('.theme-icon').textContent = ICONS[t];
+        btn.title = LABELS[t];
+        btn.setAttribute('aria-label', LABELS[t]);
+      }
+    }
+
+    applyTheme(current);
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+      current = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
+      localStorage.setItem('sim-theme', current);
+      applyTheme(current);
+    });
+  })();
 </script>
 </body>
 </html>
