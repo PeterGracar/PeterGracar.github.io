@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Process on Mobile Geometric Graph</title>
+  <script>
+    MathJax = { tex: { inlineMath: [['\(','\)'], ['$','$']] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  <style>
+
+  :root {
+    --color-bg: #f8f4ee;
+    --color-surface: #ffffff;
+    --color-surface-soft: #f1ebe1;
+    --color-text: #1f1b18;
+    --color-text-muted: #554e47;
+    --color-border: #d8cec1;
+    --color-accent: #950000;
+    --color-accent-soft: #cf6a54;
+    --font-body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+    --font-heading: "Newsreader", Georgia, "Times New Roman", serif;
+    --radius-sm: 0.45rem;
+    --radius-md: 0.75rem;
+    --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #111216;
+      --color-surface: #1a1e24;
+      --color-surface-soft: #232831;
+      --color-text: #ece4d9;
+      --color-text-muted: #b7afa3;
+      --color-border: #3a4049;
+      --color-accent: #ff7558;
+      --color-accent-soft: #ff9f87;
+      --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--color-text); background: var(--color-bg); }
+
+
+  /* Tailwind utility subset */
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .flex-row { flex-direction: row; }
+  .flex-grow { flex-grow: 1; }
+  .flex-shrink-0 { flex-shrink: 0; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .relative { position: relative; }
+  .absolute { position: absolute; }
+  .fixed { position: fixed; }
+  .overflow-hidden { overflow: hidden; }
+  .overflow-y-auto { overflow-y: auto; }
+  .z-10 { z-index: 10; }
+  .z-20 { z-index: 20; }
+  .z-30 { z-index: 30; }
+  .z-40 { z-index: 40; }
+  .z-50 { z-index: 50; }
+  .block { display: block; }
+  .hidden { display: none; }
+  .w-full { width: 100%; }
+  .h-full { height: 100%; }
+  .h-32 { height: 8rem; }
+  .p-2 { padding: 0.5rem; }
+  .p-4 { padding: 1rem; }
+  .p-6 { padding: 1.5rem; }
+  .m-0 { margin: 0; }
+  .mb-1 { margin-bottom: 0.25rem; }
+  .mb-3 { margin-bottom: 0.75rem; }
+  .mb-6 { margin-bottom: 1.5rem; }
+  .mt-1 { margin-top: 0.25rem; }
+  .pl-6 { padding-left: 1.5rem; }
+  .gap-2 { gap: 0.5rem; }
+  .gap-6 { gap: 1.5rem; }
+  .text-xs { font-size: 0.75rem; line-height: 1rem; }
+  .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+  .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+  .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+  .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+  .text-right { text-align: right; }
+  .font-bold { font-weight: 700; }
+  .font-medium { font-weight: 500; }
+  .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+  .uppercase { text-transform: uppercase; }
+  .tracking-wider { letter-spacing: 0.05em; }
+  .leading-none { line-height: 1; }
+  .leading-relaxed { line-height: 1.625; }
+  .rounded { border-radius: 0.25rem; }
+  .shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+  .shadow-2xl { box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
+  .transition { transition-property: color, background-color, border-color; transition-duration: 150ms; }
+  .pointer-events-none { pointer-events: none; }
+  .inset-0 { inset: 0; }
+  .top-2 { top: 0.5rem; }
+  .left-2 { left: 0.5rem; }
+  .bottom-4 { bottom: 1rem; }
+  .left-4 { left: 1rem; }
+  .text-\[10px\] { font-size: 10px; }
+  .opacity-60 { opacity: 0.6; }
+
+  </style>
+</head>
+<body>
+<style>
+  /* ── Full-bleed layout override ── */
+  body { height: 100vh; overflow: hidden; }
+  main#main-content {
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: row;
+    overflow: hidden;
+    min-height: 0;
+    font-family: var(--font-body);
+  }
+
+  /* ── Simulation-specific colour tokens ── */
+  :root {
+    --sim-susceptible-core: #1d4ed8;
+    --sim-susceptible-fill: rgba(29, 78, 216, 0.12);
+    --sim-infected-core:    #950000;
+    --sim-infected-fill:    rgba(149, 0, 0, 0.18);
+    --sim-edge:             rgba(100, 80, 65, 0.50);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sim-susceptible-core: #38bdf8;
+      --sim-susceptible-fill: rgba(56, 189, 248, 0.10);
+      --sim-infected-core:    #ff7558;
+      --sim-infected-fill:    rgba(255, 117, 88, 0.28);
+      --sim-edge:             rgba(100, 116, 139, 0.70);
+    }
+  }
+
+  /* ── Slider ── */
+  .control-group   { margin-bottom: 0.75rem; position: relative; }
+  .slider-container { position: relative; width: 100%; height: 20px; display: flex; align-items: center; }
+  .slider-label {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85rem; color: var(--color-text-muted);
+    margin-bottom: 0.25rem; min-height: 1.5rem;
+  }
+  .slider {
+    width: 100%; height: 6px; background: var(--color-border);
+    border-radius: 3px; outline: none; -webkit-appearance: none;
+    position: relative; z-index: 10; cursor: pointer;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--color-accent);
+    cursor: pointer; transition: background .15s ease-in-out; margin-top: -5px;
+  }
+  .slider::-webkit-slider-runnable-track {
+    width: 100%; height: 6px; cursor: pointer;
+    background: var(--color-border); border-radius: 3px;
+  }
+  .slider::-webkit-slider-thumb:hover { opacity: 0.8; }
+
+  /* ── Notch marker ── */
+  .notch {
+    position: absolute; top: 50%;
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid #d4a017;
+    transform: translate(-50%, 4px);
+    z-index: 5; pointer-events: none;
+    transition: left 0.2s ease-out; opacity: 0.85;
+  }
+  .notch::after {
+    content: ''; position: absolute; top: -14px; left: -1px;
+    width: 2px; height: 14px; background-color: #d4a017; opacity: 0.5;
+  }
+
+  /* ── Controls panel scrollbar ── */
+  .controls-panel::-webkit-scrollbar { width: 6px; }
+  .controls-panel::-webkit-scrollbar-track { background: var(--color-surface); }
+  .controls-panel::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+
+  /* ── Section dividers ── */
+  .param-section { margin-bottom: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem; }
+  .param-section:first-child { border-top: none; padding-top: 0; }
+
+  /* ── Mobile toggle button ── */
+  #controls-toggle {
+    display: none;
+    position: absolute;
+    bottom: 1rem; right: 1rem; z-index: 30;
+    background: var(--color-accent); color: #fff;
+    border: none; border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem; font-weight: 600; font-family: var(--font-body);
+    cursor: pointer; box-shadow: var(--shadow-soft);
+  }
+
+  /* ── Backdrop ── */
+  #controls-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 40;
+  }
+  #controls-backdrop.is-open { display: block; }
+
+  /* ── Mobile layout ── */
+  @media (max-width: 767px) {
+    main#main-content { flex-direction: column; }
+
+    /* Canvas fills all available space */
+    .sim-left { flex: 1 !important; min-height: 0; position: relative; }
+
+    /* Controls slide in from the right as a fixed overlay */
+    .sim-right {
+      position: fixed !important;
+      top: 0; right: 0; bottom: 0;
+      width: min(320px, 100%);
+      flex: none !important;
+      border-left: 1px solid var(--color-border) !important;
+      border-top: none !important;
+      z-index: 50;
+      transform: translateX(100%);
+      transition: transform 0.28s ease;
+    }
+    .sim-right.is-open { transform: translateX(0); }
+
+    #controls-toggle { display: block; }
+  }
+</style>
+
+
+
+<main id="main-content">
+
+  <!-- ── Left column: canvas + chart ── -->
+  <div class="sim-left flex-grow flex flex-col relative overflow-hidden" style="min-height: 0;">
+
+    <!-- Stats bar -->
+    <div class="w-full p-4 flex flex-row items-center justify-between flex-shrink-0 z-20 shadow-sm"
+         style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+      <div class="flex flex-col">
+        <div class="text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--color-text-muted);">Prevalence</div>
+        <div class="text-3xl font-mono font-bold leading-none" id="infected-count" style="color: var(--color-accent);">0%</div>
+      </div>
+      <div class="flex gap-6">
+        <div class="text-right">
+          <div class="text-xs uppercase tracking-wider mb-1" style="color: var(--color-text-muted);">\(R_0\) Proxy</div>
+          <div id="r0-display" class="text-xl font-mono leading-none" style="color: var(--color-text);">--</div>
+        </div>
+        <div class="text-right pl-6" style="border-left: 1px solid var(--color-border);">
+          <div class="text-xs uppercase tracking-wider mb-1" style="color: var(--color-text-muted);">Intensity (\(\lambda \times 10^4\))</div>
+          <div id="density-display" class="text-xl font-mono leading-none" style="color: var(--color-text);">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas -->
+    <div class="relative flex-grow overflow-hidden flex items-center justify-center" id="canvas-container"
+         style="background: var(--color-surface-soft);">
+      <canvas id="simCanvas"></canvas>
+      <div class="absolute bottom-4 left-4 text-xs pointer-events-none z-10 opacity-60"
+           style="color: var(--color-text-muted);">
+        Tap to infect &bull; Periodic boundaries active &bull; Amber notch&nbsp;= critical value (\(R_0 \approx 1\))
+      </div>
+      <button id="controls-toggle" aria-label="Open parameters" aria-expanded="false">⚙ Parameters</button>
+    </div>
+
+    <!-- Chart -->
+    <div class="h-32 relative flex-shrink-0" id="chart-container"
+         style="background: var(--color-surface); border-top: 1px solid var(--color-border);">
+      <canvas id="chartCanvas" class="w-full h-full block"></canvas>
+      <div class="absolute top-2 left-2 text-[10px] font-bold uppercase tracking-wider pointer-events-none"
+           style="color: var(--color-text-muted);">Infection History</div>
+    </div>
+  </div>
+
+  <!-- ── Right column: controls ── -->
+  <div class="sim-right controls-panel w-full md:w-80 p-6 overflow-y-auto flex-shrink-0 z-20 shadow-2xl"
+       style="background: var(--color-surface); border-left: 1px solid var(--color-border); min-height: 0;">
+
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-lg font-bold m-0" style="font-family: var(--font-heading); color: var(--color-text);">Parameters</h2>
+      <div class="flex gap-2">
+        <button id="btn-pause" class="p-2 rounded transition" style="background: var(--color-surface-soft); color: var(--color-text); border: 1px solid var(--color-border);" title="Pause/Play">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button id="btn-reset" class="p-2 rounded transition" style="background: var(--color-accent); color: #fff;" title="Reset Simulation">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 10h7V3l-2.35 3.35z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Continuum Percolation -->
+    <div class="param-section">
+      <div class="mb-3 text-xs font-bold uppercase tracking-wider" style="color: var(--color-accent);">Continuum Percolation</div>
+
+      <div class="control-group">
+        <div class="slider-label"><span>Torus Size (\(L\))</span><span id="val-world">1000</span></div>
+        <div class="slider-container">
+          <div id="notch-world" class="notch hidden"></div>
+          <input type="range" id="param-world" min="500" max="4000" step="100" value="1000" class="slider">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="slider-label"><span>Node Count (\(N\))</span><span id="val-n">200</span></div>
+        <div class="slider-container">
+          <div id="notch-n" class="notch hidden"></div>
+          <input type="range" id="param-n" min="50" max="1000" value="200" class="slider">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="slider-label"><span>Pareto Scale (\(x_m\))</span><span id="val-xm">15</span></div>
+        <div class="slider-container">
+          <div id="notch-xm" class="notch hidden"></div>
+          <input type="range" id="param-xm" min="5" max="100" value="15" class="slider">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="slider-label"><span>Pareto Shape (\(\gamma\))</span><span id="val-gamma">2.5</span></div>
+        <div class="slider-container">
+          <input type="range" id="param-gamma" min="0.5" max="5.0" step="0.1" value="2.5" class="slider">
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobility -->
+    <div class="param-section">
+      <div class="mb-3 text-xs font-bold uppercase tracking-wider" style="color: var(--color-accent-soft);">Mobility (Lévy Flight)</div>
+
+      <div class="control-group">
+        <div class="slider-label"><span>Lévy Index (\(\alpha\))</span><span id="val-alpha">2.0</span></div>
+        <div class="slider-container">
+          <input type="range" id="param-alpha" min="0.5" max="2.0" step="0.1" value="2.0" class="slider">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="slider-label"><span>Velocity (\(v\))</span><span id="val-speed">2.0</span></div>
+        <div class="slider-container">
+          <input type="range" id="param-speed" min="0.5" max="10.0" step="0.5" value="2.0" class="slider">
+        </div>
+      </div>
+    </div>
+
+    <!-- Epidemic -->
+    <div class="param-section">
+      <div class="mb-3 text-xs font-bold uppercase tracking-wider" style="color: var(--color-accent);">Contact Process (SIS)</div>
+
+      <div class="control-group">
+        <div class="slider-label"><span>Infection Rate (\(\beta\))</span><span id="val-beta">0.10</span></div>
+        <div class="slider-container">
+          <div id="notch-beta" class="notch hidden"></div>
+          <input type="range" id="param-beta" min="0.0" max="1.0" step="0.01" value="0.10" class="slider">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="slider-label"><span>Recovery Rate (\(\delta\))</span><span id="val-delta">0.02</span></div>
+        <div class="slider-container">
+          <div id="notch-delta" class="notch hidden"></div>
+          <input type="range" id="param-delta" min="0.0" max="0.2" step="0.005" value="0.02" class="slider">
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="controls-backdrop"></div>
+</main>
+
+<script>
+  /**
+   * Lévy Flight Contact Process — adapted for gracar.org
+   */
+
+  // ── Theme helper ──────────────────────────────────────────────────────────
+  function getThemeColors() {
+    const s = getComputedStyle(document.documentElement);
+    const g = n => s.getPropertyValue(n).trim();
+    return {
+      bg:             g('--color-bg'),
+      surface:        g('--color-surface'),
+      surfaceSoft:    g('--color-surface-soft'),
+      border:         g('--color-border'),
+      accent:         g('--color-accent'),
+      text:           g('--color-text'),
+      textMuted:      g('--color-text-muted'),
+      // Sim-specific tokens
+      susceptibleCore: g('--sim-susceptible-core'),
+      susceptibleFill: g('--sim-susceptible-fill'),
+      infectedCore:    g('--sim-infected-core'),
+      infectedFill:    g('--sim-infected-fill'),
+      edge:            g('--sim-edge'),
+    };
+  }
+
+  // ── Canvas / state ────────────────────────────────────────────────────────
+  const canvas    = document.getElementById('simCanvas');
+  const ctx       = canvas.getContext('2d', { alpha: false });
+  const chartCanvas = document.getElementById('chartCanvas');
+  const chartCtx  = chartCanvas.getContext('2d', { alpha: false });
+
+  let cWidth, cHeight, chartW, chartH;
+  let animationId, isPaused = false;
+  let nodes = [], edges = [], historyData = [];
+  const maxHistory = 600;
+
+  const params = {
+    L: 1000, N: 200, xm: 15, gamma: 2.5,
+    alpha: 2.0, speed: 2.0, beta: 0.10, delta: 0.02
+  };
+
+  const els = {
+    count:   document.getElementById('infected-count'),
+    r0:      document.getElementById('r0-display'),
+    density: document.getElementById('density-display'),
+    btnPause: document.getElementById('btn-pause'),
+    btnReset: document.getElementById('btn-reset'),
+    inputs: {
+      L:     document.getElementById('param-world'),
+      N:     document.getElementById('param-n'),
+      xm:    document.getElementById('param-xm'),
+      gamma: document.getElementById('param-gamma'),
+      alpha: document.getElementById('param-alpha'),
+      speed: document.getElementById('param-speed'),
+      beta:  document.getElementById('param-beta'),
+      delta: document.getElementById('param-delta'),
+    },
+    labels: {
+      L:     document.getElementById('val-world'),
+      N:     document.getElementById('val-n'),
+      xm:    document.getElementById('val-xm'),
+      gamma: document.getElementById('val-gamma'),
+      alpha: document.getElementById('val-alpha'),
+      speed: document.getElementById('val-speed'),
+      beta:  document.getElementById('val-beta'),
+      delta: document.getElementById('val-delta'),
+    },
+    notches: {
+      L:     document.getElementById('notch-world'),
+      N:     document.getElementById('notch-n'),
+      xm:    document.getElementById('notch-xm'),
+      beta:  document.getElementById('notch-beta'),
+      delta: document.getElementById('notch-delta'),
+    }
+  };
+
+  let scale = 1, offsetX = 0, offsetY = 0;
+
+  // ── Math helpers ──────────────────────────────────────────────────────────
+  function samplePareto(xm, gamma) {
+    return xm / Math.pow(Math.random(), 1.0 / gamma);
+  }
+  function getRadiusMoments(xm, gamma) {
+    if (gamma <= 2.0) return null;
+    return {
+      mean:   (gamma * xm) / (gamma - 1),
+      meanSq: (gamma * xm * xm) / (gamma - 2),
+    };
+  }
+
+  // ── Motion ────────────────────────────────────────────────────────────────
+  function getLevyStep(alpha) {
+    const baseScale = 20.0;
+    const theta = Math.random() * 2 * Math.PI;
+    let r;
+    if (alpha >= 1.99) {
+      const u1 = Math.random(), u2 = Math.random();
+      r = Math.abs(Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2)) * baseScale;
+    } else {
+      r = Math.min(Math.pow(Math.random(), -1.0 / alpha) * baseScale, params.L * 3);
+    }
+    return { dx: r * Math.cos(theta), dy: r * Math.sin(theta), r };
+  }
+  function distSqTorus(n1, n2, L) {
+    let dx = Math.abs(n1.x - n2.x), dy = Math.abs(n1.y - n2.y);
+    if (dx > L / 2) dx = L - dx;
+    if (dy > L / 2) dy = L - dy;
+    return dx * dx + dy * dy;
+  }
+  function getRelativePos(p1, p2, L) {
+    let x2 = p2.x, y2 = p2.y;
+    if (x2 - p1.x > L / 2) x2 -= L; else if (p1.x - x2 > L / 2) x2 += L;
+    if (y2 - p1.y > L / 2) y2 -= L; else if (p1.y - y2 > L / 2) y2 += L;
+    return { x: x2, y: y2 };
+  }
+
+  class Node {
+    constructor() {
+      this.x = Math.random() * params.L;
+      this.y = Math.random() * params.L;
+      this.r = samplePareto(params.xm, params.gamma);
+      this.state = 0;
+      this.vx = 0; this.vy = 0; this.ticksToChange = 0;
+    }
+    move() {
+      if (this.ticksToChange <= 0) {
+        const step = getLevyStep(params.alpha);
+        const duration = Math.max(1, step.r / params.speed);
+        this.vx = step.dx / duration;
+        this.vy = step.dy / duration;
+        this.ticksToChange = Math.ceil(duration);
+      }
+      this.x += this.vx; this.y += this.vy; this.ticksToChange--;
+      if (this.x < 0) this.x += params.L; if (this.x >= params.L) this.x -= params.L;
+      if (this.y < 0) this.y += params.L; if (this.y >= params.L) this.y -= params.L;
+    }
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+  function initSimulation() {
+    nodes = []; historyData = [];
+    for (let i = 0; i < params.N; i++) nodes.push(new Node());
+    updateDerivedStats();
+    updateNotches();
+  }
+  function updateDerivedStats() {
+    els.density.innerText = (params.N / (params.L * params.L) * 10000).toFixed(2);
+  }
+
+  // ── Notches ───────────────────────────────────────────────────────────────
+  function updateNotches() {
+    const m = getRadiusMoments(params.xm, params.gamma);
+    if (!m) { Object.values(els.notches).forEach(n => n && n.classList.add('hidden')); return; }
+    const termGeo = 2 * Math.PI * (m.meanSq + m.mean * m.mean);
+    const place = (el, val, input) => {
+      if (!el) return;
+      const min = parseFloat(input.min), max = parseFloat(input.max);
+      if (val < min || val > max || isNaN(val)) { el.classList.add('hidden'); return; }
+      el.classList.remove('hidden');
+      el.style.left = `${((val - min) / (max - min)) * 100}%`;
+      el.title = `Critical value: ${val.toFixed(2)}`;
+    };
+    const k_avg = (params.N / params.L ** 2) * termGeo;
+    place(els.notches.beta,  params.delta / k_avg,                              els.inputs.beta);
+    place(els.notches.delta, params.beta * k_avg,                               els.inputs.delta);
+    if (params.beta > 0) place(els.notches.N, (params.delta / params.beta) * (params.L ** 2 / termGeo), els.inputs.N);
+    if (params.delta > 0) place(els.notches.L, Math.sqrt((params.N * params.beta * termGeo) / params.delta), els.inputs.L);
+    if (params.beta > 0) {
+      const gt = (params.gamma / (params.gamma - 2)) + (params.gamma / (params.gamma - 1)) ** 2;
+      const xm_c = Math.sqrt((params.delta / params.beta) * (params.L ** 2 / params.N) * (1 / (2 * Math.PI * gt)));
+      place(els.notches.xm, xm_c, els.inputs.xm);
+    }
+  }
+
+  // ── View transform ────────────────────────────────────────────────────────
+  function calculateViewTransform() {
+    const padding = 20, avW = cWidth - padding * 2, avH = cHeight - padding * 2;
+    scale = Math.min(avW, avH) / params.L;
+    const drawn = params.L * scale;
+    offsetX = (cWidth - drawn) / 2;
+    offsetY = (cHeight - drawn) / 2;
+  }
+  function resize() {
+    const cont = document.getElementById('canvas-container');
+    cWidth = cont.clientWidth; cHeight = cont.clientHeight;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = cWidth  * dpr; canvas.height = cHeight * dpr;
+    ctx.scale(dpr, dpr);
+    canvas.style.width = `${cWidth}px`; canvas.style.height = `${cHeight}px`;
+
+    const cc = document.getElementById('chart-container');
+    chartW = cc.clientWidth; chartH = cc.clientHeight;
+    chartCanvas.width  = chartW * dpr; chartCanvas.height = chartH * dpr;
+    chartCtx.scale(dpr, dpr);
+    chartCanvas.style.width = `${chartW}px`; chartCanvas.style.height = `${chartH}px`;
+
+    calculateViewTransform();
+  }
+
+  // ── Draw ──────────────────────────────────────────────────────────────────
+  function drawSim() {
+    const C = getThemeColors();
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, cWidth, cHeight);
+
+    ctx.save();
+    ctx.beginPath();
+    const drawnL = params.L * scale;
+    ctx.rect(offsetX, offsetY, drawnL, drawnL);
+    ctx.clip();
+    ctx.fillStyle = C.surfaceSoft;
+    ctx.fillRect(offsetX, offsetY, drawnL, drawnL);
+
+    const shifts = [
+      {dx:0,dy:0},{dx:params.L,dy:0},{dx:-params.L,dy:0},
+      {dx:0,dy:params.L},{dx:0,dy:-params.L},
+      {dx:params.L,dy:params.L},{dx:-params.L,dy:-params.L},
+      {dx:params.L,dy:-params.L},{dx:-params.L,dy:params.L}
+    ];
+
+    shifts.forEach(sh => {
+      const tx = offsetX + sh.dx * scale, ty = offsetY + sh.dy * scale;
+      // Edges
+      ctx.strokeStyle = C.edge;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      edges.forEach(e => {
+        const midX = (e.u.x + sh.dx + e.v_rel.x + sh.dx) / 2;
+        const midY = (e.u.y + sh.dy + e.v_rel.y + sh.dy) / 2;
+        if (midX > -params.L && midX < params.L * 2 && midY > -params.L && midY < params.L * 2) {
+          ctx.moveTo(tx + e.u.x * scale, ty + e.u.y * scale);
+          ctx.lineTo(tx + e.v_rel.x * scale, ty + e.v_rel.y * scale);
+        }
+      });
+      ctx.stroke();
+
+      // Nodes
+      nodes.forEach(n => {
+        if (n.x + sh.dx + n.r > 0 && n.x + sh.dx - n.r < params.L &&
+            n.y + sh.dy + n.r > 0 && n.y + sh.dy - n.r < params.L) {
+          const sx = tx + n.x * scale, sy = ty + n.y * scale, sr = n.r * scale;
+          ctx.beginPath();
+          ctx.fillStyle = n.state === 1 ? C.infectedFill : C.susceptibleFill;
+          ctx.arc(sx, sy, Math.max(sr, 1), 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.fillStyle = n.state === 1 ? C.infectedCore : C.susceptibleCore;
+          ctx.arc(sx, sy, Math.max(2, scale * 2), 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+    });
+
+    ctx.restore();
+    ctx.strokeStyle = C.border;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(offsetX, offsetY, drawnL, drawnL);
+  }
+
+  function drawChart() {
+    const C = getThemeColors();
+    chartCtx.fillStyle = C.surface;
+    chartCtx.fillRect(0, 0, chartW, chartH);
+    if (historyData.length < 2) return;
+
+    const padding = 10, contentH = chartH - 2 * padding;
+    chartCtx.strokeStyle = C.accent;
+    chartCtx.lineWidth = 2;
+    chartCtx.beginPath();
+    for (let i = 0; i < historyData.length; i++) {
+      const x = (i / (historyData.length - 1)) * chartW;
+      const y = (chartH - padding) - (historyData[i] * contentH);
+      i === 0 ? chartCtx.moveTo(x, y) : chartCtx.lineTo(x, y);
+    }
+    chartCtx.stroke();
+
+    chartCtx.strokeStyle = C.border;
+    chartCtx.lineWidth = 1;
+    chartCtx.beginPath();
+    const y50 = (chartH - padding) - (0.5 * contentH);
+    chartCtx.moveTo(0, y50); chartCtx.lineTo(chartW, y50);
+    chartCtx.stroke();
+  }
+
+  // ── Tick ──────────────────────────────────────────────────────────────────
+  function tick() {
+    if (isPaused) { animationId = requestAnimationFrame(tick); return; }
+    nodes.forEach(n => n.move());
+
+    edges = [];
+    const infectedCounts = new Array(nodes.length).fill(0);
+    let connectedPairs = 0;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const u = nodes[i], v = nodes[j];
+        if (distSqTorus(u, v, params.L) < (u.r + v.r) ** 2) {
+          edges.push({ u, v, v_rel: getRelativePos(u, v, params.L) });
+          if (u.state === 1) infectedCounts[j]++;
+          if (v.state === 1) infectedCounts[i]++;
+          connectedPairs++;
+        }
+      }
+    }
+
+    const old = nodes.map(n => n.state);
+    nodes.forEach((n, idx) => {
+      if (old[idx] === 1) {
+        if (Math.random() < params.delta) n.state = 0;
+      } else if (infectedCounts[idx] > 0) {
+        if (Math.random() < 1 - Math.exp(-params.beta * infectedCounts[idx])) n.state = 1;
+      }
+    });
+
+    const infected = nodes.filter(n => n.state === 1).length;
+    const pct = nodes.length > 0 ? infected / nodes.length : 0;
+    historyData.push(pct);
+    if (historyData.length > maxHistory) historyData.shift();
+    els.count.innerText = `${Math.round(pct * 100)}%`;
+    const avgDeg = nodes.length > 0 ? (2 * connectedPairs) / nodes.length : 0;
+    els.r0.innerText = params.delta > 0 ? ((params.beta * avgDeg) / params.delta).toFixed(2) : '∞';
+
+    drawSim();
+    drawChart();
+    animationId = requestAnimationFrame(tick);
+  }
+
+  // ── Input binding ─────────────────────────────────────────────────────────
+  function setupInputs() {
+    const bind = (key, isFloat = true) => {
+      els.inputs[key].addEventListener('input', e => {
+        const val = isFloat ? parseFloat(e.target.value) : parseInt(e.target.value);
+        params[key] = val;
+        const span = document.getElementById(`val-${key === 'L' ? 'world' : key.toLowerCase()}`);
+        if (span) span.innerText = (isFloat && key !== 'L') ? val.toFixed(2) : val;
+        if (key === 'L') { calculateViewTransform(); updateDerivedStats(); nodes.forEach(n => { if (n.x >= params.L) n.x %= params.L; if (n.y >= params.L) n.y %= params.L; }); }
+        if (key === 'xm' || key === 'gamma') nodes.forEach(n => n.r = samplePareto(params.xm, params.gamma));
+        updateNotches();
+      });
+    };
+    // L and xm are integer parameters; others are floats
+    ['L','xm'].forEach(k => bind(k, false));
+    ['gamma','alpha','speed','beta','delta'].forEach(k => bind(k, true));
+    // N: live label, reinit on release
+    els.inputs.N.addEventListener('input', e => {
+      document.getElementById('val-n').innerText = parseInt(e.target.value);
+      params.N = parseInt(e.target.value);
+      updateNotches();
+    });
+    els.inputs.N.addEventListener('change', e => { params.N = parseInt(e.target.value); initSimulation(); });
+  }
+
+  // ── Click-to-infect ───────────────────────────────────────────────────────
+  function handleInput(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    const wx = (clientX - rect.left - offsetX) / scale;
+    const wy = (clientY - rect.top  - offsetY) / scale;
+    let closest = null, minDSq = Infinity;
+    const thresh = (50 / scale) ** 2;
+    nodes.forEach(n => {
+      const d = (n.x - wx) ** 2 + (n.y - wy) ** 2;
+      if (d < minDSq) { minDSq = d; closest = n; }
+    });
+    if (closest && minDSq < thresh) { closest.state = 1; drawSim(); }
+  }
+
+  // ── Bootstrap ─────────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    canvas.addEventListener('mousedown', e => handleInput(e.clientX, e.clientY));
+    canvas.addEventListener('touchstart', e => {
+      e.preventDefault();
+      handleInput(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+
+    els.btnPause.addEventListener('click', () => {
+      isPaused = !isPaused;
+      els.btnPause.innerHTML = isPaused
+        ? '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'
+        : '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+    });
+    els.btnReset.addEventListener('click', initSimulation);
+    window.addEventListener('resize', resize);
+
+    // Mobile controls toggle
+    const mToggle   = document.getElementById('controls-toggle');
+    const mPanel    = document.querySelector('.sim-right');
+    const mBackdrop = document.getElementById('controls-backdrop');
+    if (mToggle) {
+      const openPanel  = () => { mPanel.classList.add('is-open'); mBackdrop.classList.add('is-open'); mToggle.setAttribute('aria-expanded', 'true'); };
+      const closePanel = () => { mPanel.classList.remove('is-open'); mBackdrop.classList.remove('is-open'); mToggle.setAttribute('aria-expanded', 'false'); };
+      mToggle.addEventListener('click', openPanel);
+      mBackdrop.addEventListener('click', closePanel);
+    }
+    setupInputs();
+    resize();
+    initSimulation();
+    tick();
+  });
+</script>
+</body>
+</html>
