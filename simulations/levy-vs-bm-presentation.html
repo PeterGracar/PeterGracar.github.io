@@ -846,12 +846,19 @@
       const lerp = (s, e, f) => s + (e - s) * f;
       const zoomRatio = Math.max(this.camera.zoom / targetZoom, targetZoom / this.camera.zoom);
       if (zoomRatio > 4) {
-        // Snap for sudden simulation-driven jumps (e.g. a huge Lévy flight)
-        // so the process never runs off-screen. User-initiated track-mode
-        // changes bypass this branch via the transition state above.
-        this.camera.zoom = targetZoom;
-        this.camera.x = this.camera.targetX = targetX;
-        this.camera.y = centerY;
+        // Sudden simulation-driven jump (e.g. a huge Lévy flight pulled the
+        // target viewport a long way out): kick off the same planned
+        // zoom-and-pan transition that preset switches use, so the catch-up
+        // reads as a smooth coupled glide instead of a hard snap. Next
+        // updateCamera() call picks it up via the transition block above.
+        this.camera.transition = {
+          startX: this.camera.x,
+          startY: this.camera.y,
+          startZoom: this.camera.zoom,
+          t: 0,
+          duration: 0,
+          path: null,
+        };
       } else {
         // Lerp zoom in log-space so multiplicative changes ease uniformly
         // regardless of whether we are zooming in or out.
