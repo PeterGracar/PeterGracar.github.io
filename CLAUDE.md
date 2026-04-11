@@ -73,6 +73,21 @@ site.webmanifest, favicon*, apple-touch-icon, android-chrome-*  PWA icons
 There is no `Gemfile`, `package.json`, CI workflow, or test suite. GitHub Pages
 builds the site automatically on push to `main`.
 
+### No Jekyll theme
+
+`_config.yml` contains an explicit `theme: null` line. This is a deliberate
+guard: the site ships its own `_layouts/default.html` and `style.css`, and
+does **not** use any Jekyll theme. In the past the repo's
+`Settings → Pages → Theme` UI was left in a state where a theme was still
+being activated at build time even though `_config.yml` did not declare
+one, which caused the theme's `assets/css/style.scss` entry point to be
+compiled and published as a phantom page at `/assets/css/style.css` (visible
+in `secret.html`'s `site.pages` listing). The explicit `theme: null` forces
+Jekyll to deactivate any theme that the Pages UI might still be configured
+with. **Do not remove the line** without first confirming in the repo
+settings that no theme is selected and that `/secret` no longer contains an
+`/assets/css/style.css` entry.
+
 ## Collections and front-matter conventions
 
 Collections are declared in `_config.yml` with `output: false` — they are data
