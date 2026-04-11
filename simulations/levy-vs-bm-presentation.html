@@ -682,51 +682,80 @@
     }
   };
 
-  // Optimal coupled zoom-and-pan path from van Wijk & Nuij (2003), "Smooth
-  // and Efficient Zooming and Panning". Returns a parameterised trajectory
-  // through (x, y, zoom)-space where the centre and the zoom evolve together
-  // along the visually shortest route, so a preset switch no longer reads as
-  // "first zoom, then pan". The caller samples the path at s ∈ [0, S] with
-  // whatever easing it likes (we apply a logistic on top).
+  // Coupled zoom-and-pan path with a bounded zoom-out overshoot. Zoom and
+  // centre advance together along one parameterised trajectory so a preset
+  // switch doesn't read as "first zoom, then pan", but unlike the strict
+  // van Wijk optimal path the transient zoom-out is capped at ZOOM_OVERSHOOT
+  // past the more-zoomed-out endpoint instead of ballooning arbitrarily far
+  // for large pans.
+  //
+  //   log w(t) = A·(1−t) + B·t + 4·H·t·(1−t)
+  //
+  // with A = log w₀, B = log w₁ and H chosen so that the peak of w(t) lands
+  // at log((1+ε)·max(w₀, w₁)). Pan is then coupled to w(t) by a numerical
+  // integral (dx_world/dt ∝ w) so apparent screen-space pan velocity stays
+  // roughly constant across the transition.
+  const ZOOM_OVERSHOOT = 0.06; // peak zoom-out is ≤ (1+ε)·wider endpoint
   const planZoomPan = (x0, y0, z0, x1, y1, z1) => {
-    const rho  = Math.sqrt(2);
-    const rho2 = 2;
-    const rho4 = 4;
-    // w = visual width ∝ 1/zoom. Only ratios matter, so the screen-width
-    // constant cancels and we can feed 1/zoom directly.
-    const w0 = 1 / z0;
-    const w1 = 1 / z1;
+    const w0 = 1 / z0, w1 = 1 / z1;
     const dx = x1 - x0, dy = y1 - y0;
     const u1 = Math.hypot(dx, dy);
+    const A = Math.log(w0), B = Math.log(w1);
+    const L = B - A;
 
-    // Degenerate: negligible pan — fall back to pure log-zoom, parameterised
-    // so the arc-length metric agrees with the general formula.
+    // Pure zoom (no meaningful pan): monotonic log-zoom, no overshoot.
     if (u1 < 1e-9) {
-      const S = Math.abs(Math.log(w1 / w0)) / rho;
+      const S = Math.abs(L) || 1e-9;
       return {
-        S: S || 1e-9,
+        S,
         at: (s) => {
-          const f = S > 0 ? s / S : 1;
-          const w = Math.exp(Math.log(w0) * (1 - f) + Math.log(w1) * f);
-          return { x: x0, y: y0, zoom: 1 / w };
+          const f = Math.min(1, Math.max(0, s / S));
+          return { x: x0, y: y0, zoom: 1 / Math.exp(A * (1 - f) + B * f) };
         },
       };
     }
 
-    const b0 = (w1*w1 - w0*w0 + rho4 * u1*u1) / (2 * w0 * rho2 * u1);
-    const b1 = (w1*w1 - w0*w0 - rho4 * u1*u1) / (2 * w1 * rho2 * u1);
-    const r0 = Math.log(-b0 + Math.sqrt(b0*b0 + 1));
-    const r1 = Math.log(-b1 + Math.sqrt(b1*b1 + 1));
-    const S  = (r1 - r0) / rho;
+    // Peak-constrained bump amplitude. Derived by requiring
+    //   max_t f(t) = max(A, B) + log(1+ε)
+    // where f(t) = A + L·t + 4·H·t·(1−t); the larger root of the resulting
+    // quadratic H² − M·H + L²/16 = 0 (with M = |L|/2 + log(1+ε)) is the one
+    // whose peak t* falls inside [0, 1].
+    const le = Math.log(1 + ZOOM_OVERSHOOT);
+    const absL = Math.abs(L);
+    const M = absL / 2 + le;
+    const H = (M + Math.sqrt(Math.max(0, M * M - L * L / 4))) / 2;
+    const wFn = (t) => Math.exp(A + L * t + 4 * H * t * (1 - t));
+
+    // Couple pan to zoom: dx_world/dt ∝ w(t) → constant apparent pan speed
+    // on screen. Precompute the normalised cumulative world-displacement
+    // with the trapezoid rule and linearly interpolate inside at().
+    const N = 128;
+    const uCum = new Float64Array(N + 1);
+    let acc = 0;
+    let prev = wFn(0);
+    for (let i = 1; i <= N; i++) {
+      const w = wFn(i / N);
+      acc += 0.5 * (prev + w) / N;
+      uCum[i] = acc;
+      prev = w;
+    }
+    for (let i = 0; i <= N; i++) uCum[i] /= acc || 1;
+
+    // Arc length used for duration scaling: couples log-zoom delta with a
+    // log-scaled pan so either axis can drive how long the animation runs.
+    const maxW = Math.max(w0, w1);
+    const S = absL + Math.log(1 + u1 / maxW);
 
     return {
-      S: Math.abs(S) || 1e-9,
+      S: S || 1e-9,
       at: (s) => {
-        const arg = rho * s + r0;
-        const w = w0 * Math.cosh(r0) / Math.cosh(arg);
-        const u = w0 / rho2 * (Math.cosh(r0) * Math.tanh(arg) - Math.sinh(r0));
-        const f = u / u1;
-        return { x: x0 + dx * f, y: y0 + dy * f, zoom: 1 / w };
+        const t = Math.min(1, Math.max(0, s / S));
+        const idx = t * N;
+        const i0 = Math.floor(idx);
+        const i1 = Math.min(N, i0 + 1);
+        const frac = idx - i0;
+        const f = uCum[i0] * (1 - frac) + uCum[i1] * frac;
+        return { x: x0 + dx * f, y: y0 + dy * f, zoom: 1 / wFn(t) };
       },
     };
   };
@@ -792,9 +821,8 @@
             tr.startX, tr.startY, tr.startZoom,
             targetX,   centerY,   targetZoom
           );
-          // Duration scales with the path length S from the van-Wijk metric,
-          // so big coupled swings take longer while small nudges stay snappy.
-          // Floor 0.75 s, cap 3 s.
+          // Duration scales with the path's arc length so big coupled swings
+          // take longer while small nudges stay snappy. Floor 0.75 s, cap 3 s.
           tr.duration = Math.min(180, Math.max(45, Math.round(30 + tr.path.S * 35)));
         }
         tr.t++;
