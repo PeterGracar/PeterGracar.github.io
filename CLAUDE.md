@@ -37,13 +37,23 @@ map.html                    Directions to office 9.10p1
 secret.html                 Unlisted auto-index of all pages/static files (noindex)
 404.html                    Custom 404
 
-contact-process.html        Embedded simulation: SIS contact process on a mobile
-                            geometric random graph (Jekyll-wrapped, linked from research)
-levy-vs-bm.html             Embedded simulation: Lévy flight vs Brownian motion
-                            (Jekyll-wrapped, linked from research)
-*-standalone.html           Self-contained (Tailwind CDN) copies of the simulations
-                            for use outside the site / offline presentations
-levy-vs-bm-presentation.html  Presentation-mode standalone variant
+simulations/                All interactive simulation HTML lives here.
+  contact-process.html        Embedded simulation: SIS contact process on a
+                              mobile geometric random graph. Jekyll-wrapped;
+                              uses permalink: /contact-process.html so the
+                              public URL stays at the site root and
+                              research.html can keep linking contact-process.html.
+  levy-vs-bm.html             Embedded simulation: Lévy flight vs Brownian
+                              motion. Jekyll-wrapped; uses
+                              permalink: /levy-vs-bm.html for the same reason.
+  contact-process-standalone.html   Self-contained (Tailwind + MathJax via CDN)
+  levy-vs-bm-standalone.html        copy of each simulation for offline /
+                                    external use. No Jekyll front matter, so
+                                    they are served as static files at
+                                    /simulations/<name>.html and surfaced
+                                    automatically in secret.html.
+  levy-vs-bm-presentation.html      Presentation-mode standalone variant
+                                    (same static-file treatment).
 
 style.css                   Single global stylesheet (CSS custom properties,
                             light/dark via prefers-color-scheme)
@@ -150,14 +160,29 @@ The layout injects:
   previews on the home and research pages (hover on desktop, click on touch,
   Esc to dismiss, click-outside to dismiss).
 
-## Standalone simulation files
+## Simulations directory
 
-`contact-process.html` and `levy-vs-bm.html` are Jekyll pages wrapped by the
-default layout and linked from `research.html`. Their `*-standalone.html`
-siblings are **independent HTML documents** (no Jekyll front matter, Tailwind
-via CDN, own theme toggle persisted in `localStorage['theme-pref']`) intended
-for offline / presentation use. `levy-vs-bm-presentation.html` is a
-presentation-mode variant of the same simulation.
+All interactive simulation HTML files live under `simulations/`. There are two
+flavours:
+
+- **Jekyll-wrapped** — `simulations/contact-process.html` and
+  `simulations/levy-vs-bm.html` use `layout: default` and are linked from
+  `research.html`. Each declares `permalink: /<name>.html` so Jekyll still
+  publishes them at the site root. **Do not remove the `permalink:` lines** —
+  they are what keeps the public URLs (`gracar.org/contact-process.html`,
+  `gracar.org/levy-vs-bm.html`) stable after the move out of the top level,
+  and they are what allows `research.html` to link `contact-process.html` /
+  `levy-vs-bm.html` as plain root-level paths.
+- **Standalone** — `simulations/contact-process-standalone.html`,
+  `simulations/levy-vs-bm-standalone.html`, and
+  `simulations/levy-vs-bm-presentation.html` are **independent HTML
+  documents** with no Jekyll front matter (Tailwind + MathJax via CDN, own
+  light/dark toggle persisted in `localStorage['theme-pref']`). They are
+  intended for offline / presentation use and, because they have no front
+  matter, Jekyll copies them through as static files at
+  `/simulations/<name>.html`. They are not linked from the navigation or
+  sitemap but are surfaced automatically in `secret.html` via
+  `site.static_files`.
 
 When fixing a bug in a simulation, check whether the same logic is duplicated
 in the standalone / presentation copies and update them together.
