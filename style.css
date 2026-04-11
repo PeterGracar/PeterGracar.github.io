@@ -110,6 +110,16 @@ a:hover {
   background-image: none;
 }
 
+.secret-dot {
+  color: inherit;
+  background-image: none;
+}
+
+.secret-dot:hover {
+  color: inherit;
+  background-size: 0 1.5px;
+}
+
 a:focus-visible,
 button:focus-visible {
   outline: 3px solid var(--color-focus);
