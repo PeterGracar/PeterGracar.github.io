@@ -682,6 +682,55 @@
     }
   };
 
+  // Optimal coupled zoom-and-pan path from van Wijk & Nuij (2003), "Smooth
+  // and Efficient Zooming and Panning". Returns a parameterised trajectory
+  // through (x, y, zoom)-space where the centre and the zoom evolve together
+  // along the visually shortest route, so a preset switch no longer reads as
+  // "first zoom, then pan". The caller samples the path at s ∈ [0, S] with
+  // whatever easing it likes (we apply a logistic on top).
+  const planZoomPan = (x0, y0, z0, x1, y1, z1) => {
+    const rho  = Math.sqrt(2);
+    const rho2 = 2;
+    const rho4 = 4;
+    // w = visual width ∝ 1/zoom. Only ratios matter, so the screen-width
+    // constant cancels and we can feed 1/zoom directly.
+    const w0 = 1 / z0;
+    const w1 = 1 / z1;
+    const dx = x1 - x0, dy = y1 - y0;
+    const u1 = Math.hypot(dx, dy);
+
+    // Degenerate: negligible pan — fall back to pure log-zoom, parameterised
+    // so the arc-length metric agrees with the general formula.
+    if (u1 < 1e-9) {
+      const S = Math.abs(Math.log(w1 / w0)) / rho;
+      return {
+        S: S || 1e-9,
+        at: (s) => {
+          const f = S > 0 ? s / S : 1;
+          const w = Math.exp(Math.log(w0) * (1 - f) + Math.log(w1) * f);
+          return { x: x0, y: y0, zoom: 1 / w };
+        },
+      };
+    }
+
+    const b0 = (w1*w1 - w0*w0 + rho4 * u1*u1) / (2 * w0 * rho2 * u1);
+    const b1 = (w1*w1 - w0*w0 - rho4 * u1*u1) / (2 * w1 * rho2 * u1);
+    const r0 = Math.log(-b0 + Math.sqrt(b0*b0 + 1));
+    const r1 = Math.log(-b1 + Math.sqrt(b1*b1 + 1));
+    const S  = (r1 - r0) / rho;
+
+    return {
+      S: Math.abs(S) || 1e-9,
+      at: (s) => {
+        const arg = rho * s + r0;
+        const w = w0 * Math.cosh(r0) / Math.cosh(arg);
+        const u = w0 / rho2 * (Math.cosh(r0) * Math.tanh(arg) - Math.sinh(r0));
+        const f = u / u1;
+        return { x: x0 + dx * f, y: y0 + dy * f, zoom: 1 / w };
+      },
+    };
+  };
+
   // ── 4. View ───────────────────────────────────────────────────────────────
   const View = {
     camera: { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0, transition: null },
@@ -731,28 +780,36 @@
 
       const tr = this.camera.transition;
       if (tr) {
-        // First frame of a new transition: size its duration from the
-        // magnitude of the log-zoom change so small swaps stay snappy while
-        // large ones have time to read. Roughly 0.75 s for no zoom change,
-        // scaling up to a 3 s cap for a >100× zoom swing.
-        if (tr.duration === 0) {
-          const logRatio = Math.abs(Math.log(targetZoom / tr.startZoom));
-          tr.duration = Math.min(180, Math.round(45 + logRatio * 30));
+        // On the first frame we freeze a coupled zoom-and-pan path from the
+        // captured start to the currently-sampled target. Doing it once (as
+        // opposed to re-planning every frame) is what keeps the zoom and
+        // centring locked to the same parameter — they advance in lockstep
+        // along a single trajectory rather than lerping independently. The
+        // residual drift from the (still-growing) live target is picked up
+        // by the normal exponential tracking once the transition ends.
+        if (!tr.path) {
+          tr.path = planZoomPan(
+            tr.startX, tr.startY, tr.startZoom,
+            targetX,   centerY,   targetZoom
+          );
+          // Duration scales with the path length S from the van-Wijk metric,
+          // so big coupled swings take longer while small nudges stay snappy.
+          // Floor 0.75 s, cap 3 s.
+          tr.duration = Math.min(180, Math.max(45, Math.round(30 + tr.path.S * 35)));
         }
         tr.t++;
         const u = Math.min(1, tr.t / tr.duration);
         // Logistic S-curve rescaled so eased(0)=0 and eased(1)=1 exactly,
-        // giving a slow-in / fast-middle / slow-out feel.
+        // giving a slow-in / fast-middle / slow-out feel along the path.
         const k = 8;
         const s0 = 1 / (1 + Math.exp( k * 0.5));
         const s1 = 1 / (1 + Math.exp(-k * 0.5));
         const raw = 1 / (1 + Math.exp(-k * (u - 0.5)));
         const eased = (raw - s0) / (s1 - s0);
-        // Interpolate zoom in log-space from the captured start toward the
-        // (possibly still moving) live target.
-        this.camera.zoom = Math.exp(Math.log(tr.startZoom) * (1 - eased) + Math.log(targetZoom) * eased);
-        this.camera.x = tr.startX * (1 - eased) + targetX * eased;
-        this.camera.y = tr.startY * (1 - eased) + centerY * eased;
+        const p = tr.path.at(eased * tr.path.S);
+        this.camera.zoom = p.zoom;
+        this.camera.x = p.x;
+        this.camera.y = p.y;
         this.camera.targetX = targetX;
         if (u >= 1) this.camera.transition = null;
         return;
@@ -1306,10 +1363,11 @@
       if (!isModeAllowed(mode)) return;
       const prev = State.trackMode;
       State.trackMode = mode;
-      // Switching to a different auto-tracking target kicks off a logistic
-      // eased glide from the current camera to the new target. The first
-      // updateCamera() frame sizes `duration` from the zoom delta so larger
-      // changes take proportionally longer.
+      // Switching to a different auto-tracking target kicks off a coupled
+      // zoom-and-pan glide from the current camera to the new target. The
+      // first updateCamera() frame plans the van-Wijk path and sizes the
+      // duration from its arc-length so larger swings take proportionally
+      // longer.
       if (mode !== 'none' && mode !== prev) {
         View.camera.transition = {
           startX: View.camera.x,
@@ -1317,6 +1375,7 @@
           startZoom: View.camera.zoom,
           t: 0,
           duration: 0,
+          path: null,
         };
       }
       trackBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-track') === mode));
