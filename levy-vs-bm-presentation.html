@@ -175,6 +175,43 @@
     }
     input[type=range]::-webkit-slider-thumb:hover { opacity: 0.8; }
 
+    /* ── Slider tick marks ── */
+    .slider-ticks {
+      position: relative;
+      width: 100%;
+      height: 18px;
+      margin-top: 2px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .slider-ticks.with-labels { height: 26px; }
+    .slider-ticks .tick {
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+    .slider-ticks .tick .mark {
+      width: 1px;
+      height: 5px;
+      background: var(--color-text-muted);
+      opacity: 0.55;
+    }
+    .slider-ticks .tick.major .mark {
+      height: 7px;
+      opacity: 0.85;
+    }
+    .slider-ticks .tick .label {
+      font-size: 0.625rem;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+
     input[type=text] {
       width: 100%; background: var(--color-surface-soft);
       border: 1px solid var(--color-border);
@@ -417,9 +454,10 @@
           <span id="alphaVal" style="color: var(--color-accent);">1.0</span>
         </div>
         <input type="range" id="alphaSlider" min="0.1" max="1.99" step="0.01" value="1.0">
+        <div class="slider-ticks with-labels" id="alphaTicks"></div>
         <p class="text-xs mt-1 leading-relaxed" style="color: var(--color-text-muted);">
           Tail index: \( P(\text{step} > x) \sim x^{-\alpha} \)<br>
-          Small \(\alpha\) = heavier tails (super-diffusion).
+          Small \(\alpha\) = heavier tails (super-diffusion). Tick labels show the median jump size.
         </p>
       </div>
 
@@ -429,6 +467,7 @@
           <span id="speedVal">5</span>
         </div>
         <input type="range" id="speedSlider" min="1" max="20" step="1" value="5">
+        <div class="slider-ticks" id="speedTicks"></div>
       </div>
 
       <div class="slider-container">
@@ -437,6 +476,7 @@
           <span id="radiusVal" class="text-xs font-mono" style="color: var(--color-accent);">R=5.0 (p=50%)</span>
         </div>
         <input type="range" id="radiusSlider" min="0" max="100" step="1" value="50">
+        <div class="slider-ticks with-labels" id="radiusTicks"></div>
         <p class="text-xs mt-1 leading-relaxed" style="color: var(--color-text-muted);">
           Radius scales with jump size distribution:<br>
           \( R(p) \propto (1-p)^{-1/\alpha} \)
@@ -928,31 +968,31 @@
       const vMinX = cam.x - (w/2)/cam.zoom, vMaxX = cam.x + (w/2)/cam.zoom;
       const vMinY = cam.y - (h/2)/cam.zoom, vMaxY = cam.y + (h/2)/cam.zoom;
 
-      // Pass 1: trace underlay (Lévy points only)
+      // Pass 1: trace underlay (Lévy points only).
+      // All balls (chunks + buffer + active) are accumulated into a SINGLE
+      // path and filled once, so overlapping balls compose into a uniform
+      // shade instead of alpha-stacking at chunk boundaries.
       ctx.fillStyle = colors.trace;
+      ctx.beginPath();
+      const addPoint = (p) => {
+        if (State.showSausage) { ctx.moveTo(p.x+State.sausageRadius,p.y); ctx.arc(p.x,p.y,State.sausageRadius,0,PI2); }
+        else { ctx.rect(p.x-halfSPS, p.y-halfSPS, sPS, sPS); }
+      };
       for (let chunk of agent.chunks) {
         if (!isExport) {
           if (chunk.maxX+pad < vMinX || chunk.minX-pad > vMaxX || chunk.maxY+pad < vMinY || chunk.minY-pad > vMaxY) continue;
           if (!State.isPaused) {
             const sw = ((chunk.maxX-chunk.minX)+2*pad)*cam.zoom, sh = ((chunk.maxY-chunk.minY)+2*pad)*cam.zoom;
             if (sw < 2 && sh < 2) {
-              ctx.fillRect(((chunk.minX+chunk.maxX)/2)-1/cam.zoom,((chunk.minY+chunk.maxY)/2)-1/cam.zoom,2/cam.zoom,2/cam.zoom);
+              ctx.rect(((chunk.minX+chunk.maxX)/2)-1/cam.zoom,((chunk.minY+chunk.maxY)/2)-1/cam.zoom,2/cam.zoom,2/cam.zoom);
               continue;
             }
           }
         }
-        ctx.beginPath();
-        for (let p of chunk.points) {
-          if (State.showSausage) { ctx.moveTo(p.x+State.sausageRadius,p.y); ctx.arc(p.x,p.y,State.sausageRadius,0,PI2); }
-          else ctx.rect(p.x-halfSPS, p.y-halfSPS, sPS, sPS);
-        }
-        ctx.fill();
+        for (let p of chunk.points) addPoint(p);
       }
-      ctx.beginPath();
-      for (let p of agent.buffer.concat(agent.active)) {
-        if (State.showSausage) { ctx.moveTo(p.x+State.sausageRadius,p.y); ctx.arc(p.x,p.y,State.sausageRadius,0,PI2); }
-        else ctx.rect(p.x-halfSPS, p.y-halfSPS, sPS, sPS);
-      }
+      for (let p of agent.buffer) addPoint(p);
+      for (let p of agent.active) addPoint(p);
       ctx.fill();
 
       // Pass 1.5: thin connector polyline between successive Lévy points.
@@ -1056,6 +1096,69 @@
     requestAnimationFrame(animate);
   }
 
+  // ── Slider tick marks ──────────────────────────────────────────────────────
+  const Ticks = {
+    fmtR: function(r) {
+      if (!isFinite(r)) return '∞';
+      if (r < 10)   return r.toFixed(1);
+      if (r < 1000) return String(Math.round(r));
+      if (r < 1e6)  return (r / 1000).toFixed(r < 10000 ? 1 : 0) + 'k';
+      if (r < 1e9)  return (r / 1e6).toFixed(r < 1e7 ? 1 : 0) + 'M';
+      return r.toExponential(0).replace('+', '');
+    },
+    // Position on the slider accounting for the 16px thumb width so tick
+    // centers visually line up with the thumb center at the same value.
+    posStyle: function(pct) {
+      return `left: calc(8px + (100% - 16px) * ${pct / 100});`;
+    },
+    renderAlpha: function() {
+      const container = document.getElementById('alphaTicks');
+      if (!container) return;
+      const min = 0.1, max = 1.99;
+      const labeled = new Set([0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75].map(v => v.toFixed(2)));
+      const marks = [];
+      for (let i = 0; i <= 19; i++) {
+        const a = 0.1 + i * 0.1;
+        marks.push({ a, major: labeled.has(a.toFixed(2)) });
+      }
+      labeled.forEach(key => {
+        const v = parseFloat(key);
+        if (!marks.some(m => Math.abs(m.a - v) < 1e-6)) marks.push({ a: v, major: true });
+      });
+      container.innerHTML = marks.map(m => {
+        const pct = ((m.a - min) / (max - min)) * 100;
+        const median = Config.baseScale * Math.pow(2, 1 / m.a);
+        const label = m.major ? `<div class="label">${Ticks.fmtR(median)}</div>` : '';
+        return `<div class="tick ${m.major ? 'major' : ''}" style="${Ticks.posStyle(pct)}"><div class="mark"></div>${label}</div>`;
+      }).join('');
+    },
+    renderSpeed: function() {
+      const container = document.getElementById('speedTicks');
+      if (!container) return;
+      const html = [];
+      for (let v = 1; v <= 20; v++) {
+        const pct = ((v - 1) / 19) * 100;
+        html.push(`<div class="tick" style="${Ticks.posStyle(pct)}"><div class="mark"></div></div>`);
+      }
+      container.innerHTML = html.join('');
+    },
+    renderRadius: function() {
+      const container = document.getElementById('radiusTicks');
+      if (!container) return;
+      const α = State.alpha;
+      const labeled = new Set([0, 20, 40, 60, 80, 100]);
+      const html = [];
+      for (let v = 0; v <= 100; v += 10) {
+        const p = (v / 100) * 0.9999;
+        const r = Config.baseScale * Math.pow(1 - p, -1 / α);
+        const isMajor = labeled.has(v);
+        const label = isMajor ? `<div class="label">${Ticks.fmtR(r)}</div>` : '';
+        html.push(`<div class="tick ${isMajor ? 'major' : ''}" style="${Ticks.posStyle(v)}"><div class="mark"></div>${label}</div>`);
+      }
+      container.innerHTML = html.join('');
+    }
+  };
+
   function setupInputs() {
     new ResizeObserver(() => View.resize()).observe(document.getElementById('sim-container'));
 
@@ -1067,6 +1170,7 @@
                   State.sausageRadius < 1000 ? Math.round(State.sausageRadius*10)/10 :
                   (State.sausageRadius/1000).toFixed(1) + 'k';
       document.getElementById('radiusVal').textContent = `R=${rText} (p=${(p*100).toFixed(1)}%)`;
+      Ticks.renderRadius();
     };
 
     document.getElementById('alphaSlider').addEventListener('input', e => {
@@ -1074,6 +1178,10 @@
       document.getElementById('alphaVal').textContent = State.alpha.toFixed(2);
       updateRadius();
     });
+
+    Ticks.renderAlpha();
+    Ticks.renderSpeed();
+    Ticks.renderRadius();
     document.getElementById('speedSlider').addEventListener('input', e => {
       State.speed = parseInt(e.target.value);
       document.getElementById('speedVal').textContent = State.speed;
