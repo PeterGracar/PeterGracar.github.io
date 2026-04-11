@@ -620,6 +620,11 @@
     colorSpeedFactor: 0.05,
     get cyclePeriod() { return (360 / this.colorSpeedFactor) * 4; },
     chunkSize: 1000,
+    // Seconds of steps generated ahead of what the viewer sees so the camera
+    // can anticipate a large upcoming jump and glide out in advance. Matches
+    // the 3 s cap on the preset-transition duration, so a worst-case
+    // zoom-out finishes just as the jump is revealed.
+    lookaheadSeconds: 3,
   };
 
   // ── 2. PRNG ───────────────────────────────────────────────────────────────
@@ -664,8 +669,13 @@
     hasStarted: false, currentSeed: '',
     isPaused: false, isInteracting: false,
     trackMode: 'both',
-    levy:     { pos: {x:0,y:0}, active: [], buffer: [], chunks: [] },
-    brownian: { pos: {x:0,y:0}, active: [], buffer: [], chunks: [] },
+    // `pos` tracks the latest *revealed* position (what the viewer has seen);
+    // `genPos` is the latest *generated* position inside the look-ahead buffer
+    // and is always ≥ pos in walk-time. `future` is a FIFO of generated-but-
+    // unrevealed points held as a plain array with a head index for O(1)
+    // pops (and occasional compaction in Sim.step).
+    levy:     { pos: {x:0,y:0}, genPos: {x:0,y:0}, active: [], buffer: [], chunks: [], future: [], futureHead: 0 },
+    brownian: { pos: {x:0,y:0}, genPos: {x:0,y:0}, active: [], buffer: [], chunks: [], future: [], futureHead: 0 },
     stats: {
       levyPoints: new Set(),
       levyPath:   new Set(),
@@ -673,8 +683,8 @@
     },
     reset: function() {
       this.time = 0;
-      this.levy     = { pos: {x:0,y:0}, active: [{x:0,y:0,time:0}], buffer: [], chunks: [] };
-      this.brownian = { pos: {x:0,y:0}, active: [{x:0,y:0,time:0}], buffer: [], chunks: [] };
+      this.levy     = { pos: {x:0,y:0}, genPos: {x:0,y:0}, active: [{x:0,y:0,time:0}], buffer: [], chunks: [], future: [], futureHead: 0 };
+      this.brownian = { pos: {x:0,y:0}, genPos: {x:0,y:0}, active: [{x:0,y:0,time:0}], buffer: [], chunks: [], future: [], futureHead: 0 };
       this.stats.levyPoints.clear(); this.stats.levyPath.clear(); this.stats.brownian.clear();
       Stats.updateCoverage(0, 0, this.sausageRadius, this.stats.levyPoints);
       Stats.updateCoverage(0, 0, this.sausageRadius, this.stats.levyPath);
@@ -785,10 +795,17 @@
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
       const check  = list   => { for (let p of list) { if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x; if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y; } };
       const checkC = chunks => { for (let c of chunks) { if(c.minX<minX)minX=c.minX; if(c.maxX>maxX)maxX=c.maxX; if(c.minY<minY)minY=c.minY; if(c.maxY>maxY)maxY=c.maxY; } };
+      // Include the look-ahead buffer so the camera can anticipate big jumps
+      // and start zooming out before they are revealed to the viewer. The
+      // window is capped at the *current* lookahead target so that a stale
+      // bloated buffer (e.g. after dropping State.speed mid-run) does not
+      // make the camera over-anticipate points it won't see for 30+ seconds.
+      const lookCap = Sim.lookaheadSteps();
+      const checkFuture = agent => { const arr = agent.future; const end = Math.min(arr.length, agent.futureHead + lookCap); for (let i = agent.futureHead; i < end; i++) { const p = arr[i]; if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x; if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y; } };
       const trackLevy = (State.trackMode === 'both' || State.trackMode === 'levy');
       const trackBM   = (State.trackMode === 'both' || State.trackMode === 'bm');
-      if (trackLevy) { checkC(State.levy.chunks); check(State.levy.active); }
-      if (trackBM)   { checkC(State.brownian.chunks); check(State.brownian.active); }
+      if (trackLevy) { checkC(State.levy.chunks); check(State.levy.active); checkFuture(State.levy); }
+      if (trackBM)   { checkC(State.brownian.chunks); check(State.brownian.active); checkFuture(State.brownian); }
       if (minX === Infinity) { minX = -100; maxX = 100; minY = -100; maxY = 100; }
       const pad = State.showSausage ? State.sausageRadius : 0;
       minX -= pad; maxX += pad; minY -= pad; maxY += pad;
@@ -938,39 +955,83 @@
       return buffer;
     },
 
-    step: function() {
-      const cutoff = State.time - Config.cyclePeriod;
-      for (let i = 0; i < State.speed; i++) {
-        State.time++;
+    // Generate up to `lookaheadSeconds` worth of future steps into each
+    // walk's FIFO buffer. Called before every reveal pass, so the buffer
+    // is kept roughly full at all times. All PRNG calls live here — reveal
+    // is purely a display-side dequeue — which is what lets the camera peek
+    // at upcoming jumps via `State.*.future` in updateCamera().
+    lookaheadSteps: function() {
+      return Math.max(60, Math.round(State.speed * 60 * Config.lookaheadSeconds));
+    },
+    ensureLookahead: function() {
+      const target = this.lookaheadSteps();
+      const L = State.levy, B = State.brownian;
+      let pending = Math.min(L.future.length - L.futureHead, B.future.length - B.futureHead);
+      while (pending < target) {
         const theta = PRNG.rand() * 2 * Math.PI;
         const dirX = Math.cos(theta), dirY = Math.sin(theta);
 
         let u = PRNG.rand(); if (u === 0) u = 0.00001;
-        let stepLevy = Math.min(Config.baseScale * Math.pow(u, -1 / State.alpha), 1e6);
-        const plx = State.levy.pos.x, ply = State.levy.pos.y;
-        State.levy.pos.x += dirX * stepLevy;
-        State.levy.pos.y += dirY * stepLevy;
-        State.levy.active.push({ x: State.levy.pos.x, y: State.levy.pos.y, time: State.time });
-        Stats.updateCoverage(State.levy.pos.x, State.levy.pos.y, State.sausageRadius, State.stats.levyPoints);
-        Stats.walkLineCoverage(plx, ply, State.levy.pos.x, State.levy.pos.y, State.sausageRadius, State.stats.levyPath);
+        const stepLevy = Math.min(Config.baseScale * Math.pow(u, -1 / State.alpha), 1e6);
+        L.genPos.x += dirX * stepLevy;
+        L.genPos.y += dirY * stepLevy;
+        L.future.push({ x: L.genPos.x, y: L.genPos.y });
 
-        // Brownian always steps so toggling display mid-run stays in sync.
-        let stepBrown = Math.abs(PRNG.gaussian()) * Config.baseScale;
-        const pbx = State.brownian.pos.x, pby = State.brownian.pos.y;
-        State.brownian.pos.x += dirX * stepBrown;
-        State.brownian.pos.y += dirY * stepBrown;
-        State.brownian.active.push({ x: State.brownian.pos.x, y: State.brownian.pos.y, time: State.time });
-        Stats.walkLineCoverage(pbx, pby, State.brownian.pos.x, State.brownian.pos.y, State.sausageRadius, State.stats.brownian);
+        // Brownian always advances so toggling display mid-run stays in sync.
+        const stepBrown = Math.abs(PRNG.gaussian()) * Config.baseScale;
+        B.genPos.x += dirX * stepBrown;
+        B.genPos.y += dirY * stepBrown;
+        B.future.push({ x: B.genPos.x, y: B.genPos.y });
+
+        pending++;
+      }
+    },
+
+    step: function() {
+      this.ensureLookahead();
+
+      // Reveal pass: pop up to `speed` pre-generated points per frame off
+      // each walk's FIFO and materialise them as "active" points with a
+      // display time + coverage stats. State.time advances here (not during
+      // generation) so the colour cycle and the archival cutoff track what
+      // the user actually sees rather than what has been pre-computed.
+      const L = State.levy, B = State.brownian;
+      const count = Math.min(
+        State.speed,
+        L.future.length - L.futureHead,
+        B.future.length - B.futureHead
+      );
+      for (let i = 0; i < count; i++) {
+        State.time++;
+
+        const nlp = L.future[L.futureHead++];
+        const plx = L.pos.x, ply = L.pos.y;
+        L.pos.x = nlp.x; L.pos.y = nlp.y;
+        L.active.push({ x: nlp.x, y: nlp.y, time: State.time });
+        Stats.updateCoverage(nlp.x, nlp.y, State.sausageRadius, State.stats.levyPoints);
+        Stats.walkLineCoverage(plx, ply, nlp.x, nlp.y, State.sausageRadius, State.stats.levyPath);
+
+        const nbp = B.future[B.futureHead++];
+        const pbx = B.pos.x, pby = B.pos.y;
+        B.pos.x = nbp.x; B.pos.y = nbp.y;
+        B.active.push({ x: nbp.x, y: nbp.y, time: State.time });
+        Stats.walkLineCoverage(pbx, pby, nbp.x, nbp.y, State.sausageRadius, State.stats.brownian);
       }
 
+      // Compact each FIFO once its head has advanced far enough that the
+      // slack array prefix is worth releasing.
+      if (L.futureHead > 2000) { L.future = L.future.slice(L.futureHead); L.futureHead = 0; }
+      if (B.futureHead > 2000) { B.future = B.future.slice(B.futureHead); B.futureHead = 0; }
+
+      const cutoff = State.time - Config.cyclePeriod;
       const archive = agent => {
         while (agent.active.length > 0 && agent.active[0].time < cutoff) {
           agent.buffer = this.archivePoint({ x: agent.active[0].x, y: agent.active[0].y }, agent.buffer, agent.chunks);
           agent.active.shift();
         }
       };
-      archive(State.levy);
-      archive(State.brownian);
+      archive(L);
+      archive(B);
     },
 
     reset: function() {
