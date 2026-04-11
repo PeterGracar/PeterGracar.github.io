@@ -37,15 +37,15 @@ map.html                    Directions to office 9.10p1
 secret.html                 Unlisted auto-index of all pages/static files (noindex)
 404.html                    Custom 404
 
-simulations/                All interactive simulation HTML lives here.
+simulations/                All interactive simulation HTML lives here, and is
+                            served from /simulations/<name>.html.
   contact-process.html        Embedded simulation: SIS contact process on a
-                              mobile geometric random graph. Jekyll-wrapped;
-                              uses permalink: /contact-process.html so the
-                              public URL stays at the site root and
-                              research.html can keep linking contact-process.html.
+                              mobile geometric random graph. Jekyll-wrapped
+                              (layout: default), linked from research.html
+                              at simulations/contact-process.html.
   levy-vs-bm.html             Embedded simulation: Lévy flight vs Brownian
-                              motion. Jekyll-wrapped; uses
-                              permalink: /levy-vs-bm.html for the same reason.
+                              motion. Jekyll-wrapped, linked from research.html
+                              at simulations/levy-vs-bm.html.
   contact-process-standalone.html   Self-contained (Tailwind + MathJax via CDN)
   levy-vs-bm-standalone.html        copy of each simulation for offline /
                                     external use. No Jekyll front matter, so
@@ -150,6 +150,12 @@ The layout injects:
 - `style.css?v=<n>` and `site.js?v=<n>` — **bump the `?v=` query string when
   editing `style.css` or `site.js`** so returning visitors pick up the change.
 
+All asset and nav `href`/`src` attributes in `default.html` are
+root-absolute (`/style.css`, `/site.js`, `/research.html`, …). Do **not**
+reintroduce bare relative paths — pages under `simulations/` are served at
+`/simulations/<name>.html`, and relative hrefs in the layout would then
+resolve to `/simulations/style.css`, etc., and 404.
+
 `site.js` behaviour to be aware of:
 
 - Builds the email link from a base64 blob in `contact.html`'s `#e9` slot.
@@ -162,17 +168,18 @@ The layout injects:
 
 ## Simulations directory
 
-All interactive simulation HTML files live under `simulations/`. There are two
-flavours:
+All interactive simulation HTML files live under `simulations/` and are served
+at `/simulations/<name>.html`. There are two flavours:
 
 - **Jekyll-wrapped** — `simulations/contact-process.html` and
   `simulations/levy-vs-bm.html` use `layout: default` and are linked from
-  `research.html`. Each declares `permalink: /<name>.html` so Jekyll still
-  publishes them at the site root. **Do not remove the `permalink:` lines** —
-  they are what keeps the public URLs (`gracar.org/contact-process.html`,
-  `gracar.org/levy-vs-bm.html`) stable after the move out of the top level,
-  and they are what allows `research.html` to link `contact-process.html` /
-  `levy-vs-bm.html` as plain root-level paths.
+  `research.html` via the relative paths `simulations/contact-process.html`
+  and `simulations/levy-vs-bm.html`. Their public URLs are
+  `gracar.org/simulations/contact-process.html` and
+  `gracar.org/simulations/levy-vs-bm.html`; the `canonical:` field in each
+  page's front matter must match. Do **not** add a `permalink:` field to
+  bring them back to the site root — the layout's nav and asset hrefs assume
+  pages are addressed by their source path.
 - **Standalone** — `simulations/contact-process-standalone.html`,
   `simulations/levy-vs-bm-standalone.html`, and
   `simulations/levy-vs-bm-presentation.html` are **independent HTML
