@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brownian Motion vs Lévy Flight (Presentation) — Peter Gracar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    // Apply saved theme immediately to avoid flash
+    (function() {
+      var t = localStorage.getItem('theme-pref');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  <style>
+    /* ── Base theme tokens ── */
+    :root {
+      --font-heading: "Newsreader", Georgia, "Times New Roman", serif;
+      --font-body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+      --color-bg: #f8f4ee;
+      --color-surface: #ffffff;
+      --color-surface-soft: #f1ebe1;
+      --color-text: #1f1b18;
+      --color-text-muted: #554e47;
+      --color-border: #d8cec1;
+      --color-accent: #950000;
+      --color-accent-strong: #6f0000;
+      --color-accent-soft: #cf6a54;
+      --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+      --radius-sm: 0.45rem;
+      --radius-md: 0.75rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #111216;
+        --color-surface: #1a1e24;
+        --color-surface-soft: #232831;
+        --color-text: #ece4d9;
+        --color-text-muted: #b7afa3;
+        --color-border: #3a4049;
+        --color-accent: #ff7558;
+        --color-accent-strong: #ff9f87;
+        --color-accent-soft: #ff9f87;
+        --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+      }
+    }
+    html[data-theme="light"] {
+      --color-bg: #f8f4ee;
+      --color-surface: #ffffff;
+      --color-surface-soft: #f1ebe1;
+      --color-text: #1f1b18;
+      --color-text-muted: #554e47;
+      --color-border: #d8cec1;
+      --color-accent: #950000;
+      --color-accent-strong: #6f0000;
+      --color-accent-soft: #cf6a54;
+      --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+    }
+    html[data-theme="dark"] {
+      --color-bg: #111216;
+      --color-surface: #1a1e24;
+      --color-surface-soft: #232831;
+      --color-text: #ece4d9;
+      --color-text-muted: #b7afa3;
+      --color-border: #3a4049;
+      --color-accent: #ff7558;
+      --color-accent-strong: #ff9f87;
+      --color-accent-soft: #ff9f87;
+      --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+    }
+
+    /* ── Simulation colour tokens ── */
+    :root {
+      --lbm-panel-bg:     rgba(248, 244, 238, 0.93);
+      --lbm-panel-border: var(--color-border);
+      --lbm-trace:        rgba(40, 25, 15, 0.13);
+      --lbm-brownian:     rgba(30, 20, 12, 0.88);
+      --lbm-levy-line:    rgba(40, 25, 15, 0.55);
+      --lbm-legend-bg:    rgba(241, 235, 225, 0.90);
+      --lbm-hue-lightness: 42;
+      --lbm-hue-sat-base: 85;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --lbm-panel-bg:     rgba(26, 30, 36, 0.93);
+        --lbm-trace:        rgba(148, 163, 184, 0.15);
+        --lbm-brownian:     rgba(255, 255, 255, 1.0);
+        --lbm-levy-line:    rgba(226, 232, 240, 0.55);
+        --lbm-legend-bg:    rgba(26, 30, 36, 0.90);
+        --lbm-hue-lightness: 60;
+        --lbm-hue-sat-base: 100;
+      }
+    }
+    html[data-theme="light"] {
+      --lbm-panel-bg:     rgba(248, 244, 238, 0.93);
+      --lbm-trace:        rgba(40, 25, 15, 0.13);
+      --lbm-brownian:     rgba(30, 20, 12, 0.88);
+      --lbm-levy-line:    rgba(40, 25, 15, 0.55);
+      --lbm-legend-bg:    rgba(241, 235, 225, 0.90);
+      --lbm-hue-lightness: 42;
+      --lbm-hue-sat-base: 85;
+    }
+    html[data-theme="dark"] {
+      --lbm-panel-bg:     rgba(26, 30, 36, 0.93);
+      --lbm-trace:        rgba(148, 163, 184, 0.15);
+      --lbm-brownian:     rgba(255, 255, 255, 1.0);
+      --lbm-levy-line:    rgba(226, 232, 240, 0.55);
+      --lbm-legend-bg:    rgba(26, 30, 36, 0.90);
+      --lbm-hue-lightness: 60;
+      --lbm-hue-sat-base: 100;
+    }
+
+    /* ── Full-bleed layout ── */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { height: 100vh; overflow: hidden; margin: 0; font-family: var(--font-body); background: var(--color-bg); }
+    main#main-content {
+      padding: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      display: flex !important;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+      position: relative;
+      height: 100vh;
+    }
+
+    /* ── Floating controls panel ── */
+    .sim-controls {
+      position: absolute;
+      top: 56px; left: 12px;
+      background: var(--lbm-panel-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--lbm-panel-border);
+      width: min(340px, calc(100% - 20px));
+      box-shadow: var(--shadow-soft);
+      user-select: none;
+      max-height: calc(100% - 40px);
+      overflow-y: auto;
+      z-index: 10;
+      font-family: var(--font-body);
+      color: var(--color-text);
+    }
+
+    .sim-controls::-webkit-scrollbar { width: 6px; }
+    .sim-controls::-webkit-scrollbar-track { background: transparent; }
+    .sim-controls::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+
+    /* ── Slider ── */
+    .slider-container { margin-bottom: 16px; }
+    .slider-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.875rem; margin-bottom: 4px; font-weight: 500;
+      color: var(--color-text);
+    }
+
+    input[type=range] {
+      width: 100%; height: 6px; background: var(--color-border);
+      border-radius: 3px; outline: none; -webkit-appearance: none; cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px;
+      background: var(--color-accent); border-radius: 50%;
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover { opacity: 0.8; }
+
+    input[type=text] {
+      width: 100%; background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      color: var(--color-text); padding: 6px 10px;
+      border-radius: var(--radius-sm); font-size: 0.875rem;
+      outline: none; font-family: monospace; margin-bottom: 12px;
+    }
+    input[type=text]:focus { border-color: var(--color-accent); }
+    input[type=text]::placeholder { color: var(--color-text-muted); }
+
+    /* ── Toggle ── */
+    .toggle-container { display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; }
+    .toggle-switch {
+      position: relative; width: 44px; height: 24px;
+      background: var(--color-border); border-radius: 12px;
+      transition: 0.3s; margin-right: 12px; flex-shrink: 0;
+    }
+    .toggle-switch::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 20px; height: 20px; background: var(--color-surface);
+      border-radius: 50%; transition: 0.3s;
+    }
+    input[type="checkbox"]:checked + .toggle-switch { background: #10b981; }
+    input[type="checkbox"]:checked + .toggle-switch::after { transform: translateX(20px); }
+    input[type="checkbox"] { display: none; }
+
+    /* ── Stats & legend ── */
+    .sim-legend { margin-top: 16px; border-top: 1px solid var(--color-border); padding-top: 12px; font-size: 0.8rem; }
+    .legend-item { display: flex; align-items: center; margin-bottom: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+
+    .stats-box {
+      margin-top: 16px; padding: 12px;
+      background: var(--color-surface-soft);
+      border-radius: var(--radius-sm); font-size: 0.8rem;
+      border: 1px solid var(--color-border);
+    }
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .stat-label { color: var(--color-text-muted); }
+    .stat-val { font-family: monospace; color: var(--color-accent); font-weight: bold; }
+    .stat-highlight { color: var(--color-accent-soft); }
+
+    /* ── Buttons ── */
+    button.sim-btn {
+      width: 100%; padding: 8px 16px; border: none;
+      border-radius: var(--radius-sm); font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s; margin-top: 8px;
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .sim-btn-primary { background: var(--color-accent); color: #fff; }
+    .sim-btn-primary:hover { opacity: 0.85; }
+    .sim-btn-pause  { background: #d97706; color: #fff; }
+    .sim-btn-resume { background: #059669; color: #fff; }
+    .sim-btn-export { background: var(--color-accent-soft); color: #fff; }
+    .sim-btn-export:hover { opacity: 0.85; }
+
+    .btn-group { display: flex; gap: 10px; margin-top: 8px; }
+    .btn-group .sim-btn { flex: 1; }
+
+    .export-section { border-top: 1px solid var(--color-border); padding-top: 12px; margin-top: 12px; }
+
+    /* ── Top bar (wraps all three pills) ── */
+    #top-bar {
+      position: fixed;
+      top: 12px; left: 12px; right: 12px;
+      z-index: 2147483646;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: none;
+      isolation: isolate;
+    }
+    #top-bar > * { pointer-events: auto; }
+
+    /* ── Controls panel toggle ── */
+    #lbm-toggle {
+      display: flex; gap: 0;
+      background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 3px;
+      box-shadow: var(--shadow-soft);
+      font-family: var(--font-body);
+    }
+    #lbm-toggle button {
+      border: none; background: transparent; cursor: pointer;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 0.75rem; color: var(--color-text-muted);
+      transition: all 0.2s;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    #lbm-toggle button.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    /* Panel visibility is driven entirely by the .is-open class on every
+       screen size — the top-left toggle controls it. */
+    .sim-controls { display: none; }
+    .sim-controls.is-open { display: block; }
+
+    /* ── Status indicator ── */
+    #statusIndicator {
+      position: absolute; top: 56px; left: 50%; transform: translateX(-50%);
+      font-size: 0.75rem; font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--lbm-panel-bg);
+      padding: 4px 12px; border-radius: 999px;
+      border: 1px solid var(--color-border);
+      opacity: 0; pointer-events: none; z-index: 9;
+      transition: opacity 250ms ease;
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
+
+    /* ── Theme toggle ── */
+    #theme-toggle {
+      display: flex; gap: 0;
+      background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 3px;
+      box-shadow: var(--shadow-soft);
+      font-family: var(--font-body);
+    }
+    #theme-toggle button {
+      border: none; background: transparent; cursor: pointer;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 0.75rem; color: var(--color-text-muted);
+      transition: all 0.2s;
+      line-height: 1.2;
+      pointer-events: auto;
+    }
+    #theme-toggle button.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    /* ── Narrow-width: merge the three pills into a single pill ── */
+    @media (max-width: 720px) {
+      #top-bar {
+        justify-content: center;
+        gap: 0;
+        background: var(--color-surface-soft);
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        padding: 3px;
+        box-shadow: var(--shadow-soft);
+        pointer-events: auto;
+        width: max-content;
+        max-width: calc(100% - 24px);
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+      }
+      #top-bar > #lbm-toggle,
+      #top-bar > #track-toggle,
+      #top-bar > #theme-toggle {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+      }
+      /* Vertical separators between sections */
+      #top-bar > * + * {
+        border-left: 1px solid var(--color-border);
+        margin-left: 6px;
+        padding-left: 6px;
+      }
+      /* Hide the "Controls" text — keep just the gear icon */
+      #lbm-toggle .pill-label { display: none; }
+      #lbm-toggle button { padding: 4px 8px; }
+    }
+
+    /* ── Track-mode toggle ── */
+    #track-toggle {
+      display: flex; gap: 0;
+      background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 3px;
+      box-shadow: var(--shadow-soft);
+      font-family: var(--font-body);
+    }
+    #track-toggle button {
+      border: none; background: transparent; cursor: pointer;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 0.75rem; color: var(--color-text-muted);
+      transition: all 0.2s;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    #track-toggle button.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    #track-toggle button[disabled] {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="top-bar">
+  <div id="lbm-toggle" role="group" aria-label="Toggle controls panel">
+    <button id="lbm-toggle-btn" type="button" class="active" aria-pressed="true" title="Show or hide the controls panel">
+      <span aria-hidden="true">&#9881;</span><span class="pill-label"> Controls</span>
+    </button>
+  </div>
+
+  <div id="track-toggle" role="group" aria-label="Camera tracking mode">
+    <button data-track="bm"   title="Auto-track Brownian motion">BM</button>
+    <button data-track="levy" title="Auto-track Lévy flight">Lévy</button>
+    <button data-track="both" title="Auto-track both" class="active">Both</button>
+  </div>
+
+  <div id="theme-toggle">
+    <button data-theme="light"  title="Light">&#9728;</button>
+    <button data-theme="system" title="System" class="active">Auto</button>
+    <button data-theme="dark"   title="Dark">&#9790;</button>
+  </div>
+</div>
+
+<main id="main-content">
+  <div id="sim-container" style="position: relative; flex: 1; overflow: hidden; min-height: 0;">
+
+    <div id="statusIndicator">Manual camera — pick a Track button to re-engage</div>
+
+    <!-- Floating controls -->
+    <div class="sim-controls is-open">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="text-xl font-bold" style="color: var(--color-text); font-family: var(--font-heading); margin: 0;">BM vs Lévy Sim</h2>
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Lévy Index (\(\alpha\))</span>
+          <span id="alphaVal" style="color: var(--color-accent);">1.0</span>
+        </div>
+        <input type="range" id="alphaSlider" min="0.1" max="1.99" step="0.01" value="1.0">
+        <p class="text-xs mt-1 leading-relaxed" style="color: var(--color-text-muted);">
+          Tail index: \( P(\text{step} > x) \sim x^{-\alpha} \)<br>
+          Small \(\alpha\) = heavier tails (super-diffusion).
+        </p>
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Simulation Speed</span>
+          <span id="speedVal">5</span>
+        </div>
+        <input type="range" id="speedSlider" min="1" max="20" step="1" value="5">
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Sausage Radius (\(p\)-th quantile)</span>
+          <span id="radiusVal" class="text-xs font-mono" style="color: var(--color-accent);">R=5.0 (p=50%)</span>
+        </div>
+        <input type="range" id="radiusSlider" min="0" max="100" step="1" value="50">
+        <p class="text-xs mt-1 leading-relaxed" style="color: var(--color-text-muted);">
+          Radius scales with jump size distribution:<br>
+          \( R(p) \propto (1-p)^{-1/\alpha} \)
+        </p>
+      </div>
+
+      <label class="toggle-container">
+        <input type="checkbox" id="brownianToggle" checked>
+        <div class="toggle-switch"></div>
+        <span class="text-sm font-medium">Show Brownian Motion</span>
+      </label>
+
+      <label class="toggle-container">
+        <input type="checkbox" id="levyToggle">
+        <div class="toggle-switch"></div>
+        <span class="text-sm font-medium">Show Lévy Flight</span>
+      </label>
+
+      <label class="toggle-container">
+        <input type="checkbox" id="sausageToggle">
+        <div class="toggle-switch"></div>
+        <span class="text-sm font-medium">Sausage Mode (Balls)</span>
+      </label>
+
+      <div class="slider-container" style="margin-top: 12px; margin-bottom: 4px;">
+        <div class="slider-label"><span>Random Seed</span></div>
+        <input type="text" id="seedInput" placeholder="Seed">
+      </div>
+
+      <div class="btn-group">
+        <button id="startBtn" class="sim-btn sim-btn-resume" onclick="Sim.startOrToggle()">Start</button>
+        <button class="sim-btn sim-btn-primary" onclick="Sim.reset()">Reset</button>
+      </div>
+      <div class="btn-group">
+        <button class="sim-btn sim-btn-export" onclick="Sim.newSeed()">New Seed</button>
+      </div>
+
+      <div class="export-section">
+        <label class="toggle-container">
+          <input type="checkbox" id="optimiseExport" checked>
+          <div class="toggle-switch"></div>
+          <span class="text-sm font-medium">Optimise Size (HD)</span>
+        </label>
+        <button class="sim-btn sim-btn-export" onclick="Sim.exportImage()">Export Image</button>
+      </div>
+
+      <div class="stats-box">
+        <div class="stat-row" id="brownianAreaRow" title="Area covered by the BM path">
+          <span class="stat-label">Brownian (Path):</span>
+          <span id="brownianAreaStat" class="stat-val">0</span>
+        </div>
+        <div class="stat-row" id="levyPointsRow" title="Area covered by landing points only" style="opacity: 0.3;">
+          <span class="stat-label">Lévy (Points):</span>
+          <span id="levyAreaStat" class="stat-val">0</span>
+        </div>
+        <div class="stat-row" id="levyPathRow" title="Area covered by points AND connecting lines" style="opacity: 0.3;">
+          <span class="stat-label">Lévy (Path):</span>
+          <span id="levyPathStat" class="stat-val stat-highlight">0</span>
+        </div>
+      </div>
+    </div>
+
+    <canvas id="simCanvas" style="display: block; cursor: grab; position: absolute; top: 0; left: 0;"></canvas>
+  </div>
+</main>
+
+<script>
+  // ── Theme toggle ───────────────────────────────────────────────────────────
+  (function() {
+    function getBtns() { return document.querySelectorAll('#theme-toggle button'); }
+    var saved = (function(){ try { return localStorage.getItem('theme-pref') || 'system'; } catch(e) { return 'system'; } })();
+
+    function apply(mode) {
+      if (mode === 'light' || mode === 'dark') {
+        document.documentElement.setAttribute('data-theme', mode);
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      getBtns().forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-theme') === mode); });
+      try { localStorage.setItem('theme-pref', mode); } catch(e) {}
+    }
+
+    function init() {
+      // Direct binding on the buttons.
+      getBtns().forEach(function(b) {
+        b.addEventListener('click', function(ev) { ev.stopPropagation(); apply(b.getAttribute('data-theme')); });
+      });
+      // Event-delegation fallback: even if anything visually captures the
+      // click, the body-level capture-phase listener still finds it.
+      document.body.addEventListener('click', function(ev) {
+        var t = ev.target;
+        while (t && t !== document.body) {
+          if (t.parentNode && t.parentNode.id === 'theme-toggle' && t.hasAttribute('data-theme')) {
+            apply(t.getAttribute('data-theme'));
+            return;
+          }
+          t = t.parentNode;
+        }
+      }, true);
+      apply(saved);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+
+<script>
+  /**
+   * Lévy Flight vs Brownian Motion — standalone presentation version
+   */
+
+  // ── Theme helper ──────────────────────────────────────────────────────────
+  function getLBMColors() {
+    const s = getComputedStyle(document.documentElement);
+    const g = n => s.getPropertyValue(n).trim();
+    const isDark = (document.documentElement.getAttribute('data-theme') === 'dark') ||
+                   (!document.documentElement.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    return {
+      bg:          g('--color-bg'),
+      trace:       g('--lbm-trace'),
+      brownian:    g('--lbm-brownian'),
+      levyLine:    g('--lbm-levy-line'),
+      legendBg:    g('--lbm-legend-bg'),
+      text:        g('--color-text'),
+      hueLightness: parseFloat(g('--lbm-hue-lightness')) || (isDark ? 60 : 42),
+      hueSatBase:   parseFloat(g('--lbm-hue-sat-base'))  || (isDark ? 100 : 85),
+      isDark,
+    };
+  }
+
+  // Current frame colors (updated at start of each animate() call)
+  let C = getLBMColors();
+
+  // ── 1. Configuration ──────────────────────────────────────────────────────
+  const Config = {
+    baseScale: 5,
+    colorSpeedFactor: 0.05,
+    get cyclePeriod() { return (360 / this.colorSpeedFactor) * 4; },
+    chunkSize: 1000,
+  };
+
+  // ── 2. PRNG ───────────────────────────────────────────────────────────────
+  const PRNG = {
+    rand: Math.random,
+    xmur3: function(str) {
+      for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++) {
+        h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+        h = h << 13 | h >>> 19;
+      }
+      return function() {
+        h = Math.imul(h ^ h >>> 16, 2246822507);
+        h = Math.imul(h ^ h >>> 13, 3266489909);
+        return (h ^= h >>> 16) >>> 0;
+      };
+    },
+    mulberry32: function(a) {
+      return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    },
+    init: function(seedStr) {
+      if (!seedStr) seedStr = Date.now().toString() + Math.random().toString();
+      this.rand = this.mulberry32(this.xmur3(seedStr)());
+    },
+    gaussian: function() {
+      let u = 0, v = 0;
+      while (u === 0) u = this.rand();
+      while (v === 0) v = this.rand();
+      return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    }
+  };
+
+  // ── 3. State ──────────────────────────────────────────────────────────────
+  const State = {
+    width: 0, height: 0, time: 0,
+    alpha: 1.0, speed: 5, sausageRadius: 5.0,
+    showBrownian: true, showLevy: false, showSausage: false,
+    hasStarted: false, currentSeed: '',
+    isPaused: false, isInteracting: false,
+    trackMode: 'both',
+    levy:     { pos: {x:0,y:0}, active: [], buffer: [], chunks: [] },
+    brownian: { pos: {x:0,y:0}, active: [], buffer: [], chunks: [] },
+    stats: {
+      levyPoints: new Set(),
+      levyPath:   new Set(),
+      brownian:   new Set(),
+    },
+    reset: function() {
+      this.time = 0;
+      this.levy     = { pos: {x:0,y:0}, active: [{x:0,y:0,time:0}], buffer: [], chunks: [] };
+      this.brownian = { pos: {x:0,y:0}, active: [{x:0,y:0,time:0}], buffer: [], chunks: [] };
+      this.stats.levyPoints.clear(); this.stats.levyPath.clear(); this.stats.brownian.clear();
+      Stats.updateCoverage(0, 0, this.sausageRadius, this.stats.levyPoints);
+      Stats.updateCoverage(0, 0, this.sausageRadius, this.stats.levyPath);
+      Stats.updateCoverage(0, 0, this.sausageRadius, this.stats.brownian);
+    }
+  };
+
+  // ── 4. View ───────────────────────────────────────────────────────────────
+  const View = {
+    camera: { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0 },
+    canvas: document.getElementById('simCanvas'),
+    ctx:    document.getElementById('simCanvas').getContext('2d'),
+
+    resize: function() {
+      const container = document.getElementById('sim-container');
+      State.width  = container.clientWidth;
+      State.height = container.clientHeight;
+      this.canvas.width  = State.width;
+      this.canvas.height = State.height;
+      this.canvas.style.width  = State.width  + 'px';
+      this.canvas.style.height = State.height + 'px';
+    },
+
+    updateCamera: function() {
+      if (State.isPaused || State.trackMode === 'none') return;
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      const check  = list   => { for (let p of list) { if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x; if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y; } };
+      const checkC = chunks => { for (let c of chunks) { if(c.minX<minX)minX=c.minX; if(c.maxX>maxX)maxX=c.maxX; if(c.minY<minY)minY=c.minY; if(c.maxY>maxY)maxY=c.maxY; } };
+      const trackLevy = (State.trackMode === 'both' || State.trackMode === 'levy');
+      const trackBM   = (State.trackMode === 'both' || State.trackMode === 'bm');
+      if (trackLevy) { checkC(State.levy.chunks); check(State.levy.active); }
+      if (trackBM)   { checkC(State.brownian.chunks); check(State.brownian.active); }
+      if (minX === Infinity) { minX = -100; maxX = 100; minY = -100; maxY = 100; }
+      const pad = State.showSausage ? State.sausageRadius : 0;
+      minX -= pad; maxX += pad; minY -= pad; maxY += pad;
+      let cW = Math.max(maxX - minX, 100), cH = Math.max(maxY - minY, 100);
+      // Only reserve UI-safe horizontal margin when the controls panel is
+      // actually visible. Hide the panel (mobile) and the camera fills the
+      // full viewport.
+      const panel = document.querySelector('.sim-controls');
+      const panelVisible = panel && getComputedStyle(panel).display !== 'none';
+      const uiSafe = 380, margin = 50;
+      let availW = State.width - margin * 2, shiftX = 0;
+      if (panelVisible && State.width > uiSafe + 200) { availW = State.width - uiSafe - margin; shiftX = (uiSafe + availW / 2) - (State.width / 2); }
+      const availH = State.height - margin * 2;
+      const targetZoom = Math.min(availW / cW, availH / cH);
+      const centerX = (minX + maxX) / 2, centerY = (minY + maxY) / 2;
+      this.camera.targetY = centerY;
+      const lerp = (s, e, f) => s + (e - s) * f;
+      const zoomRatio = Math.max(this.camera.zoom / targetZoom, targetZoom / this.camera.zoom);
+      if (zoomRatio > 4) {
+        this.camera.zoom = targetZoom;
+        this.camera.x = this.camera.targetX = centerX - (shiftX / targetZoom);
+        this.camera.y = centerY;
+      } else {
+        const newZoom = lerp(this.camera.zoom, targetZoom, 0.05);
+        this.camera.targetX = centerX - (shiftX / newZoom);
+        this.camera.zoom = newZoom;
+        this.camera.x = lerp(this.camera.x, this.camera.targetX, 0.05);
+        this.camera.y = lerp(this.camera.y, centerY, 0.05);
+      }
+    }
+  };
+
+  // ── 5. Statistics ─────────────────────────────────────────────────────────
+  const Stats = {
+    updateCoverage: function(x, y, r, set) {
+      const cell = r / 2, rSq = r * r;
+      const gx0 = Math.floor((x - r) / cell), gx1 = Math.floor((x + r) / cell);
+      const gy0 = Math.floor((y - r) / cell), gy1 = Math.floor((y + r) / cell);
+      for (let gx = gx0; gx <= gx1; gx++) {
+        for (let gy = gy0; gy <= gy1; gy++) {
+          const cx = Math.max(gx*cell,   Math.min(x, (gx+1)*cell));
+          const cy = Math.max(gy*cell,   Math.min(y, (gy+1)*cell));
+          if ((x-cx)**2 + (y-cy)**2 < rSq) set.add(`${gx},${gy}`);
+        }
+      }
+    },
+    walkLineCoverage: function(x1, y1, x2, y2, r, set) {
+      const dx = x2 - x1, dy = y2 - y1;
+      const steps = Math.ceil(Math.sqrt(dx*dx + dy*dy) / (r / 2));
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        this.updateCoverage(x1 + dx*t, y1 + dy*t, r, set);
+      }
+    },
+    format: function(area) {
+      if (area < 1000)    return Math.round(area);
+      if (area < 1000000) return (area / 1000).toFixed(1) + 'k';
+      return (area / 1000000).toFixed(2) + 'M';
+    },
+    updateUI: function() {
+      const ca = (State.sausageRadius / 2) ** 2;
+      document.getElementById('levyAreaStat').textContent  = this.format(State.stats.levyPoints.size * ca);
+      document.getElementById('levyPathStat').textContent  = this.format(State.stats.levyPath.size   * ca);
+      document.getElementById('brownianAreaStat').textContent = this.format(State.stats.brownian.size * ca);
+    },
+    recalculateAll: function() {
+      State.stats.levyPoints.clear(); State.stats.levyPath.clear(); State.stats.brownian.clear();
+      const traverse = (data, cb) => {
+        let px = 0, py = 0;
+        const proc = list => { for (let p of list) { cb(px,py,p.x,p.y); px=p.x; py=p.y; } };
+        for (let c of data.chunks) proc(c.points);
+        proc(data.buffer); proc(data.active);
+      };
+      traverse(State.levy, (px,py,cx,cy) => {
+        this.updateCoverage(cx,cy,State.sausageRadius,State.stats.levyPoints);
+        this.walkLineCoverage(px,py,cx,cy,State.sausageRadius,State.stats.levyPath);
+      });
+      traverse(State.brownian, (px,py,cx,cy) =>
+        this.walkLineCoverage(px,py,cx,cy,State.sausageRadius,State.stats.brownian));
+      this.updateUI();
+    }
+  };
+
+  // ── 6. Simulation ─────────────────────────────────────────────────────────
+  const Sim = {
+    archivePoint: function(point, buffer, chunks) {
+      buffer.push(point);
+      if (buffer.length >= Config.chunkSize) {
+        let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+        for (let p of buffer) {
+          if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x;
+          if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y;
+        }
+        chunks.push({ points: buffer, minX, maxX, minY, maxY });
+        return [];
+      }
+      return buffer;
+    },
+
+    step: function() {
+      const cutoff = State.time - Config.cyclePeriod;
+      for (let i = 0; i < State.speed; i++) {
+        State.time++;
+        const theta = PRNG.rand() * 2 * Math.PI;
+        const dirX = Math.cos(theta), dirY = Math.sin(theta);
+
+        let u = PRNG.rand(); if (u === 0) u = 0.00001;
+        let stepLevy = Math.min(Config.baseScale * Math.pow(u, -1 / State.alpha), 1e6);
+        const plx = State.levy.pos.x, ply = State.levy.pos.y;
+        State.levy.pos.x += dirX * stepLevy;
+        State.levy.pos.y += dirY * stepLevy;
+        State.levy.active.push({ x: State.levy.pos.x, y: State.levy.pos.y, time: State.time });
+        Stats.updateCoverage(State.levy.pos.x, State.levy.pos.y, State.sausageRadius, State.stats.levyPoints);
+        Stats.walkLineCoverage(plx, ply, State.levy.pos.x, State.levy.pos.y, State.sausageRadius, State.stats.levyPath);
+
+        // Brownian always steps so toggling display mid-run stays in sync.
+        let stepBrown = Math.abs(PRNG.gaussian()) * Config.baseScale;
+        const pbx = State.brownian.pos.x, pby = State.brownian.pos.y;
+        State.brownian.pos.x += dirX * stepBrown;
+        State.brownian.pos.y += dirY * stepBrown;
+        State.brownian.active.push({ x: State.brownian.pos.x, y: State.brownian.pos.y, time: State.time });
+        Stats.walkLineCoverage(pbx, pby, State.brownian.pos.x, State.brownian.pos.y, State.sausageRadius, State.stats.brownian);
+      }
+
+      const archive = agent => {
+        while (agent.active.length > 0 && agent.active[0].time < cutoff) {
+          agent.buffer = this.archivePoint({ x: agent.active[0].x, y: agent.active[0].y }, agent.buffer, agent.chunks);
+          agent.active.shift();
+        }
+      };
+      archive(State.levy);
+      archive(State.brownian);
+    },
+
+    reset: function() {
+      // Re-seed from the input box if the user typed something different,
+      // otherwise replay the sticky seed exactly.
+      const typed = document.getElementById('seedInput').value.trim();
+      if (typed && typed !== State.currentSeed) State.currentSeed = typed;
+      PRNG.init(State.currentSeed);
+      State.reset();
+      View.camera = { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0 };
+      State.hasStarted = false;
+      State.isPaused = false;
+      const btn = document.getElementById('startBtn');
+      btn.textContent = 'Start';
+      btn.className = 'sim-btn sim-btn-resume';
+    },
+
+    newSeed: function() {
+      State.currentSeed = Date.now().toString() + Math.random().toString(36).slice(2);
+      document.getElementById('seedInput').value = State.currentSeed;
+      this.reset();
+    },
+
+    startOrToggle: function() {
+      if (!State.hasStarted) {
+        State.hasStarted = true;
+        State.isPaused = false;
+        const btn = document.getElementById('startBtn');
+        btn.textContent = 'Pause';
+        btn.className = 'sim-btn sim-btn-pause';
+        return;
+      }
+      State.isPaused = !State.isPaused;
+      const btn = document.getElementById('startBtn');
+      btn.textContent = State.isPaused ? 'Resume' : 'Pause';
+      btn.className = State.isPaused ? 'sim-btn sim-btn-resume' : 'sim-btn sim-btn-pause';
+    },
+
+    exportImage: function() {
+      const optimise = document.getElementById('optimiseExport').checked;
+      const pad = State.sausageRadius * 4;
+      let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+      const check  = list   => { for(let p of list){if(p.x<minX)minX=p.x;if(p.x>maxX)maxX=p.x;if(p.y<minY)minY=p.y;if(p.y>maxY)maxY=p.y;} };
+      const checkC = chunks => { for(let c of chunks){if(c.minX<minX)minX=c.minX;if(c.maxX>maxX)maxX=c.maxX;if(c.minY<minY)minY=c.minY;if(c.maxY>maxY)maxY=c.maxY;} };
+      if (State.showLevy) { checkC(State.levy.chunks); check(State.levy.active); check(State.levy.buffer); }
+      if (State.showBrownian) { checkC(State.brownian.chunks); check(State.brownian.active); check(State.brownian.buffer); }
+      if (minX === Infinity) return;
+      minX -= pad; maxX += pad; minY -= pad; maxY += pad;
+      const cW = maxX - minX, cH = maxY - minY;
+      let tw, th, tz;
+      if (optimise) {
+        const MAX = 3840, ratio = cW / cH;
+        if (ratio >= 1) { tw = MAX; th = Math.round(MAX / ratio); } else { th = MAX; tw = Math.round(MAX * ratio); }
+        tz = tw / cW;
+      } else {
+        tw = Math.ceil(cW); th = Math.ceil(cH); tz = 1;
+        const MAX = 16384;
+        if (tw > MAX || th > MAX) { const s = Math.min(MAX/tw, MAX/th); tw = Math.round(tw*s); th = Math.round(th*s); tz = s; }
+      }
+      const off = document.createElement('canvas');
+      off.width = tw; off.height = th;
+      const oc = off.getContext('2d');
+      const exportC = getLBMColors();
+      oc.fillStyle = exportC.bg;
+      oc.fillRect(0, 0, tw, th);
+      oc.translate(tw/2, th/2); oc.scale(tz, tz); oc.translate(-(minX+maxX)/2, -(minY+maxY)/2);
+      const exportCam = { x: (minX+maxX)/2, y: (minY+maxY)/2, zoom: tz };
+      if (State.showBrownian) Renderer.drawSystem(oc, tw, th, exportCam, State.brownian, false, true, exportC);
+      if (State.showLevy)     Renderer.drawSystem(oc, tw, th, exportCam, State.levy, true, true, exportC);
+      oc.setTransform(1,0,0,1,0,0);
+      Renderer.drawLegend(oc, tw, th, exportC);
+      const link = document.createElement('a');
+      link.download = `levy_flight_alpha${State.alpha}.png`;
+      link.href = off.toDataURL('image/png');
+      link.click();
+    }
+  };
+
+  // ── 7. Renderer ───────────────────────────────────────────────────────────
+  const Renderer = {
+    // Walk every point of an agent in temporal order: chunks → buffer → active.
+    forEachPoint: function(agent, cb) {
+      for (let c of agent.chunks) for (let p of c.points) cb(p);
+      for (let p of agent.buffer) cb(p);
+      for (let p of agent.active) cb(p);
+    },
+
+    // Continuous Brownian polyline. The line *is* the path. When sausage
+    // mode is on we additionally stroke the path with width = 2·R to render
+    // the Wiener sausage (union of balls of radius R along the trajectory).
+    drawBrownianPath: function(ctx, cam, agent, colors) {
+      let started = false;
+      ctx.beginPath();
+      this.forEachPoint(agent, p => {
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+        else ctx.lineTo(p.x, p.y);
+      });
+      if (!started) return;
+      ctx.lineJoin = 'round';
+      ctx.lineCap  = 'round';
+
+      // Sausage underlay: a fat translucent stroke of diameter 2·R.
+      if (State.showSausage) {
+        ctx.lineWidth   = 2 * State.sausageRadius;
+        ctx.strokeStyle = colors.trace;
+        ctx.stroke();
+      }
+
+      // Centerline — always drawn so the actual continuous path is visible.
+      ctx.lineWidth   = Math.max(1.5, 2.5 / cam.zoom);
+      ctx.strokeStyle = colors.brownian;
+      ctx.stroke();
+    },
+
+    drawSystem: function(ctx, w, h, cam, agent, isLevy, isExport, colors) {
+      colors = colors || C;
+
+      if (!isLevy) {
+        // Brownian: render as one continuous stroked polyline.
+        this.drawBrownianPath(ctx, cam, agent, colors);
+        return;
+      }
+
+      const PI2 = Math.PI * 2;
+      const sPS = 3 / cam.zoom, halfSPS = sPS / 2;
+      const pad = State.showSausage ? State.sausageRadius : sPS / 2;
+      const vMinX = cam.x - (w/2)/cam.zoom, vMaxX = cam.x + (w/2)/cam.zoom;
+      const vMinY = cam.y - (h/2)/cam.zoom, vMaxY = cam.y + (h/2)/cam.zoom;
+
+      // Pass 1: trace underlay (Lévy points only)
+      ctx.fillStyle = colors.trace;
+      for (let chunk of agent.chunks) {
+        if (!isExport) {
+          if (chunk.maxX+pad < vMinX || chunk.minX-pad > vMaxX || chunk.maxY+pad < vMinY || chunk.minY-pad > vMaxY) continue;
+          if (!State.isPaused) {
+            const sw = ((chunk.maxX-chunk.minX)+2*pad)*cam.zoom, sh = ((chunk.maxY-chunk.minY)+2*pad)*cam.zoom;
+            if (sw < 2 && sh < 2) {
+              ctx.fillRect(((chunk.minX+chunk.maxX)/2)-1/cam.zoom,((chunk.minY+chunk.maxY)/2)-1/cam.zoom,2/cam.zoom,2/cam.zoom);
+              continue;
+            }
+          }
+        }
+        ctx.beginPath();
+        for (let p of chunk.points) {
+          if (State.showSausage) { ctx.moveTo(p.x+State.sausageRadius,p.y); ctx.arc(p.x,p.y,State.sausageRadius,0,PI2); }
+          else ctx.rect(p.x-halfSPS, p.y-halfSPS, sPS, sPS);
+        }
+        ctx.fill();
+      }
+      ctx.beginPath();
+      for (let p of agent.buffer.concat(agent.active)) {
+        if (State.showSausage) { ctx.moveTo(p.x+State.sausageRadius,p.y); ctx.arc(p.x,p.y,State.sausageRadius,0,PI2); }
+        else ctx.rect(p.x-halfSPS, p.y-halfSPS, sPS, sPS);
+      }
+      ctx.fill();
+
+      // Pass 1.5: thin connector polyline between successive Lévy points.
+      // Width is independent of sausageRadius and strictly thinner than the
+      // point side sPS = 3 / cam.zoom.
+      let started = false;
+      ctx.beginPath();
+      this.forEachPoint(agent, p => {
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+        else ctx.lineTo(p.x, p.y);
+      });
+      if (started) {
+        ctx.lineWidth   = Math.max(0.75, 1 / cam.zoom);
+        ctx.strokeStyle = colors.levyLine || (colors.isDark ? 'rgba(226,232,240,0.55)' : 'rgba(40,25,15,0.55)');
+        ctx.lineJoin    = 'round';
+        ctx.lineCap     = 'round';
+        ctx.stroke();
+      }
+
+      // Pass 2: colour overlay (Lévy active points only)
+      for (let p of agent.active) {
+        const ageRatio = (State.time - p.time) / Config.cyclePeriod;
+        let alpha = 1.0 - ageRatio; if (alpha <= 0) continue;
+        const hue   = (p.time * Config.colorSpeedFactor) % 360;
+        const sat   = colors.hueSatBase   * (1 - ageRatio * 0.5);
+        const light = colors.hueLightness + 10 * ageRatio;
+        ctx.fillStyle = `hsla(${hue},${sat}%,${light}%,${alpha})`;
+        ctx.beginPath();
+        if (State.showSausage) ctx.arc(p.x, p.y, State.sausageRadius, 0, PI2);
+        else ctx.fillRect(p.x-halfSPS, p.y-halfSPS, sPS, sPS);
+        ctx.fill();
+      }
+    },
+
+    drawLegend: function(ctx, w, h, colors) {
+      colors = colors || C;
+      const minDim = Math.min(w, h);
+      const barW  = Math.max(200, minDim * 0.4);
+      const barH  = Math.max(15,  minDim * 0.025);
+      const startX = w - barW - (w * 0.03);
+      const startY = h - barH - (h * 0.03);
+
+      ctx.fillStyle = colors.legendBg;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(startX-10, startY-barH*1.5, barW+20, barH*2.5+5, 8);
+      else ctx.rect(startX-10, startY-barH*1.5, barW+20, barH*2.5+5);
+      ctx.fill();
+
+      // Gray base
+      ctx.fillStyle = colors.isDark ? 'rgba(148,163,184,0.5)' : 'rgba(100,80,65,0.3)';
+      ctx.fillRect(startX, startY, barW, barH);
+
+      // Hue gradient
+      const steps = 60, sliceW = barW / steps;
+      for (let i = 0; i < steps; i++) {
+        const ageRatio = 1.0 - (i / (steps - 1));
+        const ptTime = State.time - ageRatio * Config.cyclePeriod;
+        const hue   = (ptTime * Config.colorSpeedFactor) % 360;
+        const sat   = colors.hueSatBase   * (1 - ageRatio * 0.5);
+        const light = colors.hueLightness + 10 * ageRatio;
+        let a = 1.0 - ageRatio; if (a < 0) a = 0;
+        ctx.fillStyle = `hsla(${hue},${sat}%,${light}%,${a})`;
+        ctx.fillRect(startX + i * sliceW, startY, sliceW + 1, barH);
+      }
+
+      const fontSize = Math.max(12, barH * 0.9);
+      ctx.font = `bold ${fontSize}px var(--font-body, 'Segoe UI', sans-serif)`;
+      ctx.fillStyle = colors.isDark ? '#e2e8f0' : '#1f1b18';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+      ctx.fillText('Past (Trace)', startX, startY - 5);
+      ctx.textAlign = 'right';
+      ctx.fillText('Present', startX + barW, startY - 5);
+    }
+  };
+
+  // ── 8. Loop & handlers ────────────────────────────────────────────────────
+  function animate() {
+    if (State.hasStarted && !State.isPaused) {
+      Sim.step();
+      if (State.time % 10 === 0) Stats.updateUI();
+    }
+    View.updateCamera();
+
+    C = getLBMColors(); // refresh theme each frame
+
+    const ctx = View.ctx;
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, State.width, State.height);
+
+    ctx.translate(State.width/2, State.height/2);
+    ctx.scale(View.camera.zoom, View.camera.zoom);
+    ctx.translate(-View.camera.x, -View.camera.y);
+
+    if (State.showBrownian) Renderer.drawSystem(ctx, State.width, State.height, View.camera, State.brownian, false, false, C);
+    if (State.showLevy)     Renderer.drawSystem(ctx, State.width, State.height, View.camera, State.levy, true, false, C);
+
+    ctx.setTransform(1,0,0,1,0,0);
+    if (State.showLevy) Renderer.drawLegend(ctx, State.width, State.height, C);
+
+    requestAnimationFrame(animate);
+  }
+
+  function setupInputs() {
+    new ResizeObserver(() => View.resize()).observe(document.getElementById('sim-container'));
+
+    const updateRadius = () => {
+      const val = parseFloat(document.getElementById('radiusSlider').value);
+      const p = (val / 100) * 0.9999;
+      State.sausageRadius = Config.baseScale * Math.pow(1.0 - p, -1 / State.alpha);
+      let rText = State.sausageRadius < 10 ? State.sausageRadius.toFixed(1) :
+                  State.sausageRadius < 1000 ? Math.round(State.sausageRadius*10)/10 :
+                  (State.sausageRadius/1000).toFixed(1) + 'k';
+      document.getElementById('radiusVal').textContent = `R=${rText} (p=${(p*100).toFixed(1)}%)`;
+    };
+
+    document.getElementById('alphaSlider').addEventListener('input', e => {
+      State.alpha = parseFloat(e.target.value);
+      document.getElementById('alphaVal').textContent = State.alpha.toFixed(2);
+      updateRadius();
+    });
+    document.getElementById('speedSlider').addEventListener('input', e => {
+      State.speed = parseInt(e.target.value);
+      document.getElementById('speedVal').textContent = State.speed;
+    });
+    document.getElementById('radiusSlider').addEventListener('input', updateRadius);
+    document.getElementById('radiusSlider').addEventListener('change', () => Stats.recalculateAll());
+
+    const updateRowDimming = () => {
+      const bRow = document.getElementById('brownianAreaRow');
+      const lRow1 = document.getElementById('levyPointsRow');
+      const lRow2 = document.getElementById('levyPathRow');
+      if (bRow) bRow.style.opacity = State.showBrownian ? '1' : '0.3';
+      if (lRow1) lRow1.style.opacity = State.showLevy ? '1' : '0.3';
+      if (lRow2) lRow2.style.opacity = State.showLevy ? '1' : '0.3';
+    };
+
+    document.getElementById('brownianToggle').addEventListener('change', e => {
+      State.showBrownian = e.target.checked;
+      updateRowDimming();
+      refreshTrackButtons();
+    });
+    document.getElementById('levyToggle').addEventListener('change', e => {
+      State.showLevy = e.target.checked;
+      updateRowDimming();
+      refreshTrackButtons();
+    });
+
+    document.getElementById('sausageToggle').addEventListener('change', e => State.showSausage = e.target.checked);
+
+    // Sticky-seed input: typing only updates State.currentSeed; the user must
+    // press Reset (or Start after Reset) to actually replay with the new seed.
+    document.getElementById('seedInput').addEventListener('input', e => {
+      State.currentSeed = e.target.value.trim() || State.currentSeed;
+    });
+
+    updateRowDimming();
+
+    // ── Track-mode buttons ────────────────────────────────────────────────
+    const trackBtns = document.querySelectorAll('#track-toggle button[data-track]');
+    const isModeAllowed = (mode) => {
+      if (mode === 'none') return true;
+      if (mode === 'bm')   return State.showBrownian;
+      if (mode === 'levy') return State.showLevy;
+      if (mode === 'both') return State.showBrownian && State.showLevy;
+      return false;
+    };
+    const setTrackMode = (mode) => {
+      if (!isModeAllowed(mode)) return;
+      State.trackMode = mode;
+      trackBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-track') === mode));
+      const ind = document.getElementById('statusIndicator');
+      if (ind) ind.style.opacity = (mode === 'none') ? '1' : '0';
+    };
+    // Disable buttons whose mode is currently impossible (process hidden),
+    // and if the active mode just became invalid, fall back to a sensible
+    // alternative.
+    const refreshTrackButtons = () => {
+      trackBtns.forEach(b => {
+        const m = b.getAttribute('data-track');
+        const ok = isModeAllowed(m);
+        b.disabled = !ok;
+        if (!ok) b.classList.remove('active');
+      });
+      if (!isModeAllowed(State.trackMode)) {
+        let fallback;
+        if (State.showBrownian && State.showLevy) fallback = 'both';
+        else if (State.showBrownian)              fallback = 'bm';
+        else if (State.showLevy)                  fallback = 'levy';
+        else                                       fallback = 'none';
+        setTrackMode(fallback);
+      } else {
+        // Reapply active class in case it got cleared above.
+        trackBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-track') === State.trackMode));
+      }
+    };
+    trackBtns.forEach(b => b.addEventListener('click', () => setTrackMode(b.getAttribute('data-track'))));
+    refreshTrackButtons();
+
+    // Manual pan / zoom drops auto-tracking. The user must click a track
+    // button again to re-engage it (no time-based auto-revert).
+    const enterManual = () => { if (State.trackMode !== 'none') setTrackMode('none'); };
+
+    // Pan / zoom
+    const startDrag = e => { State.isDragging = true; State.lastMouseX = e.clientX; State.lastMouseY = e.clientY; enterManual(); };
+    const doDrag    = e => {
+      if (!State.isDragging) return;
+      View.camera.x -= (e.clientX - State.lastMouseX) / View.camera.zoom;
+      View.camera.y -= (e.clientY - State.lastMouseY) / View.camera.zoom;
+      State.lastMouseX = e.clientX; State.lastMouseY = e.clientY;
+    };
+    const endDrag = () => { State.isDragging = false; };
+
+    const zoom = e => {
+      e.preventDefault(); enterManual();
+      const d = e.deltaY > 0 ? 0.9 : 1.1;
+      const mx = e.clientX - State.width/2, my = e.clientY - State.height/2;
+      const wx = mx / View.camera.zoom, wy = my / View.camera.zoom;
+      View.camera.zoom = Math.min(100, Math.max(1e-4, View.camera.zoom * d));
+      View.camera.x += wx - mx / View.camera.zoom;
+      View.camera.y += wy - my / View.camera.zoom;
+    };
+
+    View.canvas.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', doDrag);
+    window.addEventListener('mouseup', endDrag);
+    View.canvas.addEventListener('wheel', zoom, { passive: false });
+
+    // Touch pan for canvas
+    let lastTouch = null;
+    View.canvas.addEventListener('touchstart', e => {
+      lastTouch = e.touches[0]; enterManual();
+    }, { passive: true });
+    View.canvas.addEventListener('touchmove', e => {
+      if (!lastTouch) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      View.camera.x -= (t.clientX - lastTouch.clientX) / View.camera.zoom;
+      View.camera.y -= (t.clientY - lastTouch.clientY) / View.camera.zoom;
+      lastTouch = t;
+    }, { passive: false });
+    View.canvas.addEventListener('touchend', () => { lastTouch = null; }, { passive: true });
+
+    // Controls panel toggle (works at every screen size)
+    const lbmToggleBtn = document.getElementById('lbm-toggle-btn');
+    const lbmPanel     = document.querySelector('.sim-controls');
+    if (lbmToggleBtn && lbmPanel) {
+      lbmToggleBtn.addEventListener('click', () => {
+        const open = !lbmPanel.classList.contains('is-open');
+        lbmPanel.classList.toggle('is-open', open);
+        lbmToggleBtn.classList.toggle('active', open);
+        lbmToggleBtn.setAttribute('aria-pressed', open ? 'true' : 'false');
+      });
+    }
+
+    updateRadius();
+  }
+
+  // ── 9. Bootstrap ──────────────────────────────────────────────────────────
+  setupInputs();
+  View.resize();
+  // Pick a sticky seed once, on page open. It is reused for every Reset
+  // until the user clicks "New Seed" or edits the seed field.
+  State.currentSeed = Date.now().toString() + Math.random().toString(36).slice(2);
+  document.getElementById('seedInput').value = State.currentSeed;
+  Sim.reset();   // primes State + leaves hasStarted = false
+  animate();     // render loop runs, but stepping is gated until Start
+</script>
+</body>
+</html>
