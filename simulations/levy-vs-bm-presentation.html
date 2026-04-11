@@ -684,7 +684,7 @@
 
   // ── 4. View ───────────────────────────────────────────────────────────────
   const View = {
-    camera: { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0, transition: 0 },
+    camera: { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0, transition: null },
     canvas: document.getElementById('simCanvas'),
     ctx:    document.getElementById('simCanvas').getContext('2d'),
 
@@ -703,7 +703,7 @@
       // When paused we normally freeze the camera, but a track-mode switch
       // starts a timed transition that must keep animating even while paused
       // so the viewport eases into the new target instead of jumping.
-      if (State.isPaused && this.camera.transition <= 0) return;
+      if (State.isPaused && !this.camera.transition) return;
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
       const check  = list   => { for (let p of list) { if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x; if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y; } };
       const checkC = chunks => { for (let c of chunks) { if(c.minX<minX)minX=c.minX; if(c.maxX>maxX)maxX=c.maxX; if(c.minY<minY)minY=c.minY; if(c.maxY>maxY)maxY=c.maxY; } };
@@ -726,27 +726,55 @@
       const availH = State.height - margin * 2;
       const targetZoom = Math.min(availW / cW, availH / cH);
       const centerX = (minX + maxX) / 2, centerY = (minY + maxY) / 2;
+      const targetX = centerX - (shiftX / targetZoom);
       this.camera.targetY = centerY;
+
+      const tr = this.camera.transition;
+      if (tr) {
+        // First frame of a new transition: size its duration from the
+        // magnitude of the log-zoom change so small swaps stay snappy while
+        // large ones have time to read. Roughly 0.75 s for no zoom change,
+        // scaling up to a 3 s cap for a >100× zoom swing.
+        if (tr.duration === 0) {
+          const logRatio = Math.abs(Math.log(targetZoom / tr.startZoom));
+          tr.duration = Math.min(180, Math.round(45 + logRatio * 30));
+        }
+        tr.t++;
+        const u = Math.min(1, tr.t / tr.duration);
+        // Logistic S-curve rescaled so eased(0)=0 and eased(1)=1 exactly,
+        // giving a slow-in / fast-middle / slow-out feel.
+        const k = 8;
+        const s0 = 1 / (1 + Math.exp( k * 0.5));
+        const s1 = 1 / (1 + Math.exp(-k * 0.5));
+        const raw = 1 / (1 + Math.exp(-k * (u - 0.5)));
+        const eased = (raw - s0) / (s1 - s0);
+        // Interpolate zoom in log-space from the captured start toward the
+        // (possibly still moving) live target.
+        this.camera.zoom = Math.exp(Math.log(tr.startZoom) * (1 - eased) + Math.log(targetZoom) * eased);
+        this.camera.x = tr.startX * (1 - eased) + targetX * eased;
+        this.camera.y = tr.startY * (1 - eased) + centerY * eased;
+        this.camera.targetX = targetX;
+        if (u >= 1) this.camera.transition = null;
+        return;
+      }
+
       const lerp = (s, e, f) => s + (e - s) * f;
-      const transitioning = this.camera.transition > 0;
-      if (transitioning) this.camera.transition--;
       const zoomRatio = Math.max(this.camera.zoom / targetZoom, targetZoom / this.camera.zoom);
-      if (!transitioning && zoomRatio > 4) {
+      if (zoomRatio > 4) {
         // Snap for sudden simulation-driven jumps (e.g. a huge Lévy flight)
         // so the process never runs off-screen. User-initiated track-mode
-        // changes bypass this branch via the transition counter above.
+        // changes bypass this branch via the transition state above.
         this.camera.zoom = targetZoom;
-        this.camera.x = this.camera.targetX = centerX - (shiftX / targetZoom);
+        this.camera.x = this.camera.targetX = targetX;
         this.camera.y = centerY;
       } else {
         // Lerp zoom in log-space so multiplicative changes ease uniformly
         // regardless of whether we are zooming in or out.
-        const f = transitioning ? 0.08 : 0.05;
-        const newZoom = Math.exp(lerp(Math.log(this.camera.zoom), Math.log(targetZoom), f));
+        const newZoom = Math.exp(lerp(Math.log(this.camera.zoom), Math.log(targetZoom), 0.05));
         this.camera.targetX = centerX - (shiftX / newZoom);
         this.camera.zoom = newZoom;
-        this.camera.x = lerp(this.camera.x, this.camera.targetX, f);
-        this.camera.y = lerp(this.camera.y, centerY, f);
+        this.camera.x = lerp(this.camera.x, this.camera.targetX, 0.05);
+        this.camera.y = lerp(this.camera.y, centerY, 0.05);
       }
     }
   };
@@ -860,7 +888,7 @@
       if (typed && typed !== State.currentSeed) State.currentSeed = typed;
       PRNG.init(State.currentSeed);
       State.reset();
-      View.camera = { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0, transition: 0 };
+      View.camera = { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0, transition: null };
       State.hasStarted = false;
       State.isPaused = false;
       const btn = document.getElementById('startBtn');
@@ -1278,10 +1306,19 @@
       if (!isModeAllowed(mode)) return;
       const prev = State.trackMode;
       State.trackMode = mode;
-      // Switching to a different auto-tracking target kicks off a ~1s eased
-      // transition so the viewport smoothly glides between Lévy / Brownian /
-      // both instead of snapping.
-      if (mode !== 'none' && mode !== prev) View.camera.transition = 60;
+      // Switching to a different auto-tracking target kicks off a logistic
+      // eased glide from the current camera to the new target. The first
+      // updateCamera() frame sizes `duration` from the zoom delta so larger
+      // changes take proportionally longer.
+      if (mode !== 'none' && mode !== prev) {
+        View.camera.transition = {
+          startX: View.camera.x,
+          startY: View.camera.y,
+          startZoom: View.camera.zoom,
+          t: 0,
+          duration: 0,
+        };
+      }
       trackBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-track') === mode));
       const ind = document.getElementById('statusIndicator');
       if (ind) ind.style.opacity = (mode === 'none') ? '1' : '0';
