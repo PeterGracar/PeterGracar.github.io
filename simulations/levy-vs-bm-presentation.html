@@ -684,7 +684,7 @@
 
   // ── 4. View ───────────────────────────────────────────────────────────────
   const View = {
-    camera: { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0 },
+    camera: { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0, transition: 0 },
     canvas: document.getElementById('simCanvas'),
     ctx:    document.getElementById('simCanvas').getContext('2d'),
 
@@ -699,7 +699,11 @@
     },
 
     updateCamera: function() {
-      if (State.isPaused || State.trackMode === 'none') return;
+      if (State.trackMode === 'none') return;
+      // When paused we normally freeze the camera, but a track-mode switch
+      // starts a timed transition that must keep animating even while paused
+      // so the viewport eases into the new target instead of jumping.
+      if (State.isPaused && this.camera.transition <= 0) return;
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
       const check  = list   => { for (let p of list) { if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x; if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y; } };
       const checkC = chunks => { for (let c of chunks) { if(c.minX<minX)minX=c.minX; if(c.maxX>maxX)maxX=c.maxX; if(c.minY<minY)minY=c.minY; if(c.maxY>maxY)maxY=c.maxY; } };
@@ -724,17 +728,25 @@
       const centerX = (minX + maxX) / 2, centerY = (minY + maxY) / 2;
       this.camera.targetY = centerY;
       const lerp = (s, e, f) => s + (e - s) * f;
+      const transitioning = this.camera.transition > 0;
+      if (transitioning) this.camera.transition--;
       const zoomRatio = Math.max(this.camera.zoom / targetZoom, targetZoom / this.camera.zoom);
-      if (zoomRatio > 4) {
+      if (!transitioning && zoomRatio > 4) {
+        // Snap for sudden simulation-driven jumps (e.g. a huge Lévy flight)
+        // so the process never runs off-screen. User-initiated track-mode
+        // changes bypass this branch via the transition counter above.
         this.camera.zoom = targetZoom;
         this.camera.x = this.camera.targetX = centerX - (shiftX / targetZoom);
         this.camera.y = centerY;
       } else {
-        const newZoom = lerp(this.camera.zoom, targetZoom, 0.05);
+        // Lerp zoom in log-space so multiplicative changes ease uniformly
+        // regardless of whether we are zooming in or out.
+        const f = transitioning ? 0.08 : 0.05;
+        const newZoom = Math.exp(lerp(Math.log(this.camera.zoom), Math.log(targetZoom), f));
         this.camera.targetX = centerX - (shiftX / newZoom);
         this.camera.zoom = newZoom;
-        this.camera.x = lerp(this.camera.x, this.camera.targetX, 0.05);
-        this.camera.y = lerp(this.camera.y, centerY, 0.05);
+        this.camera.x = lerp(this.camera.x, this.camera.targetX, f);
+        this.camera.y = lerp(this.camera.y, centerY, f);
       }
     }
   };
@@ -848,7 +860,7 @@
       if (typed && typed !== State.currentSeed) State.currentSeed = typed;
       PRNG.init(State.currentSeed);
       State.reset();
-      View.camera = { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0 };
+      View.camera = { x: 0, y: 0, zoom: 1, targetX: 0, targetY: 0, transition: 0 };
       State.hasStarted = false;
       State.isPaused = false;
       const btn = document.getElementById('startBtn');
@@ -1264,7 +1276,12 @@
     };
     const setTrackMode = (mode) => {
       if (!isModeAllowed(mode)) return;
+      const prev = State.trackMode;
       State.trackMode = mode;
+      // Switching to a different auto-tracking target kicks off a ~1s eased
+      // transition so the viewport smoothly glides between Lévy / Brownian /
+      // both instead of snapping.
+      if (mode !== 'none' && mode !== prev) View.camera.transition = 60;
       trackBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-track') === mode));
       const ind = document.getElementById('statusIndicator');
       if (ind) ind.style.opacity = (mode === 'none') ? '1' : '0';
