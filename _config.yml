@@ -4,6 +4,13 @@ title: "Peter Gracar"
 description: "Probability, random geometric graphs, dependent percolation, and related stochastic processes."
 author: "Peter Gracar"
 
+# Explicitly disable any GitHub Pages theme. This site uses its own
+# _layouts/default.html and style.css; a theme would inject a phantom
+# /assets/css/style.css page from the theme's assets/css/style.scss entry
+# point. Leaving this unset has, in practice, left a theme active via the
+# repo Settings → Pages UI, so keep the explicit null.
+theme: null
+
 collections:
   publications:
     output: false
