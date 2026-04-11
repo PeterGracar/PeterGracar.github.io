@@ -218,6 +218,12 @@ in the standalone / presentation copies and update them together.
   PDFs. It is marked `no_index`, `no_analytics`, `sitemap: false`, and excludes
   itself from its own list. It exists so standalone simulations and reprints
   remain discoverable to the author without adding them to the public sitemap.
+  It also renders a small "Build info" panel using `site.time` (the build
+  timestamp, always available) and `site.github.build_revision` /
+  `site.github.repository_nwo` from the `jekyll-github-metadata` plugin (which
+  GitHub Pages ships enabled by default — not a new dependency). The commit
+  block is guarded by `{% if site.github.build_revision %}` so local builds
+  without GitHub metadata degrade to showing only the build time.
 - `404.html` is also `no_index` + `no_analytics`.
 
 ## Local development
