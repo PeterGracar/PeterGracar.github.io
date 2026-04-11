@@ -941,10 +941,44 @@
       ctx.lineCap  = 'round';
 
       // Sausage underlay: a fat translucent stroke of diameter 2·R.
+      // To avoid opacity accumulating where the path overlaps itself, render
+      // the stroke to an offscreen canvas with an *opaque* color (so overlaps
+      // union instead of alpha-stacking), then composite the result onto the
+      // main canvas with the desired alpha.
       if (State.showSausage) {
-        ctx.lineWidth   = 2 * State.sausageRadius;
-        ctx.strokeStyle = colors.trace;
-        ctx.stroke();
+        const m = /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)/.exec(colors.trace);
+        const r = m ? m[1] : '0', g = m ? m[2] : '0', b = m ? m[3] : '0';
+        const traceAlpha = m && m[4] !== undefined ? parseFloat(m[4]) : 1;
+
+        const mainCanvas = ctx.canvas;
+        if (!this._sausageCanvas) this._sausageCanvas = document.createElement('canvas');
+        const off = this._sausageCanvas;
+        if (off.width !== mainCanvas.width || off.height !== mainCanvas.height) {
+          off.width = mainCanvas.width; off.height = mainCanvas.height;
+        }
+        const octx = off.getContext('2d');
+        octx.setTransform(1, 0, 0, 1, 0, 0);
+        octx.clearRect(0, 0, off.width, off.height);
+        const t = ctx.getTransform();
+        octx.setTransform(t.a, t.b, t.c, t.d, t.e, t.f);
+
+        octx.lineJoin = 'round';
+        octx.lineCap  = 'round';
+        octx.lineWidth = 2 * State.sausageRadius;
+        octx.strokeStyle = `rgb(${r},${g},${b})`;
+        octx.beginPath();
+        let s2 = false;
+        this.forEachPoint(agent, p => {
+          if (!s2) { octx.moveTo(p.x, p.y); s2 = true; }
+          else octx.lineTo(p.x, p.y);
+        });
+        octx.stroke();
+
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.globalAlpha = traceAlpha;
+        ctx.drawImage(off, 0, 0);
+        ctx.restore();
       }
 
       // Centerline — always drawn so the actual continuous path is visible.
