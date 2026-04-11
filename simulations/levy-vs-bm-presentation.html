@@ -621,10 +621,13 @@
     get cyclePeriod() { return (360 / this.colorSpeedFactor) * 4; },
     chunkSize: 1000,
     // Seconds of steps generated ahead of what the viewer sees so the camera
-    // can anticipate a large upcoming jump and glide out in advance. Matches
-    // the 3 s cap on the preset-transition duration, so a worst-case
-    // zoom-out finishes just as the jump is revealed.
-    lookaheadSeconds: 3,
+    // can anticipate a large upcoming jump and glide out in advance. Also
+    // acts as the "commitment window" — the time between a parameter change
+    // (alpha, speed) and that change reaching the display, since buffered
+    // points were already generated under the old settings. Kept short so
+    // sliders feel responsive; auto-fired camera transitions are capped at
+    // this window so their zoom-out finishes right as the jump reveals.
+    lookaheadSeconds: 0.5,
   };
 
   // ── 2. PRNG ───────────────────────────────────────────────────────────────
@@ -839,8 +842,13 @@
             targetX,   centerY,   targetZoom
           );
           // Duration scales with the path's arc length so big coupled swings
-          // take longer while small nudges stay snappy. Floor 0.75 s, cap 3 s.
-          tr.duration = Math.min(180, Math.max(45, Math.round(30 + tr.path.S * 35)));
+          // take longer while small nudges stay snappy. The floor / cap come
+          // from the caller — preset switches get the full 0.75–3 s range,
+          // while auto-fired anticipation transitions are capped at the
+          // lookahead window so they finish just as the jump reveals.
+          const minD = tr.minDuration != null ? tr.minDuration : 45;
+          const maxD = tr.maxDuration != null ? tr.maxDuration : 180;
+          tr.duration = Math.min(maxD, Math.max(minD, Math.round(30 + tr.path.S * 35)));
         }
         tr.t++;
         const u = Math.min(1, tr.t / tr.duration);
@@ -868,6 +876,12 @@
         // zoom-and-pan transition that preset switches use, so the catch-up
         // reads as a smooth coupled glide instead of a hard snap. Next
         // updateCamera() call picks it up via the transition block above.
+        //
+        // Cap the duration at the lookahead window so the zoom-out finishes
+        // exactly as the upcoming jump is revealed — the buffer only knows
+        // about the next `lookaheadSeconds` of simulation, so there is no
+        // point easing over a longer stretch than that.
+        const windowFrames = Math.max(6, Math.round(60 * Config.lookaheadSeconds));
         this.camera.transition = {
           startX: this.camera.x,
           startY: this.camera.y,
@@ -875,6 +889,8 @@
           t: 0,
           duration: 0,
           path: null,
+          minDuration: Math.min(windowFrames, 10),
+          maxDuration: windowFrames,
         };
       } else {
         // Lerp zoom in log-space so multiplicative changes ease uniformly
@@ -1461,9 +1477,10 @@
       State.trackMode = mode;
       // Switching to a different auto-tracking target kicks off a coupled
       // zoom-and-pan glide from the current camera to the new target. The
-      // first updateCamera() frame plans the van-Wijk path and sizes the
-      // duration from its arc-length so larger swings take proportionally
-      // longer.
+      // first updateCamera() frame plans the path and sizes the duration
+      // from its arc-length so larger swings take proportionally longer
+      // (0.75 s floor, 3 s cap — auto-fired anticipation transitions use a
+      // shorter lookahead-bounded cap, see updateCamera).
       if (mode !== 'none' && mode !== prev) {
         View.camera.transition = {
           startX: View.camera.x,
