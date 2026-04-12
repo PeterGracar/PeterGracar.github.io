@@ -1293,20 +1293,52 @@ mathjax: true
     window.addEventListener('mouseup', endDrag);
     View.canvas.addEventListener('wheel', zoom, { passive: false });
 
-    // Touch pan for canvas
+    // Touch pan & pinch-to-zoom for canvas
     let lastTouch = null;
+    let lastPinchDist = null;
+    let lastPinchMid = null;
+    const pinchDist = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    const pinchMid  = (a, b) => ({ x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 });
     View.canvas.addEventListener('touchstart', e => {
-      lastTouch = e.touches[0]; enterManual();
+      if (e.touches.length === 2) {
+        lastPinchDist = pinchDist(e.touches[0], e.touches[1]);
+        lastPinchMid  = pinchMid(e.touches[0], e.touches[1]);
+        lastTouch = null;
+      } else {
+        lastTouch = e.touches[0];
+        lastPinchDist = null; lastPinchMid = null;
+      }
+      enterManual();
     }, { passive: true });
     View.canvas.addEventListener('touchmove', e => {
-      if (!lastTouch || e.touches.length > 1) return;
       e.preventDefault();
-      const t = e.touches[0];
-      View.camera.x -= (t.clientX - lastTouch.clientX) / View.camera.zoom;
-      View.camera.y -= (t.clientY - lastTouch.clientY) / View.camera.zoom;
-      lastTouch = t;
+      if (e.touches.length === 2 && lastPinchDist) {
+        const d = pinchDist(e.touches[0], e.touches[1]);
+        const m = pinchMid(e.touches[0], e.touches[1]);
+        const scale = d / lastPinchDist;
+        const mx = m.x - State.width / 2, my = m.y - State.height / 2;
+        const wx = mx / View.camera.zoom, wy = my / View.camera.zoom;
+        View.camera.zoom = Math.min(100, Math.max(1e-4, View.camera.zoom * scale));
+        View.camera.x += wx - mx / View.camera.zoom;
+        View.camera.y += wy - my / View.camera.zoom;
+        // also pan with midpoint movement
+        View.camera.x -= (m.x - lastPinchMid.x) / View.camera.zoom;
+        View.camera.y -= (m.y - lastPinchMid.y) / View.camera.zoom;
+        lastPinchDist = d; lastPinchMid = m;
+      } else if (e.touches.length === 1 && lastTouch) {
+        const t = e.touches[0];
+        View.camera.x -= (t.clientX - lastTouch.clientX) / View.camera.zoom;
+        View.camera.y -= (t.clientY - lastTouch.clientY) / View.camera.zoom;
+        lastTouch = t;
+      }
     }, { passive: false });
-    View.canvas.addEventListener('touchend', () => { lastTouch = null; }, { passive: true });
+    View.canvas.addEventListener('touchend', e => {
+      if (e.touches.length === 1) {
+        lastTouch = e.touches[0]; lastPinchDist = null; lastPinchMid = null;
+      } else {
+        lastTouch = null; lastPinchDist = null; lastPinchMid = null;
+      }
+    }, { passive: true });
 
     // Controls panel toggle
     const lbmToggleBtn = document.getElementById('lbm-toggle-btn');
