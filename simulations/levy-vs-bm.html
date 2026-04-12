@@ -1299,7 +1299,7 @@ mathjax: true
       lastTouch = e.touches[0]; enterManual();
     }, { passive: true });
     View.canvas.addEventListener('touchmove', e => {
-      if (!lastTouch) return;
+      if (!lastTouch || e.touches.length > 1) return;
       e.preventDefault();
       const t = e.touches[0];
       View.camera.x -= (t.clientX - lastTouch.clientX) / View.camera.zoom;
