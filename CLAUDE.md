@@ -52,8 +52,9 @@ simulations/                All interactive simulation HTML lives here, and is
                                     they are served as static files at
                                     /simulations/<name>.html and surfaced
                                     automatically in secret.html.
-  levy-vs-bm-presentation.html      Presentation-mode standalone variant
-                                    (same static-file treatment).
+                                    (This file is the former presentation
+                                    variant; its logic matches the embedded
+                                    levy-vs-bm.html.)
 
 style.css                   Single global stylesheet (CSS custom properties,
                             light/dark via prefers-color-scheme)
@@ -195,19 +196,19 @@ at `/simulations/<name>.html`. There are two flavours:
   page's front matter must match. Do **not** add a `permalink:` field to
   bring them back to the site root — the layout's nav and asset hrefs assume
   pages are addressed by their source path.
-- **Standalone** — `simulations/contact-process-standalone.html`,
-  `simulations/levy-vs-bm-standalone.html`, and
-  `simulations/levy-vs-bm-presentation.html` are **independent HTML
-  documents** with no Jekyll front matter (Tailwind + MathJax via CDN, own
-  light/dark toggle persisted in `localStorage['theme-pref']`). They are
-  intended for offline / presentation use and, because they have no front
-  matter, Jekyll copies them through as static files at
-  `/simulations/<name>.html`. They are not linked from the navigation or
-  sitemap but are surfaced automatically in `secret.html` via
-  `site.static_files`.
+- **Standalone** — `simulations/contact-process-standalone.html` and
+  `simulations/levy-vs-bm-standalone.html` are **independent HTML documents**
+  with no Jekyll front matter (Tailwind + MathJax via CDN, own light/dark
+  toggle persisted in `localStorage['theme-pref']`). They are intended for
+  offline / presentation use and, because they have no front matter, Jekyll
+  copies them through as static files at `/simulations/<name>.html`. They are
+  not linked from the navigation or sitemap but are surfaced automatically in
+  `secret.html` via `site.static_files`. The Lévy standalone file was
+  previously named `levy-vs-bm-presentation.html`; its logic matches the
+  embedded `levy-vs-bm.html`.
 
 When fixing a bug in a simulation, check whether the same logic is duplicated
-in the standalone / presentation copies and update them together.
+in the standalone copy and update them together.
 
 ## SEO, sitemap, and the "secret" index
 
