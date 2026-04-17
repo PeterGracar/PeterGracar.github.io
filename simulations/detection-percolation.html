@@ -1,0 +1,1495 @@
+---
+layout: default
+data_page: research
+title: "Detection Percolation — Peter Gracar"
+description: "Interactive simulation of the hitting time for a moving Poisson particle system: first contact and first coverage by the largest connected component."
+og_description: "Interactive visualisation of detection percolation — the hitting time when a target particle is covered by a moving Poisson particle system, under either first-contact or largest-component coverage."
+canonical: "https://gracar.org/simulations/detection-percolation.html"
+mathjax: true
+---
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    /* ── Base theme tokens ── */
+    :root {
+      --font-heading: "Newsreader", Georgia, "Times New Roman", serif;
+      --font-body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+      --color-bg: #f8f4ee;
+      --color-surface: #ffffff;
+      --color-surface-soft: #f1ebe1;
+      --color-text: #1f1b18;
+      --color-text-muted: #554e47;
+      --color-border: #d8cec1;
+      --color-accent: #950000;
+      --color-accent-strong: #6f0000;
+      --color-accent-soft: #cf6a54;
+      --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+      --radius-sm: 0.45rem;
+      --radius-md: 0.75rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #111216;
+        --color-surface: #1a1e24;
+        --color-surface-soft: #232831;
+        --color-text: #ece4d9;
+        --color-text-muted: #b7afa3;
+        --color-border: #3a4049;
+        --color-accent: #ff7558;
+        --color-accent-strong: #ff9f87;
+        --color-accent-soft: #ff9f87;
+        --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+      }
+    }
+    html[data-theme="light"] {
+      --color-bg: #f8f4ee;
+      --color-surface: #ffffff;
+      --color-surface-soft: #f1ebe1;
+      --color-text: #1f1b18;
+      --color-text-muted: #554e47;
+      --color-border: #d8cec1;
+      --color-accent: #950000;
+      --color-accent-strong: #6f0000;
+      --color-accent-soft: #cf6a54;
+      --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+    }
+    html[data-theme="dark"] {
+      --color-bg: #111216;
+      --color-surface: #1a1e24;
+      --color-surface-soft: #232831;
+      --color-text: #ece4d9;
+      --color-text-muted: #b7afa3;
+      --color-border: #3a4049;
+      --color-accent: #ff7558;
+      --color-accent-strong: #ff9f87;
+      --color-accent-soft: #ff9f87;
+      --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+    }
+
+    /* ── Simulation colour tokens ── */
+    :root {
+      --dp-panel-bg:     rgba(248, 244, 238, 0.93);
+      --dp-box-fill:     rgba(255, 255, 255, 0.4);
+      --dp-particle:     rgba(40, 25, 15, 0.38);
+      --dp-particle-core:rgba(40, 25, 15, 0.85);
+      --dp-edge:         rgba(40, 25, 15, 0.22);
+      --dp-big-comp:     rgba(207, 106, 84, 0.38);
+      --dp-big-comp-core:#950000;
+      --dp-target:       #950000;
+      --dp-target-ring:  rgba(149, 0, 0, 0.25);
+      --dp-trail:        rgba(149, 0, 0, 0.5);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --dp-panel-bg:     rgba(26, 30, 36, 0.93);
+        --dp-box-fill:     rgba(35, 40, 49, 0.55);
+        --dp-particle:     rgba(226, 232, 240, 0.30);
+        --dp-particle-core:rgba(236, 228, 217, 0.90);
+        --dp-edge:         rgba(226, 232, 240, 0.25);
+        --dp-big-comp:     rgba(255, 159, 135, 0.38);
+        --dp-big-comp-core:#ff7558;
+        --dp-target:       #ff7558;
+        --dp-target-ring:  rgba(255, 117, 88, 0.35);
+        --dp-trail:        rgba(255, 117, 88, 0.55);
+      }
+    }
+    html[data-theme="light"] {
+      --dp-panel-bg:     rgba(248, 244, 238, 0.93);
+      --dp-box-fill:     rgba(255, 255, 255, 0.4);
+      --dp-particle:     rgba(40, 25, 15, 0.38);
+      --dp-particle-core:rgba(40, 25, 15, 0.85);
+      --dp-edge:         rgba(40, 25, 15, 0.22);
+      --dp-big-comp:     rgba(207, 106, 84, 0.38);
+      --dp-big-comp-core:#950000;
+      --dp-target:       #950000;
+      --dp-target-ring:  rgba(149, 0, 0, 0.25);
+      --dp-trail:        rgba(149, 0, 0, 0.5);
+    }
+    html[data-theme="dark"] {
+      --dp-panel-bg:     rgba(26, 30, 36, 0.93);
+      --dp-box-fill:     rgba(35, 40, 49, 0.55);
+      --dp-particle:     rgba(226, 232, 240, 0.30);
+      --dp-particle-core:rgba(236, 228, 217, 0.90);
+      --dp-edge:         rgba(226, 232, 240, 0.25);
+      --dp-big-comp:     rgba(255, 159, 135, 0.38);
+      --dp-big-comp-core:#ff7558;
+      --dp-target:       #ff7558;
+      --dp-target-ring:  rgba(255, 117, 88, 0.35);
+      --dp-trail:        rgba(255, 117, 88, 0.55);
+    }
+
+    /* ── Full-bleed layout ── */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { height: 100vh; overflow: hidden; margin: 0; font-family: var(--font-body); background: var(--color-bg); }
+    main#main-content {
+      padding: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      display: flex !important;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+      position: relative;
+      height: 100vh;
+    }
+
+    /* ── Floating controls panel ── */
+    .sim-controls {
+      position: absolute;
+      top: 56px; left: 12px;
+      background: var(--dp-panel-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      width: min(340px, calc(100% - 20px));
+      box-shadow: var(--shadow-soft);
+      user-select: none;
+      max-height: calc(100% - 40px);
+      overflow-y: auto;
+      z-index: 10;
+      font-family: var(--font-body);
+      color: var(--color-text);
+    }
+    .sim-controls::-webkit-scrollbar { width: 6px; }
+    .sim-controls::-webkit-scrollbar-track { background: transparent; }
+    .sim-controls::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+
+    .group-divider {
+      border-top: 1px solid var(--color-border);
+      margin: 14px 0 12px;
+      padding-top: 10px;
+    }
+    .group-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    /* ── Slider ── */
+    .slider-container { margin-bottom: 14px; }
+    .slider-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.875rem; margin-bottom: 4px; font-weight: 500;
+      color: var(--color-text);
+    }
+    input[type=range] {
+      width: 100%; height: 6px; background: var(--color-border);
+      border-radius: 3px; outline: none; -webkit-appearance: none; cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px;
+      background: var(--color-accent); border-radius: 50%;
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover { opacity: 0.8; }
+    .hint {
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    input[type=text] {
+      width: 100%; background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      color: var(--color-text); padding: 6px 10px;
+      border-radius: var(--radius-sm); font-size: 0.875rem;
+      outline: none; font-family: monospace; margin-bottom: 12px;
+    }
+    input[type=text]:focus { border-color: var(--color-accent); }
+
+    /* ── Radio row ── */
+    .radio-row {
+      display: flex;
+      gap: 0;
+      background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      padding: 3px;
+      margin-bottom: 10px;
+    }
+    .radio-row label {
+      flex: 1;
+      text-align: center;
+      padding: 5px 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s;
+      line-height: 1.2;
+    }
+    .radio-row input[type=radio] { display: none; }
+    .radio-row label.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    /* ── Buttons ── */
+    button.sim-btn {
+      width: 100%; padding: 8px 16px; border: none;
+      border-radius: var(--radius-sm); font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s; margin-top: 4px;
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .sim-btn-primary { background: var(--color-accent); color: #fff; }
+    .sim-btn-primary:hover { opacity: 0.85; }
+    .sim-btn-pause  { background: #d97706; color: #fff; }
+    .sim-btn-resume { background: #059669; color: #fff; }
+    .sim-btn-export { background: var(--color-accent-soft); color: #fff; }
+    .sim-btn-export:hover { opacity: 0.85; }
+    .btn-group { display: flex; gap: 8px; margin-top: 8px; }
+    .btn-group .sim-btn { flex: 1; }
+
+    /* ── Stats box ── */
+    .stats-box {
+      margin-top: 14px; padding: 10px 12px;
+      background: var(--color-surface-soft);
+      border-radius: var(--radius-sm); font-size: 0.82rem;
+      border: 1px solid var(--color-border);
+    }
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .stat-row:last-child { margin-bottom: 0; }
+    .stat-label { color: var(--color-text-muted); }
+    .stat-val { font-family: monospace; color: var(--color-accent); font-weight: 600; }
+    .stat-val-strong { color: var(--color-accent-strong); }
+
+    /* ── Top bar ── */
+    #top-bar {
+      position: fixed;
+      top: 12px; left: 12px; right: 12px;
+      z-index: 2147483646;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: none;
+      isolation: isolate;
+    }
+    #top-bar > * { pointer-events: auto; }
+
+    #dp-toggle,
+    #theme-toggle {
+      display: flex; gap: 0;
+      background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 3px;
+      box-shadow: var(--shadow-soft);
+      font-family: var(--font-body);
+    }
+    #dp-toggle button,
+    #theme-toggle button {
+      border: none; background: transparent; cursor: pointer;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 0.75rem; color: var(--color-text-muted);
+      transition: all 0.2s;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    #dp-toggle button.active,
+    #theme-toggle button.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    .sim-controls { display: none; }
+    .sim-controls.is-open { display: block; }
+
+    /* ── Overlay (hit time / status) ── */
+    #overlay {
+      position: absolute; top: 56px; right: 12px;
+      background: var(--dp-panel-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      color: var(--color-text);
+      font-size: 0.82rem;
+      z-index: 9;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      pointer-events: none;
+      min-width: 160px;
+    }
+    #overlay .big {
+      font-family: monospace;
+      color: var(--color-accent);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    #overlay .hit-banner {
+      margin-top: 8px;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--color-accent);
+      color: #fff;
+      font-weight: 600;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+    #overlay .hit-banner.hidden { display: none; }
+
+    /* ── Narrow-width breakpoint ── */
+    @media (max-width: 720px) {
+      #top-bar {
+        justify-content: center;
+        gap: 0;
+        background: var(--color-surface-soft);
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        padding: 3px;
+        box-shadow: var(--shadow-soft);
+        pointer-events: auto;
+        width: max-content;
+        max-width: calc(100% - 24px);
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+      }
+      #top-bar > #dp-toggle,
+      #top-bar > #theme-toggle {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+      }
+      #top-bar > * + * {
+        border-left: 1px solid var(--color-border);
+        margin-left: 6px;
+        padding-left: 6px;
+      }
+      #dp-toggle .pill-label { display: none; }
+      #dp-toggle button { padding: 4px 8px; }
+      #overlay { top: 62px; right: 8px; left: 8px; min-width: 0; }
+    }
+  </style>
+
+<div id="top-bar">
+  <div id="dp-toggle" role="group" aria-label="Toggle controls panel">
+    <button id="dp-toggle-btn" type="button" class="active" aria-pressed="true" title="Show or hide the controls panel">
+      <span aria-hidden="true">&#9881;</span><span class="pill-label"> Controls</span>
+    </button>
+  </div>
+  <div id="theme-toggle">
+    <button data-theme="light"  title="Light">&#9728;</button>
+    <button data-theme="system" title="System" class="active">Auto</button>
+    <button data-theme="dark"   title="Dark">&#9790;</button>
+  </div>
+</div>
+
+<main id="main-content">
+  <div id="sim-container" style="position: relative; flex: 1; overflow: hidden; min-height: 0;">
+
+    <div id="overlay">
+      <div class="stat-row"><span class="stat-label">t</span><span id="ov-t" class="big">0</span></div>
+      <div class="stat-row"><span class="stat-label">N</span><span id="ov-n" class="stat-val">0</span></div>
+      <div class="stat-row" id="ov-kmax-row" style="display:none"><span class="stat-label">k<sub>max</sub></span><span id="ov-kmax" class="stat-val">0</span></div>
+      <div id="ov-hit" class="hit-banner hidden">Hit at t = <span id="ov-hit-t">0</span></div>
+    </div>
+
+    <!-- Floating controls -->
+    <div class="sim-controls is-open">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+        <h2 style="color: var(--color-text); font-family: var(--font-heading); margin:0; font-size:1.15rem; font-weight:700;">Detection Percolation</h2>
+      </div>
+      <p class="hint" style="margin-bottom:10px;">
+        Poisson particle system in a torus of side \(L\). Stop when the target
+        (at the origin) is covered.
+      </p>
+
+      <div class="group-title">Box &amp; intensity</div>
+      <div class="slider-container">
+        <div class="slider-label"><span>Box side \(L\)</span><span id="valL" class="stat-val">300</span></div>
+        <input type="range" id="inL" min="50" max="800" step="10" value="300">
+      </div>
+      <div class="slider-container">
+        <div class="slider-label"><span>Intensity \(\lambda\)</span><span id="valLambda" class="stat-val">2.0&#215;10&#8315;&#179;</span></div>
+        <input type="range" id="inLambda" min="-5" max="-1" step="0.05" value="-2.70">
+        <div class="hint">
+          \(\mathbb{E}[N] = \lambda L^2\). Currently \(\approx\) <span id="valMean">180</span>.
+        </div>
+      </div>
+
+      <div class="group-divider"></div>
+      <div class="group-title">Motion</div>
+      <div class="radio-row" id="motionRow">
+        <label data-val="brownian" class="active"><input type="radio" name="motion" value="brownian" checked>Brownian</label>
+        <label data-val="levy"><input type="radio" name="motion" value="levy">Lévy</label>
+      </div>
+      <div class="slider-container" id="sigmaWrap">
+        <div class="slider-label"><span>Diffusion \(\sigma\)</span><span id="valSigma" class="stat-val">1.0</span></div>
+        <input type="range" id="inSigma" min="0.05" max="5" step="0.05" value="1.0">
+        <div class="hint">Gaussian increment per tick: \(\Delta x = \sigma\sqrt{\Delta t}\,Z\).</div>
+      </div>
+      <div class="slider-container" id="alphaWrap" style="display:none">
+        <div class="slider-label"><span>Stability \(\alpha\)</span><span id="valAlpha" class="stat-val">1.50</span></div>
+        <input type="range" id="inAlpha" min="0.30" max="1.99" step="0.01" value="1.50">
+        <div class="hint">Heavy-tail jumps with \(P(|J|>x)\sim x^{-\alpha}\).</div>
+      </div>
+
+      <div class="group-divider"></div>
+      <div class="group-title">Radius</div>
+      <div class="radio-row" id="radiusRow">
+        <label data-val="deterministic" class="active"><input type="radio" name="radius" value="deterministic" checked>Fixed \(r\)</label>
+        <label data-val="pareto"><input type="radio" name="radius" value="pareto">Pareto(\(\delta\))</label>
+      </div>
+      <div class="slider-container" id="rWrap">
+        <div class="slider-label"><span>Radius \(r\)</span><span id="valR" class="stat-val">3.0</span></div>
+        <input type="range" id="inR" min="0.5" max="30" step="0.1" value="3.0">
+      </div>
+      <div id="paretoWrap" style="display:none">
+        <div class="slider-container">
+          <div class="slider-label"><span>Minimum \(x_m\)</span><span id="valXm" class="stat-val">1.0</span></div>
+          <input type="range" id="inXm" min="0.1" max="10" step="0.1" value="1.0">
+        </div>
+        <div class="slider-container">
+          <div class="slider-label"><span>Tail index \(\delta\)</span><span id="valDelta" class="stat-val">2.50</span></div>
+          <input type="range" id="inDelta" min="1.10" max="5.00" step="0.01" value="2.50">
+          <div class="hint" id="deltaHint">
+            \(P(r>x)=(x_m/x)^{\delta}\). \(\mathbb{E}[r^2]&lt;\infty\) iff \(\delta&gt;2\).
+          </div>
+        </div>
+      </div>
+
+      <div class="group-divider"></div>
+      <div class="group-title">Target particle</div>
+      <div class="radio-row" id="targetRow">
+        <label data-val="fixed" class="active"><input type="radio" name="target" value="fixed" checked>Fixed at origin</label>
+        <label data-val="moving"><input type="radio" name="target" value="moving">Moving from origin</label>
+      </div>
+
+      <div class="group-divider"></div>
+      <div class="group-title">Stopping scenario</div>
+      <div class="radio-row" id="scenarioRow">
+        <label data-val="1" class="active"><input type="radio" name="scenario" value="1" checked>1 — any particle</label>
+        <label data-val="2"><input type="radio" name="scenario" value="2">2 — largest component</label>
+      </div>
+      <div class="hint" id="scenarioHint">
+        <strong>Scenario 1.</strong> Stop as soon as the target lies in some disc \(B(x_i,r_i)\).
+      </div>
+
+      <div class="group-divider"></div>
+      <div class="group-title">Playback</div>
+      <div class="slider-container">
+        <div class="slider-label"><span>Speed (ticks / frame)</span><span id="valSpeed" class="stat-val">3</span></div>
+        <input type="range" id="inSpeed" min="1" max="20" step="1" value="3">
+      </div>
+      <div class="slider-container" style="margin-bottom:4px;">
+        <div class="slider-label"><span>Random seed</span></div>
+        <input type="text" id="inSeed" placeholder="seed">
+      </div>
+      <div class="btn-group">
+        <button id="btnRun" class="sim-btn sim-btn-resume">Start</button>
+        <button id="btnReset" class="sim-btn sim-btn-primary">Reset</button>
+      </div>
+      <div class="btn-group">
+        <button id="btnNewSeed" class="sim-btn sim-btn-export">New seed</button>
+      </div>
+    </div>
+
+    <canvas id="simCanvas" style="display:block; cursor: default; position:absolute; top:0; left:0;"></canvas>
+  </div>
+</main>
+
+<script>
+  // ── Theme toggle ───────────────────────────────────────────────────────────
+  (function() {
+    function getBtns() { return document.querySelectorAll('#theme-toggle button'); }
+    var saved = (function(){ try { return localStorage.getItem('theme-pref') || 'system'; } catch(e) { return 'system'; } })();
+    function apply(mode) {
+      if (mode === 'light' || mode === 'dark') {
+        document.documentElement.setAttribute('data-theme', mode);
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      getBtns().forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-theme') === mode); });
+      try { localStorage.setItem('theme-pref', mode); } catch(e) {}
+    }
+    function init() {
+      getBtns().forEach(function(b) {
+        b.addEventListener('click', function(ev) { ev.stopPropagation(); apply(b.getAttribute('data-theme')); });
+      });
+      apply(saved);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+
+  // ── Controls panel toggle ─────────────────────────────────────────────────
+  (function() {
+    function init() {
+      var btn = document.getElementById('dp-toggle-btn');
+      var panel = document.querySelector('.sim-controls');
+      if (!btn || !panel) return;
+      btn.addEventListener('click', function() {
+        var open = panel.classList.toggle('is-open');
+        btn.classList.toggle('active', open);
+        btn.setAttribute('aria-pressed', open ? 'true' : 'false');
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+</script>
+
+<script>
+  /**
+   * Detection Percolation — visualisation of the hitting time in a
+   * moving Poisson particle system. See the plan / research notes for
+   * the model definition.
+   */
+
+  // ── Theme colour pull ─────────────────────────────────────────────────────
+  function getColors() {
+    const s = getComputedStyle(document.documentElement);
+    const g = n => s.getPropertyValue(n).trim();
+    return {
+      bg:         g('--color-bg'),
+      boxFill:    g('--dp-box-fill'),
+      border:     g('--color-border'),
+      particle:   g('--dp-particle'),
+      core:       g('--dp-particle-core'),
+      edge:       g('--dp-edge'),
+      bigComp:    g('--dp-big-comp'),
+      bigCompCore:g('--dp-big-comp-core'),
+      target:     g('--dp-target'),
+      targetRing: g('--dp-target-ring'),
+      trail:      g('--dp-trail'),
+      accent:     g('--color-accent'),
+    };
+  }
+
+  // ── Seedable PRNG (lifted from levy-vs-bm-standalone) ─────────────────────
+  const PRNG = {
+    rand: Math.random,
+    xmur3: function(str) {
+      for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++) {
+        h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+        h = h << 13 | h >>> 19;
+      }
+      return function() {
+        h = Math.imul(h ^ h >>> 16, 2246822507);
+        h = Math.imul(h ^ h >>> 13, 3266489909);
+        return (h ^= h >>> 16) >>> 0;
+      };
+    },
+    mulberry32: function(a) {
+      return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    },
+    init: function(seedStr) {
+      if (!seedStr) seedStr = Date.now().toString() + Math.random().toString();
+      this.rand = this.mulberry32(this.xmur3(seedStr)());
+    },
+    gaussian: function() {
+      let u = 0, v = 0;
+      while (u === 0) u = this.rand();
+      while (v === 0) v = this.rand();
+      return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    }
+  };
+
+  // ── Math helpers ──────────────────────────────────────────────────────────
+  function samplePareto(xm, delta) {
+    // P(R > x) = (xm / x)^delta  (x >= xm).
+    return xm / Math.pow(PRNG.rand(), 1.0 / delta);
+  }
+  function samplePoisson(mean) {
+    if (mean <= 0) return 0;
+    if (mean < 30) {
+      const L0 = Math.exp(-mean);
+      let k = 0, p = 1;
+      do { k++; p *= PRNG.rand(); } while (p > L0);
+      return k - 1;
+    }
+    // Normal approximation for large mean (exp(-mean) underflows).
+    return Math.max(0, Math.round(mean + Math.sqrt(mean) * PRNG.gaussian()));
+  }
+  function distSqTorus(a, b, L) {
+    let dx = Math.abs(a.x - b.x), dy = Math.abs(a.y - b.y);
+    if (dx > L / 2) dx = L - dx;
+    if (dy > L / 2) dy = L - dy;
+    return dx * dx + dy * dy;
+  }
+  function getRelativePos(p1, p2, L) {
+    // Position of p2 in the coordinate frame of p1 under the torus
+    // unwrapping — used so we can draw an edge p1→p2 as a straight line
+    // through the nearest periodic image of p2.
+    let x2 = p2.x, y2 = p2.y;
+    if (x2 - p1.x >  L / 2) x2 -= L; else if (p1.x - x2 > L / 2) x2 += L;
+    if (y2 - p1.y >  L / 2) y2 -= L; else if (p1.y - y2 > L / 2) y2 += L;
+    return { x: x2, y: y2 };
+  }
+
+  // ── State ────────────────────────────────────────────────────────────────
+  const State = {
+    L: 300,
+    lambda: Math.pow(10, -2.70),      // ≈ 2e-3
+    motion: 'brownian',               // 'brownian' | 'levy'
+    sigma: 1.0,
+    alpha: 1.50,
+    radiusMode: 'deterministic',      // 'deterministic' | 'pareto'
+    r: 3.0,
+    xm: 1.0,
+    delta: 2.50,
+    target: 'fixed',                  // 'fixed' | 'moving'
+    scenario: 1,                      // 1 | 2
+    speed: 3,
+    dtPerTick: 0.1,                   // simulation time units per tick
+    seed: 'detection',
+    tick: 0,
+    paused: true,
+    hit: null,                        // { t, cause, component: [indices] }
+    particles: [],
+    distinguished: null,
+    trail: [],                        // last N positions of moving target
+    kmax: 0,
+    edges: [],                        // only populated in scenario 2 for drawing
+  };
+
+  const Config = {
+    // Upper bound on N so a pathological slider combination can't freeze
+    // the browser during init. Sized well above the maximum the current
+    // (λ, L) sliders can produce.
+    maxN: 100000,
+    levyBaseScale: 20.0,
+    trailLength: 240,
+  };
+
+  // ── Motion generators ────────────────────────────────────────────────────
+  function getLevyStep(alpha, maxR) {
+    // Isotropic heavy-tailed jump with P(|J| > x) ~ x^{-alpha}. At alpha
+    // near 2 we use the Gaussian-limit formula so the visual smoothly
+    // transitions from Lévy to BM-like behaviour as the user sweeps α.
+    const theta = PRNG.rand() * 2 * Math.PI;
+    let r;
+    if (alpha >= 1.99) {
+      r = Math.abs(PRNG.gaussian()) * Config.levyBaseScale;
+    } else {
+      let u = PRNG.rand(); if (u === 0) u = 1e-9;
+      r = Math.min(Math.pow(u, -1.0 / alpha) * Config.levyBaseScale, maxR);
+    }
+    return { dx: r * Math.cos(theta), dy: r * Math.sin(theta), r };
+  }
+
+  function sampleRadius() {
+    return State.radiusMode === 'deterministic'
+      ? State.r
+      : samplePareto(State.xm, State.delta);
+  }
+
+  function makeMover() {
+    return { vx: 0, vy: 0, ticksToChange: 0 };
+  }
+
+  function movePart(p, L) {
+    if (State.motion === 'brownian') {
+      // Δx = σ · sqrt(dt) · N(0,1) per tick — discretised BM with
+      // variance σ²·dt per tick. Isotropic via two independent Gaussians.
+      const s = State.sigma * Math.sqrt(State.dtPerTick);
+      p.x += s * PRNG.gaussian();
+      p.y += s * PRNG.gaussian();
+    } else {
+      // Lévy flight: draw a jump, spread it over ⌈|J|/speed⌉ ticks so
+      // the jump reads as a smooth glide rather than a teleport.
+      if (p.ticksToChange == null || p.ticksToChange <= 0) {
+        const step = getLevyStep(State.alpha, L * 3);
+        const duration = Math.max(1, Math.ceil(step.r / Math.max(1, State.speed)));
+        p.vx = step.dx / duration;
+        p.vy = step.dy / duration;
+        p.ticksToChange = duration;
+      }
+      p.x += p.vx; p.y += p.vy;
+      p.ticksToChange--;
+    }
+    // Torus wrap into [-L/2, L/2)
+    const H = L / 2;
+    p.x = ((p.x + H) % L + L) % L - H;
+    p.y = ((p.y + H) % L + L) % L - H;
+  }
+
+  // ── Initialisation ───────────────────────────────────────────────────────
+  function initSim() {
+    PRNG.init(State.seed);
+    const mean = State.lambda * State.L * State.L;
+    const N = Math.min(samplePoisson(mean), Config.maxN);
+    State.particles = new Array(N);
+    for (let i = 0; i < N; i++) {
+      const p = {
+        x: (PRNG.rand() - 0.5) * State.L,
+        y: (PRNG.rand() - 0.5) * State.L,
+        r: sampleRadius(),
+        vx: 0, vy: 0, ticksToChange: 0,
+        _root: i, _compSize: 1,
+      };
+      State.particles[i] = p;
+    }
+    rebuildRadiusOrder();
+    if (State.target === 'fixed') {
+      State.distinguished = { x: 0, y: 0, fixed: true };
+    } else {
+      State.distinguished = Object.assign({ x: 0, y: 0, fixed: false }, makeMover());
+    }
+    State.tick = 0;
+    State.hit = null;
+    State.trail.length = 0;
+    State.kmax = 0;
+    State.edges.length = 0;
+    updateOverlay();
+  }
+
+  // Indices of State.particles sorted by radius descending. Computed once
+  // per reset (radii only change at init / deterministic-r slider changes;
+  // the latter leaves the sort order intact because all radii remain equal).
+  function rebuildRadiusOrder() {
+    const n = State.particles.length;
+    const order = new Array(n);
+    for (let i = 0; i < n; i++) order[i] = i;
+    if (State.radiusMode !== 'deterministic') {
+      const parts = State.particles;
+      order.sort((a, b) => parts[b].r - parts[a].r);
+    }
+    State._radiusOrder = order;
+  }
+
+  // ── Scenario checks ──────────────────────────────────────────────────────
+  function findAnyContact(d) {
+    for (let i = 0; i < State.particles.length; i++) {
+      const p = State.particles[i];
+      if (distSqTorus(d, p, State.L) <= p.r * p.r) return { idx: i, particle: p };
+    }
+    return null;
+  }
+
+  // Union-Find connected components of the disc graph. Returns the max
+  // component size; also tags each particle with _root / _compSize for
+  // rendering and the coverage check.
+  //
+  // Two-tier strategy, so a single Pareto outlier does not collapse the
+  // grid for the 99% of normal-radius particles:
+  //
+  //   "small"   r ≤ L/6           — placed into a tight uniform grid
+  //                                 with cell side s = max(L/50, 2·max_r_small)
+  //                                 so every small-small pair is captured by
+  //                                 the 3×3 Chebyshev neighbourhood scan.
+  //   "large"   r >  L/6          — brute-forced against everyone in an
+  //                                 O(nLarge · N) pass. Typically nLarge is
+  //                                 a handful, and the cost is negligible.
+  //
+  // When nLarge grows past N/3 (or the world is genuinely too tight for a
+  // ≥3×3 grid), fall back to plain O(N²) — the regime where neither tier
+  // could speed anything up.
+  function computeComponents() {
+    const n = State.particles.length;
+    if (n === 0) { State.kmax = 0; State.edges.length = 0; return 0; }
+    const L = State.L;
+    const H = L / 2;
+    const parts = State.particles;
+
+    const parent = new Int32Array(n);
+    for (let i = 0; i < n; i++) parent[i] = i;
+    const find = (x) => { while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; } return x; };
+    const union = (a, b) => { const ra = find(a), rb = find(b); if (ra !== rb) parent[ra] = rb; };
+
+    const edges = State.edges;
+    edges.length = 0;
+    const storeEdges = State.scenario === 2;
+
+    // Pick how many top-radius particles to classify as "large" by sweeping
+    // candidate K ∈ {0, 1, 2, 4, 8, …} and choosing the K that minimises
+    //
+    //   cost(K) ≈ grid_cost(K) + linear_cost(K)
+    //
+    // where grid_cost is the expected small-small pair-check count with
+    // cell side s_K = max(L/50, 2·r_(K+1)) — a tighter cell makes the grid
+    // faster — and linear_cost = K·N is the brute-force cost of the
+    // large-vs-everyone pass. For deterministic radii every candidate has
+    // the same max_small_r so the sweep picks K=0 naturally.
+    const sortedIdx = State._radiusOrder;
+    let bestK = 0, bestCost = Infinity;
+    let bestCellSize = Math.max(L / 50, 1e-6), bestCols = Math.floor(L / bestCellSize);
+    const Ks = [0];
+    for (let K = 1; K < n; K = Math.min(n, K * 2 || 1)) {
+      Ks.push(K);
+      if (K === n) break;
+    }
+    Ks.push(n);
+    for (const K of Ks) {
+      const maxSmallR = (K >= n) ? 0 : parts[sortedIdx[K]].r;
+      const cellSize = Math.max(L / 50, 2 * maxSmallR, 1e-6);
+      const cols = Math.floor(L / cellSize);
+      const nSmall = n - K;
+      let gridCost;
+      if (cols < 3) {
+        // Grid unusable at this K; model grid_cost as a small-small
+        // all-pairs scan so the optimiser still considers this candidate.
+        gridCost = nSmall * (nSmall - 1) * 0.5;
+      } else {
+        const occ = nSmall / (cols * cols);
+        gridCost = cols * cols * 9 * occ * occ;
+      }
+      const linearCost = K * n;
+      const cost = gridCost + linearCost;
+      if (cost < bestCost) {
+        bestCost = cost;
+        bestK = K;
+        bestCellSize = cellSize;
+        bestCols = cols;
+      }
+    }
+
+    const nLarge = bestK;
+    const largeIdx = new Array(nLarge);
+    for (let k = 0; k < nLarge; k++) largeIdx[k] = sortedIdx[k];
+    const cellSize = bestCellSize;
+    const cols = bestCols;
+    const useGrid = (cols >= 3 && nLarge * 3 <= n);
+
+    if (!useGrid) {
+      for (let i = 0; i < n; i++) {
+        const u = parts[i];
+        for (let j = i + 1; j < n; j++) {
+          const v = parts[j];
+          const thr = u.r + v.r;
+          if (distSqTorus(u, v, L) < thr * thr) {
+            union(i, j);
+            if (storeEdges) edges.push({ i, j, v_rel: getRelativePos(u, v, L) });
+          }
+        }
+      }
+    } else {
+      // Actual cell side divides L exactly so modular neighbourhood
+      // indexing matches the torus wrap cleanly.
+      const s = L / cols;
+
+      const isLarge = new Uint8Array(n);
+      const largePos = new Int32Array(n);
+      for (let k = 0; k < nLarge; k++) {
+        isLarge[largeIdx[k]] = 1;
+        largePos[largeIdx[k]] = k;
+      }
+
+      // ── Small-small pass via grid ─────────────────────────────────────
+      const buckets = new Array(cols * cols);
+      for (let k = 0; k < buckets.length; k++) buckets[k] = [];
+      for (let i = 0; i < n; i++) {
+        if (isLarge[i]) continue;
+        const p = parts[i];
+        const cx = ((Math.floor((p.x + H) / s) % cols) + cols) % cols;
+        const cy = ((Math.floor((p.y + H) / s) % cols) + cols) % cols;
+        buckets[cx + cy * cols].push(i);
+      }
+      for (let cy = 0; cy < cols; cy++) {
+        for (let cx = 0; cx < cols; cx++) {
+          const bucket = buckets[cx + cy * cols];
+          for (let dy = -1; dy <= 1; dy++) {
+            const ny = (cy + dy + cols) % cols;
+            for (let dx = -1; dx <= 1; dx++) {
+              const nx = (cx + dx + cols) % cols;
+              const nbr = buckets[nx + ny * cols];
+              const sameCell = (dx === 0 && dy === 0);
+              for (let a = 0; a < bucket.length; a++) {
+                const i = bucket[a];
+                const b0 = sameCell ? a + 1 : 0;
+                for (let b = b0; b < nbr.length; b++) {
+                  const j = nbr[b];
+                  // For cross-cell neighbour pairs, emit each pair once.
+                  if (!sameCell && j <= i) continue;
+                  const u = parts[i], v = parts[j];
+                  const thr = u.r + v.r;
+                  if (distSqTorus(u, v, L) < thr * thr) {
+                    union(i, j);
+                    if (storeEdges) edges.push({ i, j, v_rel: getRelativePos(u, v, L) });
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // ── Large-vs-any pass ─────────────────────────────────────────────
+      // For each large particle, scan every other particle directly. To
+      // avoid double-counting large-large pairs, skip if the other is also
+      // large and appears earlier in largeIdx (already handled).
+      for (let k = 0; k < nLarge; k++) {
+        const li = largeIdx[k];
+        const u = parts[li];
+        for (let j = 0; j < n; j++) {
+          if (j === li) continue;
+          if (isLarge[j] && largePos[j] < k) continue;
+          const v = parts[j];
+          const thr = u.r + v.r;
+          if (distSqTorus(u, v, L) < thr * thr) {
+            const a = li < j ? li : j;
+            const b = li < j ? j : li;
+            union(a, b);
+            if (storeEdges) edges.push({ i: a, j: b, v_rel: getRelativePos(parts[a], parts[b], L) });
+          }
+        }
+      }
+    }
+
+    const size = new Int32Array(n);
+    for (let i = 0; i < n; i++) size[find(i)]++;
+    let maxSize = 0;
+    for (let i = 0; i < n; i++) {
+      const root = find(i);
+      parts[i]._root = root;
+      parts[i]._compSize = size[root];
+      if (size[root] > maxSize) maxSize = size[root];
+    }
+    State.kmax = maxSize;
+    return maxSize;
+  }
+
+  function findLargestCoverage(d, maxSize) {
+    if (maxSize <= 0) return null;
+    for (let i = 0; i < State.particles.length; i++) {
+      const p = State.particles[i];
+      if (p._compSize !== maxSize) continue;
+      if (distSqTorus(d, p, State.L) <= p.r * p.r) return { idx: i, particle: p, root: p._root };
+    }
+    return null;
+  }
+
+  // ── View (fit-to-box with optional pan/zoom) ─────────────────────────────
+  const View = {
+    canvas: document.getElementById('simCanvas'),
+    ctx: null,
+    cW: 0, cH: 0, dpr: 1,
+    scale: 1, offsetX: 0, offsetY: 0,   // fit transform
+    userZoom: 1, userPanX: 0, userPanY: 0, // manual adjustments on top of fit
+    init: function() {
+      this.ctx = this.canvas.getContext('2d');
+      this.resize();
+    },
+    resize: function() {
+      const container = document.getElementById('sim-container');
+      this.cW = container.clientWidth;
+      this.cH = container.clientHeight;
+      this.dpr = window.devicePixelRatio || 1;
+      this.canvas.width  = this.cW * this.dpr;
+      this.canvas.height = this.cH * this.dpr;
+      this.canvas.style.width  = this.cW + 'px';
+      this.canvas.style.height = this.cH + 'px';
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.ctx.scale(this.dpr, this.dpr);
+      this.recomputeFit();
+    },
+    recomputeFit: function() {
+      // Fit the L×L box into the viewport with a margin, shifted right
+      // so the controls panel does not sit on top of particles. Offsets
+      // place the world origin (now the centre of the box) at the centre
+      // of the available region so the box is symmetric around its midpoint.
+      const panel = document.querySelector('.sim-controls');
+      const panelVisible = panel && getComputedStyle(panel).display !== 'none';
+      const uiSafe = panelVisible && this.cW > 560 ? 360 : 20;
+      const margin = 30;
+      const availW = Math.max(80, this.cW - uiSafe - margin);
+      const availH = Math.max(80, this.cH - margin * 2);
+      this.scale = Math.min(availW, availH) / State.L;
+      this.offsetX = uiSafe + availW / 2;
+      this.offsetY = this.cH / 2;
+    },
+    worldToScreen: function(x, y) {
+      return {
+        sx: this.offsetX + x * this.scale * this.userZoom + this.userPanX,
+        sy: this.offsetY + y * this.scale * this.userZoom + this.userPanY,
+      };
+    },
+    screenToWorld: function(sx, sy) {
+      return {
+        x: (sx - this.offsetX - this.userPanX) / (this.scale * this.userZoom),
+        y: (sy - this.offsetY - this.userPanY) / (this.scale * this.userZoom),
+      };
+    },
+    effectiveScale: function() { return this.scale * this.userZoom; },
+    resetView: function() { this.userZoom = 1; this.userPanX = 0; this.userPanY = 0; },
+    // Zoom-out is capped at 1 (box in full view). When the cap kicks in,
+    // snap pan back to zero so the fit-to-viewport layout is restored.
+    clampZoom: function(z) {
+      const clamped = Math.max(1, Math.min(200, z));
+      if (clamped === 1) { this.userPanX = 0; this.userPanY = 0; }
+      return clamped;
+    },
+  };
+
+  // ── Rendering ────────────────────────────────────────────────────────────
+  const TORUS_SHIFTS = [
+    {dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},
+    {dx:0,dy:1},{dx:0,dy:-1},
+    {dx:1,dy:1},{dx:-1,dy:-1},
+    {dx:1,dy:-1},{dx:-1,dy:1},
+  ];
+
+  function draw() {
+    const C = getColors();
+    const ctx = View.ctx;
+    const L = State.L;
+    const s = View.effectiveScale();
+
+    ctx.clearRect(0, 0, View.cW, View.cH);
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, View.cW, View.cH);
+
+    // Box outline + fill. `bx` is the screen position of the world origin
+    // (the centre of the box). The box extends by ±drawn/2 around it.
+    const bx = View.worldToScreen(0, 0);
+    const drawn = L * s;
+    const bx0 = bx.sx - drawn / 2, by0 = bx.sy - drawn / 2;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(bx0, by0, drawn, drawn);
+    ctx.clip();
+    ctx.fillStyle = C.boxFill;
+    ctx.fillRect(bx0, by0, drawn, drawn);
+
+    // 9-tile torus replication: draw the world 9 times (central + 8
+    // neighbouring periodic copies) so particles whose disc straddles
+    // the boundary appear continuous.
+    for (let k = 0; k < TORUS_SHIFTS.length; k++) {
+      const sh = TORUS_SHIFTS[k];
+      const tx = bx.sx + sh.dx * drawn;
+      const ty = bx.sy + sh.dy * drawn;
+
+      // Edges (scenario 2 only)
+      if (State.scenario === 2 && State.edges.length) {
+        ctx.strokeStyle = C.edge;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        const e = State.edges;
+        for (let m = 0; m < e.length; m++) {
+          const u = State.particles[e[m].i];
+          const vRel = e[m].v_rel;
+          // Draw only if the midpoint is near the viewed tile — cheap cull.
+          const mx = (u.x + vRel.x) / 2, my = (u.y + vRel.y) / 2;
+          if (mx < -L || mx > 2 * L || my < -L || my > 2 * L) continue;
+          ctx.moveTo(tx + u.x * s, ty + u.y * s);
+          ctx.lineTo(tx + vRel.x * s, ty + vRel.y * s);
+        }
+        ctx.stroke();
+      }
+
+      // Particles
+      const N = State.particles.length;
+      for (let i = 0; i < N; i++) {
+        const p = State.particles[i];
+        const rPx = Math.max(0.5, p.r * s);
+        const px = tx + p.x * s;
+        const py = ty + p.y * s;
+        if (px + rPx < bx0 || px - rPx > bx0 + drawn ||
+            py + rPx < by0 || py - rPx > by0 + drawn) continue;
+        const inBig = (State.scenario === 2 && p._compSize === State.kmax && State.kmax > 0);
+        ctx.beginPath();
+        ctx.fillStyle = inBig ? C.bigComp : C.particle;
+        ctx.arc(px, py, rPx, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.fillStyle = inBig ? C.bigCompCore : C.core;
+        ctx.arc(px, py, Math.max(1.5, Math.min(3, s * 0.6)), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Trail of the moving target. Drawn in the central tile only; pen lifts
+    // whenever consecutive points straddle a torus seam.
+    if (State.distinguished && !State.distinguished.fixed && State.trail.length > 1) {
+      ctx.strokeStyle = C.trail;
+      ctx.lineWidth = 1.5;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      let last = null;
+      for (let i = 0; i < State.trail.length; i++) {
+        const pt = State.trail[i];
+        const px = bx.sx + pt.x * s;
+        const py = bx.sy + pt.y * s;
+        if (last && (Math.abs(pt.x - last.x) > L / 2 || Math.abs(pt.y - last.y) > L / 2)) {
+          ctx.moveTo(px, py);
+        } else if (i === 0) {
+          ctx.moveTo(px, py);
+        } else {
+          ctx.lineTo(px, py);
+        }
+        last = pt;
+      }
+      ctx.stroke();
+    }
+
+    // Distinguished target
+    if (State.distinguished) {
+      const d = State.distinguished;
+      const dx = bx.sx + d.x * s;
+      const dy = bx.sy + d.y * s;
+      ctx.beginPath();
+      ctx.fillStyle = C.targetRing;
+      ctx.arc(dx, dy, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.fillStyle = C.target;
+      ctx.arc(dx, dy, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#fff';
+      ctx.stroke();
+    }
+
+    ctx.restore();
+    // Box border (drawn after clip restore so it is crisp)
+    ctx.strokeStyle = C.border;
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(bx0, by0, drawn, drawn);
+
+    // Highlight the triggering particle (if hit fired)
+    if (State.hit && State.hit.cause) {
+      const cause = State.hit.cause.particle;
+      const causePx = View.worldToScreen(cause.x, cause.y);
+      ctx.beginPath();
+      ctx.strokeStyle = C.accent;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 4]);
+      ctx.arc(causePx.sx, causePx.sy, Math.max(6, cause.r * s + 4), 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // ── Simulation loop ──────────────────────────────────────────────────────
+  function stepOnce() {
+    State.tick++;
+    const L = State.L;
+    const parts = State.particles;
+    for (let i = 0; i < parts.length; i++) movePart(parts[i], L);
+    if (State.distinguished && !State.distinguished.fixed) {
+      movePart(State.distinguished, L);
+      State.trail.push({ x: State.distinguished.x, y: State.distinguished.y });
+      if (State.trail.length > Config.trailLength) State.trail.shift();
+    }
+
+    if (State.scenario === 2) {
+      computeComponents();
+    } else {
+      State.kmax = 0;
+      State.edges.length = 0;
+    }
+
+    const d = State.distinguished;
+    let hit = null;
+    if (State.scenario === 1) {
+      hit = findAnyContact(d);
+    } else {
+      hit = findLargestCoverage(d, State.kmax);
+    }
+    if (hit) {
+      State.hit = { t: State.tick * State.dtPerTick, cause: hit };
+      State.paused = true;
+      setRunButton(false);
+    }
+  }
+
+  let rafId = null;
+  function loop() {
+    if (!State.paused && !State.hit) {
+      for (let k = 0; k < State.speed; k++) {
+        stepOnce();
+        if (State.hit) break;
+      }
+    }
+    draw();
+    updateOverlay();
+    rafId = requestAnimationFrame(loop);
+  }
+
+  // ── UI: overlay + button state + input wiring ────────────────────────────
+  const els = {
+    ovT: document.getElementById('ov-t'),
+    ovN: document.getElementById('ov-n'),
+    ovKmax: document.getElementById('ov-kmax'),
+    ovKmaxRow: document.getElementById('ov-kmax-row'),
+    ovHit: document.getElementById('ov-hit'),
+    ovHitT: document.getElementById('ov-hit-t'),
+    valL: document.getElementById('valL'),
+    valLambda: document.getElementById('valLambda'),
+    valMean: document.getElementById('valMean'),
+    valSigma: document.getElementById('valSigma'),
+    valAlpha: document.getElementById('valAlpha'),
+    valR: document.getElementById('valR'),
+    valXm: document.getElementById('valXm'),
+    valDelta: document.getElementById('valDelta'),
+    valSpeed: document.getElementById('valSpeed'),
+    inL: document.getElementById('inL'),
+    inLambda: document.getElementById('inLambda'),
+    inSigma: document.getElementById('inSigma'),
+    inAlpha: document.getElementById('inAlpha'),
+    inR: document.getElementById('inR'),
+    inXm: document.getElementById('inXm'),
+    inDelta: document.getElementById('inDelta'),
+    inSpeed: document.getElementById('inSpeed'),
+    inSeed: document.getElementById('inSeed'),
+    sigmaWrap: document.getElementById('sigmaWrap'),
+    alphaWrap: document.getElementById('alphaWrap'),
+    rWrap: document.getElementById('rWrap'),
+    paretoWrap: document.getElementById('paretoWrap'),
+    btnRun: document.getElementById('btnRun'),
+    btnReset: document.getElementById('btnReset'),
+    btnNewSeed: document.getElementById('btnNewSeed'),
+    motionRow: document.getElementById('motionRow'),
+    radiusRow: document.getElementById('radiusRow'),
+    targetRow: document.getElementById('targetRow'),
+    scenarioRow: document.getElementById('scenarioRow'),
+    scenarioHint: document.getElementById('scenarioHint'),
+  };
+
+  function fmtLambda(v) {
+    // v in units of 10^x
+    if (v >= 0.01) return v.toFixed(3);
+    const e = Math.floor(Math.log10(v));
+    const m = v / Math.pow(10, e);
+    return m.toFixed(2) + '\u00d710' + toSup(e);
+  }
+  function toSup(n) {
+    const map = {'-':'\u207b','0':'\u2070','1':'\u00b9','2':'\u00b2','3':'\u00b3','4':'\u2074','5':'\u2075','6':'\u2076','7':'\u2077','8':'\u2078','9':'\u2079'};
+    return String(n).split('').map(c => map[c] || c).join('');
+  }
+
+  function updateOverlay() {
+    els.ovT.textContent = (State.tick * State.dtPerTick).toFixed(2);
+    els.ovN.textContent = State.particles.length;
+    if (State.scenario === 2) {
+      els.ovKmaxRow.style.display = '';
+      els.ovKmax.textContent = State.kmax;
+    } else {
+      els.ovKmaxRow.style.display = 'none';
+    }
+    if (State.hit) {
+      els.ovHit.classList.remove('hidden');
+      els.ovHitT.textContent = State.hit.t.toFixed(2);
+    } else {
+      els.ovHit.classList.add('hidden');
+    }
+  }
+
+  function setRunButton(running) {
+    els.btnRun.textContent = running ? 'Pause' : 'Start';
+    els.btnRun.classList.toggle('sim-btn-pause',   running);
+    els.btnRun.classList.toggle('sim-btn-resume', !running);
+  }
+
+  function updateMeanReadout() {
+    const mean = State.lambda * State.L * State.L;
+    els.valMean.textContent = mean < 10 ? mean.toFixed(2) : Math.round(mean);
+  }
+
+  function bindRadio(row, onChange) {
+    const labels = row.querySelectorAll('label');
+    labels.forEach(l => {
+      l.addEventListener('click', () => {
+        labels.forEach(x => x.classList.remove('active'));
+        l.classList.add('active');
+        const r = l.querySelector('input[type=radio]');
+        if (r) r.checked = true;
+        onChange(l.getAttribute('data-val'));
+      });
+    });
+  }
+
+  function applyMotionVisibility() {
+    els.sigmaWrap.style.display = (State.motion === 'brownian') ? '' : 'none';
+    els.alphaWrap.style.display = (State.motion === 'levy')     ? '' : 'none';
+  }
+  function applyRadiusVisibility() {
+    els.rWrap.style.display      = (State.radiusMode === 'deterministic') ? '' : 'none';
+    els.paretoWrap.style.display = (State.radiusMode === 'pareto')        ? '' : 'none';
+  }
+  function applyScenarioHint() {
+    els.scenarioHint.innerHTML = (State.scenario === 1)
+      ? '<strong>Scenario 1.</strong> Stop as soon as the target lies in some disc \\(B(x_i,r_i)\\).'
+      : '<strong>Scenario 2.</strong> Stop when the target is covered by a component of the current maximum vertex count \\(k_{\\max}(t)\\).';
+    if (window.MathJax && window.MathJax.typesetPromise) window.MathJax.typesetPromise([els.scenarioHint]);
+  }
+
+  function resetSim() {
+    State.tick = 0;
+    State.paused = true;
+    setRunButton(false);
+    initSim();
+  }
+
+  function wireInputs() {
+    els.inL.addEventListener('input', e => {
+      State.L = parseFloat(e.target.value);
+      els.valL.textContent = State.L;
+      updateMeanReadout();
+      View.recomputeFit();
+      resetSim();
+    });
+    els.inLambda.addEventListener('input', e => {
+      const exp = parseFloat(e.target.value);
+      State.lambda = Math.pow(10, exp);
+      els.valLambda.textContent = fmtLambda(State.lambda);
+      updateMeanReadout();
+      resetSim();
+    });
+    els.inSigma.addEventListener('input', e => {
+      State.sigma = parseFloat(e.target.value);
+      els.valSigma.textContent = State.sigma.toFixed(2);
+    });
+    els.inAlpha.addEventListener('input', e => {
+      State.alpha = parseFloat(e.target.value);
+      els.valAlpha.textContent = State.alpha.toFixed(2);
+    });
+    els.inR.addEventListener('input', e => {
+      State.r = parseFloat(e.target.value);
+      els.valR.textContent = State.r.toFixed(1);
+      if (State.radiusMode === 'deterministic') {
+        for (const p of State.particles) p.r = State.r;
+      }
+    });
+    els.inXm.addEventListener('input', e => {
+      State.xm = parseFloat(e.target.value);
+      els.valXm.textContent = State.xm.toFixed(1);
+      if (State.radiusMode === 'pareto') resetSim();
+    });
+    els.inDelta.addEventListener('input', e => {
+      State.delta = parseFloat(e.target.value);
+      els.valDelta.textContent = State.delta.toFixed(2);
+      if (State.radiusMode === 'pareto') resetSim();
+    });
+    els.inSpeed.addEventListener('input', e => {
+      State.speed = parseInt(e.target.value, 10);
+      els.valSpeed.textContent = State.speed;
+    });
+    els.inSeed.addEventListener('change', e => {
+      State.seed = e.target.value || 'detection';
+      resetSim();
+    });
+    bindRadio(els.motionRow, v => { State.motion = v; applyMotionVisibility(); });
+    bindRadio(els.radiusRow, v => { State.radiusMode = v; applyRadiusVisibility(); resetSim(); });
+    bindRadio(els.targetRow, v => { State.target = v; resetSim(); });
+    bindRadio(els.scenarioRow, v => { State.scenario = parseInt(v, 10); applyScenarioHint(); updateOverlay(); });
+
+    els.btnRun.addEventListener('click', () => {
+      if (State.hit) { resetSim(); return; }
+      State.paused = !State.paused;
+      setRunButton(!State.paused);
+    });
+    els.btnReset.addEventListener('click', resetSim);
+    els.btnNewSeed.addEventListener('click', () => {
+      const s = 'seed-' + Math.floor(Math.random() * 1e9).toString(36);
+      State.seed = s;
+      els.inSeed.value = s;
+      resetSim();
+    });
+  }
+
+  // ── Pan / zoom on the canvas (wheel + drag + pinch) ──────────────────────
+  function wirePanZoom() {
+    const canvas = View.canvas;
+    let dragging = false, lastX = 0, lastY = 0;
+
+    canvas.addEventListener('mousedown', (e) => {
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      canvas.style.cursor = 'grabbing';
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      View.userPanX += (e.clientX - lastX);
+      View.userPanY += (e.clientY - lastY);
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    window.addEventListener('mouseup', () => { dragging = false; canvas.style.cursor = 'default'; });
+
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      const factor = Math.exp(-e.deltaY * 0.0015);
+      const before = View.screenToWorld(mx, my);
+      View.userZoom = View.clampZoom(View.userZoom * factor);
+      if (View.userZoom > 1) {
+        const after = View.screenToWorld(mx, my);
+        View.userPanX += (after.x - before.x) * View.scale * View.userZoom;
+        View.userPanY += (after.y - before.y) * View.scale * View.userZoom;
+      }
+    }, { passive: false });
+
+    // Pinch-to-zoom (two-finger) — keeps browser zoom for single-touch.
+    let pinchDist = null, pinchMid = null;
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const a = e.touches[0], b = e.touches[1];
+        pinchDist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        pinchMid = { x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 };
+      }
+    }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2 && pinchDist !== null) {
+        e.preventDefault();
+        const a = e.touches[0], b = e.touches[1];
+        const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        const m = { x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 };
+        const rect = canvas.getBoundingClientRect();
+        const mx = m.x - rect.left, my = m.y - rect.top;
+        const before = View.screenToWorld(mx, my);
+        View.userZoom = View.clampZoom(View.userZoom * (d / pinchDist));
+        if (View.userZoom > 1) {
+          const after = View.screenToWorld(mx, my);
+          View.userPanX += (after.x - before.x) * View.scale * View.userZoom;
+          View.userPanY += (after.y - before.y) * View.scale * View.userZoom;
+          View.userPanX += (m.x - pinchMid.x);
+          View.userPanY += (m.y - pinchMid.y);
+        }
+        pinchDist = d; pinchMid = m;
+      }
+    }, { passive: false });
+    canvas.addEventListener('touchend', () => { pinchDist = null; pinchMid = null; });
+
+    // Double-click / double-tap resets the user view adjustments.
+    canvas.addEventListener('dblclick', () => {
+      View.resetView();
+    });
+  }
+
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  function boot() {
+    els.inSeed.value = State.seed;
+    els.valL.textContent = State.L;
+    els.valLambda.textContent = fmtLambda(State.lambda);
+    els.valSigma.textContent = State.sigma.toFixed(2);
+    els.valAlpha.textContent = State.alpha.toFixed(2);
+    els.valR.textContent = State.r.toFixed(1);
+    els.valXm.textContent = State.xm.toFixed(1);
+    els.valDelta.textContent = State.delta.toFixed(2);
+    els.valSpeed.textContent = State.speed;
+    updateMeanReadout();
+    View.init();
+    applyMotionVisibility();
+    applyRadiusVisibility();
+    applyScenarioHint();
+    wireInputs();
+    wirePanZoom();
+    window.addEventListener('resize', () => {
+      View.resize();
+    });
+    initSim();
+    setRunButton(false);
+    rafId = requestAnimationFrame(loop);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+</script>
