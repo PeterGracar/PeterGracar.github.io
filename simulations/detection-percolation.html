@@ -40,30 +40,6 @@ mathjax: true
         --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
       }
     }
-    html[data-theme="light"] {
-      --color-bg: #f8f4ee;
-      --color-surface: #ffffff;
-      --color-surface-soft: #f1ebe1;
-      --color-text: #1f1b18;
-      --color-text-muted: #554e47;
-      --color-border: #d8cec1;
-      --color-accent: #950000;
-      --color-accent-strong: #6f0000;
-      --color-accent-soft: #cf6a54;
-      --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
-    }
-    html[data-theme="dark"] {
-      --color-bg: #111216;
-      --color-surface: #1a1e24;
-      --color-surface-soft: #232831;
-      --color-text: #ece4d9;
-      --color-text-muted: #b7afa3;
-      --color-border: #3a4049;
-      --color-accent: #ff7558;
-      --color-accent-strong: #ff9f87;
-      --color-accent-soft: #ff9f87;
-      --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
-    }
 
     /* ── Simulation colour tokens ── */
     :root {
@@ -91,30 +67,6 @@ mathjax: true
         --dp-target-ring:  rgba(255, 117, 88, 0.35);
         --dp-trail:        rgba(255, 117, 88, 0.55);
       }
-    }
-    html[data-theme="light"] {
-      --dp-panel-bg:     rgba(248, 244, 238, 0.93);
-      --dp-box-fill:     rgba(255, 255, 255, 0.4);
-      --dp-particle:     rgba(40, 25, 15, 0.38);
-      --dp-particle-core:rgba(40, 25, 15, 0.85);
-      --dp-edge:         rgba(40, 25, 15, 0.22);
-      --dp-big-comp:     rgba(207, 106, 84, 0.38);
-      --dp-big-comp-core:#950000;
-      --dp-target:       #950000;
-      --dp-target-ring:  rgba(149, 0, 0, 0.25);
-      --dp-trail:        rgba(149, 0, 0, 0.5);
-    }
-    html[data-theme="dark"] {
-      --dp-panel-bg:     rgba(26, 30, 36, 0.93);
-      --dp-box-fill:     rgba(35, 40, 49, 0.55);
-      --dp-particle:     rgba(226, 232, 240, 0.30);
-      --dp-particle-core:rgba(236, 228, 217, 0.90);
-      --dp-edge:         rgba(226, 232, 240, 0.25);
-      --dp-big-comp:     rgba(255, 159, 135, 0.38);
-      --dp-big-comp-core:#ff7558;
-      --dp-target:       #ff7558;
-      --dp-target-ring:  rgba(255, 117, 88, 0.35);
-      --dp-trail:        rgba(255, 117, 88, 0.55);
     }
 
     /* ── Full-bleed layout ── */
@@ -262,7 +214,7 @@ mathjax: true
     #top-bar > * { pointer-events: auto; }
 
     #dp-toggle,
-    #theme-toggle {
+    #stats-toggle {
       display: flex; gap: 0;
       background: var(--color-surface-soft);
       border: 1px solid var(--color-border);
@@ -271,7 +223,7 @@ mathjax: true
       font-family: var(--font-body);
     }
     #dp-toggle button,
-    #theme-toggle button {
+    #stats-toggle button {
       border: none; background: transparent; cursor: pointer;
       padding: 4px 12px; border-radius: 999px;
       font-size: 0.75rem; color: var(--color-text-muted);
@@ -280,7 +232,7 @@ mathjax: true
       white-space: nowrap;
     }
     #dp-toggle button.active,
-    #theme-toggle button.active {
+    #stats-toggle button.active {
       background: var(--color-accent);
       color: #fff;
     }
@@ -290,6 +242,7 @@ mathjax: true
 
     /* ── Overlay (hit time / status) ── */
     #overlay {
+      display: none;
       position: absolute; top: 56px; right: 12px;
       background: var(--dp-panel-bg);
       border: 1px solid var(--color-border);
@@ -305,6 +258,7 @@ mathjax: true
       pointer-events: none;
       min-width: 160px;
     }
+    #overlay.is-open { display: block; }
     #overlay .big {
       font-family: monospace;
       color: var(--color-accent);
@@ -341,7 +295,7 @@ mathjax: true
         transform: translateX(-50%);
       }
       #top-bar > #dp-toggle,
-      #top-bar > #theme-toggle {
+      #top-bar > #stats-toggle {
         background: transparent;
         border: none;
         box-shadow: none;
@@ -353,8 +307,10 @@ mathjax: true
         margin-left: 6px;
         padding-left: 6px;
       }
-      #dp-toggle .pill-label { display: none; }
-      #dp-toggle button { padding: 4px 8px; }
+      #dp-toggle .pill-label,
+      #stats-toggle .pill-label { display: none; }
+      #dp-toggle button,
+      #stats-toggle button { padding: 4px 8px; }
       #overlay { top: 62px; right: 8px; left: 8px; min-width: 0; }
     }
   </style>
@@ -367,14 +323,14 @@ mathjax: true
         <span aria-hidden="true">&#9881;</span><span class="pill-label"> Controls</span>
       </button>
     </div>
-    <div id="theme-toggle">
-      <button data-theme="light"  title="Light">&#9728;</button>
-      <button data-theme="system" title="System" class="active">Auto</button>
-      <button data-theme="dark"   title="Dark">&#9790;</button>
+    <div id="stats-toggle" role="group" aria-label="Toggle stats panel">
+      <button id="stats-toggle-btn" type="button" class="active" aria-pressed="true" title="Show or hide the stats panel">
+        <span aria-hidden="true">&#x2261;</span><span class="pill-label"> Stats</span>
+      </button>
     </div>
   </div>
 
-    <div id="overlay">
+    <div id="overlay" class="is-open">
       <div class="stat-row"><span class="stat-label">t</span><span id="ov-t" class="big">0</span></div>
       <div class="stat-row"><span class="stat-label">N</span><span id="ov-n" class="stat-val">0</span></div>
       <div class="stat-row" id="ov-kmax-row" style="display:none"><span class="stat-label">k<sub>max</sub></span><span id="ov-kmax" class="stat-val">0</span></div>
@@ -485,40 +441,21 @@ mathjax: true
 </div>
 
 <script>
-  // ── Theme toggle ───────────────────────────────────────────────────────────
+  // ── Panel toggles (controls + stats) ──────────────────────────────────────
   (function() {
-    function getBtns() { return document.querySelectorAll('#theme-toggle button'); }
-    var saved = (function(){ try { return localStorage.getItem('theme-pref') || 'system'; } catch(e) { return 'system'; } })();
-    function apply(mode) {
-      if (mode === 'light' || mode === 'dark') {
-        document.documentElement.setAttribute('data-theme', mode);
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-      }
-      getBtns().forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-theme') === mode); });
-      try { localStorage.setItem('theme-pref', mode); } catch(e) {}
-    }
-    function init() {
-      getBtns().forEach(function(b) {
-        b.addEventListener('click', function(ev) { ev.stopPropagation(); apply(b.getAttribute('data-theme')); });
-      });
-      apply(saved);
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
-  })();
-
-  // ── Controls panel toggle ─────────────────────────────────────────────────
-  (function() {
-    function init() {
-      var btn = document.getElementById('dp-toggle-btn');
-      var panel = document.querySelector('.sim-controls');
+    function wire(btnId, panelSel) {
+      var btn = document.getElementById(btnId);
+      var panel = document.querySelector(panelSel);
       if (!btn || !panel) return;
       btn.addEventListener('click', function() {
         var open = panel.classList.toggle('is-open');
         btn.classList.toggle('active', open);
         btn.setAttribute('aria-pressed', open ? 'true' : 'false');
       });
+    }
+    function init() {
+      wire('dp-toggle-btn', '.sim-controls');
+      wire('stats-toggle-btn', '#overlay');
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
