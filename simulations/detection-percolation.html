@@ -118,20 +118,7 @@ mathjax: true
     }
 
     /* ── Full-bleed layout ── */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { height: 100vh; overflow: hidden; margin: 0; font-family: var(--font-body); background: var(--color-bg); }
-    main#main-content {
-      padding: 0 !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      display: flex !important;
-      flex-direction: column;
-      overflow: hidden;
-      min-height: 0;
-      position: relative;
-      height: 100vh;
-    }
+    body { height: 100vh; overflow: hidden; font-family: var(--font-body); background: var(--color-bg); }
 
     /* ── Floating controls panel ── */
     .sim-controls {
@@ -262,9 +249,9 @@ mathjax: true
 
     /* ── Top bar ── */
     #top-bar {
-      position: fixed;
+      position: absolute;
       top: 12px; left: 12px; right: 12px;
-      z-index: 2147483646;
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -372,21 +359,20 @@ mathjax: true
     }
   </style>
 
-<div id="top-bar">
-  <div id="dp-toggle" role="group" aria-label="Toggle controls panel">
-    <button id="dp-toggle-btn" type="button" class="active" aria-pressed="true" title="Show or hide the controls panel">
-      <span aria-hidden="true">&#9881;</span><span class="pill-label"> Controls</span>
-    </button>
-  </div>
-  <div id="theme-toggle">
-    <button data-theme="light"  title="Light">&#9728;</button>
-    <button data-theme="system" title="System" class="active">Auto</button>
-    <button data-theme="dark"   title="Dark">&#9790;</button>
-  </div>
-</div>
+<div id="sim-container" style="position: relative; flex: 1; overflow: hidden; min-height: 0;">
 
-<main id="main-content">
-  <div id="sim-container" style="position: relative; flex: 1; overflow: hidden; min-height: 0;">
+  <div id="top-bar">
+    <div id="dp-toggle" role="group" aria-label="Toggle controls panel">
+      <button id="dp-toggle-btn" type="button" class="active" aria-pressed="true" title="Show or hide the controls panel">
+        <span aria-hidden="true">&#9881;</span><span class="pill-label"> Controls</span>
+      </button>
+    </div>
+    <div id="theme-toggle">
+      <button data-theme="light"  title="Light">&#9728;</button>
+      <button data-theme="system" title="System" class="active">Auto</button>
+      <button data-theme="dark"   title="Dark">&#9790;</button>
+    </div>
+  </div>
 
     <div id="overlay">
       <div class="stat-row"><span class="stat-label">t</span><span id="ov-t" class="big">0</span></div>
@@ -495,9 +481,8 @@ mathjax: true
       </div>
     </div>
 
-    <canvas id="simCanvas" style="display:block; cursor: default; position:absolute; top:0; left:0;"></canvas>
-  </div>
-</main>
+  <canvas id="simCanvas" style="display:block; cursor: default; position:absolute; top:0; left:0;"></canvas>
+</div>
 
 <script>
   // ── Theme toggle ───────────────────────────────────────────────────────────
@@ -1466,6 +1451,7 @@ mathjax: true
 
   // ── Boot ─────────────────────────────────────────────────────────────────
   function boot() {
+    State.seed = 'seed-' + Math.floor(Math.random() * 1e9).toString(36);
     els.inSeed.value = State.seed;
     els.valL.textContent = State.L;
     els.valLambda.textContent = fmtLambda(State.lambda);
