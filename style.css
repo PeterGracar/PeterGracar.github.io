@@ -406,6 +406,10 @@ li + li {
   margin-left: 0.25rem;
 }
 
+.pub-badge[hidden] {
+  display: none;
+}
+
 .pub-badge--preprint {
   background: #fff3e0;
   color: #e65100;
