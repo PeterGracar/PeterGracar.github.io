@@ -27,6 +27,28 @@
     yearNode.textContent = String(new Date().getFullYear());
   }
 
+  const upcomingTalks = document.querySelectorAll("[data-talk-date]");
+  if (upcomingTalks.length) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    upcomingTalks.forEach((item) => {
+      const dateStr = item.dataset.talkDate;
+      if (!dateStr) {
+        return;
+      }
+      const talkDate = new Date(`${dateStr}T00:00:00`);
+      if (Number.isNaN(talkDate.getTime())) {
+        return;
+      }
+      if (talkDate >= today) {
+        const badge = item.querySelector("[data-talk-upcoming]");
+        if (badge) {
+          badge.hidden = false;
+        }
+      }
+    });
+  }
+
   const tooltipButtons = Array.from(document.querySelectorAll(".hover-image"));
   if (!tooltipButtons.length) {
     return;
