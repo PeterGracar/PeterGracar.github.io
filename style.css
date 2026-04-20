@@ -411,6 +411,12 @@ li + li {
   border: 1px solid #ffcc80;
 }
 
+.pub-badge--accepted {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+
 .pub-badge--published {
   background: #e8f5e9;
   color: #2e7d32;
@@ -422,6 +428,12 @@ li + li {
     background: rgba(230, 81, 0, 0.15);
     color: #ffab40;
     border-color: rgba(255, 171, 64, 0.3);
+  }
+
+  .pub-badge--accepted {
+    background: rgba(21, 101, 192, 0.2);
+    color: #64b5f6;
+    border-color: rgba(100, 181, 246, 0.35);
   }
 
   .pub-badge--published {
