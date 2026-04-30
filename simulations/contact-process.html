@@ -88,6 +88,28 @@ mathjax: true
   .param-section { margin-bottom: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem; }
   .param-section:first-child { border-top: none; padding-top: 0; }
 
+  /* ── Toggle switch ── */
+  .toggle-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85rem; color: var(--color-text-muted);
+    cursor: pointer; user-select: none;
+  }
+  .toggle-row input[type="checkbox"] {
+    appearance: none; -webkit-appearance: none;
+    width: 36px; height: 20px; margin: 0;
+    background: var(--color-border); border-radius: 999px;
+    position: relative; cursor: pointer; flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .toggle-row input[type="checkbox"]::before {
+    content: ''; position: absolute;
+    top: 2px; left: 2px; width: 16px; height: 16px;
+    background: var(--color-surface); border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  .toggle-row input[type="checkbox"]:checked { background: var(--color-accent); }
+  .toggle-row input[type="checkbox"]:checked::before { transform: translateX(16px); }
+
   /* ── Mobile toggle button ── */
   #controls-toggle {
     display: none;
@@ -237,6 +259,13 @@ mathjax: true
       <div class="mb-3 text-xs font-bold uppercase tracking-wider" style="color: var(--color-accent-soft);">Mobility (Lévy Flight)</div>
 
       <div class="control-group">
+        <label class="toggle-row" for="param-freeze">
+          <span>Freeze motion</span>
+          <input type="checkbox" id="param-freeze" checked>
+        </label>
+      </div>
+
+      <div class="control-group">
         <div class="slider-label"><span>Lévy Index (\(\alpha\))</span><span id="val-alpha">2.0</span></div>
         <div class="slider-container">
           <input type="range" id="param-alpha" min="0.5" max="2.0" step="0.1" value="2.0" class="slider">
@@ -309,7 +338,7 @@ mathjax: true
   const chartCtx  = chartCanvas.getContext('2d', { alpha: false });
 
   let cWidth, cHeight, chartW, chartH;
-  let animationId, isPaused = false;
+  let animationId, isPaused = false, motionFrozen = true;
   let nodes = [], edges = [], historyData = [];
   const maxHistory = 600;
 
@@ -564,7 +593,7 @@ mathjax: true
   // ── Tick ──────────────────────────────────────────────────────────────────
   function tick() {
     if (isPaused) { animationId = requestAnimationFrame(tick); return; }
-    nodes.forEach(n => n.move());
+    if (!motionFrozen) nodes.forEach(n => n.move());
 
     edges = [];
     const infectedCounts = new Array(nodes.length).fill(0);
@@ -658,6 +687,12 @@ mathjax: true
     });
     els.btnReset.addEventListener('click', initSimulation);
     window.addEventListener('resize', resize);
+
+    const freezeToggle = document.getElementById('param-freeze');
+    if (freezeToggle) {
+      freezeToggle.checked = motionFrozen;
+      freezeToggle.addEventListener('change', e => { motionFrozen = e.target.checked; });
+    }
 
     // Mobile controls toggle
     const mToggle   = document.getElementById('controls-toggle');
