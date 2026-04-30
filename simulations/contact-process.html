@@ -239,6 +239,20 @@ mathjax: true
       </div>
 
       <div class="control-group">
+        <label class="toggle-row" for="param-deterministic">
+          <span>Deterministic radii</span>
+          <input type="checkbox" id="param-deterministic">
+        </label>
+      </div>
+
+      <div class="control-group" id="group-r0" hidden>
+        <div class="slider-label"><span>Radius (\(r\))</span><span id="val-r0">25</span></div>
+        <div class="slider-container">
+          <input type="range" id="param-r0" min="5" max="100" value="25" class="slider">
+        </div>
+      </div>
+
+      <div class="control-group" id="group-xm">
         <div class="slider-label"><span>Pareto Scale (\(x_m\))</span><span id="val-xm">15</span></div>
         <div class="slider-container">
           <div id="notch-xm" class="notch hidden"></div>
@@ -246,7 +260,7 @@ mathjax: true
         </div>
       </div>
 
-      <div class="control-group">
+      <div class="control-group" id="group-gamma">
         <div class="slider-label"><span>Pareto Shape (\(\gamma\))</span><span id="val-gamma">2.5</span></div>
         <div class="slider-container">
           <input type="range" id="param-gamma" min="0.5" max="5.0" step="0.1" value="2.5" class="slider">
@@ -344,7 +358,8 @@ mathjax: true
 
   const params = {
     L: 1000, N: 200, xm: 15, gamma: 2.5,
-    alpha: 2.0, speed: 2.0, beta: 0.10, delta: 0.02
+    alpha: 2.0, speed: 2.0, beta: 0.10, delta: 0.02,
+    deterministic: false, r0: 25
   };
 
   const els = {
@@ -358,6 +373,7 @@ mathjax: true
       N:     document.getElementById('param-n'),
       xm:    document.getElementById('param-xm'),
       gamma: document.getElementById('param-gamma'),
+      r0:    document.getElementById('param-r0'),
       alpha: document.getElementById('param-alpha'),
       speed: document.getElementById('param-speed'),
       beta:  document.getElementById('param-beta'),
@@ -368,6 +384,7 @@ mathjax: true
       N:     document.getElementById('val-n'),
       xm:    document.getElementById('val-xm'),
       gamma: document.getElementById('val-gamma'),
+      r0:    document.getElementById('val-r0'),
       alpha: document.getElementById('val-alpha'),
       speed: document.getElementById('val-speed'),
       beta:  document.getElementById('val-beta'),
@@ -385,29 +402,30 @@ mathjax: true
   let scale = 1, offsetX = 0, offsetY = 0;
 
   // ── Math helpers ──────────────────────────────────────────────────────────
-  function samplePareto(xm, gamma) {
-    return xm / Math.pow(Math.random(), 1.0 / gamma);
+  // Radius is r = xm * u^(-1/gamma), with u ~ Uniform(0,1) stored per node.
+  // Slider changes to xm / gamma rescale all radii without resampling u.
+  function computeRadius(u) {
+    if (params.deterministic) return params.r0;
+    return params.xm * Math.pow(u, -1.0 / params.gamma);
   }
-  function getRadiusMoments(xm, gamma) {
-    if (gamma <= 2.0) return null;
+  function getRadiusMoments() {
+    if (params.deterministic) {
+      return { mean: params.r0, meanSq: params.r0 * params.r0 };
+    }
+    if (params.gamma <= 2.0) return null;
     return {
-      mean:   (gamma * xm) / (gamma - 1),
-      meanSq: (gamma * xm * xm) / (gamma - 2),
+      mean:   (params.gamma * params.xm) / (params.gamma - 1),
+      meanSq: (params.gamma * params.xm * params.xm) / (params.gamma - 2),
     };
   }
 
   // ── Motion ────────────────────────────────────────────────────────────────
-  function getLevyStep(alpha) {
+  // Each step stores its driving uniform u and Gaussian magnitude g,
+  // so alpha changes mid-flight just rescale the step length.
+  function computeStepR(u, g, alpha) {
     const baseScale = 20.0;
-    const theta = Math.random() * 2 * Math.PI;
-    let r;
-    if (alpha >= 1.99) {
-      const u1 = Math.random(), u2 = Math.random();
-      r = Math.abs(Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2)) * baseScale;
-    } else {
-      r = Math.min(Math.pow(Math.random(), -1.0 / alpha) * baseScale, params.L * 3);
-    }
-    return { dx: r * Math.cos(theta), dy: r * Math.sin(theta), r };
+    if (alpha >= 1.99) return g * baseScale;
+    return Math.min(Math.pow(u, -1.0 / alpha) * baseScale, params.L * 3);
   }
   function distSqTorus(n1, n2, L) {
     let dx = Math.abs(n1.x - n2.x), dy = Math.abs(n1.y - n2.y);
@@ -426,19 +444,29 @@ mathjax: true
     constructor() {
       this.x = Math.random() * params.L;
       this.y = Math.random() * params.L;
-      this.r = samplePareto(params.xm, params.gamma);
+      this.u_r = Math.random();
+      this.r = computeRadius(this.u_r);
       this.state = 0;
-      this.vx = 0; this.vy = 0; this.ticksToChange = 0;
+      this.u_step = 0; this.g_step = 0; this.theta_step = 0;
+      this.step_done = 0;
+      this._sampleStep();
+    }
+    _sampleStep() {
+      this.u_step = Math.random();
+      const u1 = Math.random(), u2 = Math.random();
+      this.g_step = Math.abs(Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2));
+      this.theta_step = Math.random() * 2 * Math.PI;
+      this.step_done = 0;
     }
     move() {
-      if (this.ticksToChange <= 0) {
-        const step = getLevyStep(params.alpha);
-        const duration = Math.max(1, step.r / params.speed);
-        this.vx = step.dx / duration;
-        this.vy = step.dy / duration;
-        this.ticksToChange = Math.ceil(duration);
+      let total = computeStepR(this.u_step, this.g_step, params.alpha);
+      if (this.step_done >= total) {
+        this._sampleStep();
+        total = computeStepR(this.u_step, this.g_step, params.alpha);
       }
-      this.x += this.vx; this.y += this.vy; this.ticksToChange--;
+      this.x += params.speed * Math.cos(this.theta_step);
+      this.y += params.speed * Math.sin(this.theta_step);
+      this.step_done += params.speed;
       if (this.x < 0) this.x += params.L; if (this.x >= params.L) this.x -= params.L;
       if (this.y < 0) this.y += params.L; if (this.y >= params.L) this.y -= params.L;
     }
@@ -457,7 +485,7 @@ mathjax: true
 
   // ── Notches ───────────────────────────────────────────────────────────────
   function updateNotches() {
-    const m = getRadiusMoments(params.xm, params.gamma);
+    const m = getRadiusMoments();
     if (!m) { Object.values(els.notches).forEach(n => n && n.classList.add('hidden')); return; }
     const termGeo = 2 * Math.PI * (m.meanSq + m.mean * m.mean);
     const place = (el, val, input) => {
@@ -473,7 +501,9 @@ mathjax: true
     place(els.notches.delta, params.beta * k_avg,                               els.inputs.delta);
     if (params.beta > 0) place(els.notches.N, (params.delta / params.beta) * (params.L ** 2 / termGeo), els.inputs.N);
     if (params.delta > 0) place(els.notches.L, Math.sqrt((params.N * params.beta * termGeo) / params.delta), els.inputs.L);
-    if (params.beta > 0) {
+    if (params.deterministic) {
+      els.notches.xm && els.notches.xm.classList.add('hidden');
+    } else if (params.beta > 0) {
       const gt = (params.gamma / (params.gamma - 2)) + (params.gamma / (params.gamma - 1)) ** 2;
       const xm_c = Math.sqrt((params.delta / params.beta) * (params.L ** 2 / params.N) * (1 / (2 * Math.PI * gt)));
       place(els.notches.xm, xm_c, els.inputs.xm);
@@ -641,12 +671,12 @@ mathjax: true
         const span = document.getElementById(`val-${key === 'L' ? 'world' : key.toLowerCase()}`);
         if (span) span.innerText = (isFloat && key !== 'L') ? val.toFixed(2) : val;
         if (key === 'L') { calculateViewTransform(); updateDerivedStats(); nodes.forEach(n => { if (n.x >= params.L) n.x %= params.L; if (n.y >= params.L) n.y %= params.L; }); }
-        if (key === 'xm' || key === 'gamma') nodes.forEach(n => n.r = samplePareto(params.xm, params.gamma));
+        if (key === 'xm' || key === 'gamma' || key === 'r0') nodes.forEach(n => n.r = computeRadius(n.u_r));
         updateNotches();
       });
     };
-    // L and xm are integer parameters; others are floats
-    ['L','xm'].forEach(k => bind(k, false));
+    // L, xm, r0 are integer parameters; others are floats
+    ['L','xm','r0'].forEach(k => bind(k, false));
     ['gamma','alpha','speed','beta','delta'].forEach(k => bind(k, true));
     // N: live label, reinit on release
     els.inputs.N.addEventListener('input', e => {
@@ -655,6 +685,15 @@ mathjax: true
       updateNotches();
     });
     els.inputs.N.addEventListener('change', e => { params.N = parseInt(e.target.value); initSimulation(); });
+  }
+
+  // ── Radius mode toggle ────────────────────────────────────────────────────
+  function applyRadiusMode() {
+    document.getElementById('group-r0').hidden    =  !params.deterministic;
+    document.getElementById('group-xm').hidden    =   params.deterministic;
+    document.getElementById('group-gamma').hidden =   params.deterministic;
+    nodes.forEach(n => n.r = computeRadius(n.u_r));
+    updateNotches();
   }
 
   // ── Click-to-infect ───────────────────────────────────────────────────────
@@ -693,6 +732,16 @@ mathjax: true
       freezeToggle.checked = motionFrozen;
       freezeToggle.addEventListener('change', e => { motionFrozen = e.target.checked; });
     }
+
+    const detToggle = document.getElementById('param-deterministic');
+    if (detToggle) {
+      detToggle.checked = params.deterministic;
+      detToggle.addEventListener('change', e => {
+        params.deterministic = e.target.checked;
+        applyRadiusMode();
+      });
+    }
+    applyRadiusMode();
 
     // Mobile controls toggle
     const mToggle   = document.getElementById('controls-toggle');
