@@ -17,9 +17,9 @@ let package = Package(
             name: "Contact Process",
             targets: ["AppModule"],
             bundleIdentifier: "org.gracar.ContactProcess",
-            teamIdentifier: "",
             displayVersion: "1.0",
             bundleVersion: "1",
+            appIcon: .placeholder(icon: .twoPeople),
             accentColor: .presetColor(.indigo),
             supportedDeviceFamilies: [
                 .pad,
@@ -31,7 +31,6 @@ let package = Package(
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ],
-            capabilities: [],
             appCategory: .education
         )
     ],

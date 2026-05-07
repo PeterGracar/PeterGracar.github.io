@@ -17,9 +17,9 @@ let package = Package(
             name: "Lévy vs Brownian",
             targets: ["AppModule"],
             bundleIdentifier: "org.gracar.LevyVsBrownian",
-            teamIdentifier: "",
             displayVersion: "1.0",
             bundleVersion: "1",
+            appIcon: .placeholder(icon: .barChart),
             accentColor: .presetColor(.indigo),
             supportedDeviceFamilies: [
                 .pad,
@@ -31,7 +31,6 @@ let package = Package(
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ],
-            capabilities: [],
             appCategory: .education
         )
     ],

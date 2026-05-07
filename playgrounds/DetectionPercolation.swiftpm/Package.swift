@@ -17,9 +17,9 @@ let package = Package(
             name: "Detection Percolation",
             targets: ["AppModule"],
             bundleIdentifier: "org.gracar.DetectionPercolation",
-            teamIdentifier: "",
             displayVersion: "1.0",
             bundleVersion: "1",
+            appIcon: .placeholder(icon: .earth),
             accentColor: .presetColor(.indigo),
             supportedDeviceFamilies: [
                 .pad,
@@ -31,7 +31,6 @@ let package = Package(
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ],
-            capabilities: [],
             appCategory: .education
         )
     ],
