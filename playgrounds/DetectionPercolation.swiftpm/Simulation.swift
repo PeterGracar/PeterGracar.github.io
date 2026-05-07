@@ -163,6 +163,13 @@ final class DPSimulation {
 
     private var rng = SeededRandom(seed: "detection")
 
+    /// Particle indices sorted by radius descending. Cached because radii
+    /// only change at reset (Pareto resamples on init; deterministic-r slider
+    /// changes leave the order untouched since every radius shifts equally).
+    /// The two-tier component pass uses this to pick the K largest discs to
+    /// brute-force against everyone, while the rest go through the fast grid.
+    private var radiusOrder: [Int] = []
+
     init() { reset() }
 
     // MARK: - Reset
@@ -189,7 +196,16 @@ final class DPSimulation {
         tick = 0
         kmax = 0
         hit = nil
+        rebuildRadiusOrder()
         rebuildScenarioState()
+    }
+
+    private func rebuildRadiusOrder() {
+        let n = particles.count
+        radiusOrder = Array(0..<n)
+        if radiusMode != .deterministic {
+            radiusOrder.sort { particles[$0].radius > particles[$1].radius }
+        }
     }
 
     private func rebuildScenarioState() {
@@ -344,10 +360,36 @@ final class DPSimulation {
 
     // MARK: - Components
 
+    /// Two-tier connected-components pass.
+    ///
+    /// A single Pareto outlier with a giant radius would otherwise force the
+    /// uniform-grid cell side up to `2·r_max`, which collapses the grid into
+    /// a handful of cells and makes the check no faster than O(N²). Instead
+    /// we split the particles into:
+    ///
+    ///   * **small** (the bottom N − K by radius) — placed in a tight grid
+    ///     with cell side `s = max(L/50, 2·r_(K+1))`. Every small-small pair
+    ///     that *could* overlap lies in the 3×3 Chebyshev neighbourhood of
+    ///     one another, so we only check those.
+    ///   * **large** (the top K by radius) — brute-forced against everyone
+    ///     in an O(K·N) pass. K is chosen so that this single pass costs
+    ///     less than what the grid would cost if the large discs forced its
+    ///     cell side up.
+    ///
+    /// K is picked by sweeping candidates {0, 1, 2, 4, 8, …, n} and choosing
+    /// the one that minimises a simple cost model:
+    ///
+    ///   cost(K) ≈ (cols² · 9 · ρ²)  +  K · N
+    ///
+    /// where ρ = (n − K) / cols² is the expected occupancy of a small-cell.
+    /// For deterministic radii every K has the same `r_(K+1)`, so K = 0
+    /// always wins and we fall through to the pure grid case.
     private func computeComponents() {
         let n = particles.count
         edges.removeAll(keepingCapacity: true)
         guard n > 0 else { kmax = 0; return }
+
+        let storeEdges = scenario == .largestComponent
 
         var parent = Array(0..<n)
         func find(_ x: Int) -> Int {
@@ -359,20 +401,157 @@ final class DPSimulation {
             return x
         }
 
-        for i in 0..<(n - 1) {
-            let u = particles[i]
-            for j in (i + 1)..<n {
-                let v = particles[j]
-                let thr = u.radius + v.radius
-                if torusDistanceSquared(u.x, u.y, v.x, v.y) < thr * thr {
-                    let ru = find(i), rv = find(j)
-                    if ru != rv { parent[ru] = rv }
-                    let rel = relativePosition(of: v, relativeTo: u)
-                    edges.append(DPEdge(i: i, j: j, vRelX: rel.x, vRelY: rel.y))
+        // ── Pick the optimal "large" cut-off K ────────────────────────────
+        var ks: [Int] = [0]
+        var k = 1
+        while k < n {
+            ks.append(k)
+            if k >= n { break }
+            k *= 2
+        }
+        if ks.last != n { ks.append(n) }
+
+        var bestK = 0
+        var bestCost = Double.infinity
+        var bestCols = max(1, Int(L / max(L / 50, 1e-6)))
+
+        for K in ks {
+            let maxSmallR = (K >= n) ? 0 : particles[radiusOrder[K]].radius
+            let cellSize = max(L / 50, 2 * maxSmallR, 1e-6)
+            let cols = max(1, Int(L / cellSize))
+            let nSmall = n - K
+            let gridCost: Double
+            if cols < 3 {
+                gridCost = Double(nSmall) * Double(max(0, nSmall - 1)) * 0.5
+            } else {
+                let occ = Double(nSmall) / Double(cols * cols)
+                gridCost = Double(cols * cols) * 9 * occ * occ
+            }
+            let linearCost = Double(K) * Double(n)
+            let cost = gridCost + linearCost
+            if cost < bestCost {
+                bestCost = cost
+                bestK = K
+                bestCols = cols
+            }
+        }
+
+        let nLarge = bestK
+        let cols = bestCols
+        let useGrid = cols >= 3 && nLarge * 3 <= n
+
+        if !useGrid {
+            // ── Pure O(N²) fallback ────────────────────────────────────────
+            // Triggers only when every reasonable grid configuration costs
+            // about as much as the all-pairs scan.
+            for i in 0..<(n - 1) {
+                let u = particles[i]
+                for j in (i + 1)..<n {
+                    let v = particles[j]
+                    let thr = u.radius + v.radius
+                    if torusDistanceSquared(u.x, u.y, v.x, v.y) < thr * thr {
+                        let ru = find(i), rv = find(j)
+                        if ru != rv { parent[ru] = rv }
+                        if storeEdges {
+                            let rel = relativePosition(of: v, relativeTo: u)
+                            edges.append(DPEdge(i: i, j: j, vRelX: rel.x, vRelY: rel.y))
+                        }
+                    }
+                }
+            }
+        } else {
+            let H = L / 2
+            // Pick the actual cell side so the grid divides L exactly —
+            // makes modular neighbour indexing line up with the torus wrap.
+            let s = L / Double(cols)
+
+            var isLarge = [Bool](repeating: false, count: n)
+            var largePos = [Int](repeating: 0, count: n)
+            for k in 0..<nLarge {
+                let li = radiusOrder[k]
+                isLarge[li] = true
+                largePos[li] = k
+            }
+
+            // ── Small-small via uniform grid ──────────────────────────────
+            var buckets: [[Int]] = Array(repeating: [], count: cols * cols)
+            for i in 0..<n {
+                if isLarge[i] { continue }
+                let p = particles[i]
+                var cx = Int((p.x + H) / s) % cols
+                if cx < 0 { cx += cols }
+                var cy = Int((p.y + H) / s) % cols
+                if cy < 0 { cy += cols }
+                buckets[cx + cy * cols].append(i)
+            }
+
+            for cy in 0..<cols {
+                for cx in 0..<cols {
+                    let bucket = buckets[cx + cy * cols]
+                    if bucket.isEmpty { continue }
+                    for dy in -1...1 {
+                        let ny = (cy + dy + cols) % cols
+                        for dx in -1...1 {
+                            let nx = (cx + dx + cols) % cols
+                            let nbr = buckets[nx + ny * cols]
+                            if nbr.isEmpty { continue }
+                            let sameCell = (dx == 0 && dy == 0)
+                            for a in 0..<bucket.count {
+                                let i = bucket[a]
+                                let u = particles[i]
+                                let b0 = sameCell ? a + 1 : 0
+                                for b in b0..<nbr.count {
+                                    let j = nbr[b]
+                                    // For cross-cell pairs, emit each pair
+                                    // once — keep it on the side where i < j.
+                                    if !sameCell && j <= i { continue }
+                                    let v = particles[j]
+                                    let thr = u.radius + v.radius
+                                    if torusDistanceSquared(u.x, u.y, v.x, v.y) < thr * thr {
+                                        let ru = find(i), rv = find(j)
+                                        if ru != rv { parent[ru] = rv }
+                                        if storeEdges {
+                                            let rel = relativePosition(of: v, relativeTo: u)
+                                            edges.append(DPEdge(i: i, j: j, vRelX: rel.x, vRelY: rel.y))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // ── Large-vs-everyone ─────────────────────────────────────────
+            // Each large disc is checked against every other particle. To
+            // avoid double-counting large-large pairs, skip the "other" if
+            // it's also large and appears earlier in radiusOrder (already
+            // handled when we processed it).
+            for kIdx in 0..<nLarge {
+                let li = radiusOrder[kIdx]
+                let u = particles[li]
+                for j in 0..<n {
+                    if j == li { continue }
+                    if isLarge[j] && largePos[j] < kIdx { continue }
+                    let v = particles[j]
+                    let thr = u.radius + v.radius
+                    if torusDistanceSquared(u.x, u.y, v.x, v.y) < thr * thr {
+                        let aIdx = li < j ? li : j
+                        let bIdx = li < j ? j : li
+                        let ra = find(aIdx), rb = find(bIdx)
+                        if ra != rb { parent[ra] = rb }
+                        if storeEdges {
+                            let pa = particles[aIdx]
+                            let pb = particles[bIdx]
+                            let rel = relativePosition(of: pb, relativeTo: pa)
+                            edges.append(DPEdge(i: aIdx, j: bIdx, vRelX: rel.x, vRelY: rel.y))
+                        }
+                    }
                 }
             }
         }
 
+        // ── Component sizes ───────────────────────────────────────────────
         var size = [Int](repeating: 0, count: n)
         for i in 0..<n { size[find(i)] += 1 }
 
