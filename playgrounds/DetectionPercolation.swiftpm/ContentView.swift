@@ -68,7 +68,7 @@ private struct StatsOverlay: View {
         VStack(alignment: .leading, spacing: 8) {
             VStack(alignment: .leading, spacing: 4) {
                 row(label: "t", value: String(format: "%.2f", sim.t), big: true)
-                row(label: "N", value: "\(sim.particles.count)")
+                row(label: "N", value: "\(sim.particleCount)")
                 if sim.scenario == .largestComponent {
                     row(label: "k_max", value: "\(sim.kmax)")
                 }
@@ -100,7 +100,6 @@ private struct StatsOverlay: View {
                 .font(big
                     ? .system(.title2, design: .rounded, weight: .semibold).monospacedDigit()
                     : .system(.body, design: .rounded).monospacedDigit())
-                .contentTransition(.numericText())
         }
     }
 }

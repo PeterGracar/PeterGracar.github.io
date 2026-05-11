@@ -89,6 +89,40 @@ struct HitInfo: Sendable {
     var causeR: Double
 }
 
+// MARK: - Free geometry helpers (no self access → no @Observable overhead)
+
+@inline(__always)
+private func torusDist2(
+    _ ax: Double, _ ay: Double,
+    _ bx: Double, _ by: Double,
+    _ L: Double, _ halfL: Double
+) -> Double {
+    var dx = abs(ax - bx)
+    var dy = abs(ay - by)
+    if dx > halfL { dx = L - dx }
+    if dy > halfL { dy = L - dy }
+    return dx * dx + dy * dy
+}
+
+@inline(__always)
+private func relPos(
+    _ bx: Double, _ by: Double,
+    _ ax: Double, _ ay: Double,
+    _ L: Double, _ halfL: Double
+) -> (Double, Double) {
+    var x = bx, y = by
+    if x - ax > halfL { x -= L } else if ax - x > halfL { x += L }
+    if y - ay > halfL { y -= L } else if ay - y > halfL { y += L }
+    return (x, y)
+}
+
+@inline(__always)
+private func wrapCoord(_ v: Double, _ L: Double, _ halfL: Double) -> Double {
+    var n = (v + halfL).truncatingRemainder(dividingBy: L)
+    if n < 0 { n += L }
+    return n - halfL
+}
+
 @Observable
 final class DPSimulation {
 
@@ -126,13 +160,13 @@ final class DPSimulation {
     }
     var speed: Int = 3
 
-    /// Slider for fixed radius. Updates existing particle radii in place
-    /// without triggering a reset, so dragging the slider doesn't disturb
-    /// positions or the seeded sequence.
     var fixedRadius: Double = 3.0 {
         didSet {
             if fixedRadius != oldValue, radiusMode == .deterministic {
-                for i in particles.indices { particles[i].radius = fixedRadius }
+                for i in hotParticles.indices {
+                    hotParticles[i].radius = fixedRadius
+                }
+                publishSnapshot()
             }
         }
     }
@@ -145,10 +179,9 @@ final class DPSimulation {
     var meanN: Double { lambda * L * L }
     var t: Double { Double(tick) * dtPerTick }
 
-    // MARK: - State
+    // MARK: - Public state (observable snapshot, updated once per frame)
 
-    private(set) var particles: [Particle] = []
-    private(set) var edges: [DPEdge] = []
+    private(set) var particleCount: Int = 0
     private(set) var distinguished: DPTarget? = nil
     private(set) var trail: [SIMD2<Double>] = []
     private(set) var tick: Int = 0
@@ -157,20 +190,69 @@ final class DPSimulation {
 
     var isPaused: Bool = true
 
+    // MARK: - Hot-path storage (excluded from Observation tracking)
+
+    @ObservationIgnored
+    private var hotParticles: [Particle] = []
+
+    @ObservationIgnored
+    private var hotEdges: [DPEdge] = []
+
+    @ObservationIgnored
+    private var hotTrail: [SIMD2<Double>] = []
+
+    @ObservationIgnored
+    private var hotTick: Int = 0
+
+    @ObservationIgnored
+    private var hotKmax: Int = 0
+
+    @ObservationIgnored
+    private var hotDistinguished: DPTarget? = nil
+
+    @ObservationIgnored
+    private var hotHit: HitInfo? = nil
+
+    @ObservationIgnored
+    private var radiusOrder: [Int] = []
+
+    @ObservationIgnored
+    private var rng = SeededRandom(seed: "detection")
+
+    @ObservationIgnored
+    private var gridCellCounts: [Int] = []
+
+    @ObservationIgnored
+    private var gridOffsets: [Int] = []
+
+    @ObservationIgnored
+    private var gridParticleIndices: [Int] = []
+
+    @ObservationIgnored
+    private var ufParent: [Int] = []
+
+    @ObservationIgnored
+    private var ufSize: [Int] = []
+
     let trailLength = 240
     let levyBaseScale = 20.0
     let maxParticles = 100_000
 
-    private var rng = SeededRandom(seed: "detection")
-
-    /// Particle indices sorted by radius descending. Cached because radii
-    /// only change at reset (Pareto resamples on init; deterministic-r slider
-    /// changes leave the order untouched since every radius shifts equally).
-    /// The two-tier component pass uses this to pick the K largest discs to
-    /// brute-force against everyone, while the rest go through the fast grid.
-    private var radiusOrder: [Int] = []
-
     init() { reset() }
+
+    // MARK: - Direct access for the Metal renderer (bypasses observation)
+
+    func withHotParticles<T>(_ body: (UnsafeBufferPointer<Particle>) -> T) -> T {
+        hotParticles.withUnsafeBufferPointer(body)
+    }
+
+    func withHotEdges<T>(_ body: (UnsafeBufferPointer<DPEdge>) -> T) -> T {
+        hotEdges.withUnsafeBufferPointer(body)
+    }
+
+    var hotEdgeCount: Int { hotEdges.count }
+    var hotParticleCountDirect: Int { hotParticles.count }
+    var hotKmaxDirect: Int { hotKmax }
 
     // MARK: - Reset
 
@@ -189,22 +271,22 @@ final class DPSimulation {
             p.root = i
             newParticles.append(p)
         }
-        particles = newParticles
-        distinguished = DPTarget(fixed: target == .fixed)
-        trail.removeAll(keepingCapacity: true)
-        edges.removeAll(keepingCapacity: true)
-        tick = 0
-        kmax = 0
-        hit = nil
+        hotParticles = newParticles
+        hotEdges.removeAll(keepingCapacity: true)
+        hotTrail.removeAll(keepingCapacity: true)
+        hotDistinguished = DPTarget(fixed: target == .fixed)
+        hotTick = 0
+        hotKmax = 0
+        hotHit = nil
         rebuildRadiusOrder()
         rebuildScenarioState()
     }
 
     private func rebuildRadiusOrder() {
-        let n = particles.count
+        let n = hotParticles.count
         radiusOrder = Array(0..<n)
         if radiusMode != .deterministic {
-            radiusOrder.sort { particles[$0].radius > particles[$1].radius }
+            radiusOrder.sort { hotParticles[$0].radius > hotParticles[$1].radius }
         }
     }
 
@@ -212,13 +294,24 @@ final class DPSimulation {
         if scenario == .largestComponent {
             computeComponents()
         } else {
-            kmax = 0
-            edges.removeAll(keepingCapacity: true)
-            for i in particles.indices {
-                particles[i].root = i
-                particles[i].compSize = 1
+            hotKmax = 0
+            hotEdges.removeAll(keepingCapacity: true)
+            for i in hotParticles.indices {
+                hotParticles[i].root = i
+                hotParticles[i].compSize = 1
             }
         }
+        publishSnapshot()
+    }
+
+    private func publishSnapshot() {
+        if tick != hotTick { tick = hotTick }
+        if kmax != hotKmax { kmax = hotKmax }
+        if hit?.t != hotHit?.t { hit = hotHit }
+        distinguished = hotDistinguished
+        trail = hotTrail
+        let n = hotParticles.count
+        if particleCount != n { particleCount = n }
     }
 
     // MARK: - Sampling
@@ -246,179 +339,165 @@ final class DPSimulation {
     // MARK: - Tick
 
     func tickIfNotPausedOrHit() {
-        guard !isPaused, hit == nil else { return }
-        for _ in 0..<speed {
-            stepOnce()
-            if hit != nil { break }
-        }
-    }
+        guard !isPaused, hotHit == nil else { return }
 
-    private func stepOnce() {
-        tick += 1
+        // Cache all observed properties once per frame so the inner loops
+        // never hit the @Observable getter/tracking machinery.
+        let curMotion = motion
+        let curL = L
+        let curHalfL = curL / 2
+        let curAlpha = alpha
+        let curSpeed = speed
+        let curScenario = scenario
+        let baseScale = levyBaseScale
+        let brownianStep = sigma * sqrt(dtPerTick)
+        let maxLevyMag = curL * 3
 
-        for i in particles.indices {
-            move(&particles[i])
-        }
+        for _ in 0..<curSpeed {
+            hotTick += 1
 
-        if var d = distinguished, !d.fixed {
-            move(&d)
-            distinguished = d
-            trail.append(SIMD2<Double>(d.x, d.y))
-            if trail.count > trailLength {
-                trail.removeFirst(trail.count - trailLength)
+            // ── Move particles ────────────────────────────────────────────
+            hotParticles.withUnsafeMutableBufferPointer { buf in
+                let count = buf.count
+                switch curMotion {
+                case .brownian:
+                    for i in 0..<count {
+                        buf[i].x += brownianStep * rng.gaussian()
+                        buf[i].y += brownianStep * rng.gaussian()
+                        buf[i].x = wrapCoord(buf[i].x, curL, curHalfL)
+                        buf[i].y = wrapCoord(buf[i].y, curL, curHalfL)
+                    }
+                case .levy:
+                    for i in 0..<count {
+                        if buf[i].ticksToChange <= 0 {
+                            let theta = rng.uniform() * 2 * .pi
+                            let mag: Double
+                            if curAlpha >= 1.99 {
+                                mag = abs(rng.gaussian()) * baseScale
+                            } else {
+                                mag = min(pow(rng.uniformOpen(), -1.0 / curAlpha) * baseScale, maxLevyMag)
+                            }
+                            let duration = max(1, Int((mag / Double(max(1, curSpeed))).rounded(.up)))
+                            buf[i].vx = mag * cos(theta) / Double(duration)
+                            buf[i].vy = mag * sin(theta) / Double(duration)
+                            buf[i].ticksToChange = duration
+                        }
+                        buf[i].x += buf[i].vx
+                        buf[i].y += buf[i].vy
+                        buf[i].ticksToChange -= 1
+                        buf[i].x = wrapCoord(buf[i].x, curL, curHalfL)
+                        buf[i].y = wrapCoord(buf[i].y, curL, curHalfL)
+                    }
+                }
+            }
+
+            // ── Move distinguished target ─────────────────────────────────
+            if var d = hotDistinguished, !d.fixed {
+                switch curMotion {
+                case .brownian:
+                    d.x += brownianStep * rng.gaussian()
+                    d.y += brownianStep * rng.gaussian()
+                case .levy:
+                    if d.ticksToChange <= 0 {
+                        let theta = rng.uniform() * 2 * .pi
+                        let mag: Double
+                        if curAlpha >= 1.99 {
+                            mag = abs(rng.gaussian()) * baseScale
+                        } else {
+                            mag = min(pow(rng.uniformOpen(), -1.0 / curAlpha) * baseScale, maxLevyMag)
+                        }
+                        let duration = max(1, Int((mag / Double(max(1, curSpeed))).rounded(.up)))
+                        d.vx = mag * cos(theta) / Double(duration)
+                        d.vy = mag * sin(theta) / Double(duration)
+                        d.ticksToChange = duration
+                    }
+                    d.x += d.vx
+                    d.y += d.vy
+                    d.ticksToChange -= 1
+                }
+                d.x = wrapCoord(d.x, curL, curHalfL)
+                d.y = wrapCoord(d.y, curL, curHalfL)
+                hotDistinguished = d
+                hotTrail.append(SIMD2<Double>(d.x, d.y))
+                if hotTrail.count > trailLength {
+                    hotTrail.removeFirst(hotTrail.count - trailLength)
+                }
+            }
+
+            // ── Components & hit test ─────────────────────────────────────
+            if curScenario == .largestComponent {
+                computeComponents()
+            }
+
+            if let result = checkHit(curL, curHalfL, curScenario) {
+                hotHit = result
+                isPaused = true
+                break
             }
         }
 
-        if scenario == .largestComponent {
-            computeComponents()
-        }
-
-        if let result = checkHit() {
-            hit = result
-            isPaused = true
-        }
+        publishSnapshot()
     }
 
-    private func checkHit() -> HitInfo? {
-        guard let d = distinguished else { return nil }
-        switch scenario {
+    private func checkHit(_ curL: Double, _ curHalfL: Double, _ curScenario: Scenario) -> HitInfo? {
+        guard let d = hotDistinguished else { return nil }
+        let dx = d.x, dy = d.y
+        let curT = Double(hotTick) * dtPerTick
+        switch curScenario {
         case .anyParticle:
-            for i in particles.indices {
-                let p = particles[i]
-                if torusDistanceSquared(d.x, d.y, p.x, p.y) <= p.radius * p.radius {
-                    return HitInfo(t: t, causeIndex: i, causeX: p.x, causeY: p.y, causeR: p.radius)
+            return hotParticles.withUnsafeBufferPointer { buf in
+                for i in 0..<buf.count {
+                    let p = buf[i]
+                    if torusDist2(dx, dy, p.x, p.y, curL, curHalfL) <= p.radius * p.radius {
+                        return HitInfo(t: curT, causeIndex: i, causeX: p.x, causeY: p.y, causeR: p.radius)
+                    }
                 }
+                return nil
             }
         case .largestComponent:
-            guard kmax > 0 else { return nil }
-            for i in particles.indices {
-                let p = particles[i]
-                guard p.compSize == kmax else { continue }
-                if torusDistanceSquared(d.x, d.y, p.x, p.y) <= p.radius * p.radius {
-                    return HitInfo(t: t, causeIndex: i, causeX: p.x, causeY: p.y, causeR: p.radius)
+            let curKmax = hotKmax
+            guard curKmax > 0 else { return nil }
+            return hotParticles.withUnsafeBufferPointer { buf in
+                for i in 0..<buf.count {
+                    let p = buf[i]
+                    if p.compSize != curKmax { continue }
+                    if torusDist2(dx, dy, p.x, p.y, curL, curHalfL) <= p.radius * p.radius {
+                        return HitInfo(t: curT, causeIndex: i, causeX: p.x, causeY: p.y, causeR: p.radius)
+                    }
                 }
+                return nil
             }
         }
-        return nil
-    }
-
-    // MARK: - Movement
-
-    private func move<M: Mover>(_ p: inout M) {
-        switch motion {
-        case .brownian:
-            let s = sigma * sqrt(dtPerTick)
-            p.x += s * rng.gaussian()
-            p.y += s * rng.gaussian()
-        case .levy:
-            if p.ticksToChange <= 0 {
-                let theta = rng.uniform() * 2 * .pi
-                let mag: Double
-                if alpha >= 1.99 {
-                    mag = abs(rng.gaussian()) * levyBaseScale
-                } else {
-                    mag = min(pow(rng.uniformOpen(), -1.0 / alpha) * levyBaseScale, L * 3)
-                }
-                let duration = max(1, Int((mag / Double(max(1, speed))).rounded(.up)))
-                p.vx = mag * cos(theta) / Double(duration)
-                p.vy = mag * sin(theta) / Double(duration)
-                p.ticksToChange = duration
-            }
-            p.x += p.vx
-            p.y += p.vy
-            p.ticksToChange -= 1
-        }
-        wrap(&p)
-    }
-
-    private func wrap<M: Mover>(_ p: inout M) {
-        let H = L / 2
-        var nx = (p.x + H).truncatingRemainder(dividingBy: L)
-        if nx < 0 { nx += L }
-        p.x = nx - H
-        var ny = (p.y + H).truncatingRemainder(dividingBy: L)
-        if ny < 0 { ny += L }
-        p.y = ny - H
-    }
-
-    // MARK: - Geometry
-
-    private func torusDistanceSquared(_ ax: Double, _ ay: Double, _ bx: Double, _ by: Double) -> Double {
-        var dx = abs(ax - bx)
-        var dy = abs(ay - by)
-        if dx > L / 2 { dx = L - dx }
-        if dy > L / 2 { dy = L - dy }
-        return dx * dx + dy * dy
-    }
-
-    private func relativePosition(of b: Particle, relativeTo a: Particle) -> (x: Double, y: Double) {
-        var x = b.x, y = b.y
-        if x - a.x > L / 2 { x -= L } else if a.x - x > L / 2 { x += L }
-        if y - a.y > L / 2 { y -= L } else if a.y - y > L / 2 { y += L }
-        return (x, y)
     }
 
     // MARK: - Components
 
-    /// Two-tier connected-components pass.
-    ///
-    /// A single Pareto outlier with a giant radius would otherwise force the
-    /// uniform-grid cell side up to `2·r_max`, which collapses the grid into
-    /// a handful of cells and makes the check no faster than O(N²). Instead
-    /// we split the particles into:
-    ///
-    ///   * **small** (the bottom N − K by radius) — placed in a tight grid
-    ///     with cell side `s = max(L/50, 2·r_(K+1))`. Every small-small pair
-    ///     that *could* overlap lies in the 3×3 Chebyshev neighbourhood of
-    ///     one another, so we only check those.
-    ///   * **large** (the top K by radius) — brute-forced against everyone
-    ///     in an O(K·N) pass. K is chosen so that this single pass costs
-    ///     less than what the grid would cost if the large discs forced its
-    ///     cell side up.
-    ///
-    /// K is picked by sweeping candidates {0, 1, 2, 4, 8, …, n} and choosing
-    /// the one that minimises a simple cost model:
-    ///
-    ///   cost(K) ≈ (cols² · 9 · ρ²)  +  K · N
-    ///
-    /// where ρ = (n − K) / cols² is the expected occupancy of a small-cell.
-    /// For deterministic radii every K has the same `r_(K+1)`, so K = 0
-    /// always wins and we fall through to the pure grid case.
     private func computeComponents() {
-        let n = particles.count
-        edges.removeAll(keepingCapacity: true)
-        guard n > 0 else { kmax = 0; return }
+        let n = hotParticles.count
+        hotEdges.removeAll(keepingCapacity: true)
+        guard n > 0 else { hotKmax = 0; return }
 
+        let curL = L
+        let curHalfL = curL / 2
         let storeEdges = scenario == .largestComponent
-
-        var parent = Array(0..<n)
-        func find(_ x: Int) -> Int {
-            var x = x
-            while parent[x] != x {
-                parent[x] = parent[parent[x]]
-                x = parent[x]
-            }
-            return x
-        }
 
         // ── Pick the optimal "large" cut-off K ────────────────────────────
         var ks: [Int] = [0]
         var k = 1
         while k < n {
             ks.append(k)
-            if k >= n { break }
             k *= 2
         }
         if ks.last != n { ks.append(n) }
 
         var bestK = 0
         var bestCost = Double.infinity
-        var bestCols = max(1, Int(L / max(L / 50, 1e-6)))
+        var bestCols = max(1, Int(curL / max(curL / 50, 1e-6)))
 
         for K in ks {
-            let maxSmallR = (K >= n) ? 0 : particles[radiusOrder[K]].radius
-            let cellSize = max(L / 50, 2 * maxSmallR, 1e-6)
-            let cols = max(1, Int(L / cellSize))
+            let maxSmallR = (K >= n) ? 0 : hotParticles[radiusOrder[K]].radius
+            let cellSize = max(curL / 50, 2 * maxSmallR, 1e-6)
+            let cols = max(1, Int(curL / cellSize))
             let nSmall = n - K
             let gridCost: Double
             if cols < 3 {
@@ -440,111 +519,158 @@ final class DPSimulation {
         let cols = bestCols
         let useGrid = cols >= 3 && nLarge * 3 <= n
 
-        if !useGrid {
-            // ── Pure O(N²) fallback ────────────────────────────────────────
-            // Triggers only when every reasonable grid configuration costs
-            // about as much as the all-pairs scan.
-            for i in 0..<(n - 1) {
-                let u = particles[i]
-                for j in (i + 1)..<n {
-                    let v = particles[j]
-                    let thr = u.radius + v.radius
-                    if torusDistanceSquared(u.x, u.y, v.x, v.y) < thr * thr {
-                        let ru = find(i), rv = find(j)
-                        if ru != rv { parent[ru] = rv }
-                        if storeEdges {
-                            let rel = relativePosition(of: v, relativeTo: u)
-                            edges.append(DPEdge(i: i, j: j, vRelX: rel.x, vRelY: rel.y))
+        if ufParent.count < n { ufParent = [Int](repeating: 0, count: n) }
+        if ufSize.count < n { ufSize = [Int](repeating: 0, count: n) }
+        for i in 0..<n { ufParent[i] = i }
+
+        hotParticles.withUnsafeBufferPointer { partsBuf in
+            ufParent.withUnsafeMutableBufferPointer { parentBuf in
+
+                @inline(__always)
+                func find(_ x: Int) -> Int {
+                    var x = x
+                    while parentBuf[x] != x {
+                        parentBuf[x] = parentBuf[parentBuf[x]]
+                        x = parentBuf[x]
+                    }
+                    return x
+                }
+
+                @inline(__always)
+                func unionRoots(_ ra: Int, _ rb: Int) {
+                    if ra != rb { parentBuf[ra] = rb }
+                }
+
+                if !useGrid {
+                    // ── Pure O(N²) fallback ───────────────────────────────
+                    for i in 0..<(n - 1) {
+                        let u = partsBuf[i]
+                        for j in (i + 1)..<n {
+                            let v = partsBuf[j]
+                            let thr = u.radius + v.radius
+                            if torusDist2(u.x, u.y, v.x, v.y, curL, curHalfL) < thr * thr {
+                                unionRoots(find(i), find(j))
+                                if storeEdges {
+                                    let rel = relPos(v.x, v.y, u.x, u.y, curL, curHalfL)
+                                    hotEdges.append(DPEdge(i: i, j: j, vRelX: rel.0, vRelY: rel.1))
+                                }
+                            }
                         }
                     }
-                }
-            }
-        } else {
-            let H = L / 2
-            // Pick the actual cell side so the grid divides L exactly —
-            // makes modular neighbour indexing line up with the torus wrap.
-            let s = L / Double(cols)
+                } else {
+                    let s = curL / Double(cols)
+                    let totalCells = cols * cols
+                    let nSmall = n - nLarge
 
-            var isLarge = [Bool](repeating: false, count: n)
-            var largePos = [Int](repeating: 0, count: n)
-            for k in 0..<nLarge {
-                let li = radiusOrder[k]
-                isLarge[li] = true
-                largePos[li] = k
-            }
+                    var isLarge = [UInt8](repeating: 0, count: n)
+                    var largePos = [Int](repeating: 0, count: n)
+                    for kk in 0..<nLarge {
+                        let li = radiusOrder[kk]
+                        isLarge[li] = 1
+                        largePos[li] = kk
+                    }
 
-            // ── Small-small via uniform grid ──────────────────────────────
-            var buckets: [[Int]] = Array(repeating: [], count: cols * cols)
-            for i in 0..<n {
-                if isLarge[i] { continue }
-                let p = particles[i]
-                var cx = Int((p.x + H) / s) % cols
-                if cx < 0 { cx += cols }
-                var cy = Int((p.y + H) / s) % cols
-                if cy < 0 { cy += cols }
-                buckets[cx + cy * cols].append(i)
-            }
+                    // ── Flat grid (reusable storage, no per-tick heap allocs)
+                    if gridCellCounts.count < totalCells {
+                        gridCellCounts = [Int](repeating: 0, count: totalCells)
+                        gridOffsets = [Int](repeating: 0, count: totalCells + 1)
+                    } else {
+                        for c in 0..<totalCells { gridCellCounts[c] = 0 }
+                    }
+                    if gridParticleIndices.count < nSmall {
+                        gridParticleIndices = [Int](repeating: 0, count: max(nSmall, 256))
+                    }
 
-            for cy in 0..<cols {
-                for cx in 0..<cols {
-                    let bucket = buckets[cx + cy * cols]
-                    if bucket.isEmpty { continue }
-                    for dy in -1...1 {
-                        let ny = (cy + dy + cols) % cols
-                        for dx in -1...1 {
-                            let nx = (cx + dx + cols) % cols
-                            let nbr = buckets[nx + ny * cols]
-                            if nbr.isEmpty { continue }
-                            let sameCell = (dx == 0 && dy == 0)
-                            for a in 0..<bucket.count {
-                                let i = bucket[a]
-                                let u = particles[i]
-                                let b0 = sameCell ? a + 1 : 0
-                                for b in b0..<nbr.count {
-                                    let j = nbr[b]
-                                    // For cross-cell pairs, emit each pair
-                                    // once — keep it on the side where i < j.
-                                    if !sameCell && j <= i { continue }
-                                    let v = particles[j]
-                                    let thr = u.radius + v.radius
-                                    if torusDistanceSquared(u.x, u.y, v.x, v.y) < thr * thr {
-                                        let ru = find(i), rv = find(j)
-                                        if ru != rv { parent[ru] = rv }
-                                        if storeEdges {
-                                            let rel = relativePosition(of: v, relativeTo: u)
-                                            edges.append(DPEdge(i: i, j: j, vRelX: rel.x, vRelY: rel.y))
+                    // Count pass
+                    for i in 0..<n {
+                        if isLarge[i] != 0 { continue }
+                        let p = partsBuf[i]
+                        var cx = Int((p.x + curHalfL) / s) % cols
+                        if cx < 0 { cx += cols }
+                        var cy = Int((p.y + curHalfL) / s) % cols
+                        if cy < 0 { cy += cols }
+                        gridCellCounts[cx + cy * cols] += 1
+                    }
+
+                    // Prefix sum → offsets
+                    gridOffsets[0] = 0
+                    for c in 0..<totalCells {
+                        gridOffsets[c + 1] = gridOffsets[c] + gridCellCounts[c]
+                    }
+
+                    // Fill pass (reuse gridCellCounts as write cursors)
+                    for c in 0..<totalCells { gridCellCounts[c] = gridOffsets[c] }
+                    for i in 0..<n {
+                        if isLarge[i] != 0 { continue }
+                        let p = partsBuf[i]
+                        var cx = Int((p.x + curHalfL) / s) % cols
+                        if cx < 0 { cx += cols }
+                        var cy = Int((p.y + curHalfL) / s) % cols
+                        if cy < 0 { cy += cols }
+                        let cell = cx + cy * cols
+                        gridParticleIndices[gridCellCounts[cell]] = i
+                        gridCellCounts[cell] += 1
+                    }
+
+                    // ── Small-small via flat grid ──────────────────────────
+                    for cy in 0..<cols {
+                        for cx in 0..<cols {
+                            let cell = cx + cy * cols
+                            let aStart = gridOffsets[cell]
+                            let aEnd = gridOffsets[cell + 1]
+                            if aStart == aEnd { continue }
+                            for dy in -1...1 {
+                                let ny = (cy + dy + cols) % cols
+                                for dx in -1...1 {
+                                    let nx = (cx + dx + cols) % cols
+                                    let nbrCell = nx + ny * cols
+                                    let bStart = gridOffsets[nbrCell]
+                                    let bEnd = gridOffsets[nbrCell + 1]
+                                    if bStart == bEnd { continue }
+                                    let sameCell = (dx == 0 && dy == 0)
+                                    for a in aStart..<aEnd {
+                                        let i = gridParticleIndices[a]
+                                        let u = partsBuf[i]
+                                        let b0 = sameCell ? a + 1 : bStart
+                                        for b in b0..<bEnd {
+                                            let j = gridParticleIndices[b]
+                                            if !sameCell && j <= i { continue }
+                                            let v = partsBuf[j]
+                                            let thr = u.radius + v.radius
+                                            if torusDist2(u.x, u.y, v.x, v.y, curL, curHalfL) < thr * thr {
+                                                unionRoots(find(i), find(j))
+                                                if storeEdges {
+                                                    let rel = relPos(v.x, v.y, u.x, u.y, curL, curHalfL)
+                                                    hotEdges.append(DPEdge(i: i, j: j, vRelX: rel.0, vRelY: rel.1))
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                }
-            }
 
-            // ── Large-vs-everyone ─────────────────────────────────────────
-            // Each large disc is checked against every other particle. To
-            // avoid double-counting large-large pairs, skip the "other" if
-            // it's also large and appears earlier in radiusOrder (already
-            // handled when we processed it).
-            for kIdx in 0..<nLarge {
-                let li = radiusOrder[kIdx]
-                let u = particles[li]
-                for j in 0..<n {
-                    if j == li { continue }
-                    if isLarge[j] && largePos[j] < kIdx { continue }
-                    let v = particles[j]
-                    let thr = u.radius + v.radius
-                    if torusDistanceSquared(u.x, u.y, v.x, v.y) < thr * thr {
-                        let aIdx = li < j ? li : j
-                        let bIdx = li < j ? j : li
-                        let ra = find(aIdx), rb = find(bIdx)
-                        if ra != rb { parent[ra] = rb }
-                        if storeEdges {
-                            let pa = particles[aIdx]
-                            let pb = particles[bIdx]
-                            let rel = relativePosition(of: pb, relativeTo: pa)
-                            edges.append(DPEdge(i: aIdx, j: bIdx, vRelX: rel.x, vRelY: rel.y))
+                    // ── Large-vs-everyone ─────────────────────────────────
+                    for kIdx in 0..<nLarge {
+                        let li = radiusOrder[kIdx]
+                        let u = partsBuf[li]
+                        for j in 0..<n {
+                            if j == li { continue }
+                            if isLarge[j] != 0 && largePos[j] < kIdx { continue }
+                            let v = partsBuf[j]
+                            let thr = u.radius + v.radius
+                            if torusDist2(u.x, u.y, v.x, v.y, curL, curHalfL) < thr * thr {
+                                let aIdx = li < j ? li : j
+                                let bIdx = li < j ? j : li
+                                unionRoots(find(aIdx), find(bIdx))
+                                if storeEdges {
+                                    let pa = partsBuf[aIdx]
+                                    let pb = partsBuf[bIdx]
+                                    let rel = relPos(pb.x, pb.y, pa.x, pa.y, curL, curHalfL)
+                                    hotEdges.append(DPEdge(i: aIdx, j: bIdx, vRelX: rel.0, vRelY: rel.1))
+                                }
+                            }
                         }
                     }
                 }
@@ -552,28 +678,31 @@ final class DPSimulation {
         }
 
         // ── Component sizes ───────────────────────────────────────────────
-        var size = [Int](repeating: 0, count: n)
-        for i in 0..<n { size[find(i)] += 1 }
+        for i in 0..<n { ufSize[i] = 0 }
+        ufParent.withUnsafeMutableBufferPointer { parentBuf in
+            for i in 0..<n {
+                var x = i
+                while parentBuf[x] != x {
+                    parentBuf[x] = parentBuf[parentBuf[x]]
+                    x = parentBuf[x]
+                }
+                ufSize[x] += 1
+            }
+        }
 
         var maxSize = 0
-        for i in 0..<n {
-            let root = find(i)
-            particles[i].root = root
-            particles[i].compSize = size[root]
-            if size[root] > maxSize { maxSize = size[root] }
+        hotParticles.withUnsafeMutableBufferPointer { buf in
+            ufParent.withUnsafeBufferPointer { parentBuf in
+                for i in 0..<n {
+                    var x = i
+                    while parentBuf[x] != x { x = parentBuf[x] }
+                    let root = x
+                    buf[i].root = root
+                    buf[i].compSize = ufSize[root]
+                    if ufSize[root] > maxSize { maxSize = ufSize[root] }
+                }
+            }
         }
-        kmax = maxSize
+        hotKmax = maxSize
     }
 }
-
-// MARK: - Mover
-
-protocol Mover {
-    var x: Double { get set }
-    var y: Double { get set }
-    var vx: Double { get set }
-    var vy: Double { get set }
-    var ticksToChange: Int { get set }
-}
-extension Particle: Mover {}
-extension DPTarget: Mover {}
