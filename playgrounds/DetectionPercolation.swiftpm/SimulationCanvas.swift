@@ -32,16 +32,6 @@ struct SimulationCanvas: View {
                 .allowsHitTesting(false)
             }
             .accessibilityLabel("Detection percolation viewport.")
-            .overlay(alignment: .bottomLeading) {
-                Text("Periodic boundaries · Box side = L · Origin at centre")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(.thinMaterial, in: .rect(cornerRadius: 8))
-                    .padding(12)
-                    .allowsHitTesting(false)
-            }
         }
     }
 }

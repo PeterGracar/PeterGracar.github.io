@@ -37,7 +37,12 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "AppModule",
-            path: "."
+            path: ".",
+            swiftSettings: [
+                // Swift Playgrounds always builds the debug configuration, so
+                // force optimisation unconditionally for release-level perf.
+                .unsafeFlags(["-O", "-whole-module-optimization"]),
+            ]
         )
     ]
 )

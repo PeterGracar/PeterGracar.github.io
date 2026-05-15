@@ -2,12 +2,21 @@ import SwiftUI
 
 struct ParametersInspector: View {
     @Environment(DPSimulation.self) private var sim
+    @Binding var showInspector: Bool
     @State private var seedField: String = ""
 
     var body: some View {
         @Bindable var sim = sim
 
-        Form {
+        VStack(spacing: 0) {
+            header
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity)
+                .background(.regularMaterial)
+                .overlay(alignment: .bottom) { Divider() }
+
+            Form {
             Section {
                 LabeledSlider(
                     title: "Box side (L)",
@@ -162,15 +171,94 @@ struct ParametersInspector: View {
                 Text("Playback")
             }
         }
-        #if os(iOS)
-        .formStyle(.grouped)
-        #endif
-        .navigationTitle("Parameters")
+            #if os(iOS)
+            .formStyle(.grouped)
+            #endif
+        }
         .onAppear {
             seedField = sim.seed
         }
         .onChange(of: sim.seed) { _, newValue in
             if seedField != newValue { seedField = newValue }
+        }
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 12) {
+                statsBar
+                Spacer(minLength: 8)
+                controlButtons
+            }
+            if let h = sim.hit {
+                HStack(spacing: 4) {
+                    Image(systemName: "exclamationmark.circle.fill")
+                    Text("Hit at t = \(String(format: "%.2f", h.t))")
+                }
+                .font(.callout.weight(.semibold))
+                .foregroundStyle(Color.red)
+                .lineLimit(1)
+            }
+        }
+    }
+
+    private var statsBar: some View {
+        HStack(spacing: 12) {
+            statItem(label: "t", value: String(format: "%.2f", sim.t))
+            statItem(label: "N", value: "\(sim.particleCount)")
+            if sim.scenario == .largestComponent {
+                statItem(label: "k_max", value: "\(sim.kmax)")
+            }
+        }
+        .lineLimit(1)
+    }
+
+    private var controlButtons: some View {
+        HStack(spacing: 16) {
+            Button {
+                if sim.hit != nil {
+                    sim.reset()
+                    sim.isPaused = true
+                } else {
+                    sim.isPaused.toggle()
+                }
+            } label: {
+                Image(systemName: sim.hit != nil
+                    ? "arrow.clockwise"
+                    : (sim.isPaused ? "play.fill" : "pause.fill"))
+            }
+            .accessibilityLabel(
+                sim.hit != nil ? "Restart" : (sim.isPaused ? "Start" : "Pause")
+            )
+
+            Button(role: .destructive) {
+                sim.reset()
+                sim.isPaused = true
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+            }
+            .accessibilityLabel("Reset")
+
+            Button {
+                showInspector = false
+            } label: {
+                Image(systemName: "sidebar.right")
+            }
+            .accessibilityLabel("Hide inspector")
+        }
+        .font(.body.weight(.medium))
+        .buttonStyle(.plain)
+        .foregroundStyle(.tint)
+    }
+
+    private func statItem(label: String, value: String) -> some View {
+        HStack(spacing: 4) {
+            Text(label)
+                .font(.caption2.weight(.semibold))
+                .textCase(.uppercase)
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.callout.monospacedDigit())
         }
     }
 
