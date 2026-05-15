@@ -22,13 +22,6 @@
   --radius-md: 0.75rem;
   --radius-lg: 1.1rem;
 
-  --space-1: 0.35rem;
-  --space-2: 0.65rem;
-  --space-3: 1rem;
-  --space-4: 1.5rem;
-  --space-5: 2rem;
-  --space-6: 3rem;
-
   --text-xs: clamp(0.84rem, 0.8rem + 0.2vw, 0.94rem);
   --text-sm: clamp(0.95rem, 0.9rem + 0.3vw, 1.05rem);
   --text-base: clamp(1.04rem, 1rem + 0.3vw, 1.18rem);
