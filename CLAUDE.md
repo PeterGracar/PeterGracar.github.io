@@ -3,6 +3,12 @@
 Guidance for AI assistants working in this repository. Keep changes minimal and
 consistent with the existing conventions below.
 
+**Keep this file up to date.** When a change makes any statement here
+inaccurate — new/renamed/removed pages, simulations, collections, CSS tokens,
+workflows, or directory-layout shifts — update the relevant section in the
+same commit as the change. If you notice drift between CLAUDE.md and the
+actual repo while working on something unrelated, fix the drift too.
+
 ## Project overview
 
 This is the personal academic website of **Peter Gracar** (Lecturer in
@@ -14,6 +20,9 @@ probability simulations.
 - Build system: **Jekyll** (GitHub Pages default — no `Gemfile`, no custom
   plugins, no Node/npm build).
 - Hosting: GitHub Pages, custom domain configured via `CNAME` (`gracar.org`).
+  Deployment is driven by `.github/workflows/pages.yml`, which runs
+  `actions/jekyll-build-pages` on every push to `main` and uploads the
+  resulting site as the Pages artifact.
 - Content model: Jekyll **collections** of front-matter-only Markdown files.
   Rendering happens inside the page templates, not in individual content files.
 
@@ -46,15 +55,27 @@ simulations/                All interactive simulation HTML lives here, and is
   levy-vs-bm.html             Embedded simulation: Lévy flight vs Brownian
                               motion. Jekyll-wrapped, linked from research.html
                               at simulations/levy-vs-bm.html.
+  detection-percolation.html  Embedded simulation: hitting time for a moving
+                              Poisson particle system (first contact or first
+                              coverage by the largest connected component).
+                              Jekyll-wrapped, linked from research.html at
+                              simulations/detection-percolation.html.
   contact-process-standalone.html   Self-contained (Tailwind + MathJax via CDN)
   levy-vs-bm-standalone.html        copy of each simulation for offline /
-                                    external use. No Jekyll front matter, so
-                                    they are served as static files at
+  detection-percolation-standalone.html  external use. No Jekyll front matter,
+                                    so they are served as static files at
                                     /simulations/<name>.html and surfaced
                                     automatically in secret.html.
-                                    (This file is the former presentation
-                                    variant; its logic matches the embedded
-                                    levy-vs-bm.html.)
+                                    (levy-vs-bm-standalone.html is the former
+                                    presentation variant; its logic matches the
+                                    embedded levy-vs-bm.html.)
+
+playgrounds/                Native Swift Playground (`.swiftpm`) apps that
+                            mirror each web simulation. Excluded from the
+                            Jekyll build via `_config.yml`'s `exclude:` list
+                            so they are not published to gracar.org. Three
+                            packages: ContactProcess.swiftpm,
+                            LevyVsBrownian.swiftpm, DetectionPercolation.swiftpm.
 
 style.css                   Single global stylesheet (CSS custom properties,
                             light/dark via prefers-color-scheme)
@@ -63,16 +84,21 @@ site.js                     Email deobfuscation, nav active state, tooltip/hover
 
 img/                        Avatar, map, figure previews (.webp)
 papers/                     PDF reprints (SPA129.pdf, waw2020.pdf, waw2023.pdf)
+banner.webp                 Social-share image used as og:image and
+                            twitter:image in _layouts/default.html.
 
 CONTENT_GUIDE.md            Human-facing content authoring guide (excluded from build)
 CNAME                       gracar.org
 robots.txt, sitemap.xml     SEO; sitemap is a Liquid template over site.pages
 site.webmanifest, favicon*, apple-touch-icon, android-chrome-*  PWA icons
+.github/workflows/pages.yml GitHub Actions workflow that builds with Jekyll
+                            and deploys to GitHub Pages on push to main.
 .gitignore                  Ignores .DS_Store and /.claude
 ```
 
-There is no `Gemfile`, `package.json`, CI workflow, or test suite. GitHub Pages
-builds the site automatically on push to `main`.
+There is no `Gemfile`, `package.json`, or test suite — the only automation is
+the `pages.yml` workflow above, which uses GitHub Pages' default Jekyll
+toolchain.
 
 ### No Jekyll theme
 
@@ -187,28 +213,34 @@ resolve to `/simulations/style.css`, etc., and 404.
 All interactive simulation HTML files live under `simulations/` and are served
 at `/simulations/<name>.html`. There are two flavours:
 
-- **Jekyll-wrapped** — `simulations/contact-process.html` and
-  `simulations/levy-vs-bm.html` use `layout: default` and are linked from
-  `research.html` via the relative paths `simulations/contact-process.html`
-  and `simulations/levy-vs-bm.html`. Their public URLs are
-  `gracar.org/simulations/contact-process.html` and
-  `gracar.org/simulations/levy-vs-bm.html`; the `canonical:` field in each
-  page's front matter must match. Do **not** add a `permalink:` field to
-  bring them back to the site root — the layout's nav and asset hrefs assume
-  pages are addressed by their source path.
-- **Standalone** — `simulations/contact-process-standalone.html` and
-  `simulations/levy-vs-bm-standalone.html` are **independent HTML documents**
-  with no Jekyll front matter (Tailwind + MathJax via CDN, own light/dark
-  toggle persisted in `localStorage['theme-pref']`). They are intended for
-  offline / presentation use and, because they have no front matter, Jekyll
-  copies them through as static files at `/simulations/<name>.html`. They are
-  not linked from the navigation or sitemap but are surfaced automatically in
-  `secret.html` via `site.static_files`. The Lévy standalone file was
-  previously named `levy-vs-bm-presentation.html`; its logic matches the
-  embedded `levy-vs-bm.html`.
+- **Jekyll-wrapped** — `simulations/contact-process.html`,
+  `simulations/levy-vs-bm.html`, and `simulations/detection-percolation.html`
+  use `layout: default` and are linked from `research.html` via the relative
+  paths `simulations/<name>.html`. Their public URLs are
+  `gracar.org/simulations/<name>.html`; the `canonical:` field in each page's
+  front matter must match. Do **not** add a `permalink:` field to bring them
+  back to the site root — the layout's nav and asset hrefs assume pages are
+  addressed by their source path.
+- **Standalone** — `simulations/contact-process-standalone.html`,
+  `simulations/levy-vs-bm-standalone.html`, and
+  `simulations/detection-percolation-standalone.html` are **independent HTML
+  documents** with no Jekyll front matter (Tailwind + MathJax via CDN, own
+  light/dark toggle persisted in `localStorage['theme-pref']`). They are
+  intended for offline / presentation use and, because they have no front
+  matter, Jekyll copies them through as static files at
+  `/simulations/<name>.html`. They are not linked from the navigation or
+  sitemap but are surfaced automatically in `secret.html` via
+  `site.static_files`. The Lévy standalone file was previously named
+  `levy-vs-bm-presentation.html`; its logic matches the embedded
+  `levy-vs-bm.html`.
 
-When fixing a bug in a simulation, check whether the same logic is duplicated
-in the standalone copy and update them together.
+Each web simulation also has a companion native Swift Playground app under
+`playgrounds/<Name>.swiftpm/`. These are excluded from the Jekyll build (see
+`exclude:` in `_config.yml`) and are not part of the published site, but
+share the model/parameters with their HTML counterparts. When fixing a bug
+in a simulation, check whether the same logic is duplicated in the
+standalone HTML copy (and, where relevant, in the Swift package) and update
+them together.
 
 ## SEO, sitemap, and the "secret" index
 
@@ -254,8 +286,9 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   `_includes/publication_item.html` — the templates silently skip entries with
   missing required fields rather than erroring.
 - **CSS**: all styles live in `style.css`. It uses CSS custom properties
-  (`--color-*`, `--space-*`, `--text-*`) and a `prefers-color-scheme: dark`
-  block. Prefer extending the existing variables over adding hard-coded values.
+  (`--color-*` and `--text-*` — the previous `--space-*` spacing tokens were
+  removed as unused) and a `prefers-color-scheme: dark` block. Prefer
+  extending the existing variables over adding hard-coded values.
 - **JS**: keep `site.js` small and framework-free. It is a single IIFE that
   short-circuits gracefully when the elements it looks for are absent.
 - **Cache busting**: bump `?v=<n>` on `style.css` / `site.js` in
