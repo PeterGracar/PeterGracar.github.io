@@ -6,6 +6,6 @@ coauthors:
   - "alexander-drewitz"
   - "gioele-gallo"
 outlet_name: "Annales de l’Institut Henri Poincaré, Probabilités et Statistiques"
-outlet_url: "https://imstat.org/journals-and-publications/annales-de-linstitut-henri-poincare/annales-de-linstitut-henri-poincare-accepted-papers/"
+outlet_url: "https://projecteuclid.org/journals/annales-de-linstitut-henri-poincare-probabilites-et-statistiques/volume-62/issue-2/Lipschitz-cutset-for-fractal-graphs-and-applications-to-the-spread/10.1214/24-AIHP1539.short"
 citation_text: "to appear"
 ---
