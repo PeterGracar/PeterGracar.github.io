@@ -7,5 +7,5 @@ coauthors:
   - "gioele-gallo"
 outlet_name: "Annales de l’Institut Henri Poincaré, Probabilités et Statistiques"
 outlet_url: "https://projecteuclid.org/journals/annales-de-linstitut-henri-poincare-probabilites-et-statistiques/volume-62/issue-2/Lipschitz-cutset-for-fractal-graphs-and-applications-to-the-spread/10.1214/24-AIHP1539.short"
-citation_text: "30: 1-29 (2025)"
+citation_text: "62(2): 830-878 (May 2026)"
 ---
