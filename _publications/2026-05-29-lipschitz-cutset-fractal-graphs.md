@@ -1,6 +1,6 @@
 ---
 title: "Lipschitz cutset for fractal graphs and applications to the spread of infections"
-title_url: "https://www.e-publications.org/ims/submission/AIHP/user/submissionFile/62496?confirm=4f341d03"
+title_url: "papers/AIHP1539.pdf"
 status: "published"
 date: "2026-05-29"
 coauthors:
