@@ -207,10 +207,10 @@ resolve to `/simulations/style.css`, etc., and 404.
 - Pride Month easter egg: during June (`getMonth() === 5`) it adds a `pride`
   class to `<body>` and reveals the footer `[data-pride-toggle]` button. CSS
   keyed off `body.pride` draws thin rainbow strips (the `--pride-gradient`
-  token) under the nav and atop the footer, recolours the active nav pill, and
-  swaps in-content link underlines to the rainbow gradient (via the
-  `--underline-image` token, which defaults to the solid accent underline). A
-  click toggles the class and persists the choice in
+  token) under the nav and atop the footer and swaps in-content link underlines
+  to the rainbow gradient (via the `--underline-image` token, which defaults to
+  the solid accent underline). A click toggles the class and persists the choice
+  in
   `localStorage['pride-colours']` (`"on"`/`"off"`, default on, `try/catch`
   guarded). The toggle is hidden and the class absent outside June.
 - Wires up `.hover-image` buttons with `.hover-img` children for the figure
