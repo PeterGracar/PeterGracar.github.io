@@ -200,7 +200,10 @@ resolve to `/simulations/style.css`, etc., and 404.
 
 `site.js` behaviour to be aware of:
 
-- Builds the email link from a base64 blob in `contact.html`'s `#e9` slot.
+- Builds the email link from base64 blobs hardcoded in `site.js`, injecting
+  the assembled `mailto:` link into `contact.html`'s empty `#e9` slot. The
+  `<noscript>` fallback in that slot shows a lightly-munged address
+  (`P.Gracar [at] leeds [dot] ac [dot] uk`) so non-JS users can still reach it.
 - Highlights the active nav item by matching `data-page-link` against
   `body[data-page]`.
 - Injects the current year into any `[data-year]` node (used in the footer).
