@@ -14,6 +14,7 @@
   --color-header-overlay: linear-gradient(120deg, rgba(20, 9, 8, 0.8), rgba(90, 18, 16, 0.45));
   --color-nav-bg: rgba(24, 15, 12, 0.66);
   --color-focus: #ff9f4a;
+  --pride-gradient: linear-gradient(90deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);
 
   --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
   --shadow-card: 0 6px 18px rgba(34, 20, 15, 0.08);
@@ -212,6 +213,12 @@ button:focus-visible {
 .site-nav a[aria-current="page"] {
   background: var(--color-accent);
   color: #ffffff;
+}
+
+/* Pride Month easter egg: thin rainbow strips under the nav and atop the footer. */
+body.pride .site-nav {
+  border-bottom: 3px solid transparent;
+  border-image: var(--pride-gradient) 1;
 }
 
 main {
@@ -648,6 +655,42 @@ li + li {
 
 .site-footer-inner a:hover {
   color: var(--color-accent);
+}
+
+body.pride .site-footer {
+  border-top: 3px solid transparent;
+  border-image: var(--pride-gradient) 1;
+}
+
+.pride-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-right: 0.4rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  cursor: pointer;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+}
+
+.pride-toggle:hover .pride-toggle-label {
+  color: var(--color-accent);
+}
+
+.pride-toggle[aria-pressed="false"] {
+  opacity: 0.55;
+}
+
+.pride-toggle[aria-pressed="false"] .pride-toggle-label {
+  text-decoration: line-through;
+}
+
+.pride-flag {
+  font-size: 1.05em;
+  line-height: 1;
 }
 
 @media (min-width: 48rem) {

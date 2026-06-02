@@ -27,6 +27,39 @@
     yearNode.textContent = String(new Date().getFullYear());
   }
 
+  // Pride Month (June) easter egg — auto-on, with a remembered opt-out.
+  const prideToggle = document.querySelector("[data-pride-toggle]");
+  if (prideToggle && new Date().getMonth() === 5) {
+    const prideKey = "pride-colours";
+    const readPride = () => {
+      try {
+        return localStorage.getItem(prideKey);
+      } catch (error) {
+        return null;
+      }
+    };
+    const writePride = (value) => {
+      try {
+        localStorage.setItem(prideKey, value);
+      } catch (error) {
+        /* storage unavailable (e.g. private mode) — preference simply not remembered */
+      }
+    };
+
+    let prideEnabled = readPride() !== "off"; // default on during June
+    const applyPride = () => {
+      body.classList.toggle("pride", prideEnabled);
+      prideToggle.setAttribute("aria-pressed", String(prideEnabled));
+    };
+    applyPride();
+    prideToggle.hidden = false; // reveal the toggle only during Pride Month
+    prideToggle.addEventListener("click", () => {
+      prideEnabled = !prideEnabled;
+      writePride(prideEnabled ? "on" : "off");
+      applyPride();
+    });
+  }
+
   const upcomingTalks = document.querySelectorAll("[data-talk-date]");
   if (upcomingTalks.length) {
     const today = new Date();
