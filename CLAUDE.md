@@ -205,9 +205,12 @@ resolve to `/simulations/style.css`, etc., and 404.
   `body[data-page]`.
 - Injects the current year into any `[data-year]` node (used in the footer).
 - Pride Month easter egg: during June (`getMonth() === 5`) it adds a `pride`
-  class to `<body>` and reveals the footer `[data-pride-toggle]` button, which
-  CSS uses to draw thin rainbow strips (the `--pride-gradient` token) under the
-  nav and atop the footer. A click toggles the class and persists the choice in
+  class to `<body>` and reveals the footer `[data-pride-toggle]` button. CSS
+  keyed off `body.pride` draws thin rainbow strips (the `--pride-gradient`
+  token) under the nav and atop the footer, recolours the active nav pill, and
+  swaps in-content link underlines to the rainbow gradient (via the
+  `--underline-image` token, which defaults to the solid accent underline). A
+  click toggles the class and persists the choice in
   `localStorage['pride-colours']` (`"on"`/`"off"`, default on, `try/catch`
   guarded). The toggle is hidden and the class absent outside June.
 - Wires up `.hover-image` buttons with `.hover-img` children for the figure
@@ -293,9 +296,9 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   missing required fields rather than erroring.
 - **CSS**: all styles live in `style.css`. It uses CSS custom properties
   (`--color-*` and `--text-*` — the previous `--space-*` spacing tokens were
-  removed as unused, plus `--pride-gradient` for the June easter egg) and a
-  `prefers-color-scheme: dark` block. Prefer extending the existing variables
-  over adding hard-coded values.
+  removed as unused, plus `--pride-gradient` and `--underline-image` for the
+  June easter egg) and a `prefers-color-scheme: dark` block. Prefer extending
+  the existing variables over adding hard-coded values.
 - **JS**: keep `site.js` small and framework-free. It is a single IIFE that
   short-circuits gracefully when the elements it looks for are absent.
 - **Cache busting**: bump `?v=<n>` on `style.css` / `site.js` in
