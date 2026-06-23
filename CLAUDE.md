@@ -82,6 +82,16 @@ style.css                   Single global stylesheet (CSS custom properties,
 site.js                     Email deobfuscation, nav active state, tooltip/hover
                             previews, Esc-to-close behaviour
 
+uploads/                    Drop-zone for arbitrary files (any type), served as
+                            static assets at /uploads/<name>. Kept out of the
+                            sitemap (static files are never enumerated there)
+                            and disallowed in robots.txt, but surfaced on
+                            secret.html via site.static_files. Holds a
+                            .gitkeep so the empty folder persists in git
+                            (dotfiles are ignored by Jekyll, so .gitkeep is
+                            not listed on secret.html). Must NOT be added to
+                            _config.yml's exclude: list, or its files would
+                            not be published.
 img/                        Avatar, map, figure previews (.webp)
 papers/                     PDF reprints (SPA129.pdf, waw2020.pdf, waw2023.pdf)
 banner.webp                 Social-share image used as og:image and
@@ -259,10 +269,14 @@ them together.
 - `sitemap.xml` is a Liquid template that enumerates `site.pages`, skipping any
   page marked `no_index` and the sitemap itself. New pages are included
   automatically.
-- `secret.html` is an unlisted full index of pages, static HTML files, and
-  PDFs. It is marked `no_index`, `no_analytics`, `sitemap: false`, and excludes
-  itself from its own list. It exists so standalone simulations and reprints
-  remain discoverable to the author without adding them to the public sitemap.
+- `secret.html` is an unlisted full index of pages, static HTML files, PDFs,
+  and `uploads/` files. It is marked `no_index`, `no_analytics`,
+  `sitemap: false`, and excludes itself from its own list. It exists so
+  standalone simulations, reprints, and uploaded files remain discoverable to
+  the author without adding them to the public sitemap. The "Uploads" section
+  lists every static file whose path contains `/uploads/` (any extension); the
+  HTML and PDF sections exclude `/uploads/` paths so an uploaded HTML/PDF is
+  not listed twice.
   It also renders a small "Build info" panel using `site.time` (the build
   timestamp, always available) and `site.github.build_revision` /
   `site.github.repository_nwo` from the `jekyll-github-metadata` plugin (which
