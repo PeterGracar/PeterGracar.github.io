@@ -23,6 +23,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history so git-restore-mtime can find the real commit
+          # date of every file (a shallow clone would date them all to
+          # the checkout time).
+          fetch-depth: 0
+
+      - name: Restore file mtimes from git history
+        # git checkout stamps every file with the checkout time, which
+        # would make secret.html's "added" dates all equal the build
+        # time. git-restore-mtime rewrites each file's mtime to the date
+        # of the last commit that touched it, so site.static_files'
+        # modified_time reflects when an upload was actually added.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git-restore-mtime
+          git restore-mtime
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

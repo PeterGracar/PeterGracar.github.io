@@ -276,7 +276,12 @@ them together.
   the author without adding them to the public sitemap. The "Uploads" section
   lists every static file whose path contains `/uploads/` (any extension); the
   HTML and PDF sections exclude `/uploads/` paths so an uploaded HTML/PDF is
-  not listed twice.
+  not listed twice. Each upload also shows the date it was added, taken from
+  its `modified_time`. For that date to be meaningful the build restores file
+  mtimes from git history — `actions/checkout` otherwise stamps every file
+  with the checkout time, so `pages.yml` does a full-history checkout
+  (`fetch-depth: 0`) and runs `git restore-mtime` before the Jekyll build,
+  leaving `modified_time` equal to the last commit that touched each file.
   It also renders a small "Build info" panel using `site.time` (the build
   timestamp, always available) and `site.github.build_revision` /
   `site.github.repository_nwo` from the `jekyll-github-metadata` plugin (which
