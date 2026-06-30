@@ -24,21 +24,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Full history so git-restore-mtime can find the real commit
-          # date of every file (a shallow clone would date them all to
-          # the checkout time).
+          # Full history so the upload dates can be read from the last
+          # commit that touched each file (a shallow clone would not see
+          # those commits).
           fetch-depth: 0
 
-      - name: Restore file mtimes from git history
-        # git checkout stamps every file with the checkout time, which
-        # would make secret.html's "added" dates all equal the build
-        # time. git-restore-mtime rewrites each file's mtime to the date
-        # of the last commit that touched it, so site.static_files'
-        # modified_time reflects when an upload was actually added.
+      - name: Record upload dates from git history
+        # secret.html shows, next to each uploads/ file, the date it was
+        # added. We can't rely on filesystem mtimes: actions/checkout
+        # stamps every file with the checkout time, and an mtime restored
+        # on the runner does not reliably survive the Dockerised Jekyll
+        # build (which left every upload dated to the build time). Instead
+        # write the date of the last commit that touched each upload into
+        # _data/upload_dates.json, which Jekyll reads deterministically as
+        # site.data.upload_dates. The file is generated here at build time
+        # and never committed (see .gitignore), so it does not itself
+        # churn the git history.
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git-restore-mtime
-          git restore-mtime
+          python3 - <<'PY'
+          import subprocess, json, os
+          files = subprocess.check_output(['git', 'ls-files', 'uploads/']).decode().splitlines()
+          dates = {}
+          for f in files:
+              if os.path.basename(f).startswith('.'):
+                  continue
+              # %cs = committer date as YYYY-MM-DD; -1 = last commit touching f.
+              d = subprocess.check_output(['git', 'log', '-1', '--format=%cs', '--', f]).decode().strip()
+              if d:
+                  dates[f] = d
+          os.makedirs('_data', exist_ok=True)
+          with open('_data/upload_dates.json', 'w') as fh:
+              json.dump(dates, fh, indent=2, ensure_ascii=False)
+              fh.write('\n')
+          PY
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

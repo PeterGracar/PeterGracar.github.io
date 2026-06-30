@@ -1,2 +1,4 @@
 .DS_Store
 /.claude
+# Generated at build time by pages.yml (upload "added" dates); never committed.
+/_data/upload_dates.json

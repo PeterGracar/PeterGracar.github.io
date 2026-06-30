@@ -103,7 +103,8 @@ robots.txt, sitemap.xml     SEO; sitemap is a Liquid template over site.pages
 site.webmanifest, favicon*, apple-touch-icon, android-chrome-*  PWA icons
 .github/workflows/pages.yml GitHub Actions workflow that builds with Jekyll
                             and deploys to GitHub Pages on push to main.
-.gitignore                  Ignores .DS_Store and /.claude
+.gitignore                  Ignores .DS_Store, /.claude, and the build-time
+                            /_data/upload_dates.json (see secret.html notes)
 ```
 
 There is no `Gemfile`, `package.json`, or test suite — the only automation is
@@ -276,12 +277,19 @@ them together.
   the author without adding them to the public sitemap. The "Uploads" section
   lists every static file whose path contains `/uploads/` (any extension); the
   HTML and PDF sections exclude `/uploads/` paths so an uploaded HTML/PDF is
-  not listed twice. Each upload also shows the date it was added, taken from
-  its `modified_time`. For that date to be meaningful the build restores file
-  mtimes from git history — `actions/checkout` otherwise stamps every file
-  with the checkout time, so `pages.yml` does a full-history checkout
-  (`fetch-depth: 0`) and runs `git restore-mtime` before the Jekyll build,
-  leaving `modified_time` equal to the last commit that touched each file.
+  not listed twice. Each upload also shows the date it was added, looked up
+  from `site.data.upload_dates` (keyed by the file's repo-relative path, e.g.
+  `uploads/<name>`). That data file, `_data/upload_dates.json`, is **generated
+  at build time** by `pages.yml`: a step runs `git log -1 --format=%cs` for
+  every tracked `uploads/` file and records the date of the last commit that
+  touched it. Filesystem mtimes are deliberately **not** used — `actions/checkout`
+  stamps every file with the checkout time, and an mtime restored on the runner
+  (e.g. via `git-restore-mtime`) did not reliably survive the Dockerised
+  `jekyll-build-pages` step, leaving every upload dated to the build time. The
+  full-history checkout (`fetch-depth: 0`) is required so `git log` can see the
+  original commits. `_data/upload_dates.json` is git-ignored and never
+  committed, so generating it does not churn history; absent it (e.g. a plain
+  local build), uploads simply render with no date.
   It also renders a small "Build info" panel using `site.time` (the build
   timestamp, always available) and `site.github.build_revision` /
   `site.github.repository_nwo` from the `jekyll-github-metadata` plugin (which
