@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brownian Motion vs Lévy Flight (3D) — Peter Gracar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    // Apply saved theme immediately to avoid flash
+    (function() {
+      var t = localStorage.getItem('theme-pref');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  <!-- Three.js (WebGL) is loaded here as an ES-module import map. This is a
+       DELIBERATE, user-approved exception to the repository's usual
+       "no new dependencies" rule (see CLAUDE.md): the 3D view needs a real
+       depth-buffered renderer and orbit controls, which are impractical to
+       hand-roll. It is scoped to this standalone prototype only — the 2D
+       simulations remain dependency-light. Like the other standalones
+       (Tailwind + MathJax), this file therefore needs network access at load. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <style>
+    /* ── Base theme tokens ── */
+    :root {
+      --font-heading: "Newsreader", Georgia, "Times New Roman", serif;
+      --font-body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+      --color-bg: #f8f4ee;
+      --color-surface: #ffffff;
+      --color-surface-soft: #f1ebe1;
+      --color-text: #1f1b18;
+      --color-text-muted: #554e47;
+      --color-border: #d8cec1;
+      --color-accent: #950000;
+      --color-accent-strong: #6f0000;
+      --color-accent-soft: #cf6a54;
+      --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+      --radius-sm: 0.45rem;
+      --radius-md: 0.75rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #111216;
+        --color-surface: #1a1e24;
+        --color-surface-soft: #232831;
+        --color-text: #ece4d9;
+        --color-text-muted: #b7afa3;
+        --color-border: #3a4049;
+        --color-accent: #ff7558;
+        --color-accent-strong: #ff9f87;
+        --color-accent-soft: #ff9f87;
+        --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+      }
+    }
+    html[data-theme="light"] {
+      --color-bg: #f8f4ee;
+      --color-surface: #ffffff;
+      --color-surface-soft: #f1ebe1;
+      --color-text: #1f1b18;
+      --color-text-muted: #554e47;
+      --color-border: #d8cec1;
+      --color-accent: #950000;
+      --color-accent-strong: #6f0000;
+      --color-accent-soft: #cf6a54;
+      --shadow-soft: 0 12px 30px rgba(34, 20, 15, 0.12);
+    }
+    html[data-theme="dark"] {
+      --color-bg: #111216;
+      --color-surface: #1a1e24;
+      --color-surface-soft: #232831;
+      --color-text: #ece4d9;
+      --color-text-muted: #b7afa3;
+      --color-border: #3a4049;
+      --color-accent: #ff7558;
+      --color-accent-strong: #ff9f87;
+      --color-accent-soft: #ff9f87;
+      --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
+    }
+
+    /* ── Simulation colour tokens ── */
+    :root {
+      --lbm-panel-bg:     rgba(248, 244, 238, 0.93);
+      --lbm-panel-border: var(--color-border);
+      --lbm-trace:        rgba(40, 25, 15, 0.13);
+      --lbm-brownian:     rgba(30, 20, 12, 0.88);
+      --lbm-levy-line:    rgba(40, 25, 15, 0.55);
+      --lbm-legend-bg:    rgba(241, 235, 225, 0.90);
+      --lbm-hue-lightness: 42;
+      --lbm-hue-sat-base: 85;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --lbm-panel-bg:     rgba(26, 30, 36, 0.93);
+        --lbm-trace:        rgba(148, 163, 184, 0.15);
+        --lbm-brownian:     rgba(255, 255, 255, 1.0);
+        --lbm-levy-line:    rgba(226, 232, 240, 0.55);
+        --lbm-legend-bg:    rgba(26, 30, 36, 0.90);
+        --lbm-hue-lightness: 60;
+        --lbm-hue-sat-base: 100;
+      }
+    }
+    html[data-theme="light"] {
+      --lbm-panel-bg:     rgba(248, 244, 238, 0.93);
+      --lbm-trace:        rgba(40, 25, 15, 0.13);
+      --lbm-brownian:     rgba(30, 20, 12, 0.88);
+      --lbm-levy-line:    rgba(40, 25, 15, 0.55);
+      --lbm-legend-bg:    rgba(241, 235, 225, 0.90);
+      --lbm-hue-lightness: 42;
+      --lbm-hue-sat-base: 85;
+    }
+    html[data-theme="dark"] {
+      --lbm-panel-bg:     rgba(26, 30, 36, 0.93);
+      --lbm-trace:        rgba(148, 163, 184, 0.15);
+      --lbm-brownian:     rgba(255, 255, 255, 1.0);
+      --lbm-levy-line:    rgba(226, 232, 240, 0.55);
+      --lbm-legend-bg:    rgba(26, 30, 36, 0.90);
+      --lbm-hue-lightness: 60;
+      --lbm-hue-sat-base: 100;
+    }
+
+    /* ── Full-bleed layout ── */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { height: 100vh; overflow: hidden; margin: 0; font-family: var(--font-body); background: var(--color-bg); }
+    main#main-content {
+      padding: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      display: flex !important;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+      position: relative;
+      height: 100vh;
+    }
+
+    /* ── Floating controls panel ── */
+    .sim-controls {
+      position: absolute;
+      top: 56px; left: 12px;
+      background: var(--lbm-panel-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--lbm-panel-border);
+      width: min(340px, calc(100% - 20px));
+      box-shadow: var(--shadow-soft);
+      user-select: none;
+      max-height: calc(100% - 40px);
+      overflow-y: auto;
+      z-index: 10;
+      font-family: var(--font-body);
+      color: var(--color-text);
+    }
+
+    .sim-controls::-webkit-scrollbar { width: 6px; }
+    .sim-controls::-webkit-scrollbar-track { background: transparent; }
+    .sim-controls::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+
+    /* ── Slider ── */
+    .slider-container { margin-bottom: 16px; }
+    .slider-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.875rem; margin-bottom: 4px; font-weight: 500;
+      color: var(--color-text);
+    }
+
+    input[type=range] {
+      width: 100%; height: 6px; background: var(--color-border);
+      border-radius: 3px; outline: none; -webkit-appearance: none; cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px;
+      background: var(--color-accent); border-radius: 50%;
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover { opacity: 0.8; }
+
+    /* ── Slider tick marks ── */
+    .slider-ticks {
+      position: relative;
+      width: 100%;
+      height: 18px;
+      margin-top: 2px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .slider-ticks.with-labels { height: 26px; }
+    .slider-ticks .tick {
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+    .slider-ticks .tick .mark {
+      width: 1px;
+      height: 5px;
+      background: var(--color-text-muted);
+      opacity: 0.55;
+    }
+    .slider-ticks .tick.major .mark {
+      height: 7px;
+      opacity: 0.85;
+    }
+    .slider-ticks .tick .label {
+      font-size: 0.625rem;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+
+    input[type=text] {
+      width: 100%; background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      color: var(--color-text); padding: 6px 10px;
+      border-radius: var(--radius-sm); font-size: 0.875rem;
+      outline: none; font-family: monospace; margin-bottom: 12px;
+    }
+    input[type=text]:focus { border-color: var(--color-accent); }
+    input[type=text]::placeholder { color: var(--color-text-muted); }
+
+    /* ── Toggle ── */
+    .toggle-container { display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; }
+    .toggle-switch {
+      position: relative; width: 44px; height: 24px;
+      background: var(--color-border); border-radius: 12px;
+      transition: 0.3s; margin-right: 12px; flex-shrink: 0;
+    }
+    .toggle-switch::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 20px; height: 20px; background: var(--color-surface);
+      border-radius: 50%; transition: 0.3s;
+    }
+    input[type="checkbox"]:checked + .toggle-switch { background: #10b981; }
+    input[type="checkbox"]:checked + .toggle-switch::after { transform: translateX(20px); }
+    input[type="checkbox"] { display: none; }
+
+    /* ── Stats & legend ── */
+    .sim-legend { margin-top: 16px; border-top: 1px solid var(--color-border); padding-top: 12px; font-size: 0.8rem; }
+    .legend-item { display: flex; align-items: center; margin-bottom: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+
+    .stats-box {
+      margin-top: 16px; padding: 12px;
+      background: var(--color-surface-soft);
+      border-radius: var(--radius-sm); font-size: 0.8rem;
+      border: 1px solid var(--color-border);
+    }
+    .stats-box .stats-title {
+      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--color-text-muted); margin-bottom: 8px;
+    }
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .stat-label { color: var(--color-text-muted); }
+    .stat-val { font-family: monospace; color: var(--color-accent); font-weight: bold; }
+    .stat-highlight { color: var(--color-accent-soft); }
+
+    /* ── Buttons ── */
+    button.sim-btn {
+      width: 100%; padding: 8px 16px; border: none;
+      border-radius: var(--radius-sm); font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s; margin-top: 8px;
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .sim-btn-primary { background: var(--color-accent); color: #fff; }
+    .sim-btn-primary:hover { opacity: 0.85; }
+    .sim-btn-pause  { background: #d97706; color: #fff; }
+    .sim-btn-resume { background: #059669; color: #fff; }
+    .sim-btn-export { background: var(--color-accent-soft); color: #fff; }
+    .sim-btn-export:hover { opacity: 0.85; }
+
+    .btn-group { display: flex; gap: 10px; margin-top: 8px; }
+    .btn-group .sim-btn { flex: 1; }
+
+    .export-section { border-top: 1px solid var(--color-border); padding-top: 12px; margin-top: 12px; }
+
+    /* ── Top bar (wraps all three pills) ── */
+    #top-bar {
+      position: fixed;
+      top: 12px; left: 12px; right: 12px;
+      z-index: 2147483646;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: none;
+      isolation: isolate;
+    }
+    #top-bar > * { pointer-events: auto; }
+
+    /* ── Controls panel toggle ── */
+    #lbm-toggle {
+      display: flex; gap: 0;
+      background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 3px;
+      box-shadow: var(--shadow-soft);
+      font-family: var(--font-body);
+    }
+    #lbm-toggle button {
+      border: none; background: transparent; cursor: pointer;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 0.75rem; color: var(--color-text-muted);
+      transition: all 0.2s;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    #lbm-toggle button.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    /* Panel visibility is driven entirely by the .is-open class on every
+       screen size — the top-left toggle controls it. */
+    .sim-controls { display: none; }
+    .sim-controls.is-open { display: block; }
+
+    /* ── Status indicator ── */
+    #statusIndicator {
+      position: absolute; top: 56px; left: 50%; transform: translateX(-50%);
+      font-size: 0.75rem; font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--lbm-panel-bg);
+      padding: 4px 12px; border-radius: 999px;
+      border: 1px solid var(--color-border);
+      opacity: 0; pointer-events: none; z-index: 9;
+      transition: opacity 250ms ease;
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
+
+    /* ── Legend overlay (bottom-right, over the WebGL canvas) ── */
+    #legend {
+      position: absolute;
+      right: 3%; bottom: 3%;
+      width: min(40%, 300px);
+      background: var(--lbm-legend-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 8px 10px 10px;
+      pointer-events: none;
+      z-index: 8;
+      backdrop-filter: blur(6px);
+      display: none;
+    }
+    #legend .legend-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--color-text); margin-bottom: 4px;
+    }
+    #legend .legend-bar {
+      height: 16px; border-radius: 3px;
+      background: linear-gradient(to right, #888, #888);
+    }
+
+    /* ── Theme toggle ── */
+    #theme-toggle {
+      display: flex; gap: 0;
+      background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 3px;
+      box-shadow: var(--shadow-soft);
+      font-family: var(--font-body);
+    }
+    #theme-toggle button {
+      border: none; background: transparent; cursor: pointer;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 0.75rem; color: var(--color-text-muted);
+      transition: all 0.2s;
+      line-height: 1.2;
+      pointer-events: auto;
+    }
+    #theme-toggle button.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    /* ── Narrow-width: merge the three pills into a single pill ── */
+    @media (max-width: 720px) {
+      #top-bar {
+        justify-content: center;
+        gap: 0;
+        background: var(--color-surface-soft);
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        padding: 3px;
+        box-shadow: var(--shadow-soft);
+        pointer-events: auto;
+        width: max-content;
+        max-width: calc(100% - 24px);
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+      }
+      #top-bar > #lbm-toggle,
+      #top-bar > #track-toggle,
+      #top-bar > #theme-toggle {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+      }
+      /* Vertical separators between sections */
+      #top-bar > * + * {
+        border-left: 1px solid var(--color-border);
+        margin-left: 6px;
+        padding-left: 6px;
+      }
+      /* Hide the "Controls" text — keep just the gear icon */
+      #lbm-toggle .pill-label { display: none; }
+      #lbm-toggle button { padding: 4px 8px; }
+    }
+
+    /* ── Track-mode toggle ── */
+    #track-toggle {
+      display: flex; gap: 0;
+      background: var(--color-surface-soft);
+      border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 3px;
+      box-shadow: var(--shadow-soft);
+      font-family: var(--font-body);
+    }
+    #track-toggle button {
+      border: none; background: transparent; cursor: pointer;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 0.75rem; color: var(--color-text-muted);
+      transition: all 0.2s;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    #track-toggle button.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    #track-toggle button[disabled] {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="top-bar">
+  <div id="lbm-toggle" role="group" aria-label="Toggle controls panel">
+    <button id="lbm-toggle-btn" type="button" class="active" aria-pressed="true" title="Show or hide the controls panel">
+      <span aria-hidden="true">&#9881;</span><span class="pill-label"> Controls</span>
+    </button>
+  </div>
+
+  <div id="track-toggle" role="group" aria-label="Camera framing mode">
+    <button data-track="bm"   title="Auto-frame Brownian motion">BM</button>
+    <button data-track="levy" title="Auto-frame Lévy flight">Lévy</button>
+    <button data-track="both" title="Auto-frame both" class="active">Both</button>
+  </div>
+
+  <div id="theme-toggle">
+    <button data-theme="light"  title="Light">&#9728;</button>
+    <button data-theme="system" title="System" class="active">Auto</button>
+    <button data-theme="dark"   title="Dark">&#9790;</button>
+  </div>
+</div>
+
+<main id="main-content">
+  <div id="sim-container" style="position: relative; flex: 1; overflow: hidden; min-height: 0;">
+
+    <div id="statusIndicator">Drag to rotate the 3D view — zoom &amp; pan are automatic</div>
+
+    <!-- Floating controls -->
+    <div class="sim-controls is-open">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="text-xl font-bold" style="color: var(--color-text); font-family: var(--font-heading); margin: 0;">BM vs Lévy 3D</h2>
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Lévy Index (\(\alpha\))</span>
+          <span id="alphaVal" style="color: var(--color-accent);">1.0</span>
+        </div>
+        <input type="range" id="alphaSlider" min="0.1" max="1.99" step="0.01" value="1.0">
+        <div class="slider-ticks with-labels" id="alphaTicks"></div>
+        <p class="text-xs mt-1 leading-relaxed" style="color: var(--color-text-muted);">
+          Tail index: \( P(\text{step} > x) \sim x^{-\alpha} \)<br>
+          Small \(\alpha\) = heavier tails (super-diffusion). Tick labels show the median jump size.
+        </p>
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Simulation Speed</span>
+          <span id="speedVal">5</span>
+        </div>
+        <input type="range" id="speedSlider" min="1" max="20" step="1" value="5">
+        <div class="slider-ticks" id="speedTicks"></div>
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          <span>Sausage Radius (\(p\)-th quantile)</span>
+          <span id="radiusVal" class="text-xs font-mono" style="color: var(--color-accent);">R=5.0 (p=50%)</span>
+        </div>
+        <input type="range" id="radiusSlider" min="0" max="100" step="1" value="50">
+        <div class="slider-ticks with-labels" id="radiusTicks"></div>
+        <p class="text-xs mt-1 leading-relaxed" style="color: var(--color-text-muted);">
+          Radius scales with jump size distribution:<br>
+          \( R(p) \propto (1-p)^{-1/\alpha} \)
+        </p>
+      </div>
+
+      <label class="toggle-container">
+        <input type="checkbox" id="brownianToggle" checked>
+        <div class="toggle-switch"></div>
+        <span class="text-sm font-medium">Show Brownian Motion</span>
+      </label>
+
+      <label class="toggle-container">
+        <input type="checkbox" id="levyToggle">
+        <div class="toggle-switch"></div>
+        <span class="text-sm font-medium">Show Lévy Flight</span>
+      </label>
+
+      <label class="toggle-container">
+        <input type="checkbox" id="sausageToggle">
+        <div class="toggle-switch"></div>
+        <span class="text-sm font-medium">Sausage Mode (Balls)</span>
+      </label>
+
+      <div class="slider-container" style="margin-top: 12px; margin-bottom: 4px;">
+        <div class="slider-label"><span>Random Seed</span></div>
+        <input type="text" id="seedInput" placeholder="Seed">
+      </div>
+
+      <div class="btn-group">
+        <button id="startBtn" class="sim-btn sim-btn-resume">Start</button>
+        <button id="resetBtn" class="sim-btn sim-btn-primary">Reset</button>
+      </div>
+      <div class="btn-group">
+        <button id="newSeedBtn" class="sim-btn sim-btn-export">New Seed</button>
+      </div>
+
+      <div class="export-section">
+        <label class="toggle-container">
+          <input type="checkbox" id="optimiseExport" checked>
+          <div class="toggle-switch"></div>
+          <span class="text-sm font-medium">Optimise Size (HD)</span>
+        </label>
+        <button id="exportBtn" class="sim-btn sim-btn-export">Export Image</button>
+      </div>
+
+      <div class="stats-box">
+        <div class="stats-title">Wiener-sausage volume covered</div>
+        <div class="stat-row" id="brownianAreaRow" title="Volume covered by the BM path">
+          <span class="stat-label">Brownian (Path):</span>
+          <span id="brownianAreaStat" class="stat-val">0</span>
+        </div>
+        <div class="stat-row" id="levyPointsRow" title="Volume covered by landing points only" style="opacity: 0.3;">
+          <span class="stat-label">Lévy (Points):</span>
+          <span id="levyAreaStat" class="stat-val">0</span>
+        </div>
+        <div class="stat-row" id="levyPathRow" title="Volume covered by points AND connecting lines" style="opacity: 0.3;">
+          <span class="stat-label">Lévy (Path):</span>
+          <span id="levyPathStat" class="stat-val stat-highlight">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time / colour-age legend (shown while the Lévy flight is visible) -->
+    <div id="legend">
+      <div class="legend-labels"><span>Past (Trace)</span><span>Present</span></div>
+      <div class="legend-bar" id="legendBar"></div>
+    </div>
+
+    <canvas id="simCanvas" style="display: block; cursor: grab; position: absolute; top: 0; left: 0; touch-action: none;"></canvas>
+  </div>
+</main>
+
+<script>
+  // ── Theme toggle ───────────────────────────────────────────────────────────
+  (function() {
+    function getBtns() { return document.querySelectorAll('#theme-toggle button'); }
+    var saved = (function(){ try { return localStorage.getItem('theme-pref') || 'system'; } catch(e) { return 'system'; } })();
+
+    function apply(mode) {
+      if (mode === 'light' || mode === 'dark') {
+        document.documentElement.setAttribute('data-theme', mode);
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      getBtns().forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-theme') === mode); });
+      try { localStorage.setItem('theme-pref', mode); } catch(e) {}
+    }
+
+    function init() {
+      // Direct binding on the buttons.
+      getBtns().forEach(function(b) {
+        b.addEventListener('click', function(ev) { ev.stopPropagation(); apply(b.getAttribute('data-theme')); });
+      });
+      // Event-delegation fallback: even if anything visually captures the
+      // click, the body-level capture-phase listener still finds it.
+      document.body.addEventListener('click', function(ev) {
+        var t = ev.target;
+        while (t && t !== document.body) {
+          if (t.parentNode && t.parentNode.id === 'theme-toggle' && t.hasAttribute('data-theme')) {
+            apply(t.getAttribute('data-theme'));
+            return;
+          }
+          t = t.parentNode;
+        }
+      }, true);
+      apply(saved);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+
+<script type="module">
+  /**
+   * Lévy Flight vs Brownian Motion — standalone 3D version.
+   *
+   * The random-walk model, PRNG, look-ahead buffering and coverage stats are
+   * shared with the 2D standalone (`levy-vs-bm-standalone.html`), extended to
+   * three dimensions. The 2D Canvas render layer is replaced by a Three.js
+   * WebGL scene: mouse / one-finger-touch gestures ORBIT the view (via
+   * OrbitControls) while an auto-framing camera keeps the tracked walk(s) in
+   * shot. Manual zoom and pan are intentionally disabled.
+   */
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  // ── Theme helper ──────────────────────────────────────────────────────────
+  function getLBMColors() {
+    const s = getComputedStyle(document.documentElement);
+    const g = n => s.getPropertyValue(n).trim();
+    const isDark = (document.documentElement.getAttribute('data-theme') === 'dark') ||
+                   (!document.documentElement.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    return {
+      bg:          g('--color-bg'),
+      trace:       g('--lbm-trace'),
+      brownian:    g('--lbm-brownian'),
+      levyLine:    g('--lbm-levy-line'),
+      legendBg:    g('--lbm-legend-bg'),
+      text:        g('--color-text'),
+      hueLightness: parseFloat(g('--lbm-hue-lightness')) || (isDark ? 60 : 42),
+      hueSatBase:   parseFloat(g('--lbm-hue-sat-base'))  || (isDark ? 100 : 85),
+      isDark,
+    };
+  }
+
+  // Parse a CSS colour string (rgb/rgba/#hex) into {r,g,b,a} in [0,1].
+  function cssToRGBA(str) {
+    str = (str || '').trim();
+    let m = /rgba?\(([^)]+)\)/.exec(str);
+    if (m) {
+      const p = m[1].split(',').map(v => parseFloat(v));
+      return { r: p[0] / 255, g: p[1] / 255, b: p[2] / 255, a: p[3] !== undefined ? p[3] : 1 };
+    }
+    m = /^#?([0-9a-f]{6})$/i.exec(str);
+    if (m) { const n = parseInt(m[1], 16); return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255, a: 1 }; }
+    const c = new THREE.Color(str);
+    return { r: c.r, g: c.g, b: c.b, a: 1 };
+  }
+  // Flatten a translucent colour over the background so overlapping opaque
+  // spheres read the way the faint 2D "trace" did instead of stacking to black.
+  function flattenOver(fg, bg) {
+    return {
+      r: fg.r * fg.a + bg.r * (1 - fg.a),
+      g: fg.g * fg.a + bg.g * (1 - fg.a),
+      b: fg.b * fg.a + bg.b * (1 - fg.a),
+    };
+  }
+
+  // Current frame colors (updated at start of each animate() call)
+  let C = getLBMColors();
+
+  // ── 1. Configuration ──────────────────────────────────────────────────────
+  const Config = {
+    baseScale: 5,
+    colorSpeedFactor: 0.05,
+    get cyclePeriod() { return (360 / this.colorSpeedFactor) * 4; },
+    chunkSize: 1000,
+    // Seconds of steps generated ahead of what the viewer sees so the camera
+    // can anticipate a large upcoming jump and glide out in advance. Also
+    // acts as the "commitment window" between a parameter change (alpha,
+    // speed) and that change reaching the display, since buffered points were
+    // already generated under the old settings.
+    lookaheadSeconds: 0.5,
+  };
+
+  // ── 2. PRNG ───────────────────────────────────────────────────────────────
+  const PRNG = {
+    rand: Math.random,
+    xmur3: function(str) {
+      for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++) {
+        h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+        h = h << 13 | h >>> 19;
+      }
+      return function() {
+        h = Math.imul(h ^ h >>> 16, 2246822507);
+        h = Math.imul(h ^ h >>> 13, 3266489909);
+        return (h ^= h >>> 16) >>> 0;
+      };
+    },
+    mulberry32: function(a) {
+      return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    },
+    init: function(seedStr) {
+      if (!seedStr) seedStr = Date.now().toString() + Math.random().toString();
+      this.rand = this.mulberry32(this.xmur3(seedStr)());
+    },
+    gaussian: function() {
+      let u = 0, v = 0;
+      while (u === 0) u = this.rand();
+      while (v === 0) v = this.rand();
+      return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    }
+  };
+
+  // ── 3. State ──────────────────────────────────────────────────────────────
+  const State = {
+    width: 0, height: 0, time: 0,
+    alpha: 1.0, speed: 5, sausageRadius: 5.0,
+    showBrownian: true, showLevy: false, showSausage: false,
+    hasStarted: false, currentSeed: '',
+    isPaused: false, isInteracting: false,
+    trackMode: 'both',
+    // `pos` tracks the latest *revealed* position; `genPos` is the latest
+    // *generated* position inside the look-ahead buffer. `future` is a FIFO of
+    // generated-but-unrevealed points with a head index for O(1) pops.
+    levy:     { pos: {x:0,y:0,z:0}, genPos: {x:0,y:0,z:0}, active: [], buffer: [], chunks: [], future: [], futureHead: 0 },
+    brownian: { pos: {x:0,y:0,z:0}, genPos: {x:0,y:0,z:0}, active: [], buffer: [], chunks: [], future: [], futureHead: 0 },
+    stats: {
+      levyPoints: new Set(),
+      levyPath:   new Set(),
+      brownian:   new Set(),
+    },
+    reset: function() {
+      this.time = 0;
+      this.levy     = { pos: {x:0,y:0,z:0}, genPos: {x:0,y:0,z:0}, active: [{x:0,y:0,z:0,time:0}], buffer: [], chunks: [], future: [], futureHead: 0 };
+      this.brownian = { pos: {x:0,y:0,z:0}, genPos: {x:0,y:0,z:0}, active: [{x:0,y:0,z:0,time:0}], buffer: [], chunks: [], future: [], futureHead: 0 };
+      this.stats.levyPoints.clear(); this.stats.levyPath.clear(); this.stats.brownian.clear();
+      Stats.updateCoverage(0, 0, 0, this.sausageRadius, this.stats.levyPoints);
+      Stats.updateCoverage(0, 0, 0, this.sausageRadius, this.stats.levyPath);
+      Stats.updateCoverage(0, 0, 0, this.sausageRadius, this.stats.brownian);
+    }
+  };
+
+  // ── 4. Statistics (3D voxel volume) ───────────────────────────────────────
+  // The 2D version measured the AREA of the planar Wiener sausage on a square
+  // grid. Here coverage is a VOLUME: an occupancy Set of cubic voxels keyed
+  // "gx,gy,gz", multiplied by cell³ for a physical volume estimate.
+  const Stats = {
+    updateCoverage: function(x, y, z, r, set) {
+      const cell = r / 2, rSq = r * r;
+      const gx0 = Math.floor((x - r) / cell), gx1 = Math.floor((x + r) / cell);
+      const gy0 = Math.floor((y - r) / cell), gy1 = Math.floor((y + r) / cell);
+      const gz0 = Math.floor((z - r) / cell), gz1 = Math.floor((z + r) / cell);
+      for (let gx = gx0; gx <= gx1; gx++) {
+        for (let gy = gy0; gy <= gy1; gy++) {
+          for (let gz = gz0; gz <= gz1; gz++) {
+            const cx = Math.max(gx*cell, Math.min(x, (gx+1)*cell));
+            const cy = Math.max(gy*cell, Math.min(y, (gy+1)*cell));
+            const cz = Math.max(gz*cell, Math.min(z, (gz+1)*cell));
+            if ((x-cx)**2 + (y-cy)**2 + (z-cz)**2 < rSq) set.add(`${gx},${gy},${gz}`);
+          }
+        }
+      }
+    },
+    walkLineCoverage: function(x1, y1, z1, x2, y2, z2, r, set) {
+      const dx = x2 - x1, dy = y2 - y1, dz = z2 - z1;
+      // Cap the sample count: a single heavy-tailed Lévy jump can span millions
+      // of units, and an uncapped 3D voxel sweep along it would freeze the tab.
+      // 2000 samples keeps very long segments approximate but responsive.
+      const steps = Math.min(2000, Math.ceil(Math.sqrt(dx*dx + dy*dy + dz*dz) / (r / 2)));
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        this.updateCoverage(x1 + dx*t, y1 + dy*t, z1 + dz*t, r, set);
+      }
+    },
+    format: function(vol) {
+      if (vol < 1000)    return Math.round(vol);
+      if (vol < 1e6)     return (vol / 1e3).toFixed(1) + 'k';
+      if (vol < 1e9)     return (vol / 1e6).toFixed(2) + 'M';
+      return (vol / 1e9).toFixed(2) + 'G';
+    },
+    updateUI: function() {
+      const cv = (State.sausageRadius / 2) ** 3;   // volume per occupied voxel
+      document.getElementById('levyAreaStat').textContent  = this.format(State.stats.levyPoints.size * cv);
+      document.getElementById('levyPathStat').textContent  = this.format(State.stats.levyPath.size   * cv);
+      document.getElementById('brownianAreaStat').textContent = this.format(State.stats.brownian.size * cv);
+    },
+    recalculateAll: function() {
+      State.stats.levyPoints.clear(); State.stats.levyPath.clear(); State.stats.brownian.clear();
+      const traverse = (data, cb) => {
+        let px = 0, py = 0, pz = 0;
+        const proc = list => { for (let p of list) { cb(px,py,pz,p.x,p.y,p.z); px=p.x; py=p.y; pz=p.z; } };
+        for (let c of data.chunks) proc(c.points);
+        proc(data.buffer); proc(data.active);
+      };
+      traverse(State.levy, (px,py,pz,cx,cy,cz) => {
+        this.updateCoverage(cx,cy,cz,State.sausageRadius,State.stats.levyPoints);
+        this.walkLineCoverage(px,py,pz,cx,cy,cz,State.sausageRadius,State.stats.levyPath);
+      });
+      traverse(State.brownian, (px,py,pz,cx,cy,cz) =>
+        this.walkLineCoverage(px,py,pz,cx,cy,cz,State.sausageRadius,State.stats.brownian));
+      this.updateUI();
+    }
+  };
+
+  // ── 5. Simulation ─────────────────────────────────────────────────────────
+  const Sim = {
+    archivePoint: function(point, buffer, chunks) {
+      buffer.push(point);
+      if (buffer.length >= Config.chunkSize) {
+        let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity,minZ=Infinity,maxZ=-Infinity;
+        for (let p of buffer) {
+          if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x;
+          if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y;
+          if(p.z<minZ)minZ=p.z; if(p.z>maxZ)maxZ=p.z;
+        }
+        chunks.push({ points: buffer, minX, maxX, minY, maxY, minZ, maxZ });
+        return [];
+      }
+      return buffer;
+    },
+
+    lookaheadSteps: function() {
+      return Math.max(60, Math.round(State.speed * 60 * Config.lookaheadSeconds));
+    },
+    ensureLookahead: function() {
+      const target = this.lookaheadSteps();
+      const L = State.levy, B = State.brownian;
+      let pending = Math.min(L.future.length - L.futureHead, B.future.length - B.futureHead);
+      while (pending < target) {
+        // Uniform direction on the unit SPHERE (both walks share it, as in 2D).
+        // NOTE: this draws PRNG values in a different order than the 2D sim, so
+        // a given seed will not reproduce a 2D run — expected for a 3D model.
+        const zc  = 2 * PRNG.rand() - 1;
+        const phi = PRNG.rand() * 2 * Math.PI;
+        const rr  = Math.sqrt(Math.max(0, 1 - zc*zc));
+        const dirX = rr * Math.cos(phi), dirY = rr * Math.sin(phi), dirZ = zc;
+
+        let u = PRNG.rand(); if (u === 0) u = 0.00001;
+        const stepLevy = Math.min(Config.baseScale * Math.pow(u, -1 / State.alpha), 1e6);
+        L.genPos.x += dirX * stepLevy;
+        L.genPos.y += dirY * stepLevy;
+        L.genPos.z += dirZ * stepLevy;
+        L.future.push({ x: L.genPos.x, y: L.genPos.y, z: L.genPos.z });
+
+        // Brownian always advances so toggling display mid-run stays in sync.
+        const stepBrown = Math.abs(PRNG.gaussian()) * Config.baseScale;
+        B.genPos.x += dirX * stepBrown;
+        B.genPos.y += dirY * stepBrown;
+        B.genPos.z += dirZ * stepBrown;
+        B.future.push({ x: B.genPos.x, y: B.genPos.y, z: B.genPos.z });
+
+        pending++;
+      }
+    },
+
+    step: function() {
+      this.ensureLookahead();
+
+      const L = State.levy, B = State.brownian;
+      const count = Math.min(
+        State.speed,
+        L.future.length - L.futureHead,
+        B.future.length - B.futureHead
+      );
+      for (let i = 0; i < count; i++) {
+        State.time++;
+
+        const nlp = L.future[L.futureHead++];
+        const plx = L.pos.x, ply = L.pos.y, plz = L.pos.z;
+        L.pos.x = nlp.x; L.pos.y = nlp.y; L.pos.z = nlp.z;
+        L.active.push({ x: nlp.x, y: nlp.y, z: nlp.z, time: State.time });
+        Stats.updateCoverage(nlp.x, nlp.y, nlp.z, State.sausageRadius, State.stats.levyPoints);
+        Stats.walkLineCoverage(plx, ply, plz, nlp.x, nlp.y, nlp.z, State.sausageRadius, State.stats.levyPath);
+
+        const nbp = B.future[B.futureHead++];
+        const pbx = B.pos.x, pby = B.pos.y, pbz = B.pos.z;
+        B.pos.x = nbp.x; B.pos.y = nbp.y; B.pos.z = nbp.z;
+        B.active.push({ x: nbp.x, y: nbp.y, z: nbp.z, time: State.time });
+        Stats.walkLineCoverage(pbx, pby, pbz, nbp.x, nbp.y, nbp.z, State.sausageRadius, State.stats.brownian);
+      }
+
+      if (L.futureHead > 2000) { L.future = L.future.slice(L.futureHead); L.futureHead = 0; }
+      if (B.futureHead > 2000) { B.future = B.future.slice(B.futureHead); B.futureHead = 0; }
+
+      const cutoff = State.time - Config.cyclePeriod;
+      const archive = agent => {
+        while (agent.active.length > 0 && agent.active[0].time < cutoff) {
+          agent.buffer = this.archivePoint({ x: agent.active[0].x, y: agent.active[0].y, z: agent.active[0].z }, agent.buffer, agent.chunks);
+          agent.active.shift();
+        }
+      };
+      archive(L);
+      archive(B);
+    },
+
+    reset: function() {
+      const typed = document.getElementById('seedInput').value.trim();
+      if (typed && typed !== State.currentSeed) State.currentSeed = typed;
+      PRNG.init(State.currentSeed);
+      State.reset();
+      View3D.snapFraming();       // recentre orbit on the origin, keep angles
+      State.hasStarted = false;
+      State.isPaused = false;
+      const btn = document.getElementById('startBtn');
+      btn.textContent = 'Start';
+      btn.className = 'sim-btn sim-btn-resume';
+    },
+
+    newSeed: function() {
+      State.currentSeed = Date.now().toString() + Math.random().toString(36).slice(2);
+      document.getElementById('seedInput').value = State.currentSeed;
+      this.reset();
+    },
+
+    startOrToggle: function() {
+      if (!State.hasStarted) {
+        State.hasStarted = true;
+        State.isPaused = false;
+        const btn = document.getElementById('startBtn');
+        btn.textContent = 'Pause';
+        btn.className = 'sim-btn sim-btn-pause';
+        return;
+      }
+      State.isPaused = !State.isPaused;
+      const btn = document.getElementById('startBtn');
+      btn.textContent = State.isPaused ? 'Resume' : 'Pause';
+      btn.className = State.isPaused ? 'sim-btn sim-btn-resume' : 'sim-btn sim-btn-pause';
+    },
+
+    // Render the current scene at higher resolution and download it as a PNG.
+    exportImage: function() {
+      const optimise = document.getElementById('optimiseExport').checked;
+      const long = optimise ? 3840 : 7680;   // px; 7680 stays within common WebGL limits
+      View3D.exportPNG(long, `levy_flight_3d_alpha${State.alpha}.png`);
+    }
+  };
+
+  // ── 6. View (Three.js scene + auto-framing orbit camera) ───────────────────
+  const View3D = {
+    scene: null, camera: null, renderer: null, controls: null,
+    // dynamic objects
+    levyLine: null, levyTracePts: null, levyActivePts: null,
+    bmLine: null,
+    levyTraceSph: null, levyActiveSph: null, bmTraceSph: null,
+    ptMatTrace: null, ptMatActive: null,
+    // smoothed framing target
+    fit: { cx: 0, cy: 0, cz: 0, dist: 400 },
+    _scratchCol: null, _dummy: null, _sphereGeo: null,
+
+    init: function() {
+      const canvas = document.getElementById('simCanvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      this.renderer = renderer;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x000000);
+      this.scene = scene;
+
+      const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 5e7);
+      camera.position.set(300, 220, 380);
+      this.camera = camera;
+      scene.add(camera);
+
+      // Lights (attached to the camera so shaded spheres always face the view).
+      scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+      const dir = new THREE.DirectionalLight(0xffffff, 0.55);
+      dir.position.set(0.5, 1, 0.8);
+      camera.add(dir);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enablePan = false;      // no manual pan
+      controls.enableZoom = false;     // no manual zoom — framing is automatic
+      controls.enableRotate = true;    // mouse / one-finger touch orbits
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.rotateSpeed = 0.9;
+      this.controls = controls;
+
+      // Shared point shaders (round points, one uniform-coloured for the faint
+      // trace, one per-vertex-coloured/-faded for the live points).
+      const vert = `
+        uniform float size;
+        void main() {
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = size;
+          gl_Position = projectionMatrix * mv;
+        }`;
+      const vertActive = `
+        uniform float size;
+        attribute vec3 vcolor;
+        attribute float valpha;
+        varying vec3 vColor;
+        varying float vAlpha;
+        void main() {
+          vColor = vcolor; vAlpha = valpha;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = size;
+          gl_Position = projectionMatrix * mv;
+        }`;
+      const roundDiscard = 'vec2 cc = gl_PointCoord - vec2(0.5); if (dot(cc, cc) > 0.25) discard;';
+      this.ptMatTrace = new THREE.ShaderMaterial({
+        uniforms: { size: { value: 3.0 }, uColor: { value: new THREE.Color(0.5,0.5,0.5) }, uAlpha: { value: 0.15 } },
+        vertexShader: vert,
+        fragmentShader: `uniform vec3 uColor; uniform float uAlpha; void main(){ ${roundDiscard} gl_FragColor = vec4(uColor, uAlpha); }`,
+        transparent: true, depthWrite: false,
+      });
+      this.ptMatActive = new THREE.ShaderMaterial({
+        uniforms: { size: { value: 3.5 } },
+        vertexShader: vertActive,
+        fragmentShader: `varying vec3 vColor; varying float vAlpha; void main(){ ${roundDiscard} gl_FragColor = vec4(vColor, vAlpha); }`,
+        transparent: true, depthWrite: false,
+      });
+
+      // Lines
+      this.levyLine = this._makeLine(0);
+      this.bmLine   = this._makeLine(1);
+
+      // Point clouds
+      this.levyTracePts  = this._makePoints(this.ptMatTrace, 0);
+      this.levyActivePts = this._makePoints(this.ptMatActive, 2);
+
+      // Instanced-sphere holders (created lazily on first use).
+      this._dummy = new THREE.Object3D();
+      this._scratchCol = new THREE.Color();
+      this._sphereGeo = new THREE.SphereGeometry(1, 10, 8);
+      this.levyTraceSph  = { mesh: null, cap: 0, renderOrder: 0, material: new THREE.MeshLambertMaterial({ color: 0x808080 }) };
+      this.levyActiveSph = { mesh: null, cap: 0, renderOrder: 2, material: new THREE.MeshLambertMaterial({ color: 0xffffff, vertexColors: true }) };
+      this.bmTraceSph    = { mesh: null, cap: 0, renderOrder: 0, material: new THREE.MeshLambertMaterial({ color: 0x808080 }) };
+
+      this.resize();
+    },
+
+    _makeLine: function(order) {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(6), 3));
+      const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 });
+      const line = new THREE.Line(geo, mat);
+      line.frustumCulled = false; line.renderOrder = order; line.visible = false;
+      this.scene.add(line);
+      return line;
+    },
+    _makePoints: function(mat, order) {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(3), 3));
+      const pts = new THREE.Points(geo, mat);
+      pts.frustumCulled = false; pts.renderOrder = order; pts.visible = false;
+      this.scene.add(pts);
+      return pts;
+    },
+
+    resize: function() {
+      const container = document.getElementById('sim-container');
+      State.width  = container.clientWidth;
+      State.height = container.clientHeight;
+      this.renderer.setSize(State.width, State.height, false);
+      this.camera.aspect = State.width / Math.max(1, State.height);
+      this.camera.updateProjectionMatrix();
+      const pr = this.renderer.getPixelRatio();
+      this.ptMatTrace.uniforms.size.value = 3.0 * pr;
+      this.ptMatActive.uniforms.size.value = 3.5 * pr;
+    },
+
+    // 3D bounding box of the tracked walk(s), including the capped look-ahead.
+    _trackedBounds: function() {
+      let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity,minZ=Infinity,maxZ=-Infinity;
+      const check = list => { for (let p of list) {
+        if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x;
+        if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y;
+        if(p.z<minZ)minZ=p.z; if(p.z>maxZ)maxZ=p.z; } };
+      const checkC = chunks => { for (let c of chunks) {
+        if(c.minX<minX)minX=c.minX; if(c.maxX>maxX)maxX=c.maxX;
+        if(c.minY<minY)minY=c.minY; if(c.maxY>maxY)maxY=c.maxY;
+        if(c.minZ<minZ)minZ=c.minZ; if(c.maxZ>maxZ)maxZ=c.maxZ; } };
+      const lookCap = Sim.lookaheadSteps();
+      const checkFuture = agent => { const arr = agent.future; const end = Math.min(arr.length, agent.futureHead + lookCap);
+        for (let i = agent.futureHead; i < end; i++) { const p = arr[i];
+          if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x;
+          if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y;
+          if(p.z<minZ)minZ=p.z; if(p.z>maxZ)maxZ=p.z; } };
+      const trackLevy = (State.trackMode === 'both' || State.trackMode === 'levy');
+      const trackBM   = (State.trackMode === 'both' || State.trackMode === 'bm');
+      if (trackLevy) { checkC(State.levy.chunks); check(State.levy.active); checkFuture(State.levy); }
+      if (trackBM)   { checkC(State.brownian.chunks); check(State.brownian.active); checkFuture(State.brownian); }
+      if (minX === Infinity) { minX=-100; maxX=100; minY=-100; maxY=100; minZ=-100; maxZ=100; }
+      const pad = State.showSausage ? State.sausageRadius : 0;
+      return { minX:minX-pad, maxX:maxX+pad, minY:minY-pad, maxY:maxY+pad, minZ:minZ-pad, maxZ:maxZ+pad };
+    },
+
+    // Distance needed to fit a bounding-sphere of radius R in the current
+    // perspective frustum (fits BOTH axes, so any rotation stays in shot).
+    _fitDistance: function(R) {
+      const vHalf = THREE.MathUtils.degToRad(this.camera.fov) / 2;
+      const hHalf = Math.atan(Math.tan(vHalf) * this.camera.aspect);
+      const half = Math.min(vHalf, hHalf);
+      return (R / Math.sin(half)) * 1.2;   // 1.2 = breathing-room margin
+    },
+    _boundsToFit: function(b) {
+      const cx = (b.minX + b.maxX) / 2, cy = (b.minY + b.maxY) / 2, cz = (b.minZ + b.maxZ) / 2;
+      const R = 0.5 * Math.hypot(b.maxX - b.minX, b.maxY - b.minY, b.maxZ - b.minZ) || 100;
+      return { cx, cy, cz, dist: this._fitDistance(R) };
+    },
+
+    // Called by Sim.reset — jump the framing straight to the (collapsed) walk
+    // so we do not glide in from a stale wide shot.
+    snapFraming: function() {
+      const f = this._boundsToFit(this._trackedBounds());
+      this.fit.cx = f.cx; this.fit.cy = f.cy; this.fit.cz = f.cz; this.fit.dist = f.dist;
+      if (this.controls) {
+        this.controls.target.set(f.cx, f.cy, f.cz);
+        const off = this.camera.position.clone().sub(this.controls.target);
+        if (off.lengthSq() < 1e-9) off.set(300, 220, 380);
+        off.setLength(f.dist);
+        this.camera.position.copy(this.controls.target).add(off);
+        this.controls.update();
+      }
+    },
+
+    // Smoothly ease target + fit-distance toward the live walk each frame while
+    // leaving rotation (azimuth/elevation) entirely to the user via OrbitControls.
+    updateFraming: function() {
+      if (State.trackMode === 'none') return;
+      const f = this._boundsToFit(this._trackedBounds());
+      const k = 0.06;
+      this.fit.cx += (f.cx - this.fit.cx) * k;
+      this.fit.cy += (f.cy - this.fit.cy) * k;
+      this.fit.cz += (f.cz - this.fit.cz) * k;
+      // ease distance in log-space so multiplicative changes feel uniform
+      this.fit.dist = Math.exp(Math.log(this.fit.dist) + (Math.log(f.dist) - Math.log(this.fit.dist)) * k);
+      this.controls.target.set(this.fit.cx, this.fit.cy, this.fit.cz);
+      // Lock the orbit radius to the fit distance — rotation stays free, but
+      // the user cannot dolly in/out.
+      this.controls.minDistance = this.controls.maxDistance = this.fit.dist;
+    },
+
+    // ── per-frame geometry sync ──────────────────────────────────────────────
+    _collectPositions: function(agent) {
+      let n = 0;
+      for (const c of agent.chunks) n += c.points.length;
+      n += agent.buffer.length + agent.active.length;
+      const pos = new Float32Array(n * 3);
+      let i = 0;
+      for (const c of agent.chunks) for (const p of c.points) { pos[i++]=p.x; pos[i++]=p.y; pos[i++]=p.z; }
+      for (const p of agent.buffer) { pos[i++]=p.x; pos[i++]=p.y; pos[i++]=p.z; }
+      for (const p of agent.active) { pos[i++]=p.x; pos[i++]=p.y; pos[i++]=p.z; }
+      return { pos, n };
+    },
+    _collectActive: function(agent, colors) {
+      const A = agent.active, n = A.length;
+      const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), alp = new Float32Array(n);
+      const tmp = this._scratchCol;
+      for (let i = 0; i < n; i++) {
+        const p = A[i];
+        pos[i*3] = p.x; pos[i*3+1] = p.y; pos[i*3+2] = p.z;
+        const ageRatio = (State.time - p.time) / Config.cyclePeriod;
+        let alpha = 1 - ageRatio; if (alpha < 0) alpha = 0;
+        const hue = (((p.time * Config.colorSpeedFactor) % 360) + 360) % 360 / 360;
+        const sat = Math.max(0, Math.min(1, (colors.hueSatBase * (1 - ageRatio * 0.5)) / 100));
+        const light = Math.max(0, Math.min(1, (colors.hueLightness + 10 * ageRatio) / 100));
+        tmp.setHSL(hue, sat, light);
+        col[i*3] = tmp.r; col[i*3+1] = tmp.g; col[i*3+2] = tmp.b;
+        alp[i] = alpha;
+      }
+      return { pos, col, alp, n };
+    },
+    _setLine: function(line, pos, n, cssColor) {
+      const geo = line.geometry;
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      geo.setDrawRange(0, n);
+      const c = cssToRGBA(cssColor);
+      line.material.color.setRGB(c.r, c.g, c.b);
+      line.material.opacity = c.a;
+    },
+    _setPoints: function(pts, pos, n) {
+      const geo = pts.geometry;
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      geo.setDrawRange(0, n);
+    },
+    _setActivePoints: function(pts, a) {
+      const geo = pts.geometry;
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(a.pos, 3));
+      geo.setAttribute('vcolor',   new THREE.Float32BufferAttribute(a.col, 3));
+      geo.setAttribute('valpha',   new THREE.Float32BufferAttribute(a.alp, 1));
+      geo.setDrawRange(0, a.n);
+    },
+    _ensureInstanced: function(holder, needed) {
+      if (holder.mesh && holder.cap >= needed) return holder.mesh;
+      if (holder.mesh) { this.scene.remove(holder.mesh); holder.mesh.dispose(); }
+      const cap = Math.max(1024, Math.ceil(needed * 1.5));
+      const m = new THREE.InstancedMesh(this._sphereGeo, holder.material, cap);
+      m.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      m.frustumCulled = false; m.renderOrder = holder.renderOrder; m.count = 0;
+      holder.mesh = m; holder.cap = cap;
+      this.scene.add(m);
+      return m;
+    },
+    // Fill an instanced-sphere holder from a positions array. Very large point
+    // counts are subsampled (stride) so sphere rendering stays interactive —
+    // the exact coverage still comes from the voxel Stats, not these spheres.
+    _MAX_SPHERES: 40000,
+    _syncSpheres: function(holder, pos, n, radius, colArr) {
+      let stride = 1, count = n;
+      if (n > this._MAX_SPHERES) { stride = Math.ceil(n / this._MAX_SPHERES); count = Math.ceil(n / stride); }
+      const mesh = this._ensureInstanced(holder, count);
+      const dummy = this._dummy, tmp = this._scratchCol;
+      let idx = 0;
+      for (let i = 0; i < n; i += stride) {
+        dummy.position.set(pos[i*3], pos[i*3+1], pos[i*3+2]);
+        dummy.scale.setScalar(radius);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(idx, dummy.matrix);
+        if (colArr) { tmp.setRGB(colArr[i*3], colArr[i*3+1], colArr[i*3+2]); mesh.setColorAt(idx, tmp); }
+        idx++;
+      }
+      mesh.count = idx;
+      mesh.instanceMatrix.needsUpdate = true;
+      if (colArr && mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+      mesh.visible = true;
+    },
+    _hideHolder: function(holder) { if (holder.mesh) holder.mesh.visible = false; },
+
+    syncScene: function(colors) {
+      const bg = cssToRGBA(colors.bg);
+      this.scene.background.setRGB(bg.r, bg.g, bg.b);
+      const sausage = State.showSausage;
+      const traceSolid = flattenOver(cssToRGBA(colors.trace), cssToRGBA(colors.bg));
+
+      // ── Lévy flight ──
+      if (State.showLevy) {
+        const all = this._collectPositions(State.levy);
+        this._setLine(this.levyLine, all.pos, all.n, colors.levyLine);
+        this.levyLine.visible = all.n > 1;
+        const act = this._collectActive(State.levy, colors);
+        if (sausage) {
+          this.levyTracePts.visible = false; this.levyActivePts.visible = false;
+          this.levyTraceSph.material.color.setRGB(traceSolid.r, traceSolid.g, traceSolid.b);
+          this._syncSpheres(this.levyTraceSph, all.pos, all.n, State.sausageRadius, null);
+          this._syncSpheres(this.levyActiveSph, act.pos, act.n, State.sausageRadius, act.col);
+        } else {
+          this._hideHolder(this.levyTraceSph); this._hideHolder(this.levyActiveSph);
+          const tc = cssToRGBA(colors.trace);
+          this.ptMatTrace.uniforms.uColor.value.setRGB(tc.r, tc.g, tc.b);
+          this.ptMatTrace.uniforms.uAlpha.value = tc.a;
+          this._setPoints(this.levyTracePts, all.pos, all.n); this.levyTracePts.visible = true;
+          this._setActivePoints(this.levyActivePts, act); this.levyActivePts.visible = true;
+        }
+      } else {
+        this.levyLine.visible = false;
+        this.levyTracePts.visible = false; this.levyActivePts.visible = false;
+        this._hideHolder(this.levyTraceSph); this._hideHolder(this.levyActiveSph);
+      }
+
+      // ── Brownian motion ──
+      if (State.showBrownian) {
+        const all = this._collectPositions(State.brownian);
+        this._setLine(this.bmLine, all.pos, all.n, colors.brownian);
+        this.bmLine.visible = all.n > 1;
+        if (sausage) {
+          this.bmTraceSph.material.color.setRGB(traceSolid.r, traceSolid.g, traceSolid.b);
+          this._syncSpheres(this.bmTraceSph, all.pos, all.n, State.sausageRadius, null);
+        } else {
+          this._hideHolder(this.bmTraceSph);
+        }
+      } else {
+        this.bmLine.visible = false;
+        this._hideHolder(this.bmTraceSph);
+      }
+    },
+
+    render: function() { this.controls.update(); this.renderer.render(this.scene, this.camera); },
+
+    exportPNG: function(longSide, filename) {
+      // Frame everything currently shown, render once at high resolution.
+      const prevTrack = State.trackMode;
+      const b = (function() {
+        // Temporarily fit to whichever walks are visible (not just tracked).
+        const saved = State.trackMode;
+        State.trackMode = (State.showLevy && State.showBrownian) ? 'both' : (State.showLevy ? 'levy' : (State.showBrownian ? 'bm' : 'none'));
+        const bb = View3D._trackedBounds();
+        State.trackMode = saved;
+        return bb;
+      })();
+      const fit = this._boundsToFit(b);
+
+      const aspect = this.camera.aspect;
+      let tw, th;
+      if (aspect >= 1) { tw = longSide; th = Math.round(longSide / aspect); }
+      else { th = longSide; tw = Math.round(longSide * aspect); }
+
+      const oldSize = new THREE.Vector2(); this.renderer.getSize(oldSize);
+      const oldPR = this.renderer.getPixelRatio();
+      const oldTarget = this.controls.target.clone();
+      const oldPos = this.camera.position.clone();
+      const oldMin = this.controls.minDistance, oldMax = this.controls.maxDistance;
+
+      // Point/line sizes are in device pixels; keep them sane at export scale.
+      this.renderer.setPixelRatio(1);
+      this.renderer.setSize(tw, th, false);
+      this.camera.aspect = tw / th; this.camera.updateProjectionMatrix();
+
+      this.controls.target.copy(new THREE.Vector3(fit.cx, fit.cy, fit.cz));
+      const off = oldPos.clone().sub(oldTarget); if (off.lengthSq() < 1e-9) off.set(300, 220, 380);
+      off.setLength(fit.dist);
+      this.camera.position.copy(this.controls.target).add(off);
+      this.renderer.render(this.scene, this.camera);
+
+      const url = this.renderer.domElement.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = filename; link.href = url; link.click();
+
+      // Restore live view.
+      this.renderer.setPixelRatio(oldPR);
+      this.renderer.setSize(oldSize.x, oldSize.y, false);
+      this.camera.aspect = oldSize.x / Math.max(1, oldSize.y); this.camera.updateProjectionMatrix();
+      this.controls.target.copy(oldTarget);
+      this.camera.position.copy(oldPos);
+      this.controls.minDistance = oldMin; this.controls.maxDistance = oldMax;
+      State.trackMode = prevTrack;
+      this.controls.update();
+    }
+  };
+
+  // ── 7. Legend overlay ─────────────────────────────────────────────────────
+  const Legend = {
+    el: null, bar: null,
+    init: function() { this.el = document.getElementById('legend'); this.bar = document.getElementById('legendBar'); },
+    update: function(colors, force) {
+      if (!this.el) return;
+      const show = State.showLevy;
+      this.el.style.display = show ? 'block' : 'none';
+      if (!show) return;
+      if (!force && (State.time % 10 !== 0)) return;
+      const stops = 16, parts = [];
+      for (let i = 0; i < stops; i++) {
+        const frac = i / (stops - 1);
+        const ageRatio = 1 - frac;
+        const ptTime = State.time - ageRatio * Config.cyclePeriod;
+        const hue = (((ptTime * Config.colorSpeedFactor) % 360) + 360) % 360;
+        const sat = colors.hueSatBase * (1 - ageRatio * 0.5);
+        const light = colors.hueLightness + 10 * ageRatio;
+        let a = 1 - ageRatio; if (a < 0) a = 0;
+        parts.push(`hsla(${hue.toFixed(0)},${sat.toFixed(0)}%,${light.toFixed(0)}%,${a.toFixed(2)}) ${(frac*100).toFixed(0)}%`);
+      }
+      const base = colors.isDark ? 'rgba(148,163,184,0.5)' : 'rgba(100,80,65,0.3)';
+      this.bar.style.background = `linear-gradient(${base},${base}), linear-gradient(to right, ${parts.join(',')})`;
+    }
+  };
+
+  // ── 8. Loop ────────────────────────────────────────────────────────────────
+  function animate() {
+    if (State.hasStarted && !State.isPaused) {
+      Sim.step();
+      if (State.time % 10 === 0) Stats.updateUI();
+    }
+    C = getLBMColors();
+    View3D.updateFraming();
+    View3D.syncScene(C);
+    View3D.render();
+    Legend.update(C, false);
+    requestAnimationFrame(animate);
+  }
+
+  // ── Slider tick marks ──────────────────────────────────────────────────────
+  const Ticks = {
+    fmtR: function(r) {
+      if (!isFinite(r)) return '∞';
+      if (r < 10)   return r.toFixed(1);
+      if (r < 1000) return String(Math.round(r));
+      if (r < 1e6)  return (r / 1000).toFixed(r < 10000 ? 1 : 0) + 'k';
+      if (r < 1e9)  return (r / 1e6).toFixed(r < 1e7 ? 1 : 0) + 'M';
+      return r.toExponential(0).replace('+', '');
+    },
+    posStyle: function(pct) {
+      return `left: calc(8px + (100% - 16px) * ${pct / 100});`;
+    },
+    renderAlpha: function() {
+      const container = document.getElementById('alphaTicks');
+      if (!container) return;
+      const min = 0.1, max = 1.99;
+      const labeled = new Set([0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75].map(v => v.toFixed(2)));
+      const marks = [];
+      for (let i = 0; i <= 19; i++) {
+        const a = 0.1 + i * 0.1;
+        marks.push({ a, major: labeled.has(a.toFixed(2)) });
+      }
+      labeled.forEach(key => {
+        const v = parseFloat(key);
+        if (!marks.some(m => Math.abs(m.a - v) < 1e-6)) marks.push({ a: v, major: true });
+      });
+      container.innerHTML = marks.map(m => {
+        const pct = ((m.a - min) / (max - min)) * 100;
+        const median = Config.baseScale * Math.pow(2, 1 / m.a);
+        const label = m.major ? `<div class="label">${Ticks.fmtR(median)}</div>` : '';
+        return `<div class="tick ${m.major ? 'major' : ''}" style="${Ticks.posStyle(pct)}"><div class="mark"></div>${label}</div>`;
+      }).join('');
+    },
+    renderSpeed: function() {
+      const container = document.getElementById('speedTicks');
+      if (!container) return;
+      const html = [];
+      for (let v = 1; v <= 20; v++) {
+        const pct = ((v - 1) / 19) * 100;
+        html.push(`<div class="tick" style="${Ticks.posStyle(pct)}"><div class="mark"></div></div>`);
+      }
+      container.innerHTML = html.join('');
+    },
+    renderRadius: function() {
+      const container = document.getElementById('radiusTicks');
+      if (!container) return;
+      const alpha = State.alpha;
+      const labeled = new Set([0, 20, 40, 60, 80, 100]);
+      const html = [];
+      for (let v = 0; v <= 100; v += 10) {
+        const p = (v / 100) * 0.9999;
+        const r = Config.baseScale * Math.pow(1 - p, -1 / alpha);
+        const isMajor = labeled.has(v);
+        const label = isMajor ? `<div class="label">${Ticks.fmtR(r)}</div>` : '';
+        html.push(`<div class="tick ${isMajor ? 'major' : ''}" style="${Ticks.posStyle(v)}"><div class="mark"></div>${label}</div>`);
+      }
+      container.innerHTML = html.join('');
+    }
+  };
+
+  // Track-mode wiring lives at module scope so refreshTrackButtons() can be
+  // called from the toggle handlers below.
+  let refreshTrackButtons = () => {};
+
+  function setupInputs() {
+    new ResizeObserver(() => View3D.resize()).observe(document.getElementById('sim-container'));
+
+    const updateRadius = () => {
+      const val = parseFloat(document.getElementById('radiusSlider').value);
+      const p = (val / 100) * 0.9999;
+      State.sausageRadius = Config.baseScale * Math.pow(1.0 - p, -1 / State.alpha);
+      let rText = State.sausageRadius < 10 ? State.sausageRadius.toFixed(1) :
+                  State.sausageRadius < 1000 ? Math.round(State.sausageRadius*10)/10 :
+                  (State.sausageRadius/1000).toFixed(1) + 'k';
+      document.getElementById('radiusVal').textContent = `R=${rText} (p=${(p*100).toFixed(1)}%)`;
+      Ticks.renderRadius();
+    };
+
+    document.getElementById('alphaSlider').addEventListener('input', e => {
+      State.alpha = parseFloat(e.target.value);
+      document.getElementById('alphaVal').textContent = State.alpha.toFixed(2);
+      updateRadius();
+    });
+
+    Ticks.renderAlpha();
+    Ticks.renderSpeed();
+    Ticks.renderRadius();
+    document.getElementById('speedSlider').addEventListener('input', e => {
+      State.speed = parseInt(e.target.value);
+      document.getElementById('speedVal').textContent = State.speed;
+    });
+    document.getElementById('radiusSlider').addEventListener('input', updateRadius);
+    document.getElementById('radiusSlider').addEventListener('change', () => Stats.recalculateAll());
+
+    const updateRowDimming = () => {
+      const bRow = document.getElementById('brownianAreaRow');
+      const lRow1 = document.getElementById('levyPointsRow');
+      const lRow2 = document.getElementById('levyPathRow');
+      if (bRow) bRow.style.opacity = State.showBrownian ? '1' : '0.3';
+      if (lRow1) lRow1.style.opacity = State.showLevy ? '1' : '0.3';
+      if (lRow2) lRow2.style.opacity = State.showLevy ? '1' : '0.3';
+    };
+
+    document.getElementById('brownianToggle').addEventListener('change', e => {
+      State.showBrownian = e.target.checked;
+      updateRowDimming();
+      refreshTrackButtons();
+    });
+    document.getElementById('levyToggle').addEventListener('change', e => {
+      State.showLevy = e.target.checked;
+      updateRowDimming();
+      refreshTrackButtons();
+    });
+
+    document.getElementById('sausageToggle').addEventListener('change', e => State.showSausage = e.target.checked);
+
+    // Sticky-seed input: typing only updates State.currentSeed; the user must
+    // press Reset (or Start after Reset) to actually replay with the new seed.
+    document.getElementById('seedInput').addEventListener('input', e => {
+      State.currentSeed = e.target.value.trim() || State.currentSeed;
+    });
+
+    // Control buttons (wired here rather than via inline onclick because this
+    // is an ES module and its scope is not global).
+    document.getElementById('startBtn').addEventListener('click', () => Sim.startOrToggle());
+    document.getElementById('resetBtn').addEventListener('click', () => Sim.reset());
+    document.getElementById('newSeedBtn').addEventListener('click', () => Sim.newSeed());
+    document.getElementById('exportBtn').addEventListener('click', () => Sim.exportImage());
+
+    updateRowDimming();
+
+    // ── Track-mode buttons (now choose what the camera auto-FRAMES) ─────────
+    const trackBtns = document.querySelectorAll('#track-toggle button[data-track]');
+    const isModeAllowed = (mode) => {
+      if (mode === 'none') return true;
+      if (mode === 'bm')   return State.showBrownian;
+      if (mode === 'levy') return State.showLevy;
+      if (mode === 'both') return State.showBrownian && State.showLevy;
+      return false;
+    };
+    const setTrackMode = (mode) => {
+      if (!isModeAllowed(mode)) return;
+      State.trackMode = mode;
+      trackBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-track') === mode));
+    };
+    refreshTrackButtons = () => {
+      trackBtns.forEach(b => {
+        const m = b.getAttribute('data-track');
+        const ok = isModeAllowed(m);
+        b.disabled = !ok;
+        if (!ok) b.classList.remove('active');
+      });
+      if (!isModeAllowed(State.trackMode)) {
+        let fallback;
+        if (State.showBrownian && State.showLevy) fallback = 'both';
+        else if (State.showBrownian)              fallback = 'bm';
+        else if (State.showLevy)                  fallback = 'levy';
+        else                                       fallback = 'none';
+        setTrackMode(fallback);
+      } else {
+        trackBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-track') === State.trackMode));
+      }
+    };
+    trackBtns.forEach(b => b.addEventListener('click', () => setTrackMode(b.getAttribute('data-track'))));
+    refreshTrackButtons();
+
+    // Controls panel toggle (works at every screen size)
+    const lbmToggleBtn = document.getElementById('lbm-toggle-btn');
+    const lbmPanel     = document.querySelector('.sim-controls');
+    if (lbmToggleBtn && lbmPanel) {
+      lbmToggleBtn.addEventListener('click', () => {
+        const open = !lbmPanel.classList.contains('is-open');
+        lbmPanel.classList.toggle('is-open', open);
+        lbmToggleBtn.classList.toggle('active', open);
+        lbmToggleBtn.setAttribute('aria-pressed', open ? 'true' : 'false');
+      });
+    }
+
+    updateRadius();
+  }
+
+  // ── 9. Bootstrap ──────────────────────────────────────────────────────────
+  View3D.init();
+  Legend.init();
+  setupInputs();
+
+  // Briefly show the "drag to rotate" hint, then fade it out.
+  (function() {
+    const ind = document.getElementById('statusIndicator');
+    if (!ind) return;
+    ind.style.opacity = '1';
+    setTimeout(() => { ind.style.opacity = '0'; }, 4500);
+  })();
+
+  // Pick a sticky seed once, on page open. Reused for every Reset until the
+  // user clicks "New Seed" or edits the seed field.
+  State.currentSeed = Date.now().toString() + Math.random().toString(36).slice(2);
+  document.getElementById('seedInput').value = State.currentSeed;
+  Sim.reset();   // primes State + leaves hasStarted = false
+  animate();     // render loop runs, but stepping is gated until Start
+</script>
+</body>
+</html>

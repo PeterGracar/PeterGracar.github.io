@@ -86,6 +86,21 @@ simulations/                All interactive simulation HTML lives here, and is
                                     detection-percolation-discontinuous pair adds
                                     the discontinuous-Lévy variant described
                                     above.)
+  levy-vs-bm-3d-standalone.html  Standalone 3D variant of the Lévy-vs-Brownian
+                                    simulation: the walks step on the unit
+                                    sphere and are drawn with Three.js (WebGL);
+                                    mouse / one-finger-touch gestures ROTATE the
+                                    view while an auto-framing orbit camera keeps
+                                    the walk in shot — manual zoom/pan are
+                                    removed. Coverage is reinterpreted as a 3D
+                                    voxel VOLUME. This is the ONE file that
+                                    loads a JS library (Three.js via CDN import
+                                    map) — a deliberate, user-approved exception
+                                    to the no-dependencies rule below, scoped to
+                                    this prototype. Not yet promoted to a
+                                    Jekyll-wrapped page or linked from
+                                    research.html; surfaced via secret.html like
+                                    the other standalones.
 
 playgrounds/                Native Swift Playground (`.swiftpm`) apps that
                             mirror each web simulation. Excluded from the
@@ -359,7 +374,9 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
 
 - **No new dependencies.** Do not add Gemfiles, npm packages, build tools,
   CSS/JS bundlers, or Jekyll plugins without explicit instruction. Keep the
-  site buildable by stock GitHub Pages.
+  site buildable by stock GitHub Pages. (The one sanctioned exception is
+  `simulations/levy-vs-bm-3d-standalone.html`, which loads Three.js via a CDN
+  import map — see the directory-layout note above. Do not remove that include.)
 - **No new files unless necessary.** Prefer adding a publication/coauthor/etc.
   by creating a file in the relevant collection; prefer editing an existing
   page template over adding a new one.
