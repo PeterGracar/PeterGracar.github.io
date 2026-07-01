@@ -1058,7 +1058,12 @@
       this._scratchCol = new THREE.Color();
       this._sphereGeo = new THREE.SphereGeometry(1, 10, 8);
       this.levyTraceSph  = { mesh: null, cap: 0, renderOrder: 0, material: new THREE.MeshLambertMaterial({ color: 0x808080 }) };
-      this.levyActiveSph = { mesh: null, cap: 0, renderOrder: 2, material: new THREE.MeshLambertMaterial({ color: 0xffffff, vertexColors: true }) };
+      // Active balls are coloured PER INSTANCE via setColorAt()/instanceColor,
+      // NOT vertexColors — vertexColors would make the shader expect a
+      // per-vertex `color` attribute the sphere geometry doesn't have, which
+      // multiplies the diffuse colour to black on strict (e.g. Apple/Metal)
+      // GPUs. Keep material.color white so instanceColor shows unmodulated.
+      this.levyActiveSph = { mesh: null, cap: 0, renderOrder: 2, material: new THREE.MeshLambertMaterial({ color: 0xffffff }) };
       this.bmTraceSph    = { mesh: null, cap: 0, renderOrder: 0, material: new THREE.MeshLambertMaterial({ color: 0x808080 }) };
 
       this.resize();
@@ -1271,7 +1276,11 @@
         if (sausage) {
           this.levyTracePts.visible = false; this.levyActivePts.visible = false;
           this.levyTraceSph.material.color.setRGB(traceSolid.r, traceSolid.g, traceSolid.b);
-          this._syncSpheres(this.levyTraceSph, all.pos, all.n, State.sausageRadius, null);
+          // Trace balls cover only the archived/buffered points (the first
+          // all.n − act.n entries); the active points get their own coloured
+          // balls, so excluding them here avoids grey balls z-fighting over —
+          // and hiding — the age-coloured leading cluster.
+          this._syncSpheres(this.levyTraceSph, all.pos, all.n - act.n, State.sausageRadius, null);
           this._syncSpheres(this.levyActiveSph, act.pos, act.n, State.sausageRadius, act.col);
         } else {
           this._hideHolder(this.levyTraceSph); this._hideHolder(this.levyActiveSph);
