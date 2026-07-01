@@ -57,16 +57,22 @@ simulations/                All interactive simulation HTML lives here, and is
                               at simulations/levy-vs-bm.html.
   detection-percolation.html  Embedded simulation: hitting time for a moving
                               Poisson particle system (first contact or first
-                              coverage by the largest connected component).
-                              Jekyll-wrapped, linked from research.html at
-                              simulations/detection-percolation.html.
+                              coverage by the largest connected component), with
+                              Lévy motion smoothed into a continuous glide.
+                              Jekyll-wrapped but **superseded** by the
+                              discontinuous variant below: it is marked
+                              no_index and is no longer linked from
+                              research.html (retained, so its URL and standalone
+                              copy still work, and it stays listed on
+                              secret.html).
   detection-percolation-discontinuous.html  Embedded simulation: a variant of
                               detection-percolation.html where Lévy motion is
                               drawn as a *genuine discontinuous jump process*
                               (particles dwell, then jump instantly, with a
                               fading line marking each leap) while Brownian
-                              motion stays continuous. Jekyll-wrapped, linked
-                              from research.html at
+                              motion stays continuous. Jekyll-wrapped, and the
+                              detection-percolation sim now linked from
+                              research.html at
                               simulations/detection-percolation-discontinuous.html.
   contact-process-standalone.html   Self-contained (Tailwind + MathJax via CDN)
   levy-vs-bm-standalone.html        copy of each simulation for offline /
@@ -250,12 +256,15 @@ at `/simulations/<name>.html`. There are two flavours:
 - **Jekyll-wrapped** — `simulations/contact-process.html`,
   `simulations/levy-vs-bm.html`, `simulations/detection-percolation.html`, and
   `simulations/detection-percolation-discontinuous.html`
-  use `layout: default` and are linked from `research.html` via the relative
-  paths `simulations/<name>.html`. Their public URLs are
-  `gracar.org/simulations/<name>.html`; the `canonical:` field in each page's
-  front matter must match. Do **not** add a `permalink:` field to bring them
-  back to the site root — the layout's nav and asset hrefs assume pages are
-  addressed by their source path.
+  use `layout: default` and are addressed by the relative paths
+  `simulations/<name>.html`. `research.html` links contact-process, levy-vs-bm,
+  and detection-percolation-**discontinuous**; the plain
+  `detection-percolation.html` is now `no_index` and **not** linked (superseded
+  by the discontinuous variant), though it is still a Jekyll page served at its
+  URL. Their public URLs are `gracar.org/simulations/<name>.html`; the
+  `canonical:` field in each page's front matter must match. Do **not** add a
+  `permalink:` field to bring them back to the site root — the layout's nav and
+  asset hrefs assume pages are addressed by their source path.
 - **Standalone** — `simulations/contact-process-standalone.html`,
   `simulations/levy-vs-bm-standalone.html`,
   `simulations/detection-percolation-standalone.html`, and
