@@ -1300,7 +1300,27 @@
       }
     },
 
-    render: function() { this.controls.update(); this.renderer.render(this.scene, this.camera); },
+    // Shift the projection sideways (an off-axis "lens shift") so the framed
+    // walk sits in the free area to the RIGHT of the floating controls panel
+    // instead of being centred in the full canvas and half-hidden behind it.
+    // Done on the projection — not by moving the orbit target — so rotation
+    // still pivots about the walk's centroid. Reverts to a true centre when the
+    // panel is closed / off-screen (mobile).
+    _applyLensShift: function() {
+      const cam = this.camera;
+      cam.updateProjectionMatrix();
+      const panel = document.querySelector('.sim-controls');
+      const visible = panel && getComputedStyle(panel).display !== 'none';
+      if (visible && State.width > 560) {
+        const right = panel.getBoundingClientRect().right;   // px of panel's right edge
+        const ndcShift = right / State.width;                // >0 → push content right
+        // elements[8] is the horizontal asymmetry term of the perspective
+        // matrix (column-major row0/col2); subtracting shifts the image right.
+        cam.projectionMatrix.elements[8] -= ndcShift;
+      }
+    },
+
+    render: function() { this.controls.update(); this._applyLensShift(); this.renderer.render(this.scene, this.camera); },
 
     exportPNG: function(longSide, filename) {
       // Frame everything currently shown, render once at high resolution.
