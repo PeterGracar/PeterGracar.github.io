@@ -589,7 +589,7 @@
       <div class="legend-bar" id="legendBar"></div>
     </div>
 
-    <canvas id="simCanvas" style="display: block; cursor: grab; position: absolute; top: 0; left: 0; touch-action: none;"></canvas>
+    <canvas id="simCanvas" style="display: block; cursor: grab; position: absolute; top: 0; left: 0; width: 100%; height: 100%; touch-action: none;"></canvas>
   </div>
 </main>
 
@@ -1086,7 +1086,11 @@
       const container = document.getElementById('sim-container');
       State.width  = container.clientWidth;
       State.height = container.clientHeight;
-      this.renderer.setSize(State.width, State.height, false);
+      // Pass updateStyle=true (the default) so Three.js pins the canvas CSS
+      // size to CSS pixels while keeping a devicePixelRatio-scaled draw buffer.
+      // Without it the canvas lays out at its intrinsic (2×) buffer size on
+      // Retina/HiDPI screens and only the top-left quadrant stays on-screen.
+      this.renderer.setSize(State.width, State.height);
       this.camera.aspect = State.width / Math.max(1, State.height);
       this.camera.updateProjectionMatrix();
       const pr = this.renderer.getPixelRatio();
