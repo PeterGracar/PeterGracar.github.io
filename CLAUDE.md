@@ -60,15 +60,26 @@ simulations/                All interactive simulation HTML lives here, and is
                               coverage by the largest connected component).
                               Jekyll-wrapped, linked from research.html at
                               simulations/detection-percolation.html.
+  detection-percolation-discontinuous.html  Embedded simulation: a variant of
+                              detection-percolation.html where Lévy motion is
+                              drawn as a *genuine discontinuous jump process*
+                              (particles dwell, then jump instantly, with a
+                              fading line marking each leap) while Brownian
+                              motion stays continuous. Jekyll-wrapped, linked
+                              from research.html at
+                              simulations/detection-percolation-discontinuous.html.
   contact-process-standalone.html   Self-contained (Tailwind + MathJax via CDN)
   levy-vs-bm-standalone.html        copy of each simulation for offline /
   detection-percolation-standalone.html  external use. No Jekyll front matter,
-                                    so they are served as static files at
-                                    /simulations/<name>.html and surfaced
-                                    automatically in secret.html.
+  detection-percolation-discontinuous-standalone.html  so they are served as
+                                    static files at /simulations/<name>.html and
+                                    surfaced automatically in secret.html.
                                     (levy-vs-bm-standalone.html is the former
                                     presentation variant; its logic matches the
-                                    embedded levy-vs-bm.html.)
+                                    embedded levy-vs-bm.html. The
+                                    detection-percolation-discontinuous pair adds
+                                    the discontinuous-Lévy variant described
+                                    above.)
 
 playgrounds/                Native Swift Playground (`.swiftpm`) apps that
                             mirror each web simulation. Excluded from the
@@ -237,7 +248,8 @@ All interactive simulation HTML files live under `simulations/` and are served
 at `/simulations/<name>.html`. There are two flavours:
 
 - **Jekyll-wrapped** — `simulations/contact-process.html`,
-  `simulations/levy-vs-bm.html`, and `simulations/detection-percolation.html`
+  `simulations/levy-vs-bm.html`, `simulations/detection-percolation.html`, and
+  `simulations/detection-percolation-discontinuous.html`
   use `layout: default` and are linked from `research.html` via the relative
   paths `simulations/<name>.html`. Their public URLs are
   `gracar.org/simulations/<name>.html`; the `canonical:` field in each page's
@@ -245,8 +257,10 @@ at `/simulations/<name>.html`. There are two flavours:
   back to the site root — the layout's nav and asset hrefs assume pages are
   addressed by their source path.
 - **Standalone** — `simulations/contact-process-standalone.html`,
-  `simulations/levy-vs-bm-standalone.html`, and
-  `simulations/detection-percolation-standalone.html` are **independent HTML
+  `simulations/levy-vs-bm-standalone.html`,
+  `simulations/detection-percolation-standalone.html`, and
+  `simulations/detection-percolation-discontinuous-standalone.html` are
+  **independent HTML
   documents** with no Jekyll front matter (Tailwind + MathJax via CDN, own
   light/dark toggle persisted in `localStorage['theme-pref']`). They are
   intended for offline / presentation use and, because they have no front
@@ -257,13 +271,32 @@ at `/simulations/<name>.html`. There are two flavours:
   `levy-vs-bm-presentation.html`; its logic matches the embedded
   `levy-vs-bm.html`.
 
-Each web simulation also has a companion native Swift Playground app under
+- **Discontinuous-Lévy variant** — the
+  `detection-percolation-discontinuous.html` / `-standalone.html` pair is a copy
+  of the detection-percolation pair whose **only** behavioural difference is the
+  Lévy motion model: instead of spreading each heavy-tailed jump over
+  `⌈|J|/speed⌉` ticks so it reads as a smooth *glide* (what the original
+  `movePart` does), a particle **dwells** for a randomised waiting time
+  (`sampleDwell`, mean `Config.jumpDwellMean` ticks) and then **jumps
+  instantly** — a true discontinuity. Readability comes from the dwell plus
+  fading "jump markers" (`State.jumpMarks`, `recordJumpMark`, `ageJumpMarks`,
+  drawn in `draw`): a short line from departure→landing that fades over
+  `Config.jumpMarkerLife` frames, bolder for the distinguished target. The
+  target's trail also pen-lifts at each jump (via a per-point `jumped` flag) so
+  it shows a discrete set of visited points rather than a fake glide. Brownian
+  mode is copied verbatim and stays genuinely continuous. Because the target
+  now skips intermediate points, hit detection only tests landing positions —
+  the correct behaviour for a jump process.
+
+Each web simulation (except the discontinuous-Lévy variant) also has a
+companion native Swift Playground app under
 `playgrounds/<Name>.swiftpm/`. These are excluded from the Jekyll build (see
 `exclude:` in `_config.yml`) and are not part of the published site, but
 share the model/parameters with their HTML counterparts. When fixing a bug
 in a simulation, check whether the same logic is duplicated in the
 standalone HTML copy (and, where relevant, in the Swift package) and update
-them together.
+them together. The `detection-percolation-discontinuous` pair has **no** Swift
+counterpart; its two HTML files must be kept in sync with each other.
 
 ## SEO, sitemap, and the "secret" index
 
