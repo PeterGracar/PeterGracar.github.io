@@ -668,6 +668,10 @@ body.pride .site-footer {
   border-image: var(--pride-gradient) 1;
 }
 
+.pride-toggle[hidden] {
+  display: none;
+}
+
 .pride-toggle {
   display: inline-flex;
   align-items: center;
