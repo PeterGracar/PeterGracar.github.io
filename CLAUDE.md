@@ -329,7 +329,8 @@ counterpart; its two HTML files must be kept in sync with each other.
   automatically.
 - `secret.html` is an unlisted full index of pages, static HTML files, PDFs,
   and `uploads/` files. It is marked `no_index`, `no_analytics`,
-  `sitemap: false`, and excludes itself from its own list. It exists so
+  `sitemap: false`, disallowed in `robots.txt`, and excludes itself from its
+  own list. It exists so
   standalone simulations, reprints, and uploaded files remain discoverable to
   the author without adding them to the public sitemap. The "Uploads" section
   lists every static file whose path contains `/uploads/` (any extension); the

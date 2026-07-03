@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /uploads/
+Disallow: /secret.html
 
 Sitemap: https://gracar.org/sitemap.xml
