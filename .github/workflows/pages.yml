@@ -29,21 +29,21 @@ jobs:
           # those commits).
           fetch-depth: 0
 
-      - name: Record upload dates from git history
-        # secret.html shows, next to each uploads/ file, the date it was
-        # added. We can't rely on filesystem mtimes: actions/checkout
-        # stamps every file with the checkout time, and an mtime restored
-        # on the runner does not reliably survive the Dockerised Jekyll
-        # build (which left every upload dated to the build time). Instead
-        # write the date of the last commit that touched each upload into
-        # _data/upload_dates.json, which Jekyll reads deterministically as
-        # site.data.upload_dates. The file is generated here at build time
-        # and never committed (see .gitignore), so it does not itself
-        # churn the git history.
+      - name: Record last-update dates from git history
+        # secret.html shows, next to every page and file it lists, the date
+        # that file was last updated. We can't rely on filesystem mtimes:
+        # actions/checkout stamps every file with the checkout time, and an
+        # mtime restored on the runner does not reliably survive the
+        # Dockerised Jekyll build (which left every file dated to the build
+        # time). Instead write the date of the last commit that touched each
+        # tracked file into _data/file_dates.json, keyed by repo-relative
+        # path, which Jekyll reads deterministically as site.data.file_dates.
+        # The file is generated here at build time and never committed (see
+        # .gitignore), so it does not itself churn the git history.
         run: |
           python3 - <<'PY'
           import subprocess, json, os
-          files = subprocess.check_output(['git', 'ls-files', 'uploads/']).decode().splitlines()
+          files = subprocess.check_output(['git', 'ls-files']).decode().splitlines()
           dates = {}
           for f in files:
               if os.path.basename(f).startswith('.'):
@@ -53,7 +53,7 @@ jobs:
               if d:
                   dates[f] = d
           os.makedirs('_data', exist_ok=True)
-          with open('_data/upload_dates.json', 'w') as fh:
+          with open('_data/file_dates.json', 'w') as fh:
               json.dump(dates, fh, indent=2, ensure_ascii=False)
               fh.write('\n')
           PY
