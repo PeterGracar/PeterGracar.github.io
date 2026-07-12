@@ -1,0 +1,82 @@
+name: Deploy Jekyll site to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, but do NOT cancel in-progress runs
+# so every push to main finishes its deploy rather than producing orphaned
+# artifacts from a half-finished build.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history so the upload dates can be read from the last
+          # commit that touched each file (a shallow clone would not see
+          # those commits).
+          fetch-depth: 0
+
+      - name: Record last-update dates from git history
+        # secret.html shows, next to every page and file it lists, the date
+        # that file was last updated. We can't rely on filesystem mtimes:
+        # actions/checkout stamps every file with the checkout time, and an
+        # mtime restored on the runner does not reliably survive the
+        # Dockerised Jekyll build (which left every file dated to the build
+        # time). Instead write the date of the last commit that touched each
+        # tracked file into _data/file_dates.json, keyed by repo-relative
+        # path, which Jekyll reads deterministically as site.data.file_dates.
+        # The file is generated here at build time and never committed (see
+        # .gitignore), so it does not itself churn the git history.
+        run: |
+          python3 - <<'PY'
+          import subprocess, json, os
+          files = subprocess.check_output(['git', 'ls-files']).decode().splitlines()
+          dates = {}
+          for f in files:
+              if os.path.basename(f).startswith('.'):
+                  continue
+              # %cs = committer date as YYYY-MM-DD; -1 = last commit touching f.
+              d = subprocess.check_output(['git', 'log', '-1', '--format=%cs', '--', f]).decode().strip()
+              if d:
+                  dates[f] = d
+          os.makedirs('_data', exist_ok=True)
+          with open('_data/file_dates.json', 'w') as fh:
+              json.dump(dates, fh, indent=2, ensure_ascii=False)
+              fh.write('\n')
+          PY
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
