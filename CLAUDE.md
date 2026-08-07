@@ -41,7 +41,7 @@ _mini_cv/*.md               Short CV timeline entries shown on the homepage
 index.html                  Home (About)
 research.html               Publications, collaborators, talks
 teaching.html               Current modules
-contact.html                Email/office/address
+contact.html                Email/office/address + Leeds staff-profile link
 map.html                    Directions to office 9.10p1
 secret.html                 Unlisted auto-index of all pages/static files (noindex)
 404.html                    Custom 404
