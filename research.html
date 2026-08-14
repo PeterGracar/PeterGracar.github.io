@@ -91,9 +91,7 @@ mathjax: true
               {% capture coauthor_marker %}|{{ coauthor.coauthor_id }}|{% endcapture %}
               {% if used_coauthor_ids contains coauthor_marker %}
                 {% assign collaborator_count = collaborator_count | plus: 1 %}
-                {% capture collaborator_markup %}
-                  {{ collaborator_markup }}{% if collaborator_count > 1 %}, {% endif %}{% assign coauthor_profile_url = coauthor.profile_url | default: "" | strip %}{% if coauthor_profile_url != "" %}<a href="{{ coauthor_profile_url }}">{{ coauthor.name }}</a>{% else %}{{ coauthor.name }}{% endif %}
-                {% endcapture %}
+                {% capture collaborator_markup %}{{ collaborator_markup }}{% if collaborator_count > 1 %}, {% endif %}{% assign coauthor_profile_url = coauthor.profile_url | default: "" | strip %}{% if coauthor_profile_url != "" %}<a href="{{ coauthor_profile_url }}">{{ coauthor.name }}</a>{% else %}{{ coauthor.name }}{% endif %}{% endcapture %}
               {% endif %}
             {% endif %}
           {% endif %}
