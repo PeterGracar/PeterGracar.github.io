@@ -75,7 +75,7 @@ simulations/                All interactive simulation HTML lives here, and is
                               research.html at
                               simulations/detection-percolation-discontinuous.html.
   rainbow-percolation.html    Embedded simulation: an interactive companion to
-                              the paper *Rainbow percolation* (Gracar & Lees),
+                              the paper *Rainbow percolation*,
                               built as a scrolling document of three figure
                               panels rather than a full-viewport app — the
                               model and its connection rule, its scale
