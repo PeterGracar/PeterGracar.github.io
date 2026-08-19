@@ -1,0 +1,1477 @@
+---
+layout: default
+data_page: research
+title: "Rainbow Percolation — Peter Gracar"
+description: "Interactive companion to the paper Rainbow percolation by Peter Gracar and Benjamin Lees: heavy-tailed reaches on a line, the scale-invariant picture, and the rainbows and cut points behind the bounds."
+og_description: "An interactive tour of rainbow percolation: Pareto reaches on a line, the same picture at every scale, and the rainbows and cut points used in the paper."
+canonical: "https://gracar.org/simulations/rainbow-percolation.html"
+---
+<!--
+  Rainbow percolation — an interactive tour.
+  Companion to "Rainbow percolation" by Peter Gracar and Benjamin Lees.
+
+  No libraries, no external assets, no build step: every picture is simulated
+  in the browser from a seeded generator.
+
+  To embed a single panel, add ?panel=model, ?panel=zoom, ?panel=rainbow or
+  ?panel=cuts; everything else on the page is then hidden, so an iframe only
+  needs the height of that one figure (roughly 620px):
+
+      <iframe src="/simulations/rainbow-percolation.html?panel=model"
+              style="width:100%;height:620px;border:0"
+              title="Rainbow percolation"></iframe>
+
+  Append ?selftest=1 to run the brute-force cross-checks of the simulation
+  core; results are printed to the console and to a banner at the top.
+
+  This file and rainbow-percolation-standalone.html share their markup, CSS
+  and scripts — keep the two in sync when changing either.
+-->
+<style>
+    /* ── Chrome tokens: the site palette, under the short names the tour's
+         drawing code reads back through getComputedStyle. ── */
+    :root {
+      --bg: #f8f4ee; --ink: #1f1b18; --muted: #554e47; --rule: #d8cec1; --panel: #ffffff;
+      --rp-accent: #950000; --shadow: rgba(34, 20, 15, .10);
+    }
+    /* ── Figure tokens: what the drawings mean, not what the site looks like. ── */
+    :root {
+      --outer: #2f4f8f; --inner: #1a7d72; --forbid: #bf3428; --escape: #cc7a1c;
+      --ok: #2f7d43; --dust: #a8a8a2; --hi: #8c4bb5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111216; --ink: #ece4d9; --muted: #b7afa3; --rule: #3a4049; --panel: #1a1e24;
+        --rp-accent: #ff7558; --shadow: rgba(0, 0, 0, .35);
+        --outer: #7aa2e8; --inner: #4fc7b6; --forbid: #e8756a; --escape: #e8a44f;
+        --ok: #68c07f; --dust: #5a5c60; --hi: #c08ae8;
+      }
+    }
+
+    /* ── Page shell ──
+       The site layout's <main> already supplies the outer gutter and the
+       vertical padding, so the tour only needs its own measure. */
+    .rp { max-width: 59rem; margin: 0 auto; }
+
+    /* ── Tour chrome ──
+       Every rule below is scoped to the .rp tour root so that the page can sit
+       inside the site layout without touching the site header, nav or footer. */
+    .rp {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--ink);
+      font-feature-settings: "kern" 1;
+    }
+    .rp header { border-bottom: 1px solid var(--rule); margin-bottom: 8px; padding-bottom: 8px; }
+    .rp h1 { font-family: var(--font-heading); font-size: 1.95rem; line-height: 1.2; margin: 0 0 .35rem; letter-spacing: -.015em; }
+    .rp .byline { color: var(--muted); font-size: .92rem; margin: 0 0 1.1rem; }
+    .rp .byline a { color: inherit; background-image: none; }
+    .rp .intro { font-size: 1.04rem; max-width: 70ch; }
+    .rp .intro p { margin: .7rem 0; }
+
+    /* .panel is also a site-wide card class in style.css, so the tour's own
+       section styling resets what it would otherwise inherit. */
+    .rp .panel {
+      margin: 52px 0 0; padding: 22px 0 0;
+      border: 0; border-top: 1px solid var(--rule);
+      border-radius: 0; background: none; box-shadow: none;
+    }
+    .rp .panel:first-of-type { border-top: 0; }
+    .rp h2 {
+      font-family: var(--font-heading); font-size: 1.28rem; margin: 0 0 .5rem;
+      letter-spacing: -.01em; display: flex; gap: .6rem; align-items: baseline;
+    }
+    .rp h2 .num {
+      font-family: var(--font-body); font-size: .78rem; font-weight: 600; color: var(--muted);
+      border: 1px solid var(--rule); border-radius: 999px; min-width: 1.6em; height: 1.6em;
+      display: inline-flex; align-items: center; justify-content: center; flex: none;
+    }
+    .rp .lede { max-width: 70ch; margin: .2rem 0 1.1rem; }
+    .rp .stage {
+      position: relative; background: var(--panel); border: 1px solid var(--rule);
+      border-radius: 10px; box-shadow: 0 1px 2px var(--shadow); overflow: hidden;
+    }
+    .rp .stage canvas { display: block; width: 100%; touch-action: none; }
+    .rp .stage + .stage { margin-top: 10px; }
+    .rp .controls {
+      display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center;
+      margin: 12px 0 0; padding: 2px 0;
+    }
+    .rp .ctl { display: flex; align-items: center; gap: .55rem; flex: 1 1 260px; min-width: 0; }
+    .rp .ctl > label { font-size: .9rem; color: var(--muted); white-space: nowrap; min-width: 5.2em; }
+    .rp .ctl input[type=range] { flex: 1 1 auto; min-width: 110px; accent-color: var(--rp-accent); height: 24px; }
+    .rp .ctl output {
+      font-variant-numeric: tabular-nums; font-size: .9rem; min-width: 5.6em;
+      text-align: right; color: var(--ink);
+    }
+    .rp .btnrow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; flex: 0 0 auto; }
+    .rp .btn {
+      font: inherit; font-size: .86rem; padding: .34rem .8rem; border-radius: 7px;
+      border: 1px solid var(--rule); background: var(--panel); color: var(--ink); cursor: pointer;
+    }
+    .rp .btn:hover { border-color: var(--muted); }
+    .rp .btn[aria-pressed=true] { background: var(--rp-accent); border-color: var(--rp-accent); color: #fff; }
+    .rp .chk { font-size: .86rem; color: var(--muted); display: inline-flex; gap: .35rem; align-items: center; cursor: pointer; }
+    .rp .chk input { accent-color: var(--rp-accent); }
+    .rp .readout {
+      display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 10px 0 0; font-size: .86rem;
+      color: var(--muted); font-variant-numeric: tabular-nums;
+    }
+    .rp .readout b { font-weight: 600; color: var(--ink); }
+    .rp .cap { font-size: .92rem; color: var(--muted); max-width: 72ch; margin: 1rem 0 0; }
+    .rp .cap em { color: var(--ink); font-style: normal; font-weight: 600; }
+    .rp details { margin: .9rem 0 0; font-size: .9rem; border-top: 1px dashed var(--rule); padding-top: .7rem; }
+    .rp summary { cursor: pointer; color: var(--muted); font-size: .86rem; list-style: none; display: flex; gap: .4rem; align-items: center; }
+    .rp summary::-webkit-details-marker { display: none; }
+    .rp summary::before { content: "+"; font-weight: 700; color: var(--rp-accent); }
+    .rp details[open] summary::before { content: "\2212"; }
+    .rp details .body { max-width: 72ch; color: var(--muted); margin-top: .6rem; }
+    .rp details .body p { margin: .55rem 0; }
+    .rp details .body b { color: var(--ink); font-weight: 600; }
+    .rp .tabs { display: flex; gap: 6px; margin: 0 0 12px; }
+    .rp .tab {
+      font: inherit; font-size: .88rem; padding: .36rem .85rem; border-radius: 7px; cursor: pointer;
+      border: 1px solid var(--rule); background: transparent; color: var(--muted);
+    }
+    .rp .tab[aria-selected=true] { background: var(--panel); color: var(--ink); border-color: var(--muted); }
+    .rp .hidden { display: none; }
+    .rp .sw { display: inline-block; width: .72em; height: .72em; border-radius: 2px; vertical-align: -.05em; margin-right: .15em; }
+    .rp footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: .86rem; color: var(--muted); }
+    .rp footer p { margin: 0; max-width: 72ch; }
+    .rp footer a { color: inherit; }
+    .rp #selftest {
+      display: none; margin: 16px 0; padding: .6rem .9rem; border-radius: 8px; font-size: .88rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap;
+    }
+    .rp #selftest.pass { display: block; background: rgba(47, 125, 67, .12); color: var(--ok); }
+    .rp #selftest.fail { display: block; background: rgba(191, 52, 40, .12); color: var(--forbid); }
+
+    /* Single-panel embed mode (?panel=…): the tour root carries the class. */
+    .rp.embed { padding-top: 14px; }
+    .rp.embed .panel { margin-top: 0; border-top: 0; padding-top: 0; }
+
+    @media (max-width: 620px) {
+      .rp h1 { font-size: 1.55rem; }
+      .rp .ctl { flex: 1 1 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rp * { animation: none !important; transition: none !important; }
+    }
+</style>
+
+<main id="main-content">
+<div class="rp" id="rp">
+
+<header>
+  <h1>Rainbow percolation</h1>
+  <p class="byline">An interactive companion to the paper of the same name, by Peter Gracar and Benjamin Lees.</p>
+</header>
+
+<div class="intro">
+  <p>Scatter points at random along a line and give each one a <em>reach</em>, a
+  distance drawn from a heavy-tailed law. Most reaches are short and a few are very
+  long. Join two points by an edge when each of them lies inside the reach of the
+  other.</p>
+  <p>That is the model. The question is whether the resulting graph has an infinite
+  connected component. The panels below simulate the model, its behaviour under
+  rescaling, and the two structures the lower bound in the paper uses.</p>
+</div>
+
+<div id="selftest"></div>
+
+<!-- ============================== PANEL 1 ============================== -->
+<section class="panel" id="panel-model">
+  <h2><span class="num">1</span> The model and its connection rule</h2>
+  <p class="lede">Points of a Poisson process on the line, each with a reach <b>R</b>
+  that is Pareto distributed with scale &beta;. The reaches are drawn below the axis,
+  the longest at the bottom, and the edges as arcs above it, coloured by connected
+  component. Each point keeps its mark as &beta; changes, so raising &beta; only adds
+  edges.</p>
+
+  <div class="stage"><canvas id="cv-model" aria-label="Sample of the model: points, reaches and edges"></canvas></div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="in-beta">&beta;</label>
+      <input id="in-beta" type="range" min="-0.8" max="0.9" step="0.004" value="-0.10">
+      <output id="out-beta">2.00</output>
+    </div>
+    <div class="btnrow">
+      <button class="btn" id="btn-resample" type="button">new sample</button>
+      <label class="chk"><input type="checkbox" id="ck-reach" checked> reaches</label>
+      <label class="chk"><input type="checkbox" id="ck-edges" checked> edges</label>
+    </div>
+  </div>
+
+  <div class="readout" id="ro-model"></div>
+
+  <div class="stage"><canvas id="cv-spark" aria-label="Largest-component fraction against beta for this sample"></canvas></div>
+
+  <p class="cap">Hover over a point, or tap it, to see the connection rule. Its reach is
+  highlighted and every point inside it is marked:
+  <span class="sw" style="background:var(--ok)"></span><em>green</em> where that point
+  reaches back, so that the edge is present, and
+  <span class="sw" style="background:var(--forbid)"></span><em>red</em> where it does not.
+  An edge of length <b>d</b> requires two reaches of at least <b>d</b>, and each reach is
+  shared by all the edges at its point, so edges meeting at a vertex are not independent.
+  The lower plot measures the same sample on a wider window of 10<sup>4</sup> points,
+  since a window of a few hundred points is spanned by a single point of large reach at
+  values of &beta; below the critical one.</p>
+
+  <details>
+    <summary>The precise statement</summary>
+    <div class="body">
+      <p>The vertex set is a Poisson process of intensity <b>&lambda;</b> on
+      <b>&#8477; &times; (0,1)</b>. A vertex <b>(x,t)</b> is joined to <b>(y,s)</b>
+      exactly when <b>(t &or; s)&middot;|x &minus; y| &le; &beta;</b>, that is, when
+      <b>|x &minus; y| &le; min(R<sub>x</sub>, R<sub>y</sub>)</b> for the reach
+      <b>R = &beta;/t</b>. Since <b>t</b> is uniform on <b>(0,1)</b>, the reach is
+      Pareto with scale <b>&beta;</b> and tail exponent exactly one:
+      <b>P(R &gt; r) = &beta;/r</b>. Averaging over the marks, two points at distance
+      <b>d &gt; &beta;</b> are joined with probability <b>&beta;<sup>2</sup>/d<sup>2</sup></b>,
+      the critical decay of one-dimensional long-range percolation.</p>
+      <p>The paper proves that the model has a non-degenerate phase transition: all
+      components are finite once <b>&lambda;&beta; &lt; 1</b>, and an infinite one exists
+      once <b>&lambda;&beta; &ge; 31</b>. At intensity one this reads
+      <b>1 &le; &beta;<sub>c</sub> &le; 31</b>, and the simulations reported in the paper
+      place <b>&beta;<sub>c</sub></b> near <b>2</b>.</p>
+      <p>The plotted quantity is the paper's <b>&theta;<sub>L</sub>(&beta;)</b>, the
+      fraction of the points of the central half of the window that lie in the largest
+      component. This is one sample at one window size; the numerical study in the paper
+      measures how it moves with <b>L</b>. The movement is already visible at small sizes.
+      Taking one sample at
+      <b>L = 10<sup>3</sup>, 10<sup>4</sup>, 10<sup>5</sup></b> gives
+      <b>&theta;(1) = 0.61, 0.41, 0.28</b> and
+      <b>&theta;(0.5) = 0.16, 0.06, 0.01</b>, falling towards zero, while
+      <b>&theta;(2) = 0.94, 0.98, 0.97</b> and <b>&theta;(3) = 1.00, 0.995, 0.998</b>
+      are stable. Curves that decay with <b>L</b> below the threshold and are stable above
+      it locate <b>&beta;<sub>c</sub></b>. The paper runs this to
+      <b>L = 10<sup>9</sup></b>, where every finite-size effect decays like <b>1/log L</b>
+      rather than like a power of <b>L</b>, because the reach tail exponent is exactly
+      one.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================== PANEL 2 ============================== -->
+<section class="panel" id="panel-zoom">
+  <h2><span class="num">2</span> The same picture at every scale</h2>
+  <p class="lede">The same model, viewed through a window whose width you can set. Only
+  the points whose reach is at least a fixed fraction of the window are drawn, since the
+  others are too small to resolve at that width. Widen the window by a factor of a
+  million and compare the picture and the counter with what they were.</p>
+
+  <div class="stage"><canvas id="cv-zoom" aria-label="The model viewed at an adjustable scale"></canvas></div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="in-zoom">window</label>
+      <input id="in-zoom" type="range" min="0" max="12" step="0.002" value="0">
+      <output id="out-zoom">1</output>
+    </div>
+    <div class="ctl">
+      <label for="in-zbeta">&lambda;&beta;</label>
+      <input id="in-zbeta" type="range" min="-0.7" max="0.9" step="0.004" value="0.30">
+      <output id="out-zbeta">2.00</output>
+    </div>
+    <div class="btnrow">
+      <button class="btn" id="btn-zplay" type="button" aria-pressed="false">zoom out</button>
+      <button class="btn" id="btn-zreset" type="button">reset</button>
+    </div>
+  </div>
+
+  <div class="readout" id="ro-zoom"></div>
+
+  <p class="cap">The number of visible points, the length of the visible reaches and the
+  density of the arcs stay the same as the window width runs through the decades. This is
+  a property of the model and not of the drawing: rescaled to the unit window, the visible
+  picture has the same law at every width. Drag inside the picture to pan, and scroll or
+  pinch to zoom.</p>
+
+  <details>
+    <summary>The rescaling</summary>
+    <div class="body">
+      <p>Fix a resolution <b>&epsilon;</b> and draw only the points whose reach exceeds
+      <b>&epsilon;W</b>, where <b>W</b> is the window width. Such a point has
+      <b>t &le; &beta;/(&epsilon;W)</b>, so the visible points form a Poisson process of
+      intensity <b>&lambda;&beta;/(&epsilon;W)</b> per unit length. Rescale the picture to
+      the unit window, <b>u = x/W</b>. The visible intensity becomes
+      <b>&lambda;&beta;/&epsilon;</b> per unit <b>u</b>, and the rescaled reach
+      <b>&rho; = R/W</b> satisfies <b>P(&rho; &gt; s) = &epsilon;/s</b> for
+      <b>s &ge; &epsilon;</b>. Neither depends on <b>W</b>. Since the connection rule
+      <b>|u &minus; u'| &le; min(&rho;, &rho;')</b> involves no other scale, the rescaled
+      picture has the same law at every window width, and the two parameters enter only
+      through the product <b>&lambda;&beta;</b>.</p>
+      <p>Varying <b>&beta;</b> or <b>&lambda;</b> therefore moves only the constant and
+      never the exponent, so the model cannot be compared to an off-critical regime, and no
+      stochastic domination argument settles percolation. The paper also treats the other
+      exponents: under the rule
+      <b>(t &or; s)<sup>&gamma;</sup>|x &minus; y| &le; &beta;</b> the reaches have tail
+      exponent <b>1/&gamma;</b>, and the threshold is degenerate for every
+      <b>&gamma; &ne; 1</b>, infinite for <b>&gamma; &lt; 1</b> and zero for
+      <b>&gamma; &gt; 1</b>.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================== PANEL 3 ============================== -->
+<section class="panel" id="panel-rainbow">
+  <h2><span class="num">3</span> Rainbows and cut points</h2>
+  <p class="lede">The lower bound in the paper is proved on a discrete skeleton of the
+  model, with the points pinned to the integers. In the skeleton every component is finite
+  for every admissible parameter, although almost surely infinitely many edges cross every
+  site. The two tabs show the objects the proof uses.</p>
+
+  <span id="cuts" style="display:block;height:0"></span>
+  <div class="tabs" role="tablist">
+    <button class="tab" id="tab-rb" role="tab" aria-selected="true" aria-controls="view-rb">the rainbow</button>
+    <button class="tab" id="tab-cut" role="tab" aria-selected="false" aria-controls="view-cut">cut points</button>
+  </div>
+
+  <div id="view-rb" role="tabpanel" aria-labelledby="tab-rb">
+    <div class="stage"><canvas id="cv-rainbow" aria-label="A rainbow: an outer arch over a nested inner arch"></canvas></div>
+    <div class="controls">
+      <div class="ctl">
+        <label for="in-xm">x<sub>m</sub></label>
+        <input id="in-xm" type="range" min="0.05" max="0.95" step="0.01" value="0.6">
+        <output id="out-xm">0.60</output>
+      </div>
+      <div class="btnrow">
+        <button class="btn" id="btn-rb-reset" type="button">reset shape</button>
+        <button class="btn" id="btn-rb-break" type="button">break the balance</button>
+      </div>
+    </div>
+    <div class="readout" id="ro-rainbow"></div>
+    <p class="cap">A <em>rainbow</em> is a pair of edges <b>{a,b}</b> and <b>{c,d}</b>
+    with <b>a &lt; c &lt; d &lt; b</b> whose two diagonals <b>{a,c}</b> and <b>{d,b}</b>
+    are absent and whose overhangs are balanced. Drag the four points along the axis, and
+    drag the handles on the two inner reaches to change <b>R<sub>c</sub></b> and
+    <b>R<sub>d</sub></b>. The checklist records which conditions of the definition hold.
+    Extending an inner reach past the far outer endpoint produces a long diagonal, which
+    the balance condition rules out.</p>
+    <details>
+      <summary>The definition</summary>
+      <div class="body">
+        <p>Write <b>&ell; = c &minus; a</b>, <b>m = d &minus; c</b>, <b>r = b &minus; d</b>.
+        The outer arch forces <b>R<sub>a</sub>, R<sub>b</sub> &ge; b &minus; a</b>, so the
+        two absent diagonals constrain only the inner reaches:
+        <b>R<sub>c</sub> &isin; [m, &ell;)</b> and <b>R<sub>d</sub> &isin; [m, r)</b>, which
+        already forces <b>&ell;, r &gt; m</b>. Balance, <b>|&ell; &minus; r| &le; m</b>,
+        then caps the inner reaches further, by <b>R<sub>c</sub> &lt; m + r</b> and
+        <b>R<sub>d</sub> &lt; m + &ell;</b>, so the long diagonals are absent too.</p>
+        <p>A rainbow does not by itself separate the inner arch from the outer one, since
+        a path through an overhang could still join them. The paper adds two things: the
+        <b>containment</b> event that no interior vertex reaches an outer endpoint, and a
+        cut point in each overhang. Containment has probability
+        <b>&prod;<sub>k</sub>(1 &minus; x<sub>m</sub>/D<sub>k</sub>)</b>, where
+        <b>D<sub>k</sub> = min(&ell;+k, r+m&minus;k)</b> is the distance from the interior
+        vertex <b>c+k</b> to the nearer outer endpoint, and it is bounded below by
+        <b>(4/9)<sup>2x<sub>m</sub></sup></b> uniformly in <b>&ell;</b>, <b>r</b> and
+        <b>m</b>. The bound does not depend on the scale, so the argument can be run at
+        infinitely many independent scales.</p>
+      </div>
+    </details>
+  </div>
+
+  <div id="view-cut" role="tabpanel" aria-labelledby="tab-cut" class="hidden">
+    <div class="stage"><canvas id="cv-cut" aria-label="The integer model with its cut points marked"></canvas></div>
+    <div class="controls">
+      <div class="ctl">
+        <label for="in-cxm">x<sub>m</sub></label>
+        <input id="in-cxm" type="range" min="0.1" max="0.98" step="0.005" value="0.65">
+        <output id="out-cxm">0.60</output>
+      </div>
+      <div class="ctl">
+        <label for="in-cn">sites</label>
+        <input id="in-cn" type="range" min="2.6" max="4.7" step="0.01" value="3.6">
+        <output id="out-cn">2512</output>
+      </div>
+      <div class="btnrow">
+        <button class="btn" id="btn-cut-resample" type="button">new sample</button>
+      </div>
+    </div>
+    <div class="readout" id="ro-cut"></div>
+    <p class="cap">Each mark in the lower strip is a <em>cut point</em>, a position that no
+    edge crosses, so that the graph is disconnected there. The full-height dark marks are
+    the cut points certified by the criterion of the paper, whose probability factorises
+    over the vertices; their number agrees with
+    <b>n<sup>1&minus;x<sub>m</sub></sup>/&Gamma;(1&minus;x<sub>m</sub>)</b> already at these
+    sizes. Raising <b>x<sub>m</sub></b> towards one thins the cut points out, but the
+    exponent <b>1 &minus; x<sub>m</sub></b> stays positive for every
+    <b>x<sub>m</sub> &lt; 1</b>, so almost surely there are infinitely many of them on the
+    line and every component lies between two. Raising the site count instead increases the
+    peak crossing number, which grows like <b>log n</b>.</p>
+    <details>
+      <summary>Crossing edges and cut points</summary>
+      <div class="body">
+        <p>Almost surely infinitely many edges cross every fixed site: the expected number
+        of edges straddling a point is
+        <b>x<sub>m</sub><sup>2</sup>&sum;<sub>d</sub>d&middot;d<sup>&minus;2</sup></b>, a
+        harmonic sum. Components of arbitrarily large diameter therefore exist, and a finite
+        window appears connected. All components are nevertheless finite for every
+        <b>x<sub>m</sub> &lt; 1</b>.</p>
+        <p>The certified cut points are counted through an event that factorises over the
+        vertices, which gives
+        <b>E N<sub>&#119966;</sub> &asymp; n<sup>1&minus;x<sub>m</sub></sup></b>, with a
+        positive exponent exactly when <b>x<sub>m</sub> &lt; 1</b>. For independent edges
+        with the same marginals the corresponding count is of order
+        <b>n<sup>1&minus;x<sub>m</sub><sup>2</sup></sup></b>, so the dependence through the
+        shared reaches costs an exponent; both exponents are positive on <b>(0,1)</b>.</p>
+        <p>The transition on the integers is degenerate. At <b>x<sub>m</sub> = 1</b> every
+        reach is at least one, so every nearest-neighbour edge is present and the graph is
+        connected. The model jumps from total fragmentation to trivial connectivity, with no
+        supercritical percolation phase in between. Pinning the vertices to <b>&#8484;</b>
+        caps the number of points per connection range at every scale, whereas in the
+        continuum the parameter <b>&lambda;&beta;</b> pushes that density arbitrarily
+        high.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <p>Companion to <b>Rainbow percolation</b> by Peter Gracar and Benjamin Lees. Every
+  picture on this page is simulated in the browser from a seeded generator, by the
+  component algorithm of the paper's numerical study. On a shared sample the two
+  implementations agree on the edge count and on every component size. The pictures are
+  simulations and not proofs; the statements they illustrate are quoted in the collapsible
+  notes.</p>
+</footer>
+
+</div>
+</main>
+
+<script>
+'use strict';
+/* =====================================================================
+   Simulation core.
+
+   The component pass mirrors numerics/src/engine.jl: points are processed
+   in increasing mark order (= decreasing reach order), so when point j is
+   processed every processed point i has t_i <= t_j and the edge condition
+   max(t_i,t_j)|x_i-x_j| <= beta collapses to |x_i-x_j| <= R_j = beta/t_j.
+   Point j is therefore joined to *all* processed points inside its reach,
+   and every edge is discovered exactly once, at its smaller-reach endpoint.
+   Processed points are located through a bitset over position ranks.
+   ===================================================================== */
+
+var TAU = Math.PI * 2;
+
+function mulberry32(a){
+  return function(){
+    a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function hash3(a, b, c){
+  var h = 2166136261 >>> 0;
+  h = Math.imul(h ^ (a >>> 0), 16777619);
+  h = Math.imul(h ^ (b >>> 0), 16777619);
+  h = Math.imul(h ^ (c >>> 0), 16777619);
+  h ^= h >>> 13; h = Math.imul(h, 0x5bd1e995); h ^= h >>> 15;
+  return h >>> 0;
+}
+/* Poisson variate, small means only (Knuth). */
+function poisson(rng, mean){
+  var L = Math.exp(-mean), k = 0, p = 1;
+  do { k++; p *= rng(); } while (p > L);
+  return k - 1;
+}
+
+/* A sample: positions ascending on [0,L], marks uniform on (0,1),
+   plus the mark-ascending order, which does not depend on beta. */
+function makeSample(L, lambda, seed){
+  var rng = mulberry32(seed), xs = [], ts = [], x = 0;
+  for(;;){
+    x += -Math.log(1 - rng()) / lambda;
+    if (x >= L) break;
+    xs.push(x); ts.push(rng());
+  }
+  var n = xs.length;
+  var order = new Int32Array(n);
+  for (var i = 0; i < n; i++) order[i] = i;
+  var tt = ts;
+  order.sort(function(p, q){ return tt[p] - tt[q]; });
+  return { L: L, n: n, xs: Float64Array.from(xs), ts: Float64Array.from(ts), order: order };
+}
+
+function lowerBound(xs, n, v){
+  var lo = 0, hi = n;
+  while (lo < hi){ var mid = (lo + hi) >> 1; if (xs[mid] < v) lo = mid + 1; else hi = mid; }
+  return lo;
+}
+function upperBound(xs, n, v){
+  var lo = 0, hi = n;
+  while (lo < hi){ var mid = (lo + hi) >> 1; if (xs[mid] <= v) lo = mid + 1; else hi = mid; }
+  return lo;
+}
+
+/* Only the bitset is reused; the union-find arrays are returned to the caller
+   and must not be shared, or a later pass silently rewrites an earlier result. */
+var _E = { n: -1, words: null };
+function scratchWords(n){
+  if (_E.n < n){ _E.words = new Uint32Array((n + 31) >> 5); _E.n = n; }
+  return _E.words;
+}
+function find(p, i){ while (p[i] !== i){ p[i] = p[p[i]]; i = p[i]; } return i; }
+
+/* Lanczos, enough for the Gamma(1-x_m) constant in the cut-point asymptotics. */
+function gammaFn(z){
+  var g = [676.5203681218851, -1259.1392167224028, 771.32342877765313,
+           -176.61502916214059, 12.507343278686905, -0.13857109526572012,
+           9.9843695780195716e-6, 1.5056327351493116e-7];
+  if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gammaFn(1 - z));
+  z -= 1;
+  var x = 0.99999999999980993;
+  for (var i = 0; i < 8; i++) x += g[i] / (z + i + 1);
+  var t = z + 7.5;
+  return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+}
+
+/* Components at parameter beta. Returns {parent, size, nedges}; if opts.edges
+   is an array it is filled with endpoint pairs, up to opts.edgeCap. */
+function components(s, beta, opts){
+  opts = opts || {};
+  var n = s.n, xs = s.xs, ts = s.ts, order = s.order;
+  var p = new Int32Array(n), sz = new Int32Array(n), w = scratchWords(n);
+  var nw = (n + 31) >> 5, i;
+  for (i = 0; i < n; i++){ p[i] = i; sz[i] = 1; }
+  for (i = 0; i < nw; i++) w[i] = 0;
+  var edges = opts.edges || null, cap = opts.edgeCap === undefined ? Infinity : opts.edgeCap;
+  if (edges) edges.length = 0;
+  var nedges = 0;
+  for (var k = 0; k < n; k++){
+    var j = order[k], r = beta / ts[j], x = xs[j];
+    var lo = lowerBound(xs, n, x - r), hi = upperBound(xs, n, x + r) - 1;
+    if (lo < 0) lo = 0;
+    if (hi > n - 1) hi = n - 1;
+    if (lo <= hi){
+      var w1 = lo >> 5, w2 = hi >> 5;
+      for (var ww = w1; ww <= w2; ww++){
+        var word = w[ww] | 0;
+        if (word === 0) continue;
+        if (ww === w1) word &= (0xFFFFFFFF << (lo & 31));
+        if (ww === w2) word &= (0xFFFFFFFF >>> (31 - (hi & 31)));
+        while (word !== 0){
+          var lb = word & -word;
+          var q = (ww << 5) + (31 - Math.clz32(lb));
+          var ri = find(p, q), rj = find(p, j);
+          if (ri !== rj){
+            if (sz[ri] < sz[rj]){ var t0 = ri; ri = rj; rj = t0; }
+            p[rj] = ri; sz[ri] += sz[rj];
+          }
+          nedges++;
+          if (edges && nedges <= cap){ edges.push(q, j); }
+          word ^= lb;
+        }
+      }
+    }
+    w[j >> 5] |= (1 << (j & 31));
+  }
+  return { parent: p, size: sz, nedges: nedges, n: n };
+}
+
+/* Same thing, quadratically, for the self-test. */
+function componentsBrute(s, beta){
+  var n = s.n, xs = s.xs, ts = s.ts, p = new Int32Array(n), nedges = 0, i, j;
+  for (i = 0; i < n; i++) p[i] = i;
+  for (i = 0; i < n; i++) for (j = i + 1; j < n; j++){
+    var reach = Math.min(beta / ts[i], beta / ts[j]);
+    if (xs[j] - xs[i] <= reach){
+      var ri = find(p, i), rj = find(p, j);
+      if (ri !== rj) p[rj] = ri;
+      nedges++;
+    }
+  }
+  return { parent: p, nedges: nedges, n: n };
+}
+
+/* Largest-component fraction on the central half of the window. */
+function theta(s, res){
+  var n = s.n, xs = s.xs, p = res.parent;
+  var a = s.L * 0.25, b = s.L * 0.75;
+  var tally = new Map(), tot = 0, best = 0;
+  for (var i = 0; i < n; i++){
+    if (xs[i] < a || xs[i] > b) continue;
+    tot++;
+    var r = find(p, i), c = (tally.get(r) || 0) + 1;
+    tally.set(r, c);
+    if (c > best) best = c;
+  }
+  return tot ? best / tot : 0;
+}
+
+/* =====================================================================
+   Drawing helpers
+   ===================================================================== */
+var C = {};
+function readColours(){
+  var cs = getComputedStyle(document.documentElement);
+  ['bg','ink','muted','rule','panel','outer','inner','forbid','escape','ok','dust','hi']
+    .forEach(function(k){ C[k] = cs.getPropertyValue('--' + k).trim(); });
+}
+function fit(cv, hCss){
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var w = cv.clientWidth || (cv.parentNode ? cv.parentNode.clientWidth : 800);
+  cv.style.height = hCss + 'px';
+  cv.width = Math.max(1, Math.round(w * dpr));
+  cv.height = Math.max(1, Math.round(hCss * dpr));
+  var ctx = cv.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, hCss);
+  return { ctx: ctx, w: w, h: hCss };
+}
+var PALETTE = ['#c2701f','#7a54b0','#2f8f6b','#a83f6a','#3a7bb5','#8a7a1f','#4f6f8f','#9a4b2f'];
+function compColour(root, biggest){
+  if (root === biggest) return C.outer;
+  return PALETTE[(Math.imul(root + 1, 2654435761) >>> 24) & 7];
+}
+
+/* Draw one "picture" of the model: axis, reaches below, arcs above.
+   pts: {x, R} in world units. view: {x0, x1}. */
+function drawPicture(g, pts, res, edges, view, o){
+  var ctx = g.ctx, W = g.w, H = g.h;
+  var x0 = view.x0, span = view.x1 - view.x0;
+  var AX = o.axisY, sx = function(x){ return (x - x0) / span * W; };
+  var n = pts.length;
+
+  /* biggest component */
+  var biggest = -1, bs = -1, sizes = res ? res.size : null, p = res ? res.parent : null;
+  if (res){
+    for (var i = 0; i < n; i++){ var r = find(p, i); if (sizes[r] > bs){ bs = sizes[r]; biggest = r; } }
+  }
+
+  /* arcs */
+  if (o.showEdges && edges){
+    var top = 6, maxH = AX - top;
+    ctx.lineWidth = 1;
+    for (var k = 0; k + 1 < edges.length; k += 2){
+      var i1 = edges[k], j1 = edges[k + 1];
+      var xa = sx(pts[i1].x), xb = sx(pts[j1].x);
+      if (xb < xa){ var t = xa; xa = xb; xb = t; }
+      if (xb < -40 || xa > W + 40) continue;
+      var len = Math.abs(pts[i1].x - pts[j1].x);
+      var u = Math.log(1500 * Math.max(len, 1e-9) / span) / Math.log(1500);
+      var hgt = maxH * Math.max(0.06, Math.min(1, u));
+      var root = res ? find(p, i1) : -1;
+      var big = root === biggest;
+      ctx.strokeStyle = res ? compColour(root, biggest) : C.muted;
+      ctx.globalAlpha = big ? 0.62 : 0.3;
+      ctx.lineWidth = big ? 1.25 : 0.9;
+      ctx.beginPath();
+      ctx.moveTo(xa, AX);
+      ctx.bezierCurveTo(xa, AX - hgt * 1.34, xb, AX - hgt * 1.34, xb, AX);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* reaches, deepest = longest */
+  if (o.showReach){
+    var rTop = AX + 13, rBot = H - 10, depth = rBot - rTop;
+    var lo = Math.log(o.reachMin), hi = Math.log(2.4);
+    ctx.lineWidth = 1.3;
+    for (var m = 0; m < n; m++){
+      var s2 = 2 * pts[m].R / span;
+      var u = (Math.log(Math.max(s2, o.reachMin * 0.999)) - lo) / (hi - lo);
+      if (u < 0) u = 0; if (u > 1) u = 1;
+      var y = rTop + u * depth;
+      var la = sx(pts[m].x - pts[m].R), lb = sx(pts[m].x + pts[m].R);
+      if (lb < 0 || la > W) continue;
+      var rootm = res ? find(p, m) : -1;
+      ctx.strokeStyle = res ? compColour(rootm, biggest) : C.dust;
+      ctx.globalAlpha = (res && rootm === biggest) ? 0.65 : 0.4;
+      ctx.beginPath(); ctx.moveTo(Math.max(la, -20), y); ctx.lineTo(Math.min(lb, W + 20), y); ctx.stroke();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.fillRect(sx(pts[m].x) - 0.9, y - 0.9, 1.8, 1.8);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* axis and points */
+  ctx.strokeStyle = C.rule; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, AX + 0.5); ctx.lineTo(W, AX + 0.5); ctx.stroke();
+  for (var q = 0; q < n; q++){
+    var px = sx(pts[q].x);
+    if (px < -4 || px > W + 4) continue;
+    var rq = res ? find(p, q) : -1;
+    ctx.fillStyle = res ? compColour(rq, biggest) : C.ink;
+    ctx.globalAlpha = (res && rq === biggest) ? 1 : 0.72;
+    ctx.beginPath(); ctx.arc(px, AX, (res && rq === biggest) ? 2.5 : 2.0, 0, TAU); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  return biggest;
+}
+
+readColours();
+
+/* =====================================================================
+   Panel 1: the model
+   ===================================================================== */
+(function(){
+  var cv = document.getElementById('cv-model');
+  var spark = document.getElementById('cv-spark');
+  var inBeta = document.getElementById('in-beta');
+  var outBeta = document.getElementById('out-beta');
+  var ro = document.getElementById('ro-model');
+  var ckReach = document.getElementById('ck-reach');
+  var ckEdges = document.getElementById('ck-edges');
+
+  var L = 240, LC = 10000, LAMBDA = 1, seed = 20260811;
+  var s = makeSample(L, LAMBDA, seed);
+  var sc = makeSample(LC, LAMBDA, seed ^ 0x9e3779b9);
+  var beta = 0.8, hover = -1, edges = [], res = null, curve = null;
+
+  function betaOf(){ return Math.pow(10, parseFloat(inBeta.value)); }
+
+  function recompute(){
+    res = components(s, beta, { edges: edges, edgeCap: 4000 });
+  }
+  /* The curve is measured on a much larger window than the one drawn: a window
+     of a few hundred points is spanned well below criticality by a single point
+     of huge reach, so its largest-component fraction saturates far too early. */
+  function recurve(){
+    var N = 56, pts = [];
+    for (var i = 0; i < N; i++){
+      var b = Math.pow(10, -0.8 + (0.9 + 0.8) * i / (N - 1));
+      pts.push([b, theta(sc, components(sc, b, {}))]);
+    }
+    curve = pts;
+  }
+  function thetaAt(b){
+    if (!curve) return 0;
+    if (b <= curve[0][0]) return curve[0][1];
+    for (var i = 1; i < curve.length; i++){
+      if (curve[i][0] >= b){
+        var f = (b - curve[i - 1][0]) / (curve[i][0] - curve[i - 1][0]);
+        return curve[i - 1][1] + f * (curve[i][1] - curve[i - 1][1]);
+      }
+    }
+    return curve[curve.length - 1][1];
+  }
+
+  function draw(){
+    var g = fit(cv, Math.max(230, Math.min(320, g0width() * 0.34)));
+    var pts = [];
+    for (var i = 0; i < s.n; i++) pts.push({ x: s.xs[i], R: beta / s.ts[i] });
+    var biggest = drawPicture(g, pts, res, ckEdges.checked ? edges : null,
+      { x0: 0, x1: L },
+      { axisY: Math.round(g.h * 0.44), showEdges: ckEdges.checked,
+        showReach: ckReach.checked, reachMin: 2 * beta / L * 0.95 });
+
+    /* hover: the min-rule, made visible */
+    if (hover >= 0 && hover < s.n){
+      var ctx = g.ctx, AX = Math.round(g.h * 0.44), sx = function(x){ return x / L * g.w; };
+      var Rj = beta / s.ts[hover], xj = s.xs[hover];
+      var ba = sx(Math.max(0, xj - Rj)), bb = sx(Math.min(L, xj + Rj));
+      ctx.fillStyle = C.hi; ctx.globalAlpha = 0.09;
+      ctx.fillRect(ba, 4, bb - ba, AX - 4);
+      ctx.globalAlpha = 0.95;
+      ctx.strokeStyle = C.hi; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(ba, AX - 8); ctx.lineTo(bb, AX - 8); ctx.stroke();
+      [xj - Rj, xj + Rj].forEach(function(e){
+        if (e < 0 || e > L) return;
+        ctx.beginPath(); ctx.moveTo(sx(e), AX - 14); ctx.lineTo(sx(e), AX - 2); ctx.stroke();
+      });
+      var lo = lowerBound(s.xs, s.n, xj - Rj), hi = upperBound(s.xs, s.n, xj + Rj);
+      var mutual = 0, oneway = 0;
+      for (var q = lo; q < hi; q++){
+        if (q === hover) continue;
+        var back = (beta / s.ts[q]) >= Math.abs(s.xs[q] - xj);
+        if (back) mutual++; else oneway++;
+        ctx.strokeStyle = back ? C.ok : C.forbid;
+        ctx.lineWidth = 2; ctx.globalAlpha = 0.95;
+        var mx2 = sx(s.xs[q]);
+        ctx.beginPath();
+        if (back){ ctx.moveTo(mx2 - 4, AX + 7); ctx.lineTo(mx2 - 1, AX + 11); ctx.lineTo(mx2 + 5, AX + 3); }
+        else { ctx.moveTo(mx2 - 4, AX + 4); ctx.lineTo(mx2 + 4, AX + 12);
+               ctx.moveTo(mx2 + 4, AX + 4); ctx.lineTo(mx2 - 4, AX + 12); }
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = C.hi;
+      ctx.beginPath(); ctx.arc(sx(xj), AX, 4, 0, TAU); ctx.fill();
+      ctx.font = '12px -apple-system,system-ui,sans-serif';
+      ctx.fillStyle = C.muted;
+      ctx.fillText('reach ' + Rj.toFixed(1) + ': ' + (mutual + oneway) +
+                   ' points inside it, ' + mutual + ' reach back, ' +
+                   oneway + ' do not', 10, 16);
+    }
+    drawSpark();
+    var th = theta(s, res);
+    ro.innerHTML = '<span><b>' + s.n + '</b> points</span>' +
+      '<span><b>' + res.nedges + '</b> edges</span>' +
+      '<span>mean degree <b>' + (2 * res.nedges / s.n).toFixed(1) + '</b></span>' +
+      '<span>largest component <b>' + (100 * th).toFixed(0) + '%</b> of the drawn window</span>';
+    outBeta.textContent = beta.toFixed(2);
+  }
+
+  function g0width(){ return cv.clientWidth || 880; }
+
+  function drawSpark(){
+    var g = fit(spark, 108), ctx = g.ctx, W = g.w, H = g.h;
+    var pad = { l: 34, r: 10, t: 12, b: 20 };
+    var lx = function(b){ return pad.l + (Math.log10(b) + 0.8) / 1.7 * (W - pad.l - pad.r); };
+    var ly = function(v){ return H - pad.b - v * (H - pad.t - pad.b); };
+    ctx.font = '11px -apple-system,system-ui,sans-serif';
+    /* proven lower bound and the numerical value */
+    var wide = W >= 580;
+    [[1, 'β_c ≥ 1, proven', C.forbid], [2, 'β_c ≈ 2, numerics', C.muted]].forEach(function(m){
+      ctx.strokeStyle = m[2]; ctx.globalAlpha = 0.55; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(lx(m[0]), pad.t); ctx.lineTo(lx(m[0]), H - pad.b); ctx.stroke();
+      ctx.setLineDash([]); ctx.globalAlpha = 1;
+      if (wide){ ctx.fillStyle = m[2]; ctx.fillText(m[1], lx(m[0]) + 4, pad.t + 9); }
+    });
+    ctx.strokeStyle = C.rule; ctx.globalAlpha = 1; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.l, H - pad.b + .5); ctx.lineTo(W - pad.r, H - pad.b + .5); ctx.stroke();
+    ctx.fillStyle = C.muted;
+    [0.2, 0.5, 1, 2, 4, 8].forEach(function(b){
+      if (b < 0.16 || b > 7.95) return;
+      ctx.fillText(String(b), lx(b) - 4, H - 6);
+    });
+    ctx.fillText('1', 14, ly(1) + 4); ctx.fillText('0', 14, ly(0) + 4);
+    ctx.fillText(wide ? 'θ in a window of 10⁴ points' : 'θ, L = 10⁴', pad.l + 6, pad.t + 9);
+    if (curve){
+      ctx.strokeStyle = C.outer; ctx.lineWidth = 1.6; ctx.beginPath();
+      curve.forEach(function(pt, i){ i ? ctx.lineTo(lx(pt[0]), ly(pt[1])) : ctx.moveTo(lx(pt[0]), ly(pt[1])); });
+      ctx.stroke();
+      ctx.fillStyle = C.outer;
+      ctx.beginPath(); ctx.arc(lx(beta), ly(thetaAt(beta)), 3.2, 0, TAU); ctx.fill();
+    }
+  }
+
+  var raf = 0;
+  function schedule(){ if (!raf) raf = requestAnimationFrame(function(){ raf = 0; draw(); }); }
+
+  inBeta.addEventListener('input', function(){ beta = betaOf(); recompute(); schedule(); });
+  ckReach.addEventListener('change', schedule);
+  ckEdges.addEventListener('change', schedule);
+  document.getElementById('btn-resample').addEventListener('click', function(){
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    s = makeSample(L, LAMBDA, seed);
+    sc = makeSample(LC, LAMBDA, seed ^ 0x9e3779b9); hover = -1;
+    recompute(); recurve(); schedule();
+  });
+  function pick(ev){
+    var rect = cv.getBoundingClientRect();
+    var cx = (ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left;
+    var xw = cx / rect.width * L, best = -1, bd = 1e9;
+    for (var i = 0; i < s.n; i++){ var d = Math.abs(s.xs[i] - xw); if (d < bd){ bd = d; best = i; } }
+    hover = (bd / L * rect.width < 14) ? best : -1;
+    schedule();
+  }
+  cv.addEventListener('mousemove', pick);
+  cv.addEventListener('mouseleave', function(){ hover = -1; schedule(); });
+  cv.addEventListener('touchstart', function(ev){ pick(ev); ev.preventDefault(); }, { passive: false });
+  cv.addEventListener('touchmove', function(ev){ pick(ev); ev.preventDefault(); }, { passive: false });
+
+  window.__panel1 = { redraw: function(){ recompute(); recurve(); schedule(); } };
+  beta = betaOf(); recompute(); recurve(); schedule();
+})();
+</script>
+
+<script>
+'use strict';
+/* =====================================================================
+   Panel 2: scale invariance.
+
+   To render a window of width W we draw only the points whose reach
+   exceeds EPS*W; such a point has mark t <= beta/(EPS*W) =: T, so the
+   visible points form a Poisson process of intensity lambda*beta/(EPS*W).
+   Rescaled to the unit window this is intensity lambda*beta/EPS with
+   Pareto(EPS) reaches: no dependence on W at all. Generation is lazy over
+   (dyadic mark band) x (position block), each cell seeded by its index, so
+   the whole line exists implicitly and points keep their identity as the
+   view moves.
+   ===================================================================== */
+(function(){
+  var cv = document.getElementById('cv-zoom');
+  var inZ = document.getElementById('in-zoom'), outZ = document.getElementById('out-zoom');
+  var inB = document.getElementById('in-zbeta'), outB = document.getElementById('out-zbeta');
+  var ro = document.getElementById('ro-zoom');
+  var btnPlay = document.getElementById('btn-zplay');
+
+  var EPS = 1 / 140, W0 = 1000, LAMBDA = 1;
+  var seed = 424242, z = 0, cx = 0, lb = 2, playing = false, lastT = 0;
+
+  function width(){ return W0 * Math.pow(10, z); }
+
+  /* Points of the lazily generated process with reach >= EPS*W, on [x0,x1]. */
+  function gather(x0, x1, W){
+    var beta = lb / LAMBDA, T = Math.min(1, beta / (EPS * W));
+    var k0 = Math.max(0, Math.floor(Math.log(1 / T) / Math.LN2));
+    var out = [], guard = 0;
+    for (var k = k0; k < k0 + 54; k++){
+      var Bk = Math.pow(2, k) / LAMBDA;
+      var tHi = Math.pow(2, -k), tLo = Math.pow(2, -k - 1);
+      if (tLo > T) continue;
+      var b0 = Math.floor(x0 / Bk), b1 = Math.floor(x1 / Bk);
+      if (b1 - b0 > 6000) break;
+      for (var b = b0; b <= b1; b++){
+        var rng = mulberry32(hash3(k, b, seed));
+        var cnt = poisson(rng, LAMBDA * Bk * (tHi - tLo));
+        for (var q = 0; q < cnt; q++){
+          var x = (b + rng()) * Bk;
+          var t = tLo + rng() * (tHi - tLo);
+          if (t > T || x < x0 || x > x1) continue;
+          out.push({ x: x, R: beta / t });
+          if (++guard > 6000) return out;
+        }
+      }
+    }
+    return out;
+  }
+
+  function draw(){
+    var g = fit(cv, Math.max(220, Math.min(300, (cv.clientWidth || 880) * 0.30)));
+    var W = width(), x0 = cx - W / 2, x1 = cx + W / 2;
+    var pts = gather(x0 - W, x1 + W, W);
+    pts.sort(function(p, q){ return p.x - q.x; });
+    var n = pts.length;
+    var xs = new Float64Array(n), ts = new Float64Array(n), order = new Int32Array(n);
+    var beta = lb / LAMBDA, i;
+    for (i = 0; i < n; i++){ xs[i] = pts[i].x; ts[i] = beta / pts[i].R; order[i] = i; }
+    order.sort(function(p, q){ return ts[p] - ts[q]; });
+    var samp = { n: n, xs: xs, ts: ts, order: order, L: 3 * W };
+    var edges = [];
+    var res = components(samp, beta, { edges: edges, edgeCap: 6000 });
+
+    drawPicture(g, pts, res, edges, { x0: x0, x1: x1 },
+      { axisY: Math.round(g.h * 0.44), showEdges: true, showReach: true, reachMin: 2 * EPS * 0.85 });
+
+    /* scale bar */
+    var ctx = g.ctx, barW = g.w * 0.5, bx = 14, by = g.h - 16;
+    ctx.strokeStyle = C.muted; ctx.globalAlpha = 0.8; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(bx, by); ctx.lineTo(bx + barW, by);
+    ctx.moveTo(bx, by - 4); ctx.lineTo(bx, by + 4);
+    ctx.moveTo(bx + barW, by - 4); ctx.lineTo(bx + barW, by + 4);
+    ctx.stroke();
+    ctx.globalAlpha = 1; ctx.fillStyle = C.muted;
+    ctx.font = '12px -apple-system,system-ui,sans-serif';
+    ctx.fillText(fmtLen(W / 2), bx + barW + 8, by + 4);
+
+    var inWin = 0;
+    for (i = 0; i < n; i++) if (xs[i] >= x0 && xs[i] <= x1) inWin++;
+    ro.innerHTML =
+      '<span>window width <b>' + fmtLen(W) + '</b></span>' +
+      '<span>visible points <b>' + inWin + '</b></span>' +
+      '<span>expected <b>' + Math.round(lb / EPS) + '</b> at every width</span>' +
+      '<span>smallest drawn reach <b>' + fmtLen(EPS * W) + '</b></span>';
+    outZ.textContent = fmtLen(W);
+    outB.textContent = lb.toFixed(2);
+  }
+
+  function fmtLen(v){
+    if (v <= 0) return '0';
+    var e = Math.floor(Math.log(v) / Math.LN10);
+    if (e >= -1 && e < 5) return (v >= 100 ? Math.round(v) : v.toFixed(v < 1 ? 2 : 1)).toLocaleString();
+    var m = v / Math.pow(10, e);
+    if (m >= 9.995){ m /= 10; e += 1; }
+    return m.toFixed(1) + '×10' + sup(e);
+  }
+  function sup(e){
+    var s = String(e), map = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³',
+      '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+    return s.split('').map(function(ch){ return map[ch] || ch; }).join('');
+  }
+
+  var raf = 0;
+  function schedule(){ if (!raf) raf = requestAnimationFrame(function(){ raf = 0; draw(); }); }
+
+  inZ.addEventListener('input', function(){ z = parseFloat(inZ.value); stop(); schedule(); });
+  inB.addEventListener('input', function(){ lb = Math.pow(10, parseFloat(inB.value)); schedule(); });
+  document.getElementById('btn-zreset').addEventListener('click', function(){
+    z = 0; cx = 0; inZ.value = '0'; stop(); schedule();
+  });
+  function stop(){ playing = false; btnPlay.setAttribute('aria-pressed', 'false'); btnPlay.textContent = 'zoom out'; }
+  btnPlay.addEventListener('click', function(){
+    playing = !playing;
+    btnPlay.setAttribute('aria-pressed', String(playing));
+    btnPlay.textContent = playing ? 'pause' : 'zoom out';
+    if (playing){ lastT = 0; requestAnimationFrame(step); }
+  });
+  function step(t){
+    if (!playing) return;
+    if (lastT){ z += (t - lastT) / 1000 * 0.55; }
+    lastT = t;
+    if (z >= 12){ z = 12; stop(); }
+    inZ.value = String(z);
+    draw();
+    if (playing) requestAnimationFrame(step);
+  }
+
+  var dragging = false, lastX = 0;
+  cv.addEventListener('pointerdown', function(ev){
+    dragging = true; lastX = ev.clientX; cv.setPointerCapture(ev.pointerId); stop();
+  });
+  cv.addEventListener('pointermove', function(ev){
+    if (!dragging) return;
+    cx -= (ev.clientX - lastX) / cv.clientWidth * width();
+    lastX = ev.clientX; schedule();
+  });
+  cv.addEventListener('pointerup', function(ev){ dragging = false; try { cv.releasePointerCapture(ev.pointerId); } catch (e) {} });
+  cv.addEventListener('wheel', function(ev){
+    ev.preventDefault(); stop();
+    var rect = cv.getBoundingClientRect();
+    var frac = (ev.clientX - rect.left) / rect.width - 0.5;
+    var anchor = cx + frac * width();
+    z = Math.min(12, Math.max(0, z + ev.deltaY * 0.0016));
+    cx = anchor - frac * width();
+    inZ.value = String(z);
+    schedule();
+  }, { passive: false });
+
+  window.__panel2 = { redraw: schedule, gather: gather, EPS: EPS, W0: W0 };
+  lb = Math.pow(10, parseFloat(inB.value));
+  schedule();
+})();
+
+/* =====================================================================
+   Panel 3a: the rainbow
+   ===================================================================== */
+(function(){
+  var cv = document.getElementById('cv-rainbow');
+  var ro = document.getElementById('ro-rainbow');
+  var inXm = document.getElementById('in-xm'), outXm = document.getElementById('out-xm');
+  var SPAN = 100;
+  var st, xm = 0.6;
+  function reset(){ st = { a: 6, c: 32, d: 52, b: 90, Rc: 23, Rd: 29 }; }
+  reset();
+
+  function geom(){
+    var l = st.c - st.a, m = st.d - st.c, r = st.b - st.d;
+    return { l: l, m: m, r: r, L: st.b - st.a };
+  }
+  function containment(l, r, m){
+    if (m < 2) return 1;
+    var p = 1;
+    for (var k = 1; k <= m - 1; k++){
+      var D = Math.min(l + k, r + m - k);
+      p *= (1 - xm / D);
+    }
+    return p;
+  }
+
+  function draw(){
+    var g = fit(cv, Math.max(250, Math.min(310, (cv.clientWidth || 880) * 0.32)));
+    var ctx = g.ctx, W = g.w, H = g.h;
+    var padL = 26, padR = 26;
+    var sx = function(v){ return padL + v / SPAN * (W - padL - padR); };
+    var AX = Math.round(H * 0.60);
+    var gm = geom(), l = gm.l, m = gm.m, r = gm.r;
+
+    ctx.font = '12px -apple-system,system-ui,sans-serif';
+
+    /* long diagonals, present only when an inner reach is long enough */
+    var longCB = st.Rc >= (st.b - st.c), longAD = st.Rd >= (st.d - st.a);
+    function arc(p, q, hgt, colour, dash, width){
+      ctx.strokeStyle = colour; ctx.lineWidth = width; ctx.setLineDash(dash);
+      ctx.beginPath();
+      ctx.moveTo(sx(p), AX);
+      ctx.bezierCurveTo(sx(p), AX - hgt * 1.32, sx(q), AX - hgt * 1.32, sx(q), AX);
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+    var maxH = AX - 24;
+    if (longCB) arc(st.c, st.b, maxH * 0.72, C.forbid, [], 2);
+    if (longAD) arc(st.a, st.d, maxH * 0.66, C.forbid, [], 2);
+    arc(st.a, st.b, maxH, C.outer, [], 2.4);
+    arc(st.c, st.d, maxH * 0.34, C.inner, [], 2.4);
+    /* the two short diagonals, forbidden by the definition */
+    arc(st.a, st.c, maxH * 0.22, C.forbid, [4, 4], 1.3);
+    arc(st.d, st.b, maxH * 0.24, C.forbid, [4, 4], 1.3);
+
+    ctx.fillStyle = C.outer; ctx.globalAlpha = 0.85;
+    ctx.fillText('outer arch {a,b}', sx((st.a + st.b) / 2) - 42, AX - maxH * 1.05);
+    ctx.fillStyle = C.inner;
+    ctx.fillText('inner arch {c,d}', sx((st.c + st.d) / 2) - 40, AX - maxH * 0.40);
+    ctx.globalAlpha = 1;
+
+    /* axis */
+    ctx.strokeStyle = C.rule; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, AX + .5); ctx.lineTo(W, AX + .5); ctx.stroke();
+    /* interior vertices of the inner span */
+    ctx.fillStyle = C.dust;
+    for (var v = st.c + 1; v < st.d; v++){ ctx.beginPath(); ctx.arc(sx(v), AX, 1.5, 0, TAU); ctx.fill(); }
+    [['a', st.a], ['c', st.c], ['d', st.d], ['b', st.b]].forEach(function(pr){
+      ctx.fillStyle = C.ink;
+      ctx.beginPath(); ctx.arc(sx(pr[1]), AX, 4, 0, TAU); ctx.fill();
+      ctx.fillText(pr[0], sx(pr[1]) - 3, AX + 18);
+    });
+
+    /* braces for l, m, r */
+    var by = AX + 34;
+    [[st.a, st.c, 'ℓ = ' + l], [st.c, st.d, 'm = ' + m], [st.d, st.b, 'r = ' + r]].forEach(function(seg){
+      ctx.strokeStyle = C.muted; ctx.globalAlpha = 0.7; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(sx(seg[0]) + 2, by); ctx.lineTo(sx(seg[1]) - 2, by);
+      ctx.moveTo(sx(seg[0]) + 2, by - 3); ctx.lineTo(sx(seg[0]) + 2, by + 3);
+      ctx.moveTo(sx(seg[1]) - 2, by - 3); ctx.lineTo(sx(seg[1]) - 2, by + 3);
+      ctx.stroke(); ctx.globalAlpha = 1;
+      ctx.fillStyle = C.muted;
+      var tw = ctx.measureText(seg[2]).width;
+      ctx.fillText(seg[2], (sx(seg[0]) + sx(seg[1])) / 2 - tw / 2, by + 16);
+    });
+
+    /* inner reaches, with draggable right-hand handles. The vertical guides at
+       a and b are the walls the two inner reaches must stop short of. */
+    var ry = AX + 66;
+    ctx.strokeStyle = C.muted; ctx.globalAlpha = 0.35; ctx.setLineDash([2, 3]); ctx.lineWidth = 1;
+    [st.a, st.b].forEach(function(v){
+      ctx.beginPath(); ctx.moveTo(sx(v), ry - 9); ctx.lineTo(sx(v), ry + 24); ctx.stroke();
+    });
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+    [[st.c, st.Rc, 'R_c', st.c + st.Rc >= st.b || st.c - st.Rc <= st.a],
+     [st.d, st.Rd, 'R_d', st.d + st.Rd >= st.b || st.d - st.Rd <= st.a]].forEach(function(pr, idx){
+      var y = ry + idx * 15, bad = pr[3];
+      ctx.strokeStyle = bad ? C.forbid : C.inner; ctx.lineWidth = 1.8; ctx.globalAlpha = 0.9;
+      ctx.beginPath(); ctx.moveTo(sx(pr[0] - pr[1]), y); ctx.lineTo(sx(pr[0] + pr[1]), y); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = bad ? C.forbid : C.inner;
+      ctx.beginPath(); ctx.arc(sx(pr[0] + pr[1]), y, 4.5, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.muted;
+      ctx.fillText(pr[2] + ' = ' + pr[1].toFixed(0), sx(pr[0] + pr[1]) + 9, y + 4);
+    });
+    ctx.fillStyle = C.forbid; ctx.globalAlpha = 0.85;
+    ctx.fillText('dashed: the diagonals a rainbow forbids', 10, AX - maxH * 1.05);
+    ctx.globalAlpha = 1;
+
+    /* checklist */
+    var okC = st.Rc >= m && st.Rc < l, okD = st.Rd >= m && st.Rd < r;
+    var bal = Math.abs(l - r) <= m, noLong = !longCB && !longAD;
+    var pB = containment(l, r, m), floor = Math.pow(4 / 9, 2 * xm);
+    function item(ok, txt){
+      return '<span style="color:' + (ok ? C.ok : C.forbid) + '">' +
+        (ok ? '✓' : '✗') + ' ' + txt + '</span>';
+    }
+    ro.innerHTML =
+      item(l > m && r > m, 'ℓ, r &gt; m') +
+      item(okC, 'R_c ∈ [' + m + ', ' + l + ')') +
+      item(okD, 'R_d ∈ [' + m + ', ' + r + ')') +
+      item(bal, 'balance: |ℓ−r| = ' + Math.abs(l - r) + ', needs ≤ m = ' + m) +
+      item(noLong, 'long diagonals absent') +
+      '<span>containment <b>' + pB.toFixed(3) + '</b> ≥ (4/9)<sup>2x_m</sup> = <b>' +
+      floor.toFixed(3) + '</b></span>';
+    outXm.textContent = xm.toFixed(2);
+  }
+
+  /* dragging */
+  var grab = null;
+  function handles(){
+    var W = cv.clientWidth || 880, padL = 26, padR = 26;
+    var sx = function(v){ return padL + v / SPAN * (W - padL - padR); };
+    var h = fitH(), AX = Math.round(h * 0.60);
+    return [
+      { key: 'a', x: sx(st.a), y: AX }, { key: 'c', x: sx(st.c), y: AX },
+      { key: 'd', x: sx(st.d), y: AX }, { key: 'b', x: sx(st.b), y: AX },
+      { key: 'Rc', x: sx(st.c + st.Rc), y: AX + 66 },
+      { key: 'Rd', x: sx(st.d + st.Rd), y: AX + 81 }
+    ];
+  }
+  function fitH(){ return Math.max(250, Math.min(310, (cv.clientWidth || 880) * 0.32)); }
+  function toWorld(px){
+    var W = cv.clientWidth || 880;
+    return (px - 26) / (W - 52) * SPAN;
+  }
+  function nearest(px, py){
+    var hs = handles(), best = null, bd = 22;
+    hs.forEach(function(h){
+      var d = Math.hypot(h.x - px, h.y - py);
+      if (d < bd){ bd = d; best = h.key; }
+    });
+    return best;
+  }
+  function apply(key, wv){
+    var MIN = 2;
+    if (key === 'a') st.a = clampi(wv, 0, st.c - MIN);
+    else if (key === 'c') st.c = clampi(wv, st.a + MIN, st.d - MIN);
+    else if (key === 'd') st.d = clampi(wv, st.c + MIN, st.b - MIN);
+    else if (key === 'b') st.b = clampi(wv, st.d + MIN, SPAN);
+    else if (key === 'Rc') st.Rc = Math.max(1, Math.round(wv - st.c));
+    else if (key === 'Rd') st.Rd = Math.max(1, Math.round(wv - st.d));
+  }
+  function clampi(v, lo, hi){ return Math.max(lo, Math.min(hi, Math.round(v))); }
+
+  cv.addEventListener('pointerdown', function(ev){
+    var rect = cv.getBoundingClientRect();
+    grab = nearest(ev.clientX - rect.left, ev.clientY - rect.top);
+    if (grab){ cv.setPointerCapture(ev.pointerId); ev.preventDefault(); }
+  });
+  cv.addEventListener('pointermove', function(ev){
+    var rect = cv.getBoundingClientRect();
+    if (!grab){
+      cv.style.cursor = nearest(ev.clientX - rect.left, ev.clientY - rect.top) ? 'grab' : 'default';
+      return;
+    }
+    apply(grab, toWorld(ev.clientX - rect.left));
+    draw();
+  });
+  cv.addEventListener('pointerup', function(ev){ grab = null; try { cv.releasePointerCapture(ev.pointerId); } catch (e) {} });
+
+  inXm.addEventListener('input', function(){ xm = parseFloat(inXm.value); draw(); });
+  document.getElementById('btn-rb-reset').addEventListener('click', function(){ reset(); draw(); });
+  document.getElementById('btn-rb-break').addEventListener('click', function(){
+    st = { a: 2, c: 62, d: 72, b: 96, Rc: 34, Rd: 20 };
+    draw();
+  });
+
+  window.__panel3a = { redraw: draw };
+  draw();
+})();
+
+/* =====================================================================
+   Panel 3b: cut points in the integer model
+   ===================================================================== */
+(function(){
+  var cv = document.getElementById('cv-cut');
+  var ro = document.getElementById('ro-cut');
+  var inXm = document.getElementById('in-cxm'), outXm = document.getElementById('out-cxm');
+  var inN = document.getElementById('in-cn'), outN = document.getElementById('out-cn');
+  var seed = 77777, xm = 0.65, n = 3981, samp = null, built = -1;
+
+  function build(){
+    var rng = mulberry32(seed);
+    var xs = new Float64Array(n), ts = new Float64Array(n), order = new Int32Array(n);
+    for (var i = 0; i < n; i++){ xs[i] = i; ts[i] = rng(); order[i] = i; }
+    order.sort(function(p, q){ return ts[p] - ts[q]; });
+    samp = { n: n, xs: xs, ts: ts, order: order, L: n };
+    built = seed + n;
+  }
+
+  function analyse(){
+    var edges = [];
+    var res = components(samp, xm, { edges: edges, edgeCap: 400000 });
+    /* coverage[p] = number of edges {j,k} with j <= p < k */
+    var diff = new Int32Array(n + 1), e, j, k, i, p;
+    for (e = 0; e + 1 < edges.length; e += 2){
+      j = Math.min(edges[e], edges[e + 1]); k = Math.max(edges[e], edges[e + 1]);
+      diff[j]++; diff[k]--;
+    }
+    var cov = new Int32Array(n), run = 0, maxc = 0;
+    for (p = 0; p < n; p++){ run += diff[p]; cov[p] = run; if (run > maxc) maxc = run; }
+    /* the certificate C_i certifies the cut at position i+1 */
+    var cert = new Uint8Array(n), mx = -Infinity, ncut = 0, ncert = 0;
+    for (i = 0; i + 1 < n; i++){
+      mx = Math.max(mx, xm / samp.ts[i] + i);
+      if (mx < i + 1 && (xm / samp.ts[i + 1]) < 1) cert[i + 1] = 1;
+    }
+    for (i = 0; i < n - 1; i++){ if (cov[i] === 0){ ncut++; if (cert[i]) ncert++; } }
+    var seen = new Int32Array(n), ncomp = 0;
+    for (i = 0; i < n; i++){ var r = find(res.parent, i); if (!seen[r]){ seen[r] = 1; ncomp++; } }
+    return { cov: cov, cert: cert, ncut: ncut, ncert: ncert, maxc: maxc,
+             nedges: res.nedges, ncomp: ncomp, edges: edges, parent: res.parent };
+  }
+
+  function draw(){
+    if (built !== seed + n) build();
+    var a = analyse();
+    var g = fit(cv, 252), ctx = g.ctx, W = g.w, H = g.h;
+    var sx = function(p){ return p / n * W; };
+    var INSET = 120, insetAX = 62;
+    var profTop = insetAX + 26, profH = H - profTop - 44;
+    var cutY = profTop + profH + 5, cutH = 12;
+    ctx.font = '11px -apple-system,system-ui,sans-serif';
+
+    /* magnified inset: the first INSET sites drawn as the graph they are */
+    var ix = function(p){ return 10 + p / INSET * (W - 20); };
+    ctx.lineWidth = 1.2;
+    for (var e = 0; e + 1 < a.edges.length; e += 2){
+      var j = Math.min(a.edges[e], a.edges[e + 1]), k = Math.max(a.edges[e], a.edges[e + 1]);
+      if (k >= INSET) continue;
+      var hgt = (insetAX - 20) * (0.16 + 0.84 * Math.pow((k - j) / INSET, 0.45));
+      ctx.strokeStyle = PALETTE[(Math.imul(find(a.parent, j) + 1, 2654435761) >>> 24) & 7];
+      ctx.globalAlpha = 0.75;
+      ctx.beginPath();
+      ctx.moveTo(ix(j), insetAX);
+      ctx.bezierCurveTo(ix(j), insetAX - hgt * 1.3, ix(k), insetAX - hgt * 1.3, ix(k), insetAX);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = C.rule; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(10, insetAX + .5); ctx.lineTo(W - 10, insetAX + .5); ctx.stroke();
+    for (var v = 0; v < INSET && v < n; v++){
+      var isCut = a.cov[v] === 0;
+      ctx.fillStyle = isCut ? C.forbid : C.ink;
+      ctx.globalAlpha = isCut ? 1 : 0.6;
+      ctx.beginPath(); ctx.arc(ix(v), insetAX, isCut ? 2.4 : 1.7, 0, TAU); ctx.fill();
+      if (isCut){
+        ctx.strokeStyle = C.forbid; ctx.globalAlpha = a.cert[v] ? 0.9 : 0.35;
+        ctx.setLineDash([2, 3]);
+        ctx.beginPath(); ctx.moveTo(ix(v) + 0.5, 12); ctx.lineTo(ix(v) + 0.5, insetAX + 7); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = C.muted;
+    ctx.fillText('the first ' + INSET + ' sites, magnified; dashed lines are cut points', 10, 11);
+    if (W > 620) ctx.fillText(a.ncomp.toLocaleString() + ' components, all of them finite', W - 200, 11);
+
+    /* crossing profile, binned to pixels */
+    var scale = Math.log(1 + Math.max(a.maxc, 1));
+    ctx.fillStyle = C.outer; ctx.globalAlpha = 0.22;
+    ctx.beginPath(); ctx.moveTo(0, profTop + profH);
+    var px, cuts = [];
+    for (px = 0; px < W; px++){
+      var p0 = Math.floor(px / W * n), p1 = Math.max(p0 + 1, Math.floor((px + 1) / W * n));
+      var hi2 = 0, lo2 = Infinity, anyCert = 0;
+      for (var q = p0; q < p1 && q < n - 1; q++){
+        if (a.cov[q] > hi2) hi2 = a.cov[q];
+        if (a.cov[q] < lo2) lo2 = a.cov[q];
+        if (a.cov[q] === 0 && a.cert[q]) anyCert = 1;
+      }
+      ctx.lineTo(px, profTop + profH - profH * (Math.log(1 + hi2) / scale));
+      if (lo2 === 0) cuts.push([px, anyCert]);
+    }
+    ctx.lineTo(W, profTop + profH); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = C.rule;
+    ctx.beginPath(); ctx.moveTo(0, profTop + profH + .5); ctx.lineTo(W, profTop + profH + .5); ctx.stroke();
+
+    /* cut points get their own strip so the profile stays readable */
+    cuts.forEach(function(c){
+      ctx.strokeStyle = C.forbid;
+      ctx.globalAlpha = c[1] ? 1 : 0.38;
+      ctx.beginPath();
+      ctx.moveTo(c[0] + .5, c[1] ? cutY - 5 : cutY + 3); ctx.lineTo(c[0] + .5, cutY + cutH);
+      ctx.stroke();
+    });
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = C.muted;
+    ctx.fillText('edges crossing each site, log scale, peak ' + a.maxc, 10, profTop + 12);
+    ctx.fillText('cut points, dark where certified', 10, cutY + cutH + 13);
+    ctx.fillText(n.toLocaleString() + ' sites', W - 66, cutY + cutH + 13);
+
+    var pred = Math.pow(n, 1 - xm) / gammaFn(1 - xm);
+    ro.innerHTML =
+      '<span>cut points <b>' + a.ncut.toLocaleString() + '</b> (' +
+        (100 * a.ncut / n).toFixed(1) + '% of sites)</span>' +
+      '<span>certified <b>' + a.ncert + '</b>, asymptotics give <b>' + pred.toFixed(1) + '</b></span>' +
+      '<span>peak crossings <b>' + a.maxc + '</b></span>' +
+      '<span>mean degree <b>' + (2 * a.nedges / n).toFixed(2) + '</b></span>';
+    outXm.textContent = xm.toFixed(2);
+    outN.textContent = n.toLocaleString();
+  }
+
+  var raf = 0;
+  function schedule(){ if (!raf) raf = requestAnimationFrame(function(){ raf = 0; draw(); }); }
+  inXm.addEventListener('input', function(){ xm = parseFloat(inXm.value); schedule(); });
+  inN.addEventListener('input', function(){ n = Math.round(Math.pow(10, parseFloat(inN.value))); schedule(); });
+  document.getElementById('btn-cut-resample').addEventListener('click', function(){
+    seed = (seed * 1664525 + 1013904223) >>> 0; schedule();
+  });
+
+  window.__panel3b = { redraw: schedule };
+  schedule();
+})();
+
+/* =====================================================================
+   Tabs, resizing, colour scheme, self-test
+   ===================================================================== */
+(function(){
+  var tabs = [['tab-rb', 'view-rb', 'rainbow'], ['tab-cut', 'view-cut', 'cuts']];
+  function select(key, push){
+    tabs.forEach(function(u){
+      var sel = u[2] === key;
+      document.getElementById(u[0]).setAttribute('aria-selected', String(sel));
+      document.getElementById(u[1]).classList.toggle('hidden', !sel);
+    });
+    if (push && history.replaceState) history.replaceState(null, '', '#' + key);
+    redrawAll();
+  }
+  tabs.forEach(function(t){
+    document.getElementById(t[0]).addEventListener('click', function(){ select(t[2], true); });
+  });
+  if (location.hash === '#cuts') select('cuts', false);
+
+  function redrawAll(){
+    readColours();
+    [window.__panel1, window.__panel2, window.__panel3a, window.__panel3b].forEach(function(p){
+      if (p && p.redraw) p.redraw();
+    });
+  }
+  var rt = 0;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt); rt = setTimeout(redrawAll, 120);
+  });
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(redrawAll);
+  /* The standalone copy carries a light/dark toggle that sets data-theme on
+     <html>; the canvases read their colours from CSS, so repaint on that too. */
+  new MutationObserver(redrawAll).observe(document.documentElement,
+    { attributes: true, attributeFilter: ['data-theme'] });
+  window.__redrawAll = redrawAll;
+
+  /* ---- single-panel embed mode ---- */
+  var only = (location.search.match(/[?&]panel=([a-z]+)/) || [])[1];
+  if (only){
+    var keep = { model: 'panel-model', zoom: 'panel-zoom',
+                 rainbow: 'panel-rainbow', cuts: 'panel-rainbow' }[only];
+    if (keep){
+      /* Scoped to the tour root: on the site copy the page also carries the
+         site header and footer, which must not be touched. */
+      var root = document.getElementById('rp');
+      root.classList.add('embed');
+      ['header', '.intro', 'footer'].forEach(function(sel){
+        var el = root.querySelector(sel);
+        if (el) el.style.display = 'none';
+      });
+      ['panel-model', 'panel-zoom', 'panel-rainbow'].forEach(function(id){
+        if (id !== keep) document.getElementById(id).style.display = 'none';
+      });
+      select(only === 'cuts' ? 'cuts' : 'rainbow', false);
+    }
+  }
+
+  /* ---- self-test ---- */
+  if (/[?&]selftest=1/.test(location.search)){
+    var out = [], fails = 0;
+    function check(name, ok, detail){
+      out.push((ok ? 'PASS  ' : 'FAIL  ') + name + (detail ? '   ' + detail : ''));
+      if (!ok) fails++;
+    }
+    /* engine vs brute force */
+    var bad = 0, badEdges = 0;
+    for (var trial = 0; trial < 40; trial++){
+      var s = makeSample(60, 1, 1000 + trial);
+      var b = 0.3 + (trial % 7) * 0.5;
+      var fast = components(s, b, {}), slow = componentsBrute(s, b);
+      if (fast.nedges !== slow.nedges) badEdges++;
+      for (var i = 0; i < s.n; i++) for (var j = i + 1; j < s.n; j++){
+        var sameF = find(fast.parent, i) === find(fast.parent, j);
+        var sameS = find(slow.parent, i) === find(slow.parent, j);
+        if (sameF !== sameS){ bad++; i = s.n; break; }
+      }
+    }
+    check('components == brute force partition (40 samples)', bad === 0, bad + ' mismatches');
+    check('components == brute force edge count (40 samples)', badEdges === 0, badEdges + ' mismatches');
+    /* monotone coupling in beta */
+    var s2 = makeSample(400, 1, 99), prev = -1, mono = true;
+    for (var q = 0; q < 30; q++){
+      var bb = 0.2 * Math.pow(1.15, q);
+      var e2 = components(s2, bb, {}).nedges;
+      if (e2 < prev) mono = false;
+      prev = e2;
+    }
+    check('edge count is monotone in beta (fixed sample)', mono);
+    /* scale invariance: visible count flat across decades */
+    var P2 = window.__panel2, counts = [];
+    for (var z = 0; z <= 10; z += 2){
+      var Wz = P2.W0 * Math.pow(10, z);
+      var pts = P2.gather(-Wz / 2, Wz / 2, Wz);
+      counts.push(pts.length);
+    }
+    var mean = counts.reduce(function(x, y){ return x + y; }, 0) / counts.length;
+    var flat = counts.every(function(c){ return Math.abs(c - mean) < 0.45 * mean + 12; });
+    check('visible point count flat over 10 decades', flat, '[' + counts.join(', ') + '] mean ' + mean.toFixed(0));
+    var el = document.getElementById('selftest');
+    el.textContent = out.join('\n');
+    el.className = fails ? 'fail' : 'pass';
+    (fails ? console.error : console.log)(out.join('\n'));
+  }
+})();
+</script>

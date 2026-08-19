@@ -74,10 +74,21 @@ simulations/                All interactive simulation HTML lives here, and is
                               detection-percolation sim now linked from
                               research.html at
                               simulations/detection-percolation-discontinuous.html.
-  contact-process-standalone.html   Self-contained (MathJax via CDN; the
-  levy-vs-bm-standalone.html        contact-process and levy-vs-bm files also
-  detection-percolation-standalone.html  load Tailwind — the detection ones no
-  detection-percolation-discontinuous-standalone.html  longer do) copy of each
+  rainbow-percolation.html    Embedded simulation: an interactive companion to
+                              the paper *Rainbow percolation* (Gracar & Lees),
+                              built as a scrolling document of three figure
+                              panels rather than a full-viewport app — the
+                              model and its connection rule, its scale
+                              invariance, and the rainbows / cut points behind
+                              the lower bound. Jekyll-wrapped, linked from
+                              research.html at
+                              simulations/rainbow-percolation.html.
+  contact-process-standalone.html   Self-contained (MathJax via CDN for all but
+  levy-vs-bm-standalone.html        the rainbow pair, which needs no math
+  detection-percolation-standalone.html  typesetting; the contact-process and
+  detection-percolation-discontinuous-standalone.html  levy-vs-bm files also
+  rainbow-percolation-standalone.html  load Tailwind — the detection and
+                                    rainbow ones do not) copy of each
                                     simulation for offline / external use. No
                                     Jekyll front matter, so they are served as
                                     static files at /simulations/<name>.html and
@@ -274,11 +285,12 @@ All interactive simulation HTML files live under `simulations/` and are served
 at `/simulations/<name>.html`. There are two flavours:
 
 - **Jekyll-wrapped** — `simulations/contact-process.html`,
-  `simulations/levy-vs-bm.html`, `simulations/detection-percolation.html`, and
-  `simulations/detection-percolation-discontinuous.html`
+  `simulations/levy-vs-bm.html`, `simulations/detection-percolation.html`,
+  `simulations/detection-percolation-discontinuous.html`, and
+  `simulations/rainbow-percolation.html`
   use `layout: default` and are addressed by the relative paths
   `simulations/<name>.html`. `research.html` links contact-process, levy-vs-bm,
-  and detection-percolation-**discontinuous**; the plain
+  detection-percolation-**discontinuous**, and rainbow-percolation; the plain
   `detection-percolation.html` is now `no_index` and **not** linked (superseded
   by the discontinuous variant), though it is still a Jekyll page served at its
   URL. Their public URLs are `gracar.org/simulations/<name>.html`; the
@@ -287,12 +299,14 @@ at `/simulations/<name>.html`. There are two flavours:
   asset hrefs assume pages are addressed by their source path.
 - **Standalone** — `simulations/contact-process-standalone.html`,
   `simulations/levy-vs-bm-standalone.html`,
-  `simulations/detection-percolation-standalone.html`, and
-  `simulations/detection-percolation-discontinuous-standalone.html` are
+  `simulations/detection-percolation-standalone.html`,
+  `simulations/detection-percolation-discontinuous-standalone.html`, and
+  `simulations/rainbow-percolation-standalone.html` are
   **independent HTML
-  documents** with no Jekyll front matter (MathJax via CDN — the
+  documents** with no Jekyll front matter (MathJax via CDN except for the
+  rainbow pair, which typesets no math — the
   contact-process and levy-vs-bm files also load Tailwind, while the two
-  detection-percolation standalones no longer do — and their own
+  detection-percolation standalones and the rainbow one do not — and their own
   light/dark toggle persisted in `localStorage['theme-pref']`). They are
   intended for offline / presentation use and, because they have no front
   matter, Jekyll copies them through as static files at
@@ -319,15 +333,44 @@ at `/simulations/<name>.html`. There are two flavours:
   now skips intermediate points, hit detection only tests landing positions —
   the correct behaviour for a jump process.
 
-Each web simulation (except the discontinuous-Lévy variant) also has a
-companion native Swift Playground app under
+- **Rainbow percolation** — the `rainbow-percolation.html` /
+  `-standalone.html` pair is unlike the others: it is a **scrolling document**
+  of three figure panels (the model and its connection rule; the same picture
+  at every scale; rainbows and cut points), not a full-viewport app, so the
+  Jekyll copy keeps the site header, nav and footer and simply places the tour
+  inside `<main id="main-content">`. Consequences for editing:
+  - Every rule in its `<style>` block is **scoped to the `.rp` tour root**
+    (`#rp`), because the tour reuses element and class names the site
+    stylesheet already owns — `header`, `footer`, `h1`, `h2` and especially
+    `.panel`, which is a card class in `style.css`. Keep new rules scoped, and
+    keep `.rp .panel` resetting the card's background/border/shadow.
+  - Chrome colours (`--bg`, `--ink`, `--muted`, `--rule`, `--panel`,
+    `--rp-accent`, `--shadow`) are declared on `:root` with the **site
+    palette's** literal values, because `readColours()` in the script reads
+    them back through `getComputedStyle(document.documentElement)`. The figure
+    colours (`--outer`, `--inner`, `--forbid`, `--escape`, `--ok`, `--dust`,
+    `--hi`) carry meaning in the drawings and are deliberately left as the
+    author chose them — do not fold them into the site accent.
+  - `?panel=model|zoom|rainbow|cuts` hides everything but one figure so a
+    single panel can be iframed (~620px tall); `?selftest=1` runs brute-force
+    cross-checks of the simulation core and prints a pass/fail banner. The
+    embed-mode code queries **within `#rp`** so that it never hides the site's
+    own header and footer — keep it scoped if you touch it.
+  - The two files share their markup, CSS and scripts verbatim; they differ
+    only in the front matter / `<head>`, the page shell, and the standalone's
+    `html[data-theme]` blocks and light/dark toggle. A `MutationObserver` on
+    `data-theme` repaints the canvases when that toggle fires.
+
+Each web simulation (except the discontinuous-Lévy and rainbow-percolation
+variants) also has a companion native Swift Playground app under
 `playgrounds/<Name>.swiftpm/`. These are excluded from the Jekyll build (see
 `exclude:` in `_config.yml`) and are not part of the published site, but
 share the model/parameters with their HTML counterparts. When fixing a bug
 in a simulation, check whether the same logic is duplicated in the
 standalone HTML copy (and, where relevant, in the Swift package) and update
-them together. The `detection-percolation-discontinuous` pair has **no** Swift
-counterpart; its two HTML files must be kept in sync with each other.
+them together. The `detection-percolation-discontinuous` and
+`rainbow-percolation` pairs have **no** Swift counterpart; each pair's two HTML
+files must be kept in sync with each other.
 
 ## SEO, sitemap, and the "secret" index
 
