@@ -204,8 +204,9 @@ Key rules mirrored by the templates (see `_includes/publication_item.html` and
     (`YYYY-MM-DD-slug.md`) but Jekyll does not require this — sorting uses the
     front-matter `date`, not the filename.
   - `simulations` is an optional list of `{url, label}` pairs naming the
-    interactive simulations that illustrate the paper; the include renders them
-    as a `.pub-sim` link line under the entry. Items missing either key are
+    interactive simulations that illustrate the paper; the include renders a
+    `.pub-badge--simulation` pill next to the status badge and a `.pub-sim`
+    link line under the entry. Items missing either key are
     skipped, and one simulation may be listed on several publications (the
     contact-process sim is on two). This is how simulations reach the site —
     `research.html` no longer keeps a list of its own.

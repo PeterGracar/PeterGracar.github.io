@@ -453,6 +453,12 @@ li + li {
   border: 1px solid #ce93d8;
 }
 
+.pub-badge--simulation {
+  background: #e0f2f1;
+  color: #00695c;
+  border: 1px solid #80cbc4;
+}
+
 @media (prefers-color-scheme: dark) {
   .pub-badge--preprint {
     background: rgba(230, 81, 0, 0.15);
@@ -476,6 +482,12 @@ li + li {
     background: rgba(106, 27, 154, 0.2);
     color: #ce93d8;
     border-color: rgba(206, 147, 216, 0.35);
+  }
+
+  .pub-badge--simulation {
+    background: rgba(0, 105, 92, 0.22);
+    color: #4db6ac;
+    border-color: rgba(77, 182, 172, 0.35);
   }
 }
 

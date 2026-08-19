@@ -43,7 +43,7 @@ Validation and behavior:
 - Accepted papers without `date` appear at the top of the "Published and accepted papers" section.
 - LaTeX math in titles is typeset on the research page (for example, `$\\alpha$`).
 - When using backslashes in front matter (for example `\alpha`), wrap the title in single quotes to avoid YAML escape handling.
-- `simulations` is optional. Each item needs both `url` and `label`; items missing either are skipped. They render as a line under the entry reading "Interactive simulation: <label>" (pluralised, labels separated by `·`, when there are several). Labels read as a continuation of that prefix, so they start lowercase unless they begin with a proper noun. The same simulation may be listed on more than one publication.
+- `simulations` is optional. Each item needs both `url` and `label`; items missing either are skipped. An entry with at least one valid item gets a "Simulation"/"Simulations" pill next to its status badge, and a line under the entry reading "Interactive simulation: <label>" (pluralised, labels separated by `·`, when there are several). Labels read as a continuation of that prefix, so they start lowercase unless they begin with a proper noun. The same simulation may be listed on more than one publication.
 
 ## Coauthor template
 
