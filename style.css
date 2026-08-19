@@ -402,6 +402,14 @@ li + li {
   margin-top: 0.85rem;
 }
 
+/* Keeps a paper's badges on one line and, when the title fills the row,
+   drops them onto the next line together rather than splitting them. */
+.pub-badges {
+  display: inline-block;
+  margin-left: 0.25rem;
+  white-space: nowrap;
+}
+
 .pub-badge {
   display: inline-block;
   font-size: var(--text-xs);
