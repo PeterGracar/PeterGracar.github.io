@@ -416,6 +416,19 @@ li + li {
   display: none;
 }
 
+.pub-sim {
+  display: inline-block;
+  margin-top: 0.15rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.pub-sim::before {
+  content: "\25B8";
+  margin-right: 0.35rem;
+  color: var(--color-accent);
+}
+
 .pub-badge--preprint {
   background: #fff3e0;
   color: #e65100;

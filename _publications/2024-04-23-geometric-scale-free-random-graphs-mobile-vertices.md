@@ -7,4 +7,7 @@ coauthors:
   - "arne-grauer"
 preprint_label: "arXiv:2404.15124"
 preprint_url: "https://arxiv.org/abs/2404.15124"
+simulations:
+  - url: "simulations/contact-process.html"
+    label: "an SIS epidemic on a mobile geometric graph"
 ---

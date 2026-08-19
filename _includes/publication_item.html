@@ -45,6 +45,17 @@
           {% endif %}
         {% endfor %}
 
+        {% assign valid_simulation_count = 0 %}
+        {% if publication.simulations %}
+          {% for simulation in publication.simulations %}
+            {% if simulation.url %}
+              {% if simulation.label %}
+                {% assign valid_simulation_count = valid_simulation_count | plus: 1 %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
         {% capture detail_line %}
           {% if publication.outlet_name %}
             <em>{% if publication.outlet_url %}<a href="{{ publication.outlet_url }}">{{ publication.outlet_name }}</a>{% else %}{{ publication.outlet_name }}{% endif %}</em>{% if publication.citation_text %}, {{ publication.citation_text }}{% endif %}
@@ -78,6 +89,19 @@
           {% endif %}
           {% if publication.note %}
             <br><em>{{ publication.note }}</em>
+          {% endif %}
+          {% if valid_simulation_count > 0 %}
+            {% assign printed_simulation_count = 0 %}
+            {% capture simulation_markup %}{% endcapture %}
+            {% for simulation in publication.simulations %}
+              {% if simulation.url %}
+                {% if simulation.label %}
+                  {% assign printed_simulation_count = printed_simulation_count | plus: 1 %}
+                  {% capture simulation_markup %}{{ simulation_markup }}{% if printed_simulation_count > 1 %} &middot; {% endif %}<a href="{{ simulation.url }}">{{ simulation.label }}</a>{% endcapture %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            <br><span class="pub-sim">{% if valid_simulation_count == 1 %}Interactive simulation{% else %}Interactive simulations{% endif %}: {{ simulation_markup | strip }}</span>
           {% endif %}
         </li>
       {% endif %}

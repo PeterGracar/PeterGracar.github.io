@@ -9,4 +9,9 @@ coauthors:
   - "anh-duc-vu"
 preprint_label: "arXiv:2602.22109"
 preprint_url: "https://arxiv.org/abs/2602.22109"
+simulations:
+  - url: "simulations/levy-vs-bm.html"
+    label: "Lévy flight vs Brownian motion"
+  - url: "simulations/detection-percolation-discontinuous.html"
+    label: "detection and coverage times"
 ---

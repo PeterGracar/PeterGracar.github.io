@@ -7,4 +7,7 @@ coauthors:
   - "benjamin-lees"
 preprint_label: "arXiv:2608.12954"
 preprint_url: "https://arxiv.org/abs/2608.12954"
+simulations:
+  - url: "simulations/rainbow-percolation.html"
+    label: "an illustrated tour of the model"
 ---

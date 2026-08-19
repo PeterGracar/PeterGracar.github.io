@@ -203,6 +203,12 @@ Key rules mirrored by the templates (see `_includes/publication_item.html` and
   - Filenames conventionally start with the publication date
     (`YYYY-MM-DD-slug.md`) but Jekyll does not require this — sorting uses the
     front-matter `date`, not the filename.
+  - `simulations` is an optional list of `{url, label}` pairs naming the
+    interactive simulations that illustrate the paper; the include renders them
+    as a `.pub-sim` link line under the entry. Items missing either key are
+    skipped, and one simulation may be listed on several publications (the
+    contact-process sim is on two). This is how simulations reach the site —
+    `research.html` no longer keeps a list of its own.
 
 - **Coauthors** (`_coauthors/*.md`)
   - Required: `coauthor_id`, `name`, `last_name`. `profile_url` optional.
@@ -289,8 +295,13 @@ at `/simulations/<name>.html`. There are two flavours:
   `simulations/detection-percolation-discontinuous.html`, and
   `simulations/rainbow-percolation.html`
   use `layout: default` and are addressed by the relative paths
-  `simulations/<name>.html`. `research.html` links contact-process, levy-vs-bm,
-  detection-percolation-**discontinuous**, and rainbow-percolation; the plain
+  `simulations/<name>.html`. They are linked from `research.html` **through the
+  publication entries**, not from a list at the top of the page: each paper's
+  `simulations:` front matter names the sims that illustrate it (see the
+  Publications bullet above). contact-process is on both the contact-process and
+  the mobile-vertices papers, levy-vs-bm and detection-percolation-**discontinuous**
+  are both on the detection/coverage paper, and rainbow-percolation is on the
+  rainbow paper; the plain
   `detection-percolation.html` is now `no_index` and **not** linked (superseded
   by the discontinuous variant), though it is still a Jekyll page served at its
   URL. Their public URLs are `gracar.org/simulations/<name>.html`; the
