@@ -66,7 +66,12 @@
         {% assign detail_line = detail_line | strip %}
 
         <li>
-          <strong><a href="{{ publication.title_url }}">{{ publication.title }}</a></strong><span class="pub-badges">{% if publication.status == "preprint" %}<span class="pub-badge pub-badge--preprint">Preprint</span>{% elsif publication.status == "accepted" %}<span class="pub-badge pub-badge--accepted">Accepted</span>{% elsif publication.status == "published" %}<span class="pub-badge pub-badge--published">Published</span>{% endif %}{% if valid_simulation_count > 0 %}<span class="pub-badge pub-badge--simulation">Simulation{% if valid_simulation_count > 1 %}s{% endif %}</span>{% endif %}</span>
+          {%- comment -%}
+            The word joiner (&#8288;) between the title and the nowrap badge
+            group glues the pills to the title's last word, so on wrap they all
+            move down together; see the .pub-badges rules in style.css.
+          {%- endcomment -%}
+          <strong><a href="{{ publication.title_url }}">{{ publication.title }}</a></strong>&#8288;<span class="pub-badges">{% if publication.status == "preprint" %}<span class="pub-badge pub-badge--preprint">Preprint</span>{% elsif publication.status == "accepted" %}<span class="pub-badge pub-badge--accepted">Accepted</span>{% elsif publication.status == "published" %}<span class="pub-badge pub-badge--published">Published</span>{% endif %}{% if valid_simulation_count > 0 %}<span class="pub-badge pub-badge--simulation">Simulation{% if valid_simulation_count > 1 %}s{% endif %}</span>{% endif %}</span>
           {% if valid_coauthor_count > 0 %}
             {% assign printed_coauthor_count = 0 %}
             {% capture coauthor_markup %}{% endcapture %}

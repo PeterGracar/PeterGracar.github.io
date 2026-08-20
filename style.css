@@ -397,21 +397,30 @@ li + li {
   font-weight: 600;
 }
 
+/* overflow-wrap here backs the badge-gluing scheme below: it permits an
+   emergency break at the word joiner before a badge group when even
+   "last word + pills" cannot fit a line, dropping the group to its own
+   line instead of overflowing. */
 .publication-list li,
 .talk-list li {
   margin-top: 0.85rem;
+  overflow-wrap: anywhere;
 }
 
-/* Keeps a paper's badges on one line and, when the title fills the row,
-   drops them onto the next line together rather than splitting them. */
+/* Badges are non-atomic inlines glued to the preceding word with a word
+   joiner (&#8288;) in the markup: an inline-block would let the browser
+   break before the group and strand it on its own line, while the glued
+   inline run wraps together with the title's last word. The group itself
+   is nowrap so the pills never separate. */
 .pub-badges {
-  display: inline-block;
+  display: inline;
   margin-left: 0.25rem;
   white-space: nowrap;
 }
 
 .pub-badge {
-  display: inline-block;
+  display: inline;
+  white-space: nowrap;
   font-size: var(--text-xs);
   font-weight: 600;
   padding: 0.1rem 0.45rem;

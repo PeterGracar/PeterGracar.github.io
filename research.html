@@ -102,7 +102,7 @@ mathjax: true
             {% if talk.event_url %}
               {% if talk.date %}
                 {% if talk.location %}
-                  <li data-talk-date="{{ talk.date | date: '%Y-%m-%d' }}"><strong><a href="{{ talk.event_url }}">{{ talk.title }}</a></strong>, {{ talk.location }} ({{ talk.date | date: "%Y" }}) <span class="pub-badge pub-badge--upcoming" data-talk-upcoming hidden>Upcoming</span></li>
+                  <li data-talk-date="{{ talk.date | date: '%Y-%m-%d' }}"><strong><a href="{{ talk.event_url }}">{{ talk.title }}</a></strong>, {{ talk.location }} ({{ talk.date | date: "%Y" }})&#8288;<span class="pub-badge pub-badge--upcoming" data-talk-upcoming hidden>Upcoming</span></li>
                 {% endif %}
               {% endif %}
             {% endif %}
