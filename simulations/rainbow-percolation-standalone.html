@@ -346,8 +346,10 @@
   <p class="cap">The number of visible points, the length of the visible reaches and the
   density of the arcs stay the same as the window width runs through the decades. This is
   a property of the model and not of the drawing: rescaled to the unit window, the visible
-  picture has the same law at every width. Drag inside the picture to pan, and scroll or
-  pinch to zoom.</p>
+  picture has the same law at every width. Colours mark connected components, and the
+  components are traced at a finer resolution than the drawing, so two points joined only
+  through reaches too short to draw keep a common colour. Drag inside the picture to pan,
+  and scroll or pinch to zoom.</p>
 
   <details>
     <summary>The rescaling</summary>
@@ -611,7 +613,10 @@ function gammaFn(z){
 }
 
 /* Components at parameter beta. Returns {parent, size, nedges}; if opts.edges
-   is an array it is filled with endpoint pairs, up to opts.edgeCap. */
+   is an array it is filled with endpoint pairs, up to opts.edgeCap. With
+   opts.edgeMaxT only edges discovered at a vertex of mark <= edgeMaxT are
+   recorded; an edge is discovered at its larger-mark endpoint, so this keeps
+   exactly the edges whose both endpoints have mark <= edgeMaxT. */
 function components(s, beta, opts){
   opts = opts || {};
   var n = s.n, xs = s.xs, ts = s.ts, order = s.order;
@@ -620,6 +625,7 @@ function components(s, beta, opts){
   for (i = 0; i < n; i++){ p[i] = i; sz[i] = 1; }
   for (i = 0; i < nw; i++) w[i] = 0;
   var edges = opts.edges || null, cap = opts.edgeCap === undefined ? Infinity : opts.edgeCap;
+  var maxT = opts.edgeMaxT === undefined ? Infinity : opts.edgeMaxT;
   if (edges) edges.length = 0;
   var nedges = 0;
   for (var k = 0; k < n; k++){
@@ -643,7 +649,7 @@ function components(s, beta, opts){
             p[rj] = ri; sz[ri] += sz[rj];
           }
           nedges++;
-          if (edges && nedges <= cap){ edges.push(q, j); }
+          if (edges && nedges <= cap && ts[j] <= maxT){ edges.push(q, j); }
           word ^= lb;
         }
       }
@@ -704,24 +710,45 @@ function fit(cv, hCss){
   return { ctx: ctx, w: w, h: hCss };
 }
 var PALETTE = ['#c2701f','#7a54b0','#2f8f6b','#a83f6a','#3a7bb5','#8a7a1f','#4f6f8f','#9a4b2f'];
-function compColour(root, biggest){
-  if (root === biggest) return C.outer;
-  return PALETTE[(Math.imul(root + 1, 2654435761) >>> 24) & 7];
+/* A component's colour is keyed to the position of its longest-reach member,
+   not to a union-find root index: the indices shift whenever the window or
+   the point set changes, and a colour keyed to them re-rolls even while the
+   component itself persists. The position of the same lazily generated point
+   is bit-identical across frames, so it is a stable key. */
+var _XB = new DataView(new ArrayBuffer(8));
+function xColour(x){
+  _XB.setFloat64(0, x);
+  return PALETTE[(hash3(_XB.getUint32(0), _XB.getUint32(4), 0x9e3779b9) >>> 8) & 7];
 }
 
 /* Draw one "picture" of the model: axis, reaches below, arcs above.
-   pts: {x, R} in world units. view: {x0, x1}. */
+   pts: {x, R} in world units. view: {x0, x1}. Points with R below o.drawMin
+   are used for connectivity (they are in res) but are not drawn, and edges
+   touching them are expected to be absent from the edges array already. */
 function drawPicture(g, pts, res, edges, view, o){
   var ctx = g.ctx, W = g.w, H = g.h;
   var x0 = view.x0, span = view.x1 - view.x0;
   var AX = o.axisY, sx = function(x){ return (x - x0) / span * W; };
   var n = pts.length;
+  var drawMin = o.drawMin || 0;
 
-  /* biggest component */
-  var biggest = -1, bs = -1, sizes = res ? res.size : null, p = res ? res.parent : null;
+  /* per-component leader (longest reach) and the biggest drawn component;
+     sub-resolution points join components but do not count towards "biggest" */
+  var biggest = -1, bs = -1, p = res ? res.parent : null, lX = null;
   if (res){
-    for (var i = 0; i < n; i++){ var r = find(p, i); if (sizes[r] > bs){ bs = sizes[r]; biggest = r; } }
+    var lR = new Float64Array(n), dcnt = new Int32Array(n);
+    lX = new Float64Array(n);
+    for (var i = 0; i < n; i++) lR[i] = -1;
+    for (i = 0; i < n; i++){
+      var r = find(p, i);
+      if (pts[i].R > lR[r]){ lR[r] = pts[i].R; lX[r] = pts[i].x; }
+      if (pts[i].R >= drawMin){
+        dcnt[r]++;
+        if (dcnt[r] > bs){ bs = dcnt[r]; biggest = r; }
+      }
+    }
   }
+  function compColour(root){ return root === biggest ? C.outer : xColour(lX[root]); }
 
   /* arcs */
   if (o.showEdges && edges){
@@ -729,6 +756,7 @@ function drawPicture(g, pts, res, edges, view, o){
     ctx.lineWidth = 1;
     for (var k = 0; k + 1 < edges.length; k += 2){
       var i1 = edges[k], j1 = edges[k + 1];
+      if (pts[i1].R < drawMin || pts[j1].R < drawMin) continue;
       var xa = sx(pts[i1].x), xb = sx(pts[j1].x);
       if (xb < xa){ var t = xa; xa = xb; xb = t; }
       if (xb < -40 || xa > W + 40) continue;
@@ -737,7 +765,7 @@ function drawPicture(g, pts, res, edges, view, o){
       var hgt = maxH * Math.max(0.06, Math.min(1, u));
       var root = res ? find(p, i1) : -1;
       var big = root === biggest;
-      ctx.strokeStyle = res ? compColour(root, biggest) : C.muted;
+      ctx.strokeStyle = res ? compColour(root) : C.muted;
       ctx.globalAlpha = big ? 0.62 : 0.3;
       ctx.lineWidth = big ? 1.25 : 0.9;
       ctx.beginPath();
@@ -754,6 +782,7 @@ function drawPicture(g, pts, res, edges, view, o){
     var lo = Math.log(o.reachMin), hi = Math.log(2.4);
     ctx.lineWidth = 1.3;
     for (var m = 0; m < n; m++){
+      if (pts[m].R < drawMin) continue;
       var s2 = 2 * pts[m].R / span;
       var u = (Math.log(Math.max(s2, o.reachMin * 0.999)) - lo) / (hi - lo);
       if (u < 0) u = 0; if (u > 1) u = 1;
@@ -761,7 +790,7 @@ function drawPicture(g, pts, res, edges, view, o){
       var la = sx(pts[m].x - pts[m].R), lb = sx(pts[m].x + pts[m].R);
       if (lb < 0 || la > W) continue;
       var rootm = res ? find(p, m) : -1;
-      ctx.strokeStyle = res ? compColour(rootm, biggest) : C.dust;
+      ctx.strokeStyle = res ? compColour(rootm) : C.dust;
       ctx.globalAlpha = (res && rootm === biggest) ? 0.65 : 0.4;
       ctx.beginPath(); ctx.moveTo(Math.max(la, -20), y); ctx.lineTo(Math.min(lb, W + 20), y); ctx.stroke();
       ctx.globalAlpha = 0.75;
@@ -775,10 +804,11 @@ function drawPicture(g, pts, res, edges, view, o){
   ctx.strokeStyle = C.rule; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(0, AX + 0.5); ctx.lineTo(W, AX + 0.5); ctx.stroke();
   for (var q = 0; q < n; q++){
+    if (pts[q].R < drawMin) continue;
     var px = sx(pts[q].x);
     if (px < -4 || px > W + 4) continue;
     var rq = res ? find(p, q) : -1;
-    ctx.fillStyle = res ? compColour(rq, biggest) : C.ink;
+    ctx.fillStyle = res ? compColour(rq) : C.ink;
     ctx.globalAlpha = (res && rq === biggest) ? 1 : 0.72;
     ctx.beginPath(); ctx.arc(px, AX, (res && rq === biggest) ? 2.5 : 2.0, 0, TAU); ctx.fill();
   }
@@ -979,9 +1009,13 @@ readColours();
 
   function width(){ return W0 * Math.pow(10, z); }
 
-  /* Points of the lazily generated process with reach >= EPS*W, on [x0,x1]. */
-  function gather(x0, x1, W){
-    var beta = lb / LAMBDA, T = Math.min(1, beta / (EPS * W));
+  /* Points of the lazily generated process with reach >= eps*W, on [x0,x1].
+     eps defaults to the drawing resolution EPS; the component pass below
+     calls this with a finer eps, and the work caps scale with it. */
+  function gather(x0, x1, W, eps){
+    eps = eps || EPS;
+    var lim = Math.ceil(6000 * EPS / eps);
+    var beta = lb / LAMBDA, T = Math.min(1, beta / (eps * W));
     var k0 = Math.max(0, Math.floor(Math.log(1 / T) / Math.LN2));
     var out = [], guard = 0;
     for (var k = k0; k < k0 + 54; k++){
@@ -989,7 +1023,7 @@ readColours();
       var tHi = Math.pow(2, -k), tLo = Math.pow(2, -k - 1);
       if (tLo > T) continue;
       var b0 = Math.floor(x0 / Bk), b1 = Math.floor(x1 / Bk);
-      if (b1 - b0 > 6000) break;
+      if (b1 - b0 > lim) break;
       for (var b = b0; b <= b1; b++){
         var rng = mulberry32(hash3(k, b, seed));
         var cnt = poisson(rng, LAMBDA * Bk * (tHi - tLo));
@@ -998,7 +1032,7 @@ readColours();
           var t = tLo + rng() * (tHi - tLo);
           if (t > T || x < x0 || x > x1) continue;
           out.push({ x: x, R: beta / t });
-          if (++guard > 6000) return out;
+          if (++guard > lim) return out;
         }
       }
     }
@@ -1008,19 +1042,29 @@ readColours();
   function draw(){
     var g = fit(cv, Math.max(220, Math.min(300, (cv.clientWidth || 880) * 0.30)));
     var W = width(), x0 = cx - W / 2, x1 = cx + W / 2;
-    var pts = gather(x0 - W, x1 + W, W);
+    var beta = lb / LAMBDA, i;
+    /* Connectivity is traced at a resolution K times finer than the drawing:
+       two drawn points joined only through points too small to draw would
+       otherwise land in different components, and so in different colours,
+       the moment the connecting reaches drop below the drawing resolution.
+       The refinement shrinks as lambda*beta grows, to keep the budget flat. */
+    var K = Math.max(4, Math.min(16, Math.floor(16000 * EPS / (3 * lb))));
+    var pts = gather(x0 - W, x1 + W, W, EPS / K);
     pts.sort(function(p, q){ return p.x - q.x; });
     var n = pts.length;
     var xs = new Float64Array(n), ts = new Float64Array(n), order = new Int32Array(n);
-    var beta = lb / LAMBDA, i;
     for (i = 0; i < n; i++){ xs[i] = pts[i].x; ts[i] = beta / pts[i].R; order[i] = i; }
     order.sort(function(p, q){ return ts[p] - ts[q]; });
     var samp = { n: n, xs: xs, ts: ts, order: order, L: 3 * W };
+    /* marks at most Tdraw = points with reach at least EPS*W = the drawn set;
+       the recorded (drawn) edges are exactly those between two drawn points */
+    var Tdraw = Math.min(1, beta / (EPS * W));
     var edges = [];
-    var res = components(samp, beta, { edges: edges, edgeCap: 6000 });
+    var res = components(samp, beta, { edges: edges, edgeCap: 6000, edgeMaxT: Tdraw });
 
     drawPicture(g, pts, res, edges, { x0: x0, x1: x1 },
-      { axisY: Math.round(g.h * 0.44), showEdges: true, showReach: true, reachMin: 2 * EPS * 0.85 });
+      { axisY: Math.round(g.h * 0.44), showEdges: true, showReach: true,
+        reachMin: 2 * EPS * 0.85, drawMin: beta / Tdraw });
 
     /* scale bar */
     var ctx = g.ctx, barW = g.w * 0.5, bx = 14, by = g.h - 16;
@@ -1035,7 +1079,7 @@ readColours();
     ctx.fillText(fmtLen(W / 2), bx + barW + 8, by + 4);
 
     var inWin = 0;
-    for (i = 0; i < n; i++) if (xs[i] >= x0 && xs[i] <= x1) inWin++;
+    for (i = 0; i < n; i++) if (xs[i] >= x0 && xs[i] <= x1 && ts[i] <= Tdraw) inWin++;
     ro.innerHTML =
       '<span>window width <b>' + fmtLen(W) + '</b></span>' +
       '<span>visible points <b>' + inWin + '</b></span>' +
