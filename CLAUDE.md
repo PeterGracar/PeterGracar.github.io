@@ -142,8 +142,14 @@ uploads/                    Drop-zone for arbitrary files (any type), served as
                             not be published.
 img/                        Avatar, map, figure previews (.webp)
 papers/                     PDF reprints (SPA129.pdf, waw2020.pdf, waw2023.pdf)
-banner.webp                 Social-share image used as og:image and
-                            twitter:image in _layouts/default.html.
+banner.webp                 Lipschitz-surface render (viridis) used as the
+                            light-mode site-header background in style.css
+                            and as og:image / twitter:image in
+                            _layouts/default.html.
+banner-dark.webp            Identically-cropped propagation variant of the
+                            same render (viridis + red/orange infected
+                            region), swapped in as the header background in
+                            the dark-mode block via the --header-image token.
 
 CONTENT_GUIDE.md            Human-facing content authoring guide (excluded from build)
 CNAME                       gracar.org
@@ -452,7 +458,8 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
 - **CSS**: all styles live in `style.css`. It uses CSS custom properties
   (`--color-*` and `--text-*` — the previous `--space-*` spacing tokens were
   removed as unused, plus `--pride-gradient` and `--underline-image` for the
-  June easter egg) and a `prefers-color-scheme: dark` block. Prefer extending
+  June easter egg, and `--header-image` for the per-scheme header banner) and
+  a `prefers-color-scheme: dark` block. Prefer extending
   the existing variables over adding hard-coded values.
 - **JS**: keep `site.js` small and framework-free. It is a single IIFE that
   short-circuits gracefully when the elements it looks for are absent.

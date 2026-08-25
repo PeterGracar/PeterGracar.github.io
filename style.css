@@ -12,6 +12,7 @@
   --color-accent-strong: #6f0000;
   --color-accent-soft: #cf6a54;
   --color-header-overlay: linear-gradient(120deg, rgba(20, 9, 8, 0.8), rgba(90, 18, 16, 0.45));
+  --header-image: url("banner.webp");
   --color-nav-bg: rgba(24, 15, 12, 0.66);
   --color-focus: #ff9f4a;
   --pride-gradient: linear-gradient(90deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);
@@ -49,6 +50,7 @@
     --color-accent-strong: #ff9f87;
     --color-accent-soft: #ff9f87;
     --color-header-overlay: linear-gradient(120deg, rgba(2, 5, 12, 0.86), rgba(74, 20, 19, 0.5));
+    --header-image: url("banner-dark.webp");
     --color-nav-bg: rgba(7, 9, 14, 0.72);
     --color-focus: #ffd089;
     --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.28);
@@ -142,7 +144,7 @@ button:focus-visible {
   position: relative;
   isolation: isolate;
   color: #f8f5f2;
-  background: var(--color-header-overlay), url("banner.webp") center / cover no-repeat;
+  background: var(--color-header-overlay), var(--header-image) center 20% / cover no-repeat;
 }
 
 .site-header-inner {
