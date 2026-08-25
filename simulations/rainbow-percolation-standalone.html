@@ -78,11 +78,13 @@
     }
 
     /* ── Page shell ──
-       Standalone copy: no site stylesheet, so the page frame is set here. */
+       Standalone copy: no site stylesheet, so the page frame is set here.
+       The column is capped so the figures stop growing on wide screens — a
+       little wider than the 70–72ch text blocks. */
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
     body { margin: 0; background: var(--bg); color: var(--ink); }
-    .rp { max-width: 940px; margin: 0 auto; padding: 0 20px 72px; }
+    .rp { max-width: 50rem; margin: 0 auto; padding: 0 20px 72px; }
     .rp header { padding-top: 48px; }
 
     /* ── Light / dark toggle (standalone only) ── */

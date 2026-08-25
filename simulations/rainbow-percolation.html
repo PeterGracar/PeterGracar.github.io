@@ -50,8 +50,10 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
 
     /* ── Page shell ──
        The site layout's <main> already supplies the outer gutter and the
-       vertical padding, so the tour only needs its own measure. */
-    .rp { max-width: 59rem; margin: 0 auto; }
+       vertical padding, so the tour only needs its own measure. The column is
+       capped so the figures stop growing on wide screens — a little wider
+       than the 70–72ch text blocks, never the full site width. */
+    .rp { max-width: 50rem; margin: 0 auto; }
 
     /* ── Tour chrome ──
        Every rule below is scoped to the .rp tour root so that the page can sit
