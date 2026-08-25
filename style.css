@@ -49,7 +49,7 @@
     --color-accent: #ff7558;
     --color-accent-strong: #ff9f87;
     --color-accent-soft: #ff9f87;
-    --color-header-overlay: linear-gradient(120deg, rgba(2, 5, 12, 0.86), rgba(74, 20, 19, 0.5));
+    --color-header-overlay: linear-gradient(120deg, rgba(2, 5, 12, 0.86), rgba(6, 16, 20, 0.5));
     --header-image: url("banner-dark.webp");
     --color-nav-bg: rgba(7, 9, 14, 0.72);
     --color-focus: #ffd089;
