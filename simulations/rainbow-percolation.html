@@ -50,10 +50,10 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
 
     /* ── Page shell ──
        The site layout's <main> already supplies the outer gutter and the
-       vertical padding, so the tour only needs its own measure. The column is
-       capped so the figures stop growing on wide screens — a little wider
-       than the 70–72ch text blocks, never the full site width. */
-    .rp { max-width: 50rem; margin: 0 auto; }
+       vertical padding, so the tour only needs its own measure. Text and
+       figures share this one measure — the prose fills the same width as
+       the plots, and neither grows further on wide screens. */
+    .rp { max-width: 45rem; margin: 0 auto; }
 
     /* ── Tour chrome ──
        Every rule below is scoped to the .rp tour root so that the page can sit
@@ -69,7 +69,7 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
     .rp h1 { font-family: var(--font-heading); font-size: 1.95rem; line-height: 1.2; margin: 0 0 .35rem; letter-spacing: -.015em; }
     .rp .byline { color: var(--muted); font-size: .92rem; margin: 0 0 1.1rem; }
     .rp .byline a { color: inherit; background-image: none; }
-    .rp .intro { font-size: 1.04rem; max-width: 70ch; }
+    .rp .intro { font-size: 1.04rem; }
     .rp .intro p { margin: .7rem 0; }
 
     /* .panel is also a site-wide card class in style.css, so the tour's own
@@ -89,7 +89,7 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
       border: 1px solid var(--rule); border-radius: 999px; min-width: 1.6em; height: 1.6em;
       display: inline-flex; align-items: center; justify-content: center; flex: none;
     }
-    .rp .lede { max-width: 70ch; margin: .2rem 0 1.1rem; }
+    .rp .lede { margin: .2rem 0 1.1rem; }
     .rp .stage {
       position: relative; background: var(--panel); border: 1px solid var(--rule);
       border-radius: 10px; box-shadow: 0 1px 2px var(--shadow); overflow: hidden;
@@ -121,14 +121,14 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
       color: var(--muted); font-variant-numeric: tabular-nums;
     }
     .rp .readout b { font-weight: 600; color: var(--ink); }
-    .rp .cap { font-size: .92rem; color: var(--muted); max-width: 72ch; margin: 1rem 0 0; }
+    .rp .cap { font-size: .92rem; color: var(--muted); margin: 1rem 0 0; }
     .rp .cap em { color: var(--ink); font-style: normal; font-weight: 600; }
     .rp details { margin: .9rem 0 0; font-size: .9rem; border-top: 1px dashed var(--rule); padding-top: .7rem; }
     .rp summary { cursor: pointer; color: var(--muted); font-size: .86rem; list-style: none; display: flex; gap: .4rem; align-items: center; }
     .rp summary::-webkit-details-marker { display: none; }
     .rp summary::before { content: "+"; font-weight: 700; color: var(--rp-accent); }
     .rp details[open] summary::before { content: "\2212"; }
-    .rp details .body { max-width: 72ch; color: var(--muted); margin-top: .6rem; }
+    .rp details .body { color: var(--muted); margin-top: .6rem; }
     .rp details .body p { margin: .55rem 0; }
     .rp details .body b { color: var(--ink); font-weight: 600; }
     .rp .tabs { display: flex; gap: 6px; margin: 0 0 12px; }
@@ -140,7 +140,7 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
     .rp .hidden { display: none; }
     .rp .sw { display: inline-block; width: .72em; height: .72em; border-radius: 2px; vertical-align: -.05em; margin-right: .15em; }
     .rp footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: .86rem; color: var(--muted); }
-    .rp footer p { margin: 0; max-width: 72ch; }
+    .rp footer p { margin: 0; }
     .rp footer a { color: inherit; }
     .rp #selftest {
       display: none; margin: 16px 0; padding: .6rem .9rem; border-radius: 8px; font-size: .88rem;
