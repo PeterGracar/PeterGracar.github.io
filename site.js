@@ -82,6 +82,30 @@
     });
   }
 
+  // Rewrite server-rendered (UTC) timestamps into the viewer's local time.
+  // The Liquid-rendered UTC text remains as the no-JS fallback.
+  document.querySelectorAll("time[data-localize]").forEach((node) => {
+    const stamp = new Date(node.getAttribute("datetime"));
+    if (Number.isNaN(stamp.getTime())) {
+      return;
+    }
+    const pad = (n) => String(n).padStart(2, "0");
+    let zone = "";
+    try {
+      const part = new Intl.DateTimeFormat("en-GB", { timeZoneName: "short" })
+        .formatToParts(stamp)
+        .find((p) => p.type === "timeZoneName");
+      if (part) {
+        zone = ` ${part.value}`;
+      }
+    } catch (error) {
+      /* Intl unavailable — omit the timezone label */
+    }
+    node.textContent =
+      `${stamp.getFullYear()}-${pad(stamp.getMonth() + 1)}-${pad(stamp.getDate())} ` +
+      `${pad(stamp.getHours())}:${pad(stamp.getMinutes())}:${pad(stamp.getSeconds())}${zone}`;
+  });
+
   const tooltipButtons = Array.from(document.querySelectorAll(".hover-image"));
   if (!tooltipButtons.length) {
     return;

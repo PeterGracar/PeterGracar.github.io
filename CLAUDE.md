@@ -279,6 +279,10 @@ resolve to `/simulations/style.css`, etc., and 404.
 - Highlights the active nav item by matching `data-page-link` against
   `body[data-page]`.
 - Injects the current year into any `[data-year]` node (used in the footer).
+- Rewrites any `time[data-localize]` element (currently only the Build info
+  stamp on `secret.html`) into the viewer's local time, parsed from the
+  element's ISO `datetime` attribute; the server-rendered UTC text remains as
+  the no-JS fallback.
 - Pride Month easter egg: during June (`getMonth() === 5`) it adds a `pride`
   class to `<body>` and reveals the footer `[data-pride-toggle]` button. CSS
   keyed off `body.pride` draws thin rainbow strips (the `--pride-gradient`
@@ -420,7 +424,8 @@ files must be kept in sync with each other.
   and never committed, so generating it does not churn history; absent it (e.g.
   a plain local build), entries simply render with no date.
   It also renders a small "Build info" panel using `site.time` (the build
-  timestamp, always available) and `site.github.build_revision` /
+  timestamp, always available; Liquid renders it in UTC and `site.js` rewrites
+  it into the viewer's local time via the `time[data-localize]` hook) and `site.github.build_revision` /
   `site.github.repository_nwo` from the `jekyll-github-metadata` plugin (which
   GitHub Pages ships enabled by default — not a new dependency). The commit
   block is guarded by `{% if site.github.build_revision %}` so local builds
