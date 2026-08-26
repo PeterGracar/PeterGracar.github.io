@@ -1,6 +1,6 @@
 ---
 code: "MATH3500"
-title: "Probability and Statistics"
+title: "Stochastic Calculus and Derivative Pricing"
 role: "Tutor"
 active: false
 order: 50
