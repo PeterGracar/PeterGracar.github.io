@@ -1,5 +1,5 @@
 ---
-code: "MATH3001"
+code: "MATH3002"
 title: "Project in Mathematics"
 role: "Supervisor"
 active: true
