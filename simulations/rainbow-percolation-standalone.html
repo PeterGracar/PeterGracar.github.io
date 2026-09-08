@@ -328,7 +328,7 @@
   <div class="controls">
     <div class="ctl">
       <label for="in-zoom">window</label>
-      <input id="in-zoom" type="range" min="0" max="12" step="0.002" value="0">
+      <input id="in-zoom" type="range" min="0" max="30" step="0.002" value="0">
       <output id="out-zoom">1</output>
     </div>
     <div class="ctl">
@@ -507,7 +507,7 @@
   <div class="controls">
     <div class="ctl">
       <label for="in-ozoom">window</label>
-      <input id="in-ozoom" type="range" min="0" max="13" step="0.002" value="0">
+      <input id="in-ozoom" type="range" min="0" max="30" step="0.002" value="0">
       <output id="out-ozoom">200</output>
     </div>
     <div class="ctl">
@@ -1256,9 +1256,9 @@ readColours();
   });
   function step(t){
     if (!playing) return;
-    if (lastT){ z += (t - lastT) / 1000 * 0.55; }
+    if (lastT){ z += (t - lastT) / 1000 * 0.8; }
     lastT = t;
-    if (z >= 12){ z = 12; stop(); }
+    if (z >= 30){ z = 30; stop(); }
     inZ.value = String(z);
     draw();
     if (playing) requestAnimationFrame(step);
@@ -1279,7 +1279,7 @@ readColours();
     var rect = cv.getBoundingClientRect();
     var frac = (ev.clientX - rect.left) / rect.width - 0.5;
     var anchor = cx + frac * width();
-    z = Math.min(12, Math.max(0, z + ev.deltaY * 0.0016));
+    z = Math.min(30, Math.max(0, z + ev.deltaY * 0.0016));
     cx = anchor - frac * width();
     inZ.value = String(z);
     schedule();
@@ -1663,7 +1663,7 @@ readColours();
   var btnPlay = document.getElementById('btn-oplay');
   var ckBal = document.getElementById('ck-obal');
 
-  var EPS = 1 / 140, W0 = 200, LAMBDA = 1, ZMAX = 13;
+  var EPS = 1 / 140, W0 = 200, LAMBDA = 1, ZMAX = 30;
   var K_SWEEP = 1000, K_FINE = 8000, MAX_SHELLS = 14, SHELL_BUDGET = 1.2e6, TOP_REPS = 8;
   var seed = 424242, z = 0, lb = 2, playing = false, lastT = 0;
 
@@ -2053,7 +2053,7 @@ readColours();
   });
   function step(t){
     if (!playing) return;
-    if (lastT){ z += (t - lastT) / 1000 * 0.55; }
+    if (lastT){ z += (t - lastT) / 1000 * 0.8; }
     lastT = t;
     if (z >= ZMAX){ z = ZMAX; stop(); }
     inZ.value = String(z);
