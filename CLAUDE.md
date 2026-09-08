@@ -398,17 +398,29 @@ at `/simulations/<name>.html`. There are two flavours:
     rather than turning `--outer`). Because the graph on a subset of the
     points is a subgraph, every recorded connection is real, so a colour
     never splits while zooming or panning and two colours become one when
-    a connection is found. A component wears the colour of its point
-    nearest the origin (`nearX` per root), a function of its point set
-    alone, so colours are independent of discovery order and a window on
-    the origin never recolours as it widens. Nothing is forgotten: the
-    `Map` of recent points is flushed every `FLUSH_AT` entries into a
+    a connection is found. The colours are a colouring of the overlap
+    graph of the components: each root carries its span (`lo`/`hi`) and
+    its point nearest the origin (`nearX`); a component is coloured the
+    first time it is drawn (`ensureColour` → `pick`), taking the first
+    colour, counted from a hash of `nearX`, that no coloured component
+    overlapping its span wears, so overlapping components never share a
+    colour while distant ones may. Only coloured roots are indexed
+    (`reg`, one list per octave of span length, sorted by `lo`, queried
+    by `overlapping`). A merge keeps the colour of the part nearer the
+    origin (a coloured part beats an uncoloured one), and where the merged
+    span reaches outside the span that already wore the colour (including
+    the gap between the two parts), a coloured component of that colour
+    met there is in conflict and the smaller of the two is recoloured
+    (`repairs`). Nothing is forgotten:
+    the `Map` of recent points is flushed every `FLUSH_AT` entries into a
     sorted typed-array archive (`arcX` / `arcNode`, twelve bytes a point,
     binary-searched by `lookup`), so zooming back in finds every point at
     its old node. Do **not** turn this back into a per-frame recompute
     either. `?selftest=1` checks the atlas against brute force in the exact
-    regime, that partition and colours are independent of cell order, and
-    that no colour splits or changes over six decades out and back.
+    regime, that partition, spans and anchors are independent of cell
+    order, and that over six decades out and back no colour splits, no two
+    overlapping drawn components share a colour, the index matches a
+    brute-force overlap query, and nothing changes on the way back.
   - Every rule in its `<style>` block is **scoped to the `.rp` tour root**
     (`#rp`), because the tour reuses element and class names the site
     stylesheet already owns — `header`, `footer`, `h1`, `h2` and especially

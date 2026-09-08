@@ -347,12 +347,14 @@
   <p class="cap">The number of visible points, the length of the visible reaches and the
   density of the arcs stay the same as the window width runs through the decades. This is
   a property of the model and not of the drawing: rescaled to the unit window, the visible
-  picture has the same law at every width. Colours mark connected components. They are
-  decided once, at a resolution finer than the drawing, and remembered as the window
-  moves, so two points joined only through reaches too short to draw keep a common colour
-  and a colour never splits as you zoom. Two colours become one when a connection between
-  them is found, and the colour that stays is that of the point nearest the origin. Drag
-  inside the picture to pan, and scroll or pinch to zoom.</p>
+  picture has the same law at every width. Colours mark connected components, and two
+  components whose spans overlap never share one. The components are traced once, at a
+  resolution finer than the drawing, and remembered as the window moves, so two points
+  joined only through reaches too short to draw keep a common colour and a colour never
+  splits as you zoom. Two colours become one when a connection between them is found; the
+  colour that stays is that of the point nearest the origin, and a component that the
+  merged span now overlaps in that colour is given a new one. Drag inside the picture to
+  pan, and scroll or pinch to zoom.</p>
 
   <details>
     <summary>The rescaling</summary>
@@ -1204,14 +1206,18 @@ readColours();
    is the whole graph. The drawn edges of each frame are merged in as
    well, so an arc always joins two points of one colour.
 
-   A component wears the colour of its point nearest the origin. That is
-   a function of its point set alone, so the colours do not depend on the
-   order in which the cells were found, and a colour changes only when a
-   component gains a point nearer the origin than any it had, which a
-   window that contains the origin never brings as it widens. Nothing is
-   ever forgotten: recent points sit in a Map that is flushed now and then
-   into a sorted archive, twelve bytes a point, so zooming back in finds
-   every point at its old node.
+   Colours are a colouring of the overlap graph of the components: two
+   components whose spans (the hull of their points) overlap never share
+   one. A component is coloured the first time it is drawn, with the first
+   colour, counted from a hash of its point nearest the origin, that no
+   coloured component overlapping its span already wears; components far
+   apart may share a colour. Only coloured components are indexed, by the
+   octave of their span length, so the checks are cheap. A merge keeps the
+   colour of the part nearer the origin, and where the merged span now
+   overlaps a component of that colour the smaller of the two is given a
+   new one. Nothing is ever forgotten: recent points sit in a Map that is
+   flushed now and then into a sorted archive, twelve bytes a point, so
+   zooming back in finds every point at its old node.
    ===================================================================== */
 (function(){
   var cv = document.getElementById('cv-zoom');
@@ -1246,7 +1252,9 @@ readColours();
     var flushAt = opts.flushAt || FLUSH_AT;
     var at = { key: seed + '/' + lb, seed: seed, lb: lb, beta: beta, K: K, KC: KC,
                n: 0, parent: new Int32Array(cap), size: new Int32Array(cap), nearX: new Float64Array(cap),
+               lo: new Float64Array(cap), hi: new Float64Array(cap), col: new Int8Array(cap),
                index: new Map(), arcX: new Float64Array(0), arcNode: new Int32Array(0),
+               reg: new Map(), coloured: 0, repairs: 0,
                cells: new Set(), work: 0, merges: 0, flushes: 0 };
     var gopts = { seed: seed, lambda: LAMBDA, beta: beta, budget: Math.ceil(6 * lb * KC) + 2000 };
 
@@ -1255,7 +1263,11 @@ readColours();
       var p = new Int32Array(cap); p.set(at.parent); at.parent = p;
       var s = new Int32Array(cap); s.set(at.size); at.size = s;
       var q = new Float64Array(cap); q.set(at.nearX); at.nearX = q;
+      var l = new Float64Array(cap); l.set(at.lo); at.lo = l;
+      var h = new Float64Array(cap); h.set(at.hi); at.hi = h;
+      var c = new Int8Array(cap); c.set(at.col); at.col = c;
     }
+    function nearer(u, v){ return Math.abs(u) < Math.abs(v) || (Math.abs(u) === Math.abs(v) && u < v); }
     /* The node of the point at x, or -1. Recent points sit in a Map; when
        it grows past flushAt it is emptied into a sorted archive that is
        never trimmed, so a point once seen is always found again. Positions
@@ -1271,7 +1283,7 @@ readColours();
       if (i >= 0) return i;
       if (at.n === cap) grow();
       i = at.n++;
-      at.parent[i] = i; at.size[i] = 1; at.nearX[i] = x;
+      at.parent[i] = i; at.size[i] = 1; at.nearX[i] = x; at.lo[i] = x; at.hi[i] = x; at.col[i] = -1;
       at.index.set(x, i);
       if (at.index.size >= flushAt) at.flush();
       return i;
@@ -1292,19 +1304,99 @@ readColours();
       at.arcX = newX; at.arcNode = newN; at.index = new Map(); at.flushes++;
     };
     at.root = function(i){ return find(at.parent, i); };
-    /* A component wears the colour of its point nearest the origin, a
-       function of its point set alone: no order of discovery is involved,
-       and a colour changes only when a component gains a point nearer the
-       origin than any it had, which a window that contains the origin never
-       does as it widens. */
-    at.colour = function(root){ return PALETTE[xIndex(at.nearX[root])]; };
+    /* ---- the colouring: coloured components, indexed by span ----
+       The index holds one entry per coloured root, in a list per octave
+       of the span length sorted by the span's left end, so the coloured
+       components meeting [a, b] are those with lo in [a - 2^j, b] and
+       hi >= a in each list. A root's entry is removed before its span or
+       colour changes, so every entry is current. */
+    function spanOct(lo, hi){ var len = hi - lo; return len <= 1 ? 0 : Math.ceil(Math.log(len) / Math.LN2); }
+    function lowerLo(list, v){
+      var l = 0, h = list.length;
+      while (l < h){ var m = (l + h) >> 1; if (list[m].lo < v) l = m + 1; else h = m; }
+      return l;
+    }
+    at.register = function(r){
+      var e = { lo: at.lo[r], hi: at.hi[r], root: r }, j = spanOct(e.lo, e.hi), list = at.reg.get(j);
+      if (!list){ list = []; at.reg.set(j, list); }
+      list.splice(lowerLo(list, e.lo), 0, e);
+    };
+    at.unregister = function(r, lo, hi){
+      var list = at.reg.get(spanOct(lo, hi));
+      if (!list) return;
+      for (var k = lowerLo(list, lo); k < list.length && list[k].lo === lo; k++){
+        if (list[k].root === r){ list.splice(k, 1); return; }
+      }
+    };
+    /* the coloured roots whose span meets [a, b], other than except, appended to out */
+    at.overlapping = function(a, b, except, out){
+      at.reg.forEach(function(list, j){
+        var w = Math.pow(2, j + 1);
+        for (var k = lowerLo(list, a - w); k < list.length && list[k].lo <= b; k++){
+          var e = list[k];
+          if (e.hi >= a && e.root !== except) out.push(e.root);
+        }
+      });
+      return out;
+    };
+    /* the first colour, counted from the hash of the point nearest the
+       origin, that no coloured component overlapping r wears; if all eight
+       are taken, the one worn by the fewest */
+    at.pick = function(r){
+      var nb = at.overlapping(at.lo[r], at.hi[r], r, []), used = 0, cnt = [0, 0, 0, 0, 0, 0, 0, 0], i, c;
+      for (i = 0; i < nb.length; i++){ c = at.col[nb[i]]; if (c >= 0){ used |= 1 << c; cnt[c]++; } }
+      var start = xIndex(at.nearX[r]), best = -1;
+      for (i = 0; i < 8; i++){
+        c = (start + i) & 7;
+        if (!(used & (1 << c))) return c;
+        if (best < 0 || cnt[c] < cnt[best]) best = c;
+      }
+      return best;
+    };
+    at.setColour = function(r, c){
+      if (at.col[r] >= 0) at.unregister(r, at.lo[r], at.hi[r]); else if (c >= 0) at.coloured++;
+      at.col[r] = c;
+      if (c >= 0) at.register(r);
+    };
+    at.ensureColour = function(r){ if (at.col[r] < 0) at.setColour(r, at.pick(r)); return at.col[r]; };
+    at.colour = function(r){ return PALETTE[at.col[r] >= 0 ? at.col[r] : xIndex(at.nearX[r])]; };
+    /* Join two components. The tree root is the larger; the colour and the
+       nearest point come from the part nearer the origin, a coloured part
+       beating an uncoloured one. Where the merged span reaches outside the
+       span that already wore the colour, a coloured component of the same
+       colour met there is now in conflict, and the smaller of the two
+       takes a fresh colour. */
     at.union = function(a, b){
       a = find(at.parent, a); b = find(at.parent, b);
       if (a === b) return;
       if (at.size[a] < at.size[b]){ var t = a; a = b; b = t; }
-      var xa = at.nearX[a], xb = at.nearX[b];
-      if (Math.abs(xb) < Math.abs(xa) || (Math.abs(xb) === Math.abs(xa) && xb < xa)) at.nearX[a] = xb;
+      var xa = at.nearX[a], xb = at.nearX[b], bNearer = nearer(xb, xa);
+      var p = bNearer ? b : a, q = bNearer ? a : b;
+      if (at.col[p] < 0 && at.col[q] >= 0){ t = p; p = q; q = t; }
+      var c = at.col[p];
+      var loP = at.lo[p], hiP = at.hi[p], loQ = at.lo[q], hiQ = at.hi[q];
+      if (at.col[a] >= 0) at.unregister(a, at.lo[a], at.hi[a]);
+      if (at.col[b] >= 0) at.unregister(b, at.lo[b], at.hi[b]);
+      if (at.col[a] >= 0 && at.col[b] >= 0) at.coloured--;
       at.parent[b] = a; at.size[a] += at.size[b]; at.merges++;
+      if (bNearer) at.nearX[a] = xb;
+      at.lo[a] = Math.min(loP, loQ); at.hi[a] = Math.max(hiP, hiQ);
+      at.col[a] = c;
+      if (c < 0) return;
+      at.register(a);
+      /* new ground for the colour: the merged span outside the span that
+         wore it, which includes the gap between the two parts even when
+         both parts wore the colour already */
+      var found = [];
+      if (at.lo[a] < loP) at.overlapping(at.lo[a], loP, a, found);
+      if (at.hi[a] > hiP) at.overlapping(hiP, at.hi[a], a, found);
+      for (var i = 0; i < found.length; i++){
+        var N = found[i];
+        if (at.col[N] !== c || find(at.parent, N) !== N) continue;
+        at.repairs++;
+        if (at.size[N] > at.size[a]){ at.setColour(a, at.pick(a)); return; }
+        at.setColour(N, at.pick(N));
+      }
     };
     /* merge the partition of a sample whose points are the given nodes */
     at.merge = function(res, ids){
@@ -1356,7 +1448,7 @@ readColours();
     at.merge(res, ids);
     for (i = 0; i < n; i++){
       var r = at.root(ids[i]), g = local.get(r);
-      if (g === undefined){ g = colours.length; local.set(r, g); colours.push(at.colour(r)); }
+      if (g === undefined){ g = colours.length; local.set(r, g); at.ensureColour(r); colours.push(at.colour(r)); }
       group[i] = g;
     }
     return { group: group, colours: colours };
@@ -2384,50 +2476,66 @@ readColours();
       if (i2 < 0){ ordBad++; return; }
       var r1 = A1.root(i1), r2 = A2.root(i2);
       if (ordMap[r1] === undefined) ordMap[r1] = r2; else if (ordMap[r1] !== r2) ordBad++;
-      if (A1.colour(r1) !== A2.colour(r2)) ordCol++;
+      if (A1.nearX[r1] !== A2.nearX[r2] || A1.lo[r1] !== A2.lo[r2] || A1.hi[r1] !== A2.hi[r2]) ordCol++;
     });
-    check('atlas partition and colours are independent of the order of its cells',
-          ordBad === 0 && ordCol === 0 && A1.n === A2.n, A1.n + ' points, ' + ordBad + ' bad, ' + ordCol + ' colours differ');
-    /* a colour never splits, and changes only when its component gains a
-       point nearer the origin: out six decades and back, with the archive
-       flushed often so that the lookups go through it, two drawn points of
-       one group stay in one group, a drawn point that changes colour has a
-       nearer point in its component than before, and nothing changes at
-       all on the way back */
-    var Zt = P2.makeAtlas(424242, 2, { flushAt: 4096 }), prevG = null, splits = 0, recol = 0, unexplained = 0, back = 0;
-    var frames = 0, tz = performance.now(), zPath = [], outFrames = 0;
-    for (var zz = 0; zz <= 6; zz += 0.05){ zPath.push(zz); outFrames++; }
-    for (zz = 6; zz >= 0; zz -= 0.05) zPath.push(zz);
-    function nearer(a, b){ return Math.abs(a) < Math.abs(b) || (Math.abs(a) === Math.abs(b) && a < b); }
-    for (var zi = 0; zi < zPath.length; zi++){
-      var Wz2 = P2.W0 * Math.pow(10, zPath[zi]);
-      P2.ensureCells(Zt, -1.5 * Wz2, 1.5 * Wz2, Wz2, Infinity);
-      var pz = gatherPoints(-1.5 * Wz2, 1.5 * Wz2, P2.EPS * Wz2, { seed: 424242, lambda: 1, beta: 2, budget: 6000 });
-      var sz = toSample(pz, 2), rz = components(sz, 2, {}), cz = P2.colourise(Zt, pz, rz);
-      var cur = new Map();
-      for (var iz = 0; iz < pz.length; iz++){
-        cur.set(pz[iz].x, [cz.group[iz], cz.colours[cz.group[iz]], Zt.nearX[Zt.root(Zt.lookup(pz[iz].x))]]);
+    check('atlas partition, spans and anchors are independent of the order of its cells',
+          ordBad === 0 && ordCol === 0 && A1.n === A2.n, A1.n + ' points, ' + ordBad + ' bad, ' + ordCol + ' spans or anchors differ');
+    /* a colour never splits, overlapping components never share one, and
+       the colours hold on the way back: out six decades and back at two
+       values of λβ, with the archive flushed often so that the lookups go
+       through it, two drawn points of one group stay in one group, no two
+       drawn groups with overlapping spans wear one colour, the coloured
+       index agrees with a brute-force overlap query, and nothing changes
+       on the way back */
+    [0.5, 2].forEach(function(lbz){
+      var Zt = P2.makeAtlas(424242, lbz, { flushAt: 4096 }), prevG = null, splits = 0, recol = 0, clashes = 0, back = 0;
+      var frames = 0, tz = performance.now(), zPath = [], outFrames = 0, groupsMax = 0, idxBad = 0;
+      for (var zz = 0; zz <= 6; zz += 0.05){ zPath.push(zz); outFrames++; }
+      for (zz = 6; zz >= 0; zz -= 0.05) zPath.push(zz);
+      for (var zi = 0; zi < zPath.length; zi++){
+        var Wz2 = P2.W0 * Math.pow(10, zPath[zi]);
+        P2.ensureCells(Zt, -1.5 * Wz2, 1.5 * Wz2, Wz2, Infinity);
+        var pz = gatherPoints(-1.5 * Wz2, 1.5 * Wz2, P2.EPS * Wz2, { seed: 424242, lambda: 1, beta: lbz, budget: 6000 });
+        var sz = toSample(pz, lbz), rz = components(sz, lbz, {}), cz = P2.colourise(Zt, pz, rz);
+        var cur = new Map(), roots = [];
+        for (var iz = 0; iz < pz.length; iz++){
+          cur.set(pz[iz].x, [cz.group[iz], cz.colours[cz.group[iz]]]);
+          var rr = Zt.root(Zt.lookup(pz[iz].x));
+          if (roots[cz.group[iz]] === undefined) roots[cz.group[iz]] = rr;
+        }
+        groupsMax = Math.max(groupsMax, roots.length);
+        for (var g1 = 0; g1 < roots.length; g1++) for (var g2 = g1 + 1; g2 < roots.length; g2++){
+          var r1 = roots[g1], r2 = roots[g2];
+          if (Zt.lo[r1] <= Zt.hi[r2] && Zt.lo[r2] <= Zt.hi[r1] && cz.colours[g1] === cz.colours[g2]) clashes++;
+        }
+        if (zi % 40 === 0){
+          /* the index against brute force over the drawn roots */
+          var rq = roots[0], viaIdx = {}, hits = Zt.overlapping(Zt.lo[rq], Zt.hi[rq], rq, []);
+          hits.forEach(function(h){ viaIdx[h] = 1; });
+          roots.forEach(function(r0){
+            if (r0 === rq || Zt.col[r0] < 0) return;
+            var ov = Zt.lo[r0] <= Zt.hi[rq] && Zt.lo[rq] <= Zt.hi[r0];
+            if (ov !== !!viaIdx[r0]) idxBad++;
+          });
+        }
+        if (prevG){
+          var seenG = {};
+          prevG.forEach(function(gp, x){
+            var gc = cur.get(x);
+            if (gc === undefined) return;
+            if (seenG[gp[0]] === undefined) seenG[gp[0]] = gc[0]; else if (seenG[gp[0]] !== gc[0]) splits++;
+            if (gp[1] !== gc[1]){ recol++; if (zi >= outFrames) back++; }
+          });
+        }
+        prevG = cur; frames++;
       }
-      if (prevG){
-        var seenG = {};
-        prevG.forEach(function(gp, x){
-          var gc = cur.get(x);
-          if (gc === undefined) return;
-          if (seenG[gp[0]] === undefined) seenG[gp[0]] = gc[0]; else if (seenG[gp[0]] !== gc[0]) splits++;
-          if (gp[1] !== gc[1]){
-            recol++;
-            if (!nearer(gc[2], gp[2])) unexplained++;
-            if (zi >= outFrames) back++;
-          }
-        });
-      }
-      prevG = cur; frames++;
-    }
-    check('atlas colours never split, change only on gaining a nearer point, and hold on the way back',
-          splits === 0 && unexplained === 0 && back === 0,
-          frames + ' frames, ' + Zt.n + ' nodes, ' + Zt.arcX.length + ' archived in ' + Zt.flushes + ' flushes, ' +
-          Zt.merges + ' merges, ' + splits + ' splits, ' + recol + ' recoloured by a merge (' + unexplained +
-          ' unexplained, ' + back + ' on the way back); ' + Math.round(performance.now() - tz) + ' ms');
+      check('atlas colours at λβ=' + lbz + ': never split, never shared by overlapping components, and hold on the way back',
+            splits === 0 && clashes === 0 && back === 0 && idxBad === 0,
+            frames + ' frames, up to ' + groupsMax + ' drawn groups, ' + Zt.n + ' nodes, ' + Zt.arcX.length + ' archived in ' +
+            Zt.flushes + ' flushes, ' + Zt.coloured + ' coloured, ' + Zt.merges + ' merges, ' + Zt.repairs + ' repairs, ' +
+            splits + ' splits, ' + clashes + ' clashes, ' + idxBad + ' index errors, ' + recol +
+            ' recoloured (' + back + ' on the way back); ' + Math.round(performance.now() - tz) + ' ms');
+    });
 
     /* ---- panel 4: the shared generator and the tower ---- */
     var P4 = window.__panel4, go = { seed: 424242, lambda: 1, beta: 2, budget: Infinity };
