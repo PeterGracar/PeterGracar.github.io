@@ -76,11 +76,13 @@ simulations/                All interactive simulation HTML lives here, and is
                               simulations/detection-percolation-discontinuous.html.
   rainbow-percolation.html    Embedded simulation: an interactive companion to
                               the paper *Rainbow percolation*,
-                              built as a scrolling document of three figure
+                              built as a scrolling document of four figure
                               panels rather than a full-viewport app — the
                               model and its connection rule, its scale
-                              invariance, and the rainbows / cut points behind
-                              the lower bound. Jekyll-wrapped, linked from
+                              invariance, the rainbows / cut points behind
+                              the lower bound, and the rainbows around the
+                              origin at every scale, with the separating ones
+                              that cut the origin's component off. Jekyll-wrapped, linked from
                               research.html at
                               simulations/rainbow-percolation.html.
   contact-process-standalone.html   Self-contained (MathJax via CDN for all but
@@ -357,10 +359,29 @@ at `/simulations/<name>.html`. There are two flavours:
 
 - **Rainbow percolation** — the `rainbow-percolation.html` /
   `-standalone.html` pair is unlike the others: it is a **scrolling document**
-  of three figure panels (the model and its connection rule; the same picture
-  at every scale; rainbows and cut points), not a full-viewport app, so the
+  of four figure panels (the model and its connection rule; the same picture
+  at every scale; rainbows and cut points; rainbows around the origin), not a
+  full-viewport app, so the
   Jekyll copy keeps the site header, nav and footer and simply places the tour
   inside `<main id="main-content">`. Consequences for editing:
+  - Panels 2 and 4 share one lazy generator, `gatherPoints(x0, x1, minR, o)`
+    in the simulation core (cells keyed by dyadic mark band × position block,
+    seeded by `hash3(k, b, seed)`, so a point's position is bit-identical
+    across calls); `toSample`, `arcHeight`/`arcPath` and `fmtLen` are shared
+    the same way. Panel 4's colours come from a **tower** computed once per
+    (sample, λβ) and frozen: the line is walked outward octave by octave, a
+    sweep at resolution 1/`K_SWEEP` of the octave joins each new
+    origin-crossing arch to the current component whenever it finds a
+    connection (a connection on a subset of the points is real), and each
+    remaining break candidate is confirmed in its own window under the arch
+    with points down to 1/`K_FINE` of their distance from the origin. That is
+    justified by the crossing lemma (a point under an arch with an edge
+    leaving the arch's span is joined to an endpoint of the arch, so the
+    verdict depends only on the points under the arch) — do **not** turn it
+    back into a per-frame recompute, which is what makes colours flip while
+    zooming. Only "separated" verdicts can be wrong (by missing a chain below
+    the resolution); `?selftest=1` re-checks every cut at four times the
+    resolution and compares the tower with brute force in the exact regime.
   - Every rule in its `<style>` block is **scoped to the `.rp` tour root**
     (`#rp`), because the tour reuses element and class names the site
     stylesheet already owns — `header`, `footer`, `h1`, `h2` and especially
@@ -373,7 +394,7 @@ at `/simulations/<name>.html`. There are two flavours:
     colours (`--outer`, `--inner`, `--forbid`, `--escape`, `--ok`, `--dust`,
     `--hi`) carry meaning in the drawings and are deliberately left as the
     author chose them — do not fold them into the site accent.
-  - `?panel=model|zoom|rainbow|cuts` hides everything but one figure so a
+  - `?panel=model|zoom|rainbow|cuts|origin` hides everything but one figure so a
     single panel can be iframed (~620px tall); `?selftest=1` runs brute-force
     cross-checks of the simulation core and prints a pass/fail banner. The
     embed-mode code queries **within `#rp`** so that it never hides the site's

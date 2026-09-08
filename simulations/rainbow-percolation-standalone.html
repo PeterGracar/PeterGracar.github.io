@@ -6,9 +6,9 @@
   No libraries, no external assets, no build step: every picture is simulated
   in the browser from a seeded generator.
 
-  To embed a single panel, add ?panel=model, ?panel=zoom, ?panel=rainbow or
-  ?panel=cuts; everything else on the page is then hidden, so an iframe only
-  needs the height of that one figure (roughly 620px):
+  To embed a single panel, add ?panel=model, ?panel=zoom, ?panel=rainbow,
+  ?panel=cuts or ?panel=origin; everything else on the page is then hidden,
+  so an iframe only needs the height of that one figure (roughly 620px):
 
       <iframe src="/simulations/rainbow-percolation.html?panel=model"
               style="width:100%;height:620px;border:0"
@@ -235,7 +235,8 @@
   other.</p>
   <p>That is the model. The question is whether the resulting graph has an infinite
   connected component. The panels below simulate the model, its behaviour under
-  rescaling, and the two structures the lower bound in the paper uses.</p>
+  rescaling, the two structures the lower bound in the paper uses, and the rainbows
+  around the origin at every scale, with the ones that cut a component off.</p>
 </div>
 
 <div id="selftest"></div>
@@ -492,6 +493,84 @@
   </div>
 </section>
 
+<!-- ============================== PANEL 4 ============================== -->
+<section class="panel" id="panel-origin">
+  <h2><span class="num">4</span> Rainbows around the origin</h2>
+  <p class="lede">The window of panel 2, pinned to the origin. The arches over the
+  origin are coloured by the component the origin belongs to at that scale, so a
+  change of colour is a component cut off. Where two nested arches satisfy the
+  definition of panel 3 they are drawn as a rainbow, pale when both arches lie in one
+  component and solid when the outer arch cuts the inner one off.</p>
+
+  <div class="stage"><canvas id="cv-origin" aria-label="Arches over the origin at an adjustable scale, with rainbows and cut-off components marked"></canvas></div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="in-ozoom">window</label>
+      <input id="in-ozoom" type="range" min="0" max="13" step="0.002" value="0">
+      <output id="out-ozoom">200</output>
+    </div>
+    <div class="ctl">
+      <label for="in-obeta">&lambda;&beta;</label>
+      <input id="in-obeta" type="range" min="-0.7" max="0.9" step="0.004" value="0.30">
+      <output id="out-obeta">2.00</output>
+    </div>
+    <div class="btnrow">
+      <button class="btn" id="btn-oplay" type="button" aria-pressed="false">zoom out</button>
+      <button class="btn" id="btn-oreset" type="button">reset</button>
+      <button class="btn" id="btn-oresample" type="button">new sample</button>
+      <label class="chk"><input type="checkbox" id="ck-obal" checked> require balance</label>
+    </div>
+  </div>
+
+  <div class="readout" id="ro-origin"></div>
+
+  <p class="cap">Arches of one colour lie in one connected component, and the first
+  arch of a new colour is the outer arch of a <em>separating rainbow</em>: nothing
+  under it connects to it, so the component below is trapped inside it and is finite.
+  The solid rainbow joins that arch to the longest arch of the component it cuts off,
+  and a tick on the axis marks its feet. Below the critical value the colours keep
+  changing as the window widens. Above it they stop, once the origin belongs to the
+  infinite component. The checkbox drops the balance condition of the definition;
+  the cuts do not depend on it, only which pairs count as rainbows. The picture
+  starts on the same line as panel 2. Scroll to zoom, or press zoom out.</p>
+
+  <details>
+    <summary>What the colours certify</summary>
+    <div class="body">
+      <p>If two edges <b>{a,b}</b> and <b>{u,v}</b> cross, with
+      <b>a &lt; u &lt; b &lt; v</b>, then <b>b &minus; u</b> is shorter than both, so
+      <b>{u,b}</b> is an edge as well. Take an arch <b>{a,b}</b> over the origin. Any
+      point between <b>a</b> and <b>b</b> with an edge that leaves <b>[a,b]</b> crosses
+      the arch, and so is joined to <b>a</b> or to <b>b</b> directly. Whether the
+      component of a smaller arch reaches the outer arch is therefore decided by the
+      points under the outer arch alone, and if it does not reach it, that component
+      cannot leave <b>(a,b)</b> at all: it is finite. The same argument shows that the
+      arches over the origin fall into components that are contiguous in length, which
+      is what makes the colours a sequence.</p>
+      <p>The colours are computed once for each sample and each value of
+      <b>&lambda;&beta;</b> and are never revisited, so nothing recolours as the window
+      widens. The line is walked outward octave by octave. A cheap pass over the points
+      with reach at least <b>1/1000</b> of the octave joins each new arch to the current
+      component whenever it finds a connection, and a connection found on a subset of
+      the points is a real one. Each candidate for a cut is then checked in its own
+      window under the arch, with the points down to <b>1/8000</b> of their distance
+      from the origin. Only that second verdict can be wrong, and only in one direction:
+      it can miss a chain through points below that resolution, never invent one. A
+      marked connection is always right; a marked cut can in rare cases be spurious,
+      most plausibly near <b>&lambda;&beta; &asymp; 2</b>, where every scale contributes
+      to connectivity. A cut that could not be checked within the point budget, which
+      happens only after a very long gap without any arch, is drawn dashed.</p>
+      <p>In the integer skeleton of panel 3, the points whose reach is at least a fixed
+      fraction of a large window form, at that scale, the picture of the continuum with
+      <b>&lambda;&beta; = x<sub>m</sub> &lt; 1</b>, the regime in which every component
+      is finite and the cuts never stop. In the continuum the parameter can be raised
+      past the threshold, and the cuts stop once the origin sits in the infinite
+      component.</p>
+    </div>
+  </details>
+</section>
+
 <footer>
   <p>Companion to <b>Rainbow percolation</b> by Peter Gracar and Benjamin Lees. Every
   picture on this page is simulated in the browser from a seeded generator, by the
@@ -560,6 +639,63 @@ function poisson(rng, mean){
   var L = Math.exp(-mean), k = 0, p = 1;
   do { k++; p *= rng(); } while (p > L);
   return k - 1;
+}
+
+/* Points of the lazily generated process on [x0,x1) with reach >= minR.
+   Generation is lazy over (dyadic mark band k) x (position block b), each
+   cell seeded by its index, so the whole line exists implicitly and the
+   same point comes back bit-identical from any call whose range covers
+   it. Bands run from the largest reach downward, so if the budget is ever
+   hit it is the smallest reaches that are dropped. o = {seed, lambda,
+   beta, budget}; budget bounds both the blocks scanned in one band and the
+   points returned. Each point is {x, t, R} with R = beta/t. */
+function gatherPoints(x0, x1, minR, o){
+  var lambda = o.lambda, beta = o.beta, lim = o.budget || Infinity;
+  var T = Math.min(1, beta / minR);
+  var k0 = Math.max(0, Math.floor(Math.log(1 / T) / Math.LN2));
+  var out = [], guard = 0;
+  for (var k = k0 + 53; k >= k0; k--){
+    var Bk = Math.pow(2, k) / lambda;
+    var tHi = Math.pow(2, -k), tLo = Math.pow(2, -k - 1);
+    if (tLo > T) continue;
+    var b0 = Math.floor(x0 / Bk), b1 = Math.floor(x1 / Bk);
+    if (b1 - b0 > lim) break;
+    for (var b = b0; b <= b1; b++){
+      var rng = mulberry32(hash3(k, b, o.seed));
+      var cnt = poisson(rng, lambda * Bk * (tHi - tLo));
+      for (var q = 0; q < cnt; q++){
+        var x = (b + rng()) * Bk;
+        var t = tLo + rng() * (tHi - tLo);
+        if (t > T || x < x0 || x >= x1) continue;
+        out.push({ x: x, t: t, R: beta / t });
+        if (++guard > lim) return out;
+      }
+    }
+  }
+  return out;
+}
+
+/* Sort pts in place by position and build the {n, xs, ts, order, L} sample
+   that components() consumes. The sort is in place on purpose: callers
+   index pts by the same indices as the union-find they get back. */
+function toSample(pts, beta){
+  pts.sort(function(p, q){ return p.x - q.x; });
+  var n = pts.length, i;
+  var xs = new Float64Array(n), ts = new Float64Array(n), order = new Int32Array(n);
+  for (i = 0; i < n; i++){
+    xs[i] = pts[i].x;
+    ts[i] = pts[i].t !== undefined ? pts[i].t : beta / pts[i].R;
+    order[i] = i;
+  }
+  order.sort(function(p, q){ return ts[p] - ts[q]; });
+  return { n: n, xs: xs, ts: ts, order: order, L: n ? xs[n - 1] - xs[0] : 0 };
+}
+
+/* Index of the point at exactly x in a sample, or -1. Positions are
+   bit-identical across calls to gatherPoints, so an exact match is safe. */
+function indexAt(samp, x){
+  var i = lowerBound(samp.xs, samp.n, x);
+  return (i < samp.n && samp.xs[i] === x) ? i : -1;
 }
 
 /* A sample: positions ascending on [0,L], marks uniform on (0,1),
@@ -695,7 +831,7 @@ function theta(s, res){
 var C = {};
 function readColours(){
   var cs = getComputedStyle(document.documentElement);
-  ['bg','ink','muted','rule','panel','outer','inner','forbid','escape','ok','dust','hi']
+  ['bg','ink','muted','rule','panel','rp-accent','outer','inner','forbid','escape','ok','dust','hi']
     .forEach(function(k){ C[k] = cs.getPropertyValue('--' + k).trim(); });
 }
 function fit(cv, hCss){
@@ -719,6 +855,48 @@ var _XB = new DataView(new ArrayBuffer(8));
 function xColour(x){
   _XB.setFloat64(0, x);
   return PALETTE[(hash3(_XB.getUint32(0), _XB.getUint32(4), 0x9e3779b9) >>> 8) & 7];
+}
+
+/* Arc geometry, shared by drawPicture and by the overlays that must land
+   exactly on its arcs: the height of an edge of length len in a window of
+   width span (maxH is the height available above the axis), the cubic that
+   draws it, and the y of that cubic above a given x. */
+function arcHeight(len, span, maxH){
+  var u = Math.log(1500 * Math.max(len, 1e-9) / span) / Math.log(1500);
+  return maxH * Math.max(0.06, Math.min(1, u));
+}
+function arcPath(ctx, xa, xb, hgt, AX){
+  ctx.beginPath();
+  ctx.moveTo(xa, AX);
+  ctx.bezierCurveTo(xa, AX - hgt * 1.34, xb, AX - hgt * 1.34, xb, AX);
+}
+/* The cubic's x is monotone in its parameter, so it is inverted by bisection. */
+function arcYAt(xa, xb, hgt, AX, x){
+  if (x <= xa || x >= xb) return AX;
+  var lo = 0, hi = 1, s, xs;
+  for (var it = 0; it < 40; it++){
+    s = (lo + hi) / 2;
+    xs = xa * ((1 - s) * (1 - s) * (1 - s) + 3 * (1 - s) * (1 - s) * s) +
+         xb * (3 * (1 - s) * s * s + s * s * s);
+    if (xs < x) lo = s; else hi = s;
+  }
+  s = (lo + hi) / 2;
+  return AX - hgt * 1.34 * 3 * s * (1 - s);
+}
+
+/* Lengths for readouts: plain numbers in a middle range, a x10^e form outside. */
+function fmtLen(v){
+  if (v <= 0) return '0';
+  var e = Math.floor(Math.log(v) / Math.LN10);
+  if (e >= -1 && e < 5) return (v >= 100 ? Math.round(v) : v.toFixed(v < 1 ? 2 : 1)).toLocaleString();
+  var m = v / Math.pow(10, e);
+  if (m >= 9.995){ m /= 10; e += 1; }
+  return m.toFixed(1) + '×10' + sup(e);
+}
+function sup(e){
+  var s = String(e), map = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³',
+    '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+  return s.split('').map(function(ch){ return map[ch] || ch; }).join('');
 }
 
 /* Draw one "picture" of the model: axis, reaches below, arcs above.
@@ -761,16 +939,13 @@ function drawPicture(g, pts, res, edges, view, o){
       if (xb < xa){ var t = xa; xa = xb; xb = t; }
       if (xb < -40 || xa > W + 40) continue;
       var len = Math.abs(pts[i1].x - pts[j1].x);
-      var u = Math.log(1500 * Math.max(len, 1e-9) / span) / Math.log(1500);
-      var hgt = maxH * Math.max(0.06, Math.min(1, u));
+      var hgt = arcHeight(len, span, maxH);
       var root = res ? find(p, i1) : -1;
       var big = root === biggest;
       ctx.strokeStyle = res ? compColour(root) : C.muted;
       ctx.globalAlpha = big ? 0.62 : 0.3;
       ctx.lineWidth = big ? 1.25 : 0.9;
-      ctx.beginPath();
-      ctx.moveTo(xa, AX);
-      ctx.bezierCurveTo(xa, AX - hgt * 1.34, xb, AX - hgt * 1.34, xb, AX);
+      arcPath(ctx, xa, xb, hgt, AX);
       ctx.stroke();
     }
     ctx.globalAlpha = 1;
@@ -1009,34 +1184,14 @@ readColours();
 
   function width(){ return W0 * Math.pow(10, z); }
 
-  /* Points of the lazily generated process with reach >= eps*W, on [x0,x1].
+  /* Points of the lazily generated process with reach >= eps*W, on [x0,x1).
      eps defaults to the drawing resolution EPS; the component pass below
-     calls this with a finer eps, and the work caps scale with it. */
+     calls this with a finer eps, and the work caps scale with it. The
+     generator itself is shared with panel 4 (gatherPoints, in the core). */
   function gather(x0, x1, W, eps){
     eps = eps || EPS;
-    var lim = Math.ceil(6000 * EPS / eps);
-    var beta = lb / LAMBDA, T = Math.min(1, beta / (eps * W));
-    var k0 = Math.max(0, Math.floor(Math.log(1 / T) / Math.LN2));
-    var out = [], guard = 0;
-    for (var k = k0; k < k0 + 54; k++){
-      var Bk = Math.pow(2, k) / LAMBDA;
-      var tHi = Math.pow(2, -k), tLo = Math.pow(2, -k - 1);
-      if (tLo > T) continue;
-      var b0 = Math.floor(x0 / Bk), b1 = Math.floor(x1 / Bk);
-      if (b1 - b0 > lim) break;
-      for (var b = b0; b <= b1; b++){
-        var rng = mulberry32(hash3(k, b, seed));
-        var cnt = poisson(rng, LAMBDA * Bk * (tHi - tLo));
-        for (var q = 0; q < cnt; q++){
-          var x = (b + rng()) * Bk;
-          var t = tLo + rng() * (tHi - tLo);
-          if (t > T || x < x0 || x > x1) continue;
-          out.push({ x: x, R: beta / t });
-          if (++guard > lim) return out;
-        }
-      }
-    }
-    return out;
+    return gatherPoints(x0, x1, eps * W, { seed: seed, lambda: LAMBDA, beta: lb / LAMBDA,
+                                           budget: Math.ceil(6000 * EPS / eps) });
   }
 
   function draw(){
@@ -1050,12 +1205,7 @@ readColours();
        The refinement shrinks as lambda*beta grows, to keep the budget flat. */
     var K = Math.max(4, Math.min(16, Math.floor(16000 * EPS / (3 * lb))));
     var pts = gather(x0 - W, x1 + W, W, EPS / K);
-    pts.sort(function(p, q){ return p.x - q.x; });
-    var n = pts.length;
-    var xs = new Float64Array(n), ts = new Float64Array(n), order = new Int32Array(n);
-    for (i = 0; i < n; i++){ xs[i] = pts[i].x; ts[i] = beta / pts[i].R; order[i] = i; }
-    order.sort(function(p, q){ return ts[p] - ts[q]; });
-    var samp = { n: n, xs: xs, ts: ts, order: order, L: 3 * W };
+    var samp = toSample(pts, beta), n = samp.n, xs = samp.xs, ts = samp.ts;
     /* marks at most Tdraw = points with reach at least EPS*W = the drawn set;
        the recorded (drawn) edges are exactly those between two drawn points */
     var Tdraw = Math.min(1, beta / (EPS * W));
@@ -1087,20 +1237,6 @@ readColours();
       '<span>smallest drawn reach <b>' + fmtLen(EPS * W) + '</b></span>';
     outZ.textContent = fmtLen(W);
     outB.textContent = lb.toFixed(2);
-  }
-
-  function fmtLen(v){
-    if (v <= 0) return '0';
-    var e = Math.floor(Math.log(v) / Math.LN10);
-    if (e >= -1 && e < 5) return (v >= 100 ? Math.round(v) : v.toFixed(v < 1 ? 2 : 1)).toLocaleString();
-    var m = v / Math.pow(10, e);
-    if (m >= 9.995){ m /= 10; e += 1; }
-    return m.toFixed(1) + '×10' + sup(e);
-  }
-  function sup(e){
-    var s = String(e), map = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³',
-      '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
-    return s.split('').map(function(ch){ return map[ch] || ch; }).join('');
   }
 
   var raf = 0;
@@ -1493,6 +1629,452 @@ readColours();
 })();
 
 /* =====================================================================
+   Panel 4: rainbows around the origin.
+
+   The window of panel 2, pinned to the origin. The arches over the origin
+   (edges {a,b} with a < 0 < b) are coloured by the component the origin
+   belongs to at that scale, and a change of colour is a component cut off.
+
+   The colours come from a "tower" that is computed once per (sample, λβ)
+   and never revisited, so nothing recolours as the window widens. Two facts
+   make that sound. Crossing lemma: if {a,b} and {u,v} cross (a<u<b<v) then
+   {u,b} is an edge, so a point under an arch {a,b} with an edge leaving
+   [a,b] is joined to a or b directly; whether the component of a smaller
+   arch reaches {a,b} is therefore decided by the points of [a,b] alone,
+   and the components of the origin-crossing edges are contiguous in length
+   order ("levels"). Monotonicity: the graph on a subset of the points is a
+   subgraph, so a connection found on a subset is real; only "separated"
+   can be wrong, by missing a chain through points below the resolution.
+
+   The tower walks the octaves S_j = S0·2^j outward. At each octave a sweep
+   over the points of [-S_j, S_j) with reach >= S_j/K_SWEEP joins each new
+   arch (length in [S_j/2, S_j)) to the current level whenever it finds a
+   connection to any of the level's representatives. Every remaining
+   candidate for a break is confirmed in its own window [a,b] with a
+   resolution that follows the distance from the origin: a core |x| < X at
+   reach >= X/K_FINE and dyadic shells outward, each at 1/K_FINE of its own
+   scale (X = the level's extent). Only then is the octave published.
+   ===================================================================== */
+(function(){
+  var cv = document.getElementById('cv-origin');
+  var inZ = document.getElementById('in-ozoom'), outZ = document.getElementById('out-ozoom');
+  var inB = document.getElementById('in-obeta'), outB = document.getElementById('out-obeta');
+  var ro = document.getElementById('ro-origin');
+  var btnPlay = document.getElementById('btn-oplay');
+  var ckBal = document.getElementById('ck-obal');
+
+  var EPS = 1 / 140, W0 = 200, LAMBDA = 1, ZMAX = 13;
+  var K_SWEEP = 1000, K_FINE = 8000, MAX_SHELLS = 14, SHELL_BUDGET = 1.2e6, TOP_REPS = 8;
+  var seed = 424242, z = 0, lb = 2, playing = false, lastT = 0;
+
+  function width(){ return W0 * Math.pow(10, z); }
+  function keyOf(){ return seed + '/' + lb; }
+
+  /* ---- the tower: a self-contained computation for one (seed, λβ) ---- */
+  function makeTower(seed, lb){
+    var beta = lb / LAMBDA, S0 = 4 * beta;
+    var tw = { key: seed + '/' + lb, seed: seed, lb: lb, beta: beta, S0: S0,
+               octaves: 0, edges: [], levels: [], breaks: [], cands: [],
+               done: false, work: 0, ms: 0 };
+    var gopts = { seed: seed, lambda: LAMBDA, beta: beta, budget: Infinity };
+
+    /* octaves needed so that every arch of length <= W has been decided */
+    tw.octavesFor = function(W){
+      return Math.max(1, Math.floor(Math.log(W / S0) / Math.LN2) + 2);
+    };
+    tw.total = tw.octavesFor(W0 * Math.pow(10, ZMAX));
+
+    function openLevel(F){
+      var lv = { edges: [], reps: [], first: F.len };
+      tw.levels.push(lv); addToLevel(lv, F);
+    }
+    function addToLevel(lv, F){
+      F.level = tw.levels.indexOf(lv);
+      lv.edges.push(F);
+      lv.reps.push({ x: F.a, R: F.Ra }, { x: F.b, R: F.Rb });
+      tw.edges.push(F);
+    }
+
+    /* origin-crossing edges of a sample with length in [lo, hi); an endpoint
+       needs reach >= |x|, which leaves ~2λβ·ln K candidates a side */
+    function crossingEdges(samp, lo, hi){
+      var n = samp.n, xs = samp.xs, ts = samp.ts, left = [], right = [], i;
+      for (i = 0; i < n; i++){
+        var R = beta / ts[i];
+        if (xs[i] < 0){ if (R >= -xs[i]) left.push(i); }
+        else if (R >= xs[i]) right.push(i);
+      }
+      var out = [];
+      for (var p = 0; p < left.length; p++){
+        var u = left[p], xu = xs[u], Ru = beta / ts[u];
+        for (var q = 0; q < right.length; q++){
+          var v = right[q], len = xs[v] - xu, Rv = beta / ts[v];
+          if (len < lo || len >= hi || len > Ru || len > Rv) continue;
+          out.push({ a: xu, b: xs[v], Ra: Ru, Rb: Rv, len: len, level: -1 });
+        }
+      }
+      out.sort(function(e, f){ return e.len - f.len; });
+      return out;
+    }
+    tw.crossingEdges = crossingEdges;
+
+    /* is F joined, in the union-find res over samp, to any representative
+       of the level that is present in samp? */
+    function joinedTo(samp, res, reps, F){
+      var ia = indexAt(samp, F.a);
+      if (ia < 0) return false;
+      var r = find(res.parent, ia);
+      for (var i = 0; i < reps.length; i++){
+        var k = indexAt(samp, reps[i].x);
+        if (k >= 0 && find(res.parent, k) === r) return true;
+      }
+      return false;
+    }
+
+    /* decide a break candidate in its own window [F.a, F.b], with the
+       points down to 1/kf of their distance from the origin. Returns true
+       (joined), false (separated) or null when the window would need more
+       shells than the point budget allows (each shell holds about 2λβ·kf
+       points, so this only happens after a very long gap at small λβ). */
+    function confirm(F, reps, kf){
+      var X = 0, i;
+      for (i = 0; i < reps.length; i++) X = Math.max(X, Math.abs(reps[i].x));
+      var maxShells = Math.max(MAX_SHELLS, Math.floor(SHELL_BUDGET / (2 * lb * kf)) - 1);
+      var reach = Math.max(-F.a, F.b), pieces = [[-X, X, X / kf]], lo = X, shells = 0;
+      while (lo <= reach){
+        if (++shells > maxShells) return null;
+        pieces.push([lo, 2 * lo, lo / kf], [-2 * lo, -lo, lo / kf]);
+        lo *= 2;
+      }
+      pieces.sort(function(p, q){ return p[0] - q[0]; });
+      var pts = [];
+      for (i = 0; i < pieces.length; i++){
+        var pc = pieces[i];
+        if (pc[1] < F.a || pc[0] > F.b) continue;
+        var part = gatherPoints(pc[0], pc[1], pc[2], gopts);
+        part.sort(function(p, q){ return p.x - q.x; });
+        for (var j = 0; j < part.length; j++){
+          if (part[j].x >= F.a && part[j].x <= F.b) pts.push(part[j]);
+        }
+      }
+      tw.work += pts.length;
+      var samp = toSample(pts, beta), res = components(samp, beta, {});
+      return joinedTo(samp, res, reps, F);
+    }
+    tw.confirm = confirm;
+
+    function closeLevel(lv, F, certified){
+      var best = null, bal = null;
+      for (var i = 0; i < lv.edges.length; i++){
+        var e = lv.edges[i];
+        if (!(F.a < e.a && e.b < F.b)) continue;
+        if (!best || e.len > best.len) best = e;
+        if (Math.abs((e.a - F.a) - (F.b - e.b)) <= e.len && (!bal || e.len > bal.len)) bal = e;
+      }
+      F.cut = true;
+      tw.breaks.push({ k: tw.levels.length - 1, outer: F, innerAny: best, innerBalanced: bal,
+                       certified: certified, at: 2 * Math.max(-F.a, F.b) });
+    }
+
+    /* the level's representatives: its arch endpoints plus the largest
+       reaches of its component in the latest sweep, which survive
+       coarsening longest */
+    function refreshReps(samp, res, lv){
+      var roots = {}, any = false, i;
+      for (i = 0; i < lv.reps.length; i++){
+        var k = indexAt(samp, lv.reps[i].x);
+        if (k >= 0){ roots[find(res.parent, k)] = true; any = true; }
+      }
+      if (!any) return;
+      var top = [];
+      for (i = 0; i < samp.n; i++){
+        if (!roots[find(res.parent, i)]) continue;
+        var R = beta / samp.ts[i];
+        if (top.length < TOP_REPS || R > top[top.length - 1].R){
+          top.push({ x: samp.xs[i], R: R });
+          top.sort(function(p, q){ return q.R - p.R; });
+          if (top.length > TOP_REPS) top.pop();
+        }
+      }
+      var reps = [];
+      lv.edges.forEach(function(e){ reps.push({ x: e.a, R: e.Ra }, { x: e.b, R: e.Rb }); });
+      lv.reps = reps.concat(top);
+    }
+
+    tw.process = function(j){
+      var S = S0 * Math.pow(2, j);
+      var pts = gatherPoints(-S, S, S / K_SWEEP, gopts);
+      tw.work += pts.length;
+      var samp = toSample(pts, beta), res = components(samp, beta, {});
+      var list = crossingEdges(samp, j === 0 ? 0 : S / 2, S);
+      for (var i = 0; i < list.length; i++){
+        var F = list[i];
+        if (!tw.levels.length){ openLevel(F); continue; }
+        var lv = tw.levels[tw.levels.length - 1];
+        if (joinedTo(samp, res, lv.reps, F)){ addToLevel(lv, F); continue; }
+        var reps = lv.reps.slice(), v = confirm(F, reps, K_FINE);
+        tw.cands.push({ F: F, reps: reps, verdict: v });
+        if (v === true){ addToLevel(lv, F); continue; }
+        closeLevel(lv, F, v === false);
+        openLevel(F);
+      }
+      if (tw.levels.length) refreshReps(samp, res, tw.levels[tw.levels.length - 1]);
+      tw.octaves = j + 1;
+      if (tw.octaves >= tw.total) tw.done = true;
+    };
+    return tw;
+  }
+
+  /* ---- the live tower, built in the background ---- */
+  var tower = null, bgTimer = 0, debounce = 0;
+  function startBuild(){
+    clearTimeout(bgTimer);
+    var mine = tower = makeTower(seed, lb), t0 = performance.now();
+    function tick(){
+      if (tower !== mine) return;
+      var s = performance.now();
+      while (!mine.done && performance.now() - s < 14) mine.process(mine.octaves);
+      if (mine.done) mine.ms = performance.now() - t0;
+      schedule();
+      if (!mine.done) bgTimer = setTimeout(tick, 0);
+    }
+    bgTimer = setTimeout(tick, 0);
+  }
+  /* the octaves the current window needs, within a per-frame budget */
+  function ensureOctaves(W){
+    if (!tower || tower.key !== keyOf()) return false;
+    var need = tower.octavesFor(W), s = performance.now();
+    while (tower.octaves < need && performance.now() - s < 30) tower.process(tower.octaves);
+    return tower.octaves >= need;
+  }
+
+  function draw(){
+    var g = fit(cv, Math.max(240, Math.min(330, (cv.clientWidth || 880) * 0.33)));
+    var ctx = g.ctx, W = width(), x0 = -W / 2, x1 = W / 2, beta = lb / LAMBDA, i;
+    var live = ensureOctaves(W), T = live ? tower : null;
+    var sx = function(x){ return (x - x0) / W * g.w; };
+    var AX = Math.round(g.h * 0.44), maxH = AX - 6;
+    var Tdraw = Math.min(1, beta / (EPS * W)), drawMin = beta / Tdraw;
+    var gopts = { seed: seed, lambda: LAMBDA, beta: beta, budget: 6000 };
+    ctx.font = '12px -apple-system,system-ui,sans-serif';
+
+    /* the grey picture: every drawn point and edge, no colours */
+    var pts = gatherPoints(x0 - W, x1 + W, EPS * W, gopts);
+    var samp = toSample(pts, beta), edges = [];
+    components(samp, beta, { edges: edges, edgeCap: 6000, edgeMaxT: Tdraw });
+
+    /* the arches over the origin that the grey picture also draws */
+    var arches = [], inView = [], longer = 0;
+    if (T){
+      for (i = 0; i < T.edges.length; i++){
+        var e = T.edges[i];
+        if (e.Ra < drawMin || e.Rb < drawMin) continue;
+        if (e.a < x0 - W || e.b > x1 + W) continue;
+        arches.push(e);
+        if (e.a >= x0 && e.b <= x1) inView.push(e); else longer++;
+      }
+    }
+    var bal = ckBal.checked;
+    function isRainbow(F, e){
+      if (!(F.a < e.a && e.b < F.b)) return false;
+      if (!(e.Ra < e.a - F.a && e.Rb < F.b - e.b)) return false;
+      return !bal || Math.abs((e.a - F.a) - (F.b - e.b)) <= e.len;
+    }
+    /* rainbows among the drawn arches: for each outer arch the longest
+       inner partner in its own level (pale), and whether one exists in an
+       earlier level (then the outer arch separates it, and the readout
+       counts it; only the first cut of each component is drawn solid) */
+    var pale = [], nRain = 0, nSep = 0;
+    for (i = 0; i < arches.length; i++){
+      var F = arches[i], bestSame = null, anyCross = false;
+      for (var q = 0; q < arches.length; q++){
+        var e2 = arches[q];
+        if (e2.len >= F.len || !isRainbow(F, e2)) continue;
+        if (e2.level === F.level){ if (!bestSame || e2.len > bestSame.len) bestSame = e2; }
+        else anyCross = true;
+      }
+      /* a cut counts as separating even when the arch it cuts off is too
+         short to draw at this width */
+      if (bestSame || anyCross || F.cut) nRain++;
+      if (anyCross || F.cut) nSep++;
+      if (bestSame) pale.push([F, bestSame]);
+    }
+    var seps = [];
+    if (T) T.breaks.forEach(function(br){
+      var F = br.outer;
+      if (F.Ra < drawMin || F.Rb < drawMin || F.a < x0 - W || F.b > x1 + W) return;
+      var inner = bal ? (br.innerBalanced || br.innerAny) : br.innerAny;
+      if (inner && (inner.Ra < drawMin || inner.Rb < drawMin)) inner = null;
+      seps.push({ br: br, F: F, inner: inner, dashedInner: bal && !br.innerBalanced });
+    });
+
+    /* fills first, so the grey picture and the arches sit on top */
+    function crescent(F, e, colour, alpha){
+      var hF = arcHeight(F.len, W, maxH), hE = arcHeight(e.len, W, maxH);
+      /* an outer arch far longer than the window is the sky, not a band */
+      if (hF - hE < 3 || F.len > 2 * W) return false;
+      var xa = sx(F.a), xb = sx(F.b), xc = sx(e.a), xd = sx(e.b);
+      if (xb < -40 || xa > g.w + 40) return false;
+      /* the concave height map lets a flush-nested inner arc poke through
+         the outer one; only fill when the outer arc clears it */
+      for (var s = 0.25; s < 1; s += 0.25){
+        var xi = xc * ((1 - s) * (1 - s) * (1 - s) + 3 * (1 - s) * (1 - s) * s) +
+                 xd * (3 * (1 - s) * s * s + s * s * s);
+        var yi = AX - hE * 1.34 * 3 * s * (1 - s);
+        if (arcYAt(xa, xb, hF, AX, xi) > yi - 2) return false;
+      }
+      ctx.fillStyle = colour; ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.moveTo(xa, AX);
+      ctx.bezierCurveTo(xa, AX - hF * 1.34, xb, AX - hF * 1.34, xb, AX);
+      ctx.lineTo(xd, AX);
+      ctx.bezierCurveTo(xd, AX - hE * 1.34, xc, AX - hE * 1.34, xc, AX);
+      ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = 1;
+      return true;
+    }
+    pale.forEach(function(pr){ crescent(pr[0], pr[1], PALETTE[pr[0].level % 8], 0.10); });
+    seps.forEach(function(sp){ if (sp.inner) crescent(sp.F, sp.inner, C['rp-accent'], 0.16); });
+
+    drawPicture(g, pts, null, edges, { x0: x0, x1: x1 },
+      { axisY: AX, showEdges: true, showReach: true,
+        reachMin: 2 * EPS * 0.85, drawMin: drawMin });
+
+    /* the arches, coloured by level */
+    ctx.lineWidth = 1.4; ctx.globalAlpha = 0.85;
+    arches.forEach(function(e){
+      var xa = sx(e.a), xb = sx(e.b);
+      if (xb < -40 || xa > g.w + 40) return;
+      ctx.strokeStyle = PALETTE[e.level % 8];
+      arcPath(ctx, xa, xb, arcHeight(e.len, W, maxH), AX); ctx.stroke();
+    });
+    ctx.globalAlpha = 1;
+
+    /* the separating rainbows: bold arches, ticks at the feet, a label */
+    seps.forEach(function(sp){
+      var F = sp.F, xa = sx(F.a), xb = sx(F.b), hF = arcHeight(F.len, W, maxH);
+      if (xb < -40 || xa > g.w + 40) return;
+      ctx.strokeStyle = C['rp-accent']; ctx.globalAlpha = 0.95; ctx.lineWidth = 2.4;
+      ctx.setLineDash(sp.br.certified ? [] : [6, 4]);
+      arcPath(ctx, xa, xb, hF, AX); ctx.stroke();
+      if (sp.inner){
+        ctx.lineWidth = 2; ctx.setLineDash(sp.dashedInner ? [4, 4] : []);
+        arcPath(ctx, sx(sp.inner.a), sx(sp.inner.b), arcHeight(sp.inner.len, W, maxH), AX); ctx.stroke();
+      }
+      ctx.setLineDash([]); ctx.lineWidth = 2;
+      [F.a, F.b].forEach(function(v){
+        var px = sx(v);
+        if (px < 0 || px > g.w) return;
+        ctx.beginPath(); ctx.moveTo(px, AX - 7); ctx.lineTo(px, AX + 7); ctx.stroke();
+      });
+      if (g.w > 620){
+        var xm = Math.max(70, Math.min(g.w - 70, (Math.max(xa, 0) + Math.min(xb, g.w)) / 2));
+        var ym = Math.max(12, arcYAt(xa, xb, hF, AX, xm) - 6);
+        var txt = 'component ' + (sp.br.k + 1) + ' cut off';
+        ctx.fillStyle = C['rp-accent'];
+        ctx.fillText(txt, xm - ctx.measureText(txt).width / 2, ym);
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    /* the origin */
+    ctx.strokeStyle = C.muted; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.setLineDash([2, 4]);
+    ctx.beginPath(); ctx.moveTo(sx(0) + 0.5, 4); ctx.lineTo(sx(0) + 0.5, g.h - 4); ctx.stroke();
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+
+    /* scale bar */
+    var barW = g.w * 0.5, bx = 14, by = g.h - 16;
+    ctx.strokeStyle = C.muted; ctx.globalAlpha = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(bx, by); ctx.lineTo(bx + barW, by);
+    ctx.moveTo(bx, by - 4); ctx.lineTo(bx, by + 4);
+    ctx.moveTo(bx + barW, by - 4); ctx.lineTo(bx + barW, by + 4);
+    ctx.stroke();
+    ctx.globalAlpha = 1; ctx.fillStyle = C.muted;
+    ctx.fillText(fmtLen(W / 2), bx + barW + 8, by + 4);
+
+    /* readout */
+    /* the current component: that of the longest arch inside the window,
+       drawn or not; the lookahead reads the tower beyond the window */
+    var cur = -1, cuts = 0, unchecked = 0, ahead = '', Wmax = W0 * Math.pow(10, ZMAX);
+    if (T){
+      var nextArch = null;
+      T.edges.forEach(function(e){
+        var at = 2 * Math.max(-e.a, e.b);
+        if (at <= W){ if (e.level > cur) cur = e.level; }
+        else if (!nextArch || at < nextArch) nextArch = at;
+      });
+      T.breaks.forEach(function(br){ if (br.at <= W) cuts++; if (!br.certified) unchecked++; });
+      var next = null;
+      T.breaks.forEach(function(br){ if (br.k === cur) next = br; });
+      if (cur >= 0 && next) ahead = 'the current component is cut off at width <b>' + fmtLen(next.at) + '</b>';
+      else if (cur >= 0 && T.done) ahead = 'the current component is not cut off up to width <b>' + fmtLen(Wmax) + '</b>';
+      else if (cur >= 0) ahead = 'checking whether the current component is cut off&hellip;';
+      else if (nextArch) ahead = 'first arch over the origin at width <b>' + fmtLen(nextArch) + '</b>';
+      else if (T.done) ahead = 'no arch over the origin up to width <b>' + fmtLen(Wmax) + '</b>';
+      else ahead = 'computing&hellip;';
+      if (cur >= 0 && !inView.length && nextArch) ahead += '</span><span>next arch over the origin at width <b>' + fmtLen(nextArch) + '</b>';
+    } else ahead = 'computing&hellip;';
+    ro.innerHTML =
+      '<span>window width <b>' + fmtLen(W) + '</b></span>' +
+      '<span>arches over the origin in view <b>' + inView.length + '</b>' +
+        (longer ? ' (+' + longer + ' longer than the window)' : '') + '</span>' +
+      '<span>of which rainbows <b>' + nRain + '</b>, separating <b>' + nSep + '</b></span>' +
+      '<span>components cut off so far <b>' + cuts + '</b>' +
+        (unchecked ? ' (' + unchecked + ' unchecked)' : '') + '</span>' +
+      (ahead ? '<span>' + ahead + '</span>' : '');
+    outZ.textContent = fmtLen(W);
+    outB.textContent = lb.toFixed(2);
+  }
+
+  var raf = 0;
+  function schedule(){ if (!raf) raf = requestAnimationFrame(function(){ raf = 0; draw(); }); }
+
+  inZ.addEventListener('input', function(){ z = parseFloat(inZ.value); stop(); schedule(); });
+  inB.addEventListener('input', function(){
+    lb = Math.pow(10, parseFloat(inB.value));
+    clearTimeout(debounce); debounce = setTimeout(startBuild, 150);
+    schedule();
+  });
+  ckBal.addEventListener('change', schedule);
+  document.getElementById('btn-oreset').addEventListener('click', function(){
+    z = 0; inZ.value = '0'; stop(); schedule();
+  });
+  document.getElementById('btn-oresample').addEventListener('click', function(){
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    startBuild(); schedule();
+  });
+  function stop(){ playing = false; btnPlay.setAttribute('aria-pressed', 'false'); btnPlay.textContent = 'zoom out'; }
+  btnPlay.addEventListener('click', function(){
+    playing = !playing;
+    btnPlay.setAttribute('aria-pressed', String(playing));
+    btnPlay.textContent = playing ? 'pause' : 'zoom out';
+    if (playing){ lastT = 0; requestAnimationFrame(step); }
+  });
+  function step(t){
+    if (!playing) return;
+    if (lastT){ z += (t - lastT) / 1000 * 0.55; }
+    lastT = t;
+    if (z >= ZMAX){ z = ZMAX; stop(); }
+    inZ.value = String(z);
+    draw();
+    if (playing) requestAnimationFrame(step);
+  }
+  cv.addEventListener('wheel', function(ev){
+    ev.preventDefault(); stop();
+    z = Math.min(ZMAX, Math.max(0, z + ev.deltaY * 0.0016));
+    inZ.value = String(z);
+    schedule();
+  }, { passive: false });
+
+  window.__panel4 = { redraw: schedule, makeTower: makeTower, tower: function(){ return tower; },
+                      K_SWEEP: K_SWEEP, K_FINE: K_FINE, LAMBDA: LAMBDA };
+  lb = Math.pow(10, parseFloat(inB.value));
+  startBuild();
+  schedule();
+})();
+
+/* =====================================================================
    Tabs, resizing, colour scheme, self-test
    ===================================================================== */
 (function(){
@@ -1513,7 +2095,7 @@ readColours();
 
   function redrawAll(){
     readColours();
-    [window.__panel1, window.__panel2, window.__panel3a, window.__panel3b].forEach(function(p){
+    [window.__panel1, window.__panel2, window.__panel3a, window.__panel3b, window.__panel4].forEach(function(p){
       if (p && p.redraw) p.redraw();
     });
   }
@@ -1533,7 +2115,7 @@ readColours();
   var only = (location.search.match(/[?&]panel=([a-z]+)/) || [])[1];
   if (only){
     var keep = { model: 'panel-model', zoom: 'panel-zoom',
-                 rainbow: 'panel-rainbow', cuts: 'panel-rainbow' }[only];
+                 rainbow: 'panel-rainbow', cuts: 'panel-rainbow', origin: 'panel-origin' }[only];
     if (keep){
       /* Scoped to the tour root: on the site copy the page also carries the
          site header and footer, which must not be touched. */
@@ -1543,7 +2125,7 @@ readColours();
         var el = root.querySelector(sel);
         if (el) el.style.display = 'none';
       });
-      ['panel-model', 'panel-zoom', 'panel-rainbow'].forEach(function(id){
+      ['panel-model', 'panel-zoom', 'panel-rainbow', 'panel-origin'].forEach(function(id){
         if (id !== keep) document.getElementById(id).style.display = 'none';
       });
       select(only === 'cuts' ? 'cuts' : 'rainbow', false);
@@ -1591,6 +2173,124 @@ readColours();
     var mean = counts.reduce(function(x, y){ return x + y; }, 0) / counts.length;
     var flat = counts.every(function(c){ return Math.abs(c - mean) < 0.45 * mean + 12; });
     check('visible point count flat over 10 decades', flat, '[' + counts.join(', ') + '] mean ' + mean.toFixed(0));
+
+    /* ---- panel 4: the shared generator and the tower ---- */
+    var P4 = window.__panel4, go = { seed: 424242, lambda: 1, beta: 2, budget: Infinity };
+    function keyList(pts){ return pts.map(function(p){ return p.x + '/' + p.t; }).sort().join(' '); }
+    var g1 = gatherPoints(-500, 120, 3, go).concat(gatherPoints(120, 700, 3, go));
+    var g2 = gatherPoints(-500, 700, 3, go);
+    check('gatherPoints: adjacent ranges tile bit-for-bit', keyList(g1) === keyList(g2), g1.length + ' points');
+    var coarse = gatherPoints(-3000, 3000, 8, go), fine = gatherPoints(-3000, 3000, 4, go);
+    var fineKeys = {}; fine.forEach(function(p){ fineKeys[p.x + '/' + p.t] = 1; });
+    check('gatherPoints: coarser reach cut is a subset of the finer one',
+          coarse.every(function(p){ return fineKeys[p.x + '/' + p.t]; }), coarse.length + ' of ' + fine.length);
+
+    /* crossing-edge enumeration against the engine's own edge list */
+    var twE = P4.makeTower(424242, 2);
+    var sE = toSample(gatherPoints(-400, 400, 2, go), 2), eL = [];
+    components(sE, 2, { edges: eL });
+    var fromEngine = 0;
+    for (var ii = 0; ii + 1 < eL.length; ii += 2){
+      if (sE.xs[eL[ii]] * sE.xs[eL[ii + 1]] < 0) fromEngine++;
+    }
+    var fromLoop = twE.crossingEdges(sE, 0, Infinity).length;
+    check('origin-crossing edges: double loop == engine edge list', fromEngine === fromLoop, fromLoop + ' vs ' + fromEngine);
+
+    /* exact regime: while every point is present, the tower must agree
+       with brute force to the letter (levels, breaks, chosen inner arches) */
+    var exactBad = [], lemmaBad = 0;
+    [[1000 + 7, 1.0], [2000 + 3, 2.5]].forEach(function(cfg){
+      var sd = cfg[0], lbv = cfg[1], tw = P4.makeTower(sd, lbv), J = 8, S = tw.S0 * Math.pow(2, J - 1);
+      if (S / P4.K_SWEEP > tw.beta) throw new Error('self-test octave count leaves the exact regime');
+      for (var j = 0; j < J; j++) tw.process(j);
+      var all = toSample(gatherPoints(-S, S, tw.beta, { seed: sd, lambda: 1, beta: tw.beta, budget: Infinity }), tw.beta);
+      var br = componentsBrute(all, tw.beta), cross = tw.crossingEdges(all, 0, S);
+      /* levels from the brute-force partition, checking contiguity and the lemma */
+      var seenRoots = {}, lastRoot = -1, level = -1, bLevels = [], bBreaks = [], levelEdges = [];
+      cross.forEach(function(e){
+        var r = find(br.parent, indexAt(all, e.a));
+        if (r !== lastRoot){
+          if (seenRoots[r]) lemmaBad++;           /* a component that came back: not contiguous */
+          seenRoots[r] = 1; level++; lastRoot = r;
+          if (level > 0) bBreaks.push({ outer: e, prev: levelEdges.slice() });
+          levelEdges = [];
+        }
+        levelEdges.push(e); bLevels.push(level);
+      });
+      /* crossing pairs share a root */
+      for (var p = 0; p < cross.length; p++) for (var q = p + 1; q < cross.length; q++){
+        var A = cross[p], B = cross[q];
+        var crossing = (A.a < B.a && B.a < A.b && A.b < B.b) || (B.a < A.a && A.a < B.b && B.b < A.b);
+        if (crossing && find(br.parent, indexAt(all, A.a)) !== find(br.parent, indexAt(all, B.a))) lemmaBad++;
+      }
+      var same = tw.edges.length === cross.length;
+      for (var k2 = 0; same && k2 < cross.length; k2++){
+        same = tw.edges[k2].a === cross[k2].a && tw.edges[k2].b === cross[k2].b && tw.edges[k2].level === bLevels[k2];
+      }
+      if (!same) exactBad.push('edges/levels differ at λβ=' + lbv + ' (' + tw.edges.length + ' vs ' + cross.length + ')');
+      if (tw.breaks.length !== bBreaks.length) exactBad.push('break count ' + tw.breaks.length + ' vs ' + bBreaks.length + ' at λβ=' + lbv);
+      tw.breaks.forEach(function(b2, bi){
+        var ref = bBreaks[bi];
+        if (!ref || ref.outer.a !== b2.outer.a || ref.outer.b !== b2.outer.b){ exactBad.push('break ' + bi + ' outer differs'); return; }
+        if (!b2.certified) exactBad.push('break ' + bi + ' uncertified in the exact regime');
+        var F = b2.outer, best = null, bal = null;
+        ref.prev.forEach(function(e){
+          if (!(F.a < e.a && e.b < F.b)) return;
+          if (!(e.Ra < e.a - F.a && e.Rb < F.b - e.b)) exactBad.push('break ' + bi + ': a diagonal is present');
+          if (!best || e.len > best.len) best = e;
+          if (Math.abs((e.a - F.a) - (F.b - e.b)) <= e.len && (!bal || e.len > bal.len)) bal = e;
+        });
+        if (best !== null && (b2.innerAny.a !== best.a || b2.innerAny.b !== best.b)) exactBad.push('break ' + bi + ': inner arch differs');
+        if ((bal === null) !== (b2.innerBalanced === null) || (bal && (b2.innerBalanced.a !== bal.a))) exactBad.push('break ' + bi + ': balanced inner arch differs');
+      });
+    });
+    check('crossing lemma and contiguity of levels on brute-force samples', lemmaBad === 0, lemmaBad + ' violations');
+    check('tower == brute force in the exact regime (2 samples, 8 octaves)', exactBad.length === 0, exactBad.join('; '));
+
+    /* determinism: the same tower twice */
+    var d1 = P4.makeTower(99, 2), d2 = P4.makeTower(99, 2);
+    for (var j1 = 0; j1 < 24; j1++) d1.process(j1);
+    for (var j2 = 0; j2 < 24; j2++) d2.process(j2);
+    var sig = function(tw){ return JSON.stringify([tw.edges.map(function(e){ return [e.a, e.b, e.level]; }),
+                                                   tw.breaks.map(function(b){ return [b.outer.a, b.certified]; })]); };
+    check('tower is deterministic (24 octaves, built twice)', sig(d1) === sig(d2), d1.edges.length + ' arches, ' + d1.breaks.length + ' cuts');
+
+    /* truncation error, informational. Two views of the same question. (i)
+       Directly: every recorded cut is re-decided with four times the
+       resolution; a flip is a false cut at K_FINE. (ii) By extrapolation:
+       how often would a coarser confirmation (K/4, K/16) have called a
+       candidate separated that K_FINE joined? The two rates give an
+       exponent, and one more step estimates the error of K_FINE itself. */
+    [[1, [41, 42, 43]], [2, [51, 52]], [4, [61]]].forEach(function(cfg){
+      var lbv = cfg[0], t0 = performance.now(), cutsN = 0, flipsFine = 0, joinedN = 0, flip4 = 0, flip16 = 0, arches = 0;
+      cfg[1].forEach(function(sd){
+        var tw = P4.makeTower(sd, lbv);
+        while (!tw.done && tw.octaves < 34) tw.process(tw.octaves);
+        arches += tw.edges.length;
+        tw.breaks.forEach(function(b){
+          if (!b.certified) return;
+          cutsN++;
+          var c = null;
+          tw.cands.forEach(function(cd){ if (cd.F === b.outer) c = cd; });
+          if (c && tw.confirm(c.F, c.reps, 4 * P4.K_FINE) === true) flipsFine++;
+        });
+        tw.cands.forEach(function(c){
+          if (c.verdict !== true) return;
+          joinedN++;
+          if (tw.confirm(c.F, c.reps, P4.K_FINE / 4) !== true) flip4++;
+          if (tw.confirm(c.F, c.reps, P4.K_FINE / 16) !== true) flip16++;
+        });
+      });
+      var r4 = joinedN ? flip4 / joinedN : 0, r16 = joinedN ? flip16 / joinedN : 0;
+      var gamma = (flip4 > 0 && flip16 > flip4) ? Math.log(r16 / r4) / Math.log(4) : NaN;
+      var est = isNaN(gamma) ? NaN : r4 * Math.pow(4, -gamma);
+      check('truncation at λβ=' + lbv + ' (informational)', true,
+            cfg[1].length + ' samples × 34 octaves, ' + arches + ' arches, ' + cutsN + ' cuts of which ' +
+            flipsFine + ' flip at 4×K_FINE; ' + joinedN + ' candidates joined only on confirmation, of which a coarser ' +
+            'check (K/4, K/16) would have separated ' + flip4 + ', ' + flip16 +
+            (isNaN(est) ? '' : '; exponent ' + gamma.toFixed(2) + ', estimated error of K_FINE ' + (100 * est).toFixed(1) + '%') +
+            '; ' + Math.round(performance.now() - t0) + ' ms');
+    });
     var el = document.getElementById('selftest');
     el.textContent = out.join('\n');
     el.className = fails ? 'fail' : 'pass';
