@@ -382,6 +382,26 @@ at `/simulations/<name>.html`. There are two flavours:
     zooming. Only "separated" verdicts can be wrong (by missing a chain below
     the resolution); `?selftest=1` re-checks every cut at four times the
     resolution and compares the tower with brute force in the exact regime.
+  - Panel 2's colours come from a **memory** built the same way, once per
+    (sample, λβ) and never revisited (`makeMemory` in the panel 2 script).
+    There is no anchor here (the view pans, and components form a laminar
+    tree rather than the chain of nested arches over the origin), so what
+    carries over from the tower is monotonicity, not the chain: the memory
+    is a union-find over every point ever drawn, keyed by position, into
+    which the components of every traced sample are merged; found
+    connections are real and kept for good. A background walk over the
+    octaves `S_j = W0·2^j` traces `[-3S_j, 3S_j]` at reach `EPS·S_j/K`,
+    which covers every frame of width `W ∈ [S_j, 2S_j]` centred on the
+    origin (range `±1.5W`, reach `EPS·W/K`), so a zoom-out from the origin
+    shows one colouring whatever its speed; the per-frame sweep (still run,
+    for the drawn edges) only adds connections in panned regions. A point is
+    coloured by the key of its memory component (its oldest member of
+    longest reach) and the memory's biggest component takes the outer
+    colour, as in panel 1. Do **not** go back to colouring from the frame's
+    own union-find — that recoloured hundreds of points per zoom-out.
+    `?selftest=1` checks the memory against brute force, its determinism,
+    that the walk covers centred frames (a frame adds no merge), and that
+    colours never split as the window widens.
   - Every rule in its `<style>` block is **scoped to the `.rp` tour root**
     (`#rp`), because the tour reuses element and class names the site
     stylesheet already owns — `header`, `footer`, `h1`, `h2` and especially

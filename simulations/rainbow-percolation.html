@@ -289,10 +289,13 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
   <p class="cap">The number of visible points, the length of the visible reaches and the
   density of the arcs stay the same as the window width runs through the decades. This is
   a property of the model and not of the drawing: rescaled to the unit window, the visible
-  picture has the same law at every width. Colours mark connected components, and the
-  components are traced at a finer resolution than the drawing, so two points joined only
-  through reaches too short to draw keep a common colour. Drag inside the picture to pan,
-  and scroll or pinch to zoom.</p>
+  picture has the same law at every width. Colours mark connected components. They are
+  traced once, octave by octave outward from the origin and at a finer resolution than the
+  drawing, and every connection found is kept, so a point is coloured by its component on
+  the whole traced line rather than in the window: two points joined only through reaches
+  too short to draw, or through arches beyond the edge of the window, share a colour, and
+  no colour splits as the window widens. Drag inside the picture to pan, and scroll or
+  pinch to zoom.</p>
 
   <details>
     <summary>The rescaling</summary>
@@ -825,7 +828,11 @@ function sup(e){
 /* Draw one "picture" of the model: axis, reaches below, arcs above.
    pts: {x, R} in world units. view: {x0, x1}. Points with R below o.drawMin
    are used for connectivity (they are in res) but are not drawn, and edges
-   touching them are expected to be absent from the edges array already. */
+   touching them are expected to be absent from the edges array already.
+   Components are the classes of res.parent; a class is coloured by its
+   longest-reach member unless o.colourOf(root) is given, and the biggest
+   drawn class is highlighted in the outer colour unless o.biggest names
+   the class to highlight instead (-1 for none). */
 function drawPicture(g, pts, res, edges, view, o){
   var ctx = g.ctx, W = g.w, H = g.h;
   var x0 = view.x0, span = view.x1 - view.x0;
@@ -836,6 +843,8 @@ function drawPicture(g, pts, res, edges, view, o){
   /* per-component leader (longest reach) and the biggest drawn component;
      sub-resolution points join components but do not count towards "biggest" */
   var biggest = -1, bs = -1, p = res ? res.parent : null, lX = null;
+  var fixedBig = o.biggest !== undefined;
+  if (fixedBig) biggest = o.biggest;
   if (res){
     var lR = new Float64Array(n), dcnt = new Int32Array(n);
     lX = new Float64Array(n);
@@ -845,11 +854,13 @@ function drawPicture(g, pts, res, edges, view, o){
       if (pts[i].R > lR[r]){ lR[r] = pts[i].R; lX[r] = pts[i].x; }
       if (pts[i].R >= drawMin){
         dcnt[r]++;
-        if (dcnt[r] > bs){ bs = dcnt[r]; biggest = r; }
+        if (!fixedBig && dcnt[r] > bs){ bs = dcnt[r]; biggest = r; }
       }
     }
   }
-  function compColour(root){ return root === biggest ? C.outer : xColour(lX[root]); }
+  function compColour(root){
+    return root === biggest ? C.outer : (o.colourOf ? o.colourOf(root) : xColour(lX[root]));
+  }
 
   /* arcs */
   if (o.showEdges && edges){
@@ -1094,6 +1105,30 @@ readColours();
    (dyadic mark band) x (position block), each cell seeded by its index, so
    the whole line exists implicitly and points keep their identity as the
    view moves.
+
+   Colours mark components, and they come from a "memory" that is built
+   once per (sample, λβ) and never revisited, as the tower of panel 4 is.
+   Panel 4 has an anchor: the arches over the origin nest, so their
+   verdicts form one chain and each is decided at its own octave. Here
+   there is no anchor and the view pans, so there is no chain; what
+   carries over is monotonicity. The graph on a subset of the points is a
+   subgraph, so a connection found at any resolution is real and can be
+   kept for good, and only a separation can be wrong. The memory is a
+   union-find over every point ever drawn, keyed by position (which is
+   bit-identical across calls of the generator), into which the components
+   of every traced sample are merged. A point's colour is keyed to the
+   oldest member of longest reach of its component in the memory, so it is
+   the colour of the component of the whole line as far as it has been
+   traced, not of the window: a colour never splits as the window widens,
+   and it changes only when a connection is found that the memory did not
+   yet hold.
+
+   A walk over the octaves S_j = W0·2^j, run in the background, fills the
+   memory in a canonical order for windows centred on the origin. Octave j
+   traces [-3S_j, 3S_j] with reach >= EPS·S_j/K, which covers every frame
+   of width W in [S_j, 2S_j] (range ±1.5W, reach >= EPS·W/K), so a zoom
+   out from the origin shows one colouring whatever its speed, and the
+   per-frame pass only adds connections in regions the view was panned to.
    ===================================================================== */
 (function(){
   var cv = document.getElementById('cv-zoom');
@@ -1102,42 +1137,164 @@ readColours();
   var ro = document.getElementById('ro-zoom');
   var btnPlay = document.getElementById('btn-zplay');
 
-  var EPS = 1 / 140, W0 = 1000, LAMBDA = 1;
+  var EPS = 1 / 140, W0 = 1000, LAMBDA = 1, ZMAX = 30;
   var seed = 424242, z = 0, cx = 0, lb = 2, playing = false, lastT = 0;
 
   function width(){ return W0 * Math.pow(10, z); }
+  function keyOf(){ return seed + '/' + lb; }
+
+  /* Connectivity is traced at a resolution K times finer than the drawing:
+     two drawn points joined only through points too small to draw would
+     otherwise land in different components, and so in different colours,
+     the moment the connecting reaches drop below the drawing resolution.
+     The refinement shrinks as lambda*beta grows, to keep the budget flat. */
+  function kOf(lbv){ return Math.max(4, Math.min(16, Math.floor(16000 * EPS / (3 * lbv)))); }
 
   /* Points of the lazily generated process with reach >= eps*W, on [x0,x1).
-     eps defaults to the drawing resolution EPS; the component pass below
-     calls this with a finer eps, and the work caps scale with it. The
-     generator itself is shared with panel 4 (gatherPoints, in the core). */
-  function gather(x0, x1, W, eps){
+     eps defaults to the drawing resolution EPS; the component passes call
+     this with a finer eps, and the work caps scale with it. The generator
+     itself is shared with panel 4 (gatherPoints, in the core). sd and lbv
+     default to the live sample and λβ. */
+  function gather(x0, x1, W, eps, sd, lbv){
     eps = eps || EPS;
-    return gatherPoints(x0, x1, eps * W, { seed: seed, lambda: LAMBDA, beta: lb / LAMBDA,
+    if (sd === undefined) sd = seed;
+    if (lbv === undefined) lbv = lb;
+    return gatherPoints(x0, x1, eps * W, { seed: sd, lambda: LAMBDA, beta: lbv / LAMBDA,
                                            budget: Math.ceil(6000 * EPS / eps) });
+  }
+
+  /* ---- the memory: a self-contained record for one (seed, λβ) ---- */
+  function makeMemory(sd, lbv){
+    var beta = lbv / LAMBDA, K = kOf(lbv);
+    var m = { key: sd + '/' + lbv, seed: sd, lb: lbv, beta: beta, K: K,
+              ids: new Map(), par: [], keyX: [], born: [], topR: [], cnt: [], big: -1,
+              clock: 0, merges: 0, octaves: 0, done: false, work: 0, ms: 0 };
+
+    /* octaves needed so that every frame of width <= W centred on the
+       origin is covered: S_j <= W < 2S_j for j = octaves - 1 */
+    m.octavesFor = function(W){ return Math.floor(Math.log(W / W0) / Math.LN2) + 1; };
+    m.total = m.octavesFor(W0 * Math.pow(10, ZMAX));
+
+    m.find = function(i){
+      var p = m.par;
+      while (p[i] !== i){ p[i] = p[p[i]]; i = p[i]; }
+      return i;
+    };
+    /* the id of the point at x, registered on first sight */
+    m.id = function(x, R){
+      var i = m.ids.get(x);
+      if (i === undefined){
+        i = m.par.length; m.ids.set(x, i);
+        m.par.push(i); m.keyX.push(x); m.born.push(m.clock); m.topR.push(R); m.cnt.push(1);
+        if (m.big < 0) m.big = i;
+      }
+      return i;
+    };
+    /* join two components; the older keeps its colour key, then the one
+       with the longer reach, then the one further left. m.big tracks the
+       component with the most registered points, which panel 1's
+       convention draws in the outer colour. */
+    m.union = function(a, b){
+      a = m.find(a); b = m.find(b);
+      if (a === b) return false;
+      var w = a, l = b;
+      if (m.born[b] < m.born[a] || (m.born[b] === m.born[a] &&
+          (m.topR[b] > m.topR[a] || (m.topR[b] === m.topR[a] && m.keyX[b] < m.keyX[a])))){ w = b; l = a; }
+      m.par[l] = w;
+      if (m.topR[l] > m.topR[w]) m.topR[w] = m.topR[l];
+      m.cnt[w] += m.cnt[l];
+      if (m.big === l || m.cnt[w] > m.cnt[m.big]) m.big = w;
+      m.merges++;
+      return true;
+    };
+    /* record the components res of a sample: every point with reach >= minR
+       is registered, and points that share a component are joined. Returns
+       the number of merges the memory did not already hold. */
+    m.absorb = function(samp, res, minR){
+      var n = samp.n, xs = samp.xs, ts = samp.ts, head = new Int32Array(n), before = m.merges, i;
+      m.clock++;
+      for (i = 0; i < n; i++) head[i] = -1;
+      for (i = 0; i < n; i++){
+        var R = beta / ts[i];
+        if (R < minR) continue;
+        var id = m.id(xs[i], R), r = find(res.parent, i);
+        if (head[r] < 0) head[r] = id; else m.union(head[r], id);
+      }
+      return m.merges - before;
+    };
+    /* octave j of the walk */
+    m.process = function(j){
+      var S = W0 * Math.pow(2, j);
+      var pts = gather(-3 * S, 3 * S, S, EPS / K, sd, lbv);
+      var samp = toSample(pts, beta), res = components(samp, beta, {});
+      m.work += samp.n;
+      m.absorb(samp, res, Math.max(beta, EPS * S));
+      m.octaves = j + 1;
+      if (m.octaves >= m.total) m.done = true;
+    };
+    return m;
+  }
+
+  /* ---- the live memory, built in the background ---- */
+  var mem = null, bgTimer = 0;
+  function startBuild(){
+    clearTimeout(bgTimer);
+    var mine = mem = makeMemory(seed, lb), t0 = performance.now(), shown = t0;
+    function tick(){
+      if (mem !== mine) return;
+      var s = performance.now();
+      while (!mine.done && performance.now() - s < 14) mine.process(mine.octaves);
+      if (mine.done) mine.ms = performance.now() - t0;
+      /* repaint as the memory grows, but not on every slice */
+      if (mine.done || performance.now() - shown > 120){ shown = performance.now(); schedule(); }
+      if (!mine.done) bgTimer = setTimeout(tick, 0);
+    }
+    bgTimer = setTimeout(tick, 0);
+  }
+  /* the live memory if it matches the controls, else a blank one for this
+     frame alone (the rebuild is on its way) */
+  function memory(){ return (mem && mem.key === keyOf()) ? mem : makeMemory(seed, lb); }
+  /* the octaves the current window needs, within a per-frame budget */
+  function ensureOctaves(M, W){
+    var need = Math.min(M.total, M.octavesFor(W)), s = performance.now();
+    while (M.octaves < need && performance.now() - s < 30) M.process(M.octaves);
+    return M.octaves >= need;
   }
 
   function draw(){
     var g = fit(cv, Math.max(220, Math.min(300, (cv.clientWidth || 880) * 0.30)));
     var W = width(), x0 = cx - W / 2, x1 = cx + W / 2;
-    var beta = lb / LAMBDA, i;
-    /* Connectivity is traced at a resolution K times finer than the drawing:
-       two drawn points joined only through points too small to draw would
-       otherwise land in different components, and so in different colours,
-       the moment the connecting reaches drop below the drawing resolution.
-       The refinement shrinks as lambda*beta grows, to keep the budget flat. */
-    var K = Math.max(4, Math.min(16, Math.floor(16000 * EPS / (3 * lb))));
+    var beta = lb / LAMBDA, K = kOf(lb), i;
     var pts = gather(x0 - W, x1 + W, W, EPS / K);
     var samp = toSample(pts, beta), n = samp.n, xs = samp.xs, ts = samp.ts;
     /* marks at most Tdraw = points with reach at least EPS*W = the drawn set;
        the recorded (drawn) edges are exactly those between two drawn points */
-    var Tdraw = Math.min(1, beta / (EPS * W));
+    var Tdraw = Math.min(1, beta / (EPS * W)), drawMin = beta / Tdraw;
     var edges = [];
     var res = components(samp, beta, { edges: edges, edgeCap: 6000, edgeMaxT: Tdraw });
 
-    drawPicture(g, pts, res, edges, { x0: x0, x1: x1 },
+    /* colours from the memory: the frame's own components go in first (they
+       add nothing on a window centred on the origin that the walk has
+       reached), then each drawn point is sent to the first drawn point of
+       its memory component, which carries the component's colour key. The
+       memory's biggest component takes the outer colour, as in panel 1. */
+    var M = memory(), live = ensureOctaves(M, W);
+    M.absorb(samp, res, drawMin);
+    var rep = new Int32Array(n), keyOfRep = new Float64Array(n), first = new Map();
+    for (i = 0; i < n; i++){
+      rep[i] = i;
+      if (ts[i] > Tdraw) continue;
+      var r = M.find(M.ids.get(xs[i])), f = first.get(r);
+      if (f === undefined){ f = i; first.set(r, i); keyOfRep[i] = M.keyX[r]; }
+      rep[i] = f;
+    }
+
+    var bigRep = first.has(M.big) ? first.get(M.big) : -1;
+
+    drawPicture(g, pts, { parent: rep }, edges, { x0: x0, x1: x1 },
       { axisY: Math.round(g.h * 0.44), showEdges: true, showReach: true,
-        reachMin: 2 * EPS * 0.85, drawMin: beta / Tdraw });
+        reachMin: 2 * EPS * 0.85, drawMin: drawMin, biggest: bigRep,
+        colourOf: function(root){ return xColour(keyOfRep[root]); } });
 
     /* scale bar */
     var ctx = g.ctx, barW = g.w * 0.5, bx = 14, by = g.h - 16;
@@ -1157,7 +1314,8 @@ readColours();
       '<span>window width <b>' + fmtLen(W) + '</b></span>' +
       '<span>visible points <b>' + inWin + '</b></span>' +
       '<span>expected <b>' + Math.round(lb / EPS) + '</b> at every width</span>' +
-      '<span>smallest drawn reach <b>' + fmtLen(EPS * W) + '</b></span>';
+      '<span>smallest drawn reach <b>' + fmtLen(EPS * W) + '</b></span>' +
+      (M.done ? '' : '<span>' + (live ? 'tracing components beyond the window&hellip;' : 'tracing components&hellip;') + '</span>');
     outZ.textContent = fmtLen(W);
     outB.textContent = lb.toFixed(2);
   }
@@ -1166,7 +1324,7 @@ readColours();
   function schedule(){ if (!raf) raf = requestAnimationFrame(function(){ raf = 0; draw(); }); }
 
   inZ.addEventListener('input', function(){ z = parseFloat(inZ.value); stop(); schedule(); });
-  inB.addEventListener('input', function(){ lb = Math.pow(10, parseFloat(inB.value)); schedule(); });
+  inB.addEventListener('input', function(){ lb = Math.pow(10, parseFloat(inB.value)); startBuild(); schedule(); });
   document.getElementById('btn-zreset').addEventListener('click', function(){
     z = 0; cx = 0; inZ.value = '0'; stop(); schedule();
   });
@@ -1181,7 +1339,7 @@ readColours();
     if (!playing) return;
     if (lastT){ z += (t - lastT) / 1000 * 0.8; }
     lastT = t;
-    if (z >= 30){ z = 30; stop(); }
+    if (z >= ZMAX){ z = ZMAX; stop(); }
     inZ.value = String(z);
     draw();
     if (playing) requestAnimationFrame(step);
@@ -1202,14 +1360,16 @@ readColours();
     var rect = cv.getBoundingClientRect();
     var frac = (ev.clientX - rect.left) / rect.width - 0.5;
     var anchor = cx + frac * width();
-    z = Math.min(30, Math.max(0, z + ev.deltaY * 0.0016));
+    z = Math.min(ZMAX, Math.max(0, z + ev.deltaY * 0.0016));
     cx = anchor - frac * width();
     inZ.value = String(z);
     schedule();
   }, { passive: false });
 
-  window.__panel2 = { redraw: schedule, gather: gather, EPS: EPS, W0: W0 };
+  window.__panel2 = { redraw: schedule, gather: gather, makeMemory: makeMemory, kOf: kOf,
+                      memory: function(){ return mem; }, EPS: EPS, W0: W0, LAMBDA: LAMBDA };
   lb = Math.pow(10, parseFloat(inB.value));
+  startBuild();
   schedule();
 })();
 
@@ -2096,6 +2256,69 @@ readColours();
     var mean = counts.reduce(function(x, y){ return x + y; }, 0) / counts.length;
     var flat = counts.every(function(c){ return Math.abs(c - mean) < 0.45 * mean + 12; });
     check('visible point count flat over 10 decades', flat, '[' + counts.join(', ') + '] mean ' + mean.toFixed(0));
+
+    /* ---- panel 2: the component memory ---- */
+    /* exact regime: one absorbed sample with every point present must
+       reproduce the brute-force partition */
+    var gm = { seed: 7, lambda: 1, beta: 1.5, budget: Infinity };
+    var sM = toSample(gatherPoints(-600, 600, 1.5, gm), 1.5), rM = componentsBrute(sM, 1.5);
+    var mX = P2.makeMemory(7, 1.5), badM = 0;
+    mX.absorb(sM, rM, 1.5);
+    for (var im = 0; im < sM.n && !badM; im++) for (var jm = im + 1; jm < sM.n; jm++){
+      var sameM = mX.find(mX.id(sM.xs[im])) === mX.find(mX.id(sM.xs[jm]));
+      var sameB = find(rM.parent, im) === find(rM.parent, jm);
+      if (sameM !== sameB){ badM++; break; }
+    }
+    check('memory of one sample == brute force partition', badM === 0 && mX.par.length === sM.n, sM.n + ' points');
+    /* determinism: the same walk twice */
+    var m1 = P2.makeMemory(424242, 2), m2 = P2.makeMemory(424242, 2), JM = 40;
+    for (var jw = 0; jw < JM; jw++){ m1.process(jw); m2.process(jw); }
+    function memSig(m){
+      var sg = [];
+      m.ids.forEach(function(id, x){ sg.push(x + ':' + m.keyX[m.find(id)]); });
+      return sg.sort().join(' ');
+    }
+    check('memory walk is deterministic (40 octaves, built twice)', memSig(m1) === memSig(m2),
+          m1.par.length + ' points, ' + m1.merges + ' merges');
+    /* dominance: a frame centred on the origin, traced as draw() traces it,
+       adds nothing to a memory walked to its octave */
+    var extraM = 0, framesM = 0, kM = m1.K;
+    for (var zm = 0; zm <= 12; zm += 0.37){
+      var Wm = P2.W0 * Math.pow(10, zm);
+      if (m1.octavesFor(Wm) > JM) break;
+      var sF = toSample(P2.gather(-1.5 * Wm, 1.5 * Wm, Wm, P2.EPS / kM, 424242, 2), 2);
+      var rF = components(sF, 2, {});
+      extraM += m1.absorb(sF, rF, Math.max(2, P2.EPS * Wm)); framesM++;
+    }
+    check('memory walk covers every frame centred on the origin', extraM === 0 && framesM > 30,
+          framesM + ' frames over 12 decades, ' + extraM + ' merges added');
+    /* colours only merge: classes at a wider window are coarser on the
+       points drawn at both widths, with the walk built incrementally as a
+       fast zoom builds it */
+    var mZ = P2.makeMemory(424242, 2), prevCls = null, splits = 0, pairsM = 0;
+    for (var zq = 0; zq <= 9; zq += 1.5){
+      var Wq = P2.W0 * Math.pow(10, zq);
+      while (mZ.octaves < mZ.octavesFor(Wq)) mZ.process(mZ.octaves);
+      var sQ = toSample(P2.gather(-1.5 * Wq, 1.5 * Wq, Wq, P2.EPS / mZ.K, 424242, 2), 2);
+      var rQ = components(sQ, 2, {});
+      mZ.absorb(sQ, rQ, Math.max(2, P2.EPS * Wq));
+      var cls = new Map();
+      for (var iq = 0; iq < sQ.n; iq++){
+        if (2 / sQ.ts[iq] < Math.max(2, P2.EPS * Wq)) continue;
+        cls.set(sQ.xs[iq], mZ.find(mZ.ids.get(sQ.xs[iq])));
+      }
+      if (prevCls){
+        var byRoot = new Map();
+        prevCls.forEach(function(r0, x){
+          if (!cls.has(x)) return;
+          var r1 = cls.get(x), seen = byRoot.get(r0);
+          pairsM++;
+          if (seen === undefined) byRoot.set(r0, r1); else if (seen !== r1) splits++;
+        });
+      }
+      prevCls = cls;
+    }
+    check('memory colours never split as the window widens', splits === 0, pairsM + ' carried points, ' + splits + ' splits');
 
     /* ---- panel 4: the shared generator and the tower ---- */
     var P4 = window.__panel4, go = { seed: 424242, lambda: 1, beta: 2, budget: Infinity };
