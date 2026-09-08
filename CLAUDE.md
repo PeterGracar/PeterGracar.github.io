@@ -382,6 +382,29 @@ at `/simulations/<name>.html`. There are two flavours:
     zooming. Only "separated" verdicts can be wrong (by missing a chain below
     the resolution); `?selftest=1` re-checks every cut at four times the
     resolution and compares the tower with brute force in the exact regime.
+  - Panel 2's colours come from an **atlas** in the same spirit, computed
+    once per (sample, λβ) and only ever merged: a growable union-find over
+    the points of the line (nodes keyed by the bit-identical position in a
+    `Map`), filled in cell by cell, where a cell is an (octave `j`, block
+    `b`) — the block `[b·2^j, (b+1)·2^j)` widened by a quarter block each
+    side, gathered with reach ≥ `2^j/KC` (`KC` = the per-λβ refinement
+    `K` over `EPS`) and traced with `components`. A frame processes the
+    cells of the octave with `2^j ∈ [W, 2W)` that cover its gathered range
+    (nearest the view first, a few per frame within `CELL_MS`, the rest
+    spilling into the next frame), merges the drawn partition in too so an
+    arc always joins two points of one colour, and colours each drawn point
+    by its atlas root (`drawPicture` takes the partition as `group` /
+    `groupColour`; the largest group is emphasised but keeps its own colour
+    rather than turning `--outer`). Because the graph on a subset of the
+    points is a subgraph, every recorded connection is real, so a colour
+    never splits while zooming or panning and two colours become one when
+    a connection is found; on a merge the larger component keeps its colour.
+    When the position index passes `ATLAS_MAX` entries the points below the
+    current cutoff are dropped from the index (their nodes and merges stay)
+    and the finer cells unmarked, so zooming back in re-derives them. Do
+    **not** turn this back into a per-frame recompute either. `?selftest=1`
+    checks the atlas against brute force in the exact regime, its
+    independence of cell order, and that no colour splits over six decades.
   - Every rule in its `<style>` block is **scoped to the `.rp` tour root**
     (`#rp`), because the tour reuses element and class names the site
     stylesheet already owns — `header`, `footer`, `h1`, `h2` and especially

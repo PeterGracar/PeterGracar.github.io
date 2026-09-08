@@ -289,10 +289,11 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
   <p class="cap">The number of visible points, the length of the visible reaches and the
   density of the arcs stay the same as the window width runs through the decades. This is
   a property of the model and not of the drawing: rescaled to the unit window, the visible
-  picture has the same law at every width. Colours mark connected components, and the
-  components are traced at a finer resolution than the drawing, so two points joined only
-  through reaches too short to draw keep a common colour. Drag inside the picture to pan,
-  and scroll or pinch to zoom.</p>
+  picture has the same law at every width. Colours mark connected components. They are
+  decided once, at a resolution finer than the drawing, and remembered as the window
+  moves, so two points joined only through reaches too short to draw keep a common colour
+  and a colour never splits as you zoom; two colours become one when a connection between
+  them is found. Drag inside the picture to pan, and scroll or pinch to zoom.</p>
 
   <details>
     <summary>The rescaling</summary>
@@ -583,7 +584,7 @@ function gatherPoints(x0, x1, minR, o){
     if (tLo > T) continue;
     var b0 = Math.floor(x0 / Bk), b1 = Math.floor(x1 / Bk);
     if (b1 - b0 > lim) break;
-    for (var b = b0; b <= b1; b++){
+    for (var b = b0; b <= b1 && b + 1 > b; b++){
       var rng = mulberry32(hash3(k, b, o.seed));
       var cnt = poisson(rng, lambda * Bk * (tHi - tLo));
       for (var q = 0; q < cnt; q++){
@@ -775,10 +776,11 @@ var PALETTE = ['#c2701f','#7a54b0','#2f8f6b','#a83f6a','#3a7bb5','#8a7a1f','#4f6
    component itself persists. The position of the same lazily generated point
    is bit-identical across frames, so it is a stable key. */
 var _XB = new DataView(new ArrayBuffer(8));
-function xColour(x){
+function xIndex(x){
   _XB.setFloat64(0, x);
-  return PALETTE[(hash3(_XB.getUint32(0), _XB.getUint32(4), 0x9e3779b9) >>> 8) & 7];
+  return (hash3(_XB.getUint32(0), _XB.getUint32(4), 0x9e3779b9) >>> 8) & 7;
 }
+function xColour(x){ return PALETTE[xIndex(x)]; }
 
 /* Arc geometry, shared by drawPicture and by the overlays that must land
    exactly on its arcs: the height of an edge of length len in a window of
@@ -825,23 +827,31 @@ function sup(e){
 /* Draw one "picture" of the model: axis, reaches below, arcs above.
    pts: {x, R} in world units. view: {x0, x1}. Points with R below o.drawMin
    are used for connectivity (they are in res) but are not drawn, and edges
-   touching them are expected to be absent from the edges array already. */
+   touching them are expected to be absent from the edges array already.
+   The partition is res, a union-find over pts, or else o.group, a local
+   group id in [0, n) per point with o.groupColour[id] its colour; with
+   the latter the largest drawn group is emphasised but keeps its own
+   colour, since a colour that follows the largest group would change
+   whenever the window does. */
 function drawPicture(g, pts, res, edges, view, o){
   var ctx = g.ctx, W = g.w, H = g.h;
   var x0 = view.x0, span = view.x1 - view.x0;
   var AX = o.axisY, sx = function(x){ return (x - x0) / span * W; };
   var n = pts.length;
   var drawMin = o.drawMin || 0;
+  var grp = o.group || null, gcol = o.groupColour || null, have = !!(res || grp);
+  var p = res ? res.parent : null;
+  function rootOf(i){ return grp ? grp[i] : find(p, i); }
 
   /* per-component leader (longest reach) and the biggest drawn component;
      sub-resolution points join components but do not count towards "biggest" */
-  var biggest = -1, bs = -1, p = res ? res.parent : null, lX = null;
-  if (res){
+  var biggest = -1, bs = -1, lX = null;
+  if (have){
     var lR = new Float64Array(n), dcnt = new Int32Array(n);
     lX = new Float64Array(n);
     for (var i = 0; i < n; i++) lR[i] = -1;
     for (i = 0; i < n; i++){
-      var r = find(p, i);
+      var r = rootOf(i);
       if (pts[i].R > lR[r]){ lR[r] = pts[i].R; lX[r] = pts[i].x; }
       if (pts[i].R >= drawMin){
         dcnt[r]++;
@@ -849,7 +859,10 @@ function drawPicture(g, pts, res, edges, view, o){
       }
     }
   }
-  function compColour(root){ return root === biggest ? C.outer : xColour(lX[root]); }
+  function compColour(root){
+    if (gcol) return gcol[root];
+    return root === biggest ? C.outer : xColour(lX[root]);
+  }
 
   /* arcs */
   if (o.showEdges && edges){
@@ -863,9 +876,9 @@ function drawPicture(g, pts, res, edges, view, o){
       if (xb < -40 || xa > W + 40) continue;
       var len = Math.abs(pts[i1].x - pts[j1].x);
       var hgt = arcHeight(len, span, maxH);
-      var root = res ? find(p, i1) : -1;
+      var root = have ? rootOf(i1) : -1;
       var big = root === biggest;
-      ctx.strokeStyle = res ? compColour(root) : C.muted;
+      ctx.strokeStyle = have ? compColour(root) : C.muted;
       ctx.globalAlpha = big ? 0.62 : 0.3;
       ctx.lineWidth = big ? 1.25 : 0.9;
       arcPath(ctx, xa, xb, hgt, AX);
@@ -887,9 +900,9 @@ function drawPicture(g, pts, res, edges, view, o){
       var y = rTop + u * depth;
       var la = sx(pts[m].x - pts[m].R), lb = sx(pts[m].x + pts[m].R);
       if (lb < 0 || la > W) continue;
-      var rootm = res ? find(p, m) : -1;
-      ctx.strokeStyle = res ? compColour(rootm) : C.dust;
-      ctx.globalAlpha = (res && rootm === biggest) ? 0.65 : 0.4;
+      var rootm = have ? rootOf(m) : -1;
+      ctx.strokeStyle = have ? compColour(rootm) : C.dust;
+      ctx.globalAlpha = (have && rootm === biggest) ? 0.65 : 0.4;
       ctx.beginPath(); ctx.moveTo(Math.max(la, -20), y); ctx.lineTo(Math.min(lb, W + 20), y); ctx.stroke();
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = ctx.strokeStyle;
@@ -905,10 +918,10 @@ function drawPicture(g, pts, res, edges, view, o){
     if (pts[q].R < drawMin) continue;
     var px = sx(pts[q].x);
     if (px < -4 || px > W + 4) continue;
-    var rq = res ? find(p, q) : -1;
-    ctx.fillStyle = res ? compColour(rq) : C.ink;
-    ctx.globalAlpha = (res && rq === biggest) ? 1 : 0.72;
-    ctx.beginPath(); ctx.arc(px, AX, (res && rq === biggest) ? 2.5 : 2.0, 0, TAU); ctx.fill();
+    var rq = have ? rootOf(q) : -1;
+    ctx.fillStyle = have ? compColour(rq) : C.ink;
+    ctx.globalAlpha = (have && rq === biggest) ? 1 : 0.72;
+    ctx.beginPath(); ctx.arc(px, AX, (have && rq === biggest) ? 2.5 : 2.0, 0, TAU); ctx.fill();
   }
   ctx.globalAlpha = 1;
   return biggest;
@@ -1094,6 +1107,28 @@ readColours();
    (dyadic mark band) x (position block), each cell seeded by its index, so
    the whole line exists implicitly and points keep their identity as the
    view moves.
+
+   The colours come from an "atlas", in the spirit of panel 4's tower: a
+   union-find over the points of the line that is filled in once, cell by
+   cell, and never revisited. A cell is an (octave j, block b): the block
+   [b*S, (b+1)*S) with S = 2^j, widened by S/4 on each side. Processing it
+   gathers the cell's points with reach >= S/K_CELL, traces their
+   components and merges those into the atlas. The graph on a subset of
+   the points is a subgraph, so every connection recorded is real, and the
+   atlas only ever merges: a colour never splits as the window moves, and
+   two colours become one exactly when a connection between them is found.
+   A frame processes the cells of the octave with S in [W, 2W) that cover
+   its gathered range, so the drawn points are joined at a resolution
+   between K_CELL/2 and K_CELL times finer than the drawing, and a cell
+   already processed costs nothing: all the work of zooming is the new
+   octave. Two joined points at distance d lie together in a cell of the
+   octave with S/4 >= d and S/K_CELL <= d, so the union of all the cells
+   is the whole graph. The drawn edges of each frame are merged in as
+   well, so an arc always joins two points of one colour.
+
+   On a merge the larger component keeps its colour. The components in
+   view hold the fine points of the octaves already walked, so they keep
+   their colours when the widening window joins new territory to them.
    ===================================================================== */
 (function(){
   var cv = document.getElementById('cv-zoom');
@@ -1102,42 +1137,142 @@ readColours();
   var ro = document.getElementById('ro-zoom');
   var btnPlay = document.getElementById('btn-zplay');
 
-  var EPS = 1 / 140, W0 = 1000, LAMBDA = 1;
+  var EPS = 1 / 140, W0 = 1000, LAMBDA = 1, ZMAX = 30;
+  var ATLAS_MAX = 250000, CELL_MS = 12;
   var seed = 424242, z = 0, cx = 0, lb = 2, playing = false, lastT = 0;
 
   function width(){ return W0 * Math.pow(10, z); }
 
+  /* Refinement of the component tracing over the drawing resolution. It
+     shrinks as lambda*beta grows, to keep the work per cell flat. */
+  function refine(lb){ return Math.max(4, Math.min(16, Math.floor(16000 * EPS / (3 * lb)))); }
+
   /* Points of the lazily generated process with reach >= eps*W, on [x0,x1).
-     eps defaults to the drawing resolution EPS; the component pass below
-     calls this with a finer eps, and the work caps scale with it. The
-     generator itself is shared with panel 4 (gatherPoints, in the core). */
+     eps defaults to the drawing resolution EPS. The generator itself is
+     shared with panel 4 (gatherPoints, in the core). */
   function gather(x0, x1, W, eps){
     eps = eps || EPS;
     return gatherPoints(x0, x1, eps * W, { seed: seed, lambda: LAMBDA, beta: lb / LAMBDA,
                                            budget: Math.ceil(6000 * EPS / eps) });
   }
 
+  /* ---- the atlas: a self-contained structure for one (seed, λβ) ---- */
+  function makeAtlas(seed, lb){
+    var beta = lb / LAMBDA, K = refine(lb), KC = K / EPS, cap = 1 << 16;
+    var at = { key: seed + '/' + lb, seed: seed, lb: lb, beta: beta, K: K, KC: KC,
+               n: 0, parent: new Int32Array(cap), size: new Int32Array(cap),
+               colour: new Uint8Array(cap), reach: new Float64Array(cap),
+               index: new Map(), cells: new Map(), floor: 0, work: 0, merges: 0 };
+    var gopts = { seed: seed, lambda: LAMBDA, beta: beta, budget: Math.ceil(6 * lb * KC) + 2000 };
+
+    function grow(){
+      cap *= 2;
+      var p = new Int32Array(cap); p.set(at.parent); at.parent = p;
+      var s = new Int32Array(cap); s.set(at.size); at.size = s;
+      var c = new Uint8Array(cap); c.set(at.colour); at.colour = c;
+      var r = new Float64Array(cap); r.set(at.reach); at.reach = r;
+    }
+    /* the node of the point at x, created on first sight with a colour
+       hashed from its position; positions are bit-identical across calls
+       to gatherPoints, so x is a safe key */
+    at.node = function(x, R){
+      var i = at.index.get(x);
+      if (i !== undefined) return i;
+      if (at.n === cap) grow();
+      i = at.n++;
+      at.parent[i] = i; at.size[i] = 1; at.colour[i] = xIndex(x); at.reach[i] = R;
+      at.index.set(x, i);
+      return i;
+    };
+    at.root = function(i){ return find(at.parent, i); };
+    at.union = function(a, b){
+      a = find(at.parent, a); b = find(at.parent, b);
+      if (a === b) return;
+      if (at.size[a] < at.size[b]){ var t = a; a = b; b = t; }
+      at.parent[b] = a; at.size[a] += at.size[b]; at.merges++;
+    };
+    /* merge the partition of a sample whose points are the given nodes */
+    at.merge = function(res, ids){
+      for (var i = 0; i < ids.length; i++) at.union(ids[i], ids[find(res.parent, i)]);
+    };
+    at.octave = function(W){ return Math.ceil(Math.log(W) / Math.LN2); };
+    at.cutoff = function(j){ return Math.pow(2, j) / KC; };
+    at.done = function(j, b){ return at.cells.has(j + '/' + b); };
+    at.cell = function(j, b){
+      if (at.done(j, b)) return;
+      var S = Math.pow(2, j);
+      var pts = gatherPoints((b - 0.25) * S, (b + 1.25) * S, S / KC, gopts);
+      var samp = toSample(pts, beta), res = components(samp, beta, {}), n = samp.n;
+      var ids = new Int32Array(n);
+      for (var i = 0; i < n; i++) ids[i] = at.node(pts[i].x, pts[i].R);
+      at.merge(res, ids);
+      at.cells.set(j + '/' + b, n);
+      at.work += n;
+      if (at.index.size > ATLAS_MAX) at.purge(S / KC);
+    };
+    /* Forget the index entries of the points below a reach floor and
+       unmark the cells that contain such points. The nodes and their
+       merges stay, so nothing recorded is lost; a cell processed again
+       later only re-derives the same connections on fresh nodes. */
+    at.purge = function(floor){
+      at.floor = floor;
+      at.index.forEach(function(i, x){ if (at.reach[i] < floor) at.index.delete(x); });
+      at.cells.forEach(function(v, key){
+        if (at.cutoff(parseInt(key, 10)) < floor) at.cells.delete(key);
+      });
+    };
+    return at;
+  }
+
+  var atlas = null;
+  function ensureAtlas(){
+    if (!atlas || atlas.key !== seed + '/' + lb) atlas = makeAtlas(seed, lb);
+    return atlas;
+  }
+  /* the cells the range [a, b] needs at width W, nearest the middle first,
+     at least one and then as many as the time budget allows; true when all
+     of them are in */
+  function ensureCells(at, a, b, W, budgetMs){
+    var j = at.octave(W), S = Math.pow(2, j);
+    var b0 = Math.floor(a / S), b1 = Math.floor(b / S), mid = (a + b) / (2 * S), todo = [];
+    for (var bb = b0; bb <= b1 && bb + 1 > bb; bb++) if (!at.done(j, bb)) todo.push(bb);
+    todo.sort(function(p, q){ return Math.abs(p + 0.5 - mid) - Math.abs(q + 0.5 - mid); });
+    var t0 = performance.now();
+    for (var i = 0; i < todo.length; i++){
+      if (i && performance.now() - t0 > budgetMs) return false;
+      at.cell(j, todo[i]);
+    }
+    return true;
+  }
+  /* the drawn points of a window and their groups in the atlas: group[i]
+     is a local id, colours[id] its colour; the drawn partition is merged
+     in first, so an arc always joins two points of one group */
+  function colourise(at, pts, res){
+    var n = pts.length, ids = new Int32Array(n), group = new Int32Array(n), local = new Map(), colours = [];
+    for (var i = 0; i < n; i++) ids[i] = at.node(pts[i].x, pts[i].R);
+    at.merge(res, ids);
+    for (i = 0; i < n; i++){
+      var r = at.root(ids[i]), g = local.get(r);
+      if (g === undefined){ g = colours.length; local.set(r, g); colours.push(PALETTE[at.colour[r]]); }
+      group[i] = g;
+    }
+    return { group: group, colours: colours };
+  }
+
   function draw(){
     var g = fit(cv, Math.max(220, Math.min(300, (cv.clientWidth || 880) * 0.30)));
     var W = width(), x0 = cx - W / 2, x1 = cx + W / 2;
-    var beta = lb / LAMBDA, i;
-    /* Connectivity is traced at a resolution K times finer than the drawing:
-       two drawn points joined only through points too small to draw would
-       otherwise land in different components, and so in different colours,
-       the moment the connecting reaches drop below the drawing resolution.
-       The refinement shrinks as lambda*beta grows, to keep the budget flat. */
-    var K = Math.max(4, Math.min(16, Math.floor(16000 * EPS / (3 * lb))));
-    var pts = gather(x0 - W, x1 + W, W, EPS / K);
-    var samp = toSample(pts, beta), n = samp.n, xs = samp.xs, ts = samp.ts;
-    /* marks at most Tdraw = points with reach at least EPS*W = the drawn set;
-       the recorded (drawn) edges are exactly those between two drawn points */
-    var Tdraw = Math.min(1, beta / (EPS * W));
+    var beta = lb / LAMBDA, at = ensureAtlas(), i;
+    var complete = ensureCells(at, x0 - W, x1 + W, W, CELL_MS);
+    var pts = gather(x0 - W, x1 + W, W);
+    var samp = toSample(pts, beta), n = samp.n, xs = samp.xs;
     var edges = [];
-    var res = components(samp, beta, { edges: edges, edgeCap: 6000, edgeMaxT: Tdraw });
+    var res = components(samp, beta, { edges: edges, edgeCap: 6000 });
+    var col = colourise(at, pts, res);
 
-    drawPicture(g, pts, res, edges, { x0: x0, x1: x1 },
+    drawPicture(g, pts, null, edges, { x0: x0, x1: x1 },
       { axisY: Math.round(g.h * 0.44), showEdges: true, showReach: true,
-        reachMin: 2 * EPS * 0.85, drawMin: beta / Tdraw });
+        reachMin: 2 * EPS * 0.85, group: col.group, groupColour: col.colours });
 
     /* scale bar */
     var ctx = g.ctx, barW = g.w * 0.5, bx = 14, by = g.h - 16;
@@ -1151,15 +1286,22 @@ readColours();
     ctx.font = '12px -apple-system,system-ui,sans-serif';
     ctx.fillText(fmtLen(W / 2), bx + barW + 8, by + 4);
 
-    var inWin = 0;
-    for (i = 0; i < n; i++) if (xs[i] >= x0 && xs[i] <= x1 && ts[i] <= Tdraw) inWin++;
+    var inWin = 0, seen = {}, inView = 0;
+    for (i = 0; i < n; i++){
+      if (xs[i] < x0 || xs[i] > x1) continue;
+      inWin++;
+      if (!seen[col.group[i]]){ seen[col.group[i]] = 1; inView++; }
+    }
     ro.innerHTML =
       '<span>window width <b>' + fmtLen(W) + '</b></span>' +
       '<span>visible points <b>' + inWin + '</b></span>' +
       '<span>expected <b>' + Math.round(lb / EPS) + '</b> at every width</span>' +
-      '<span>smallest drawn reach <b>' + fmtLen(EPS * W) + '</b></span>';
+      '<span>smallest drawn reach <b>' + fmtLen(EPS * W) + '</b></span>' +
+      '<span>components in view <b>' + inView + '</b>, traced down to reach <b>' +
+        fmtLen(at.cutoff(at.octave(W))) + '</b>' + (complete ? '' : ' (tracing&hellip;)') + '</span>';
     outZ.textContent = fmtLen(W);
     outB.textContent = lb.toFixed(2);
+    if (!complete) schedule();
   }
 
   var raf = 0;
@@ -1181,11 +1323,14 @@ readColours();
     if (!playing) return;
     if (lastT){ z += (t - lastT) / 1000 * 0.8; }
     lastT = t;
-    if (z >= 30){ z = 30; stop(); }
+    if (z >= ZMAX){ z = ZMAX; stop(); }
     inZ.value = String(z);
     draw();
     if (playing) requestAnimationFrame(step);
   }
+  /* Positions are doubles, so a window far from the origin relative to its
+     width cannot resolve its points; keep the centre within 2^40 widths. */
+  function clampCentre(){ var lim = width() * 1099511627776; cx = Math.max(-lim, Math.min(lim, cx)); }
 
   var dragging = false, lastX = 0;
   cv.addEventListener('pointerdown', function(ev){
@@ -1194,7 +1339,7 @@ readColours();
   cv.addEventListener('pointermove', function(ev){
     if (!dragging) return;
     cx -= (ev.clientX - lastX) / cv.clientWidth * width();
-    lastX = ev.clientX; schedule();
+    lastX = ev.clientX; clampCentre(); schedule();
   });
   cv.addEventListener('pointerup', function(ev){ dragging = false; try { cv.releasePointerCapture(ev.pointerId); } catch (e) {} });
   cv.addEventListener('wheel', function(ev){
@@ -1202,13 +1347,16 @@ readColours();
     var rect = cv.getBoundingClientRect();
     var frac = (ev.clientX - rect.left) / rect.width - 0.5;
     var anchor = cx + frac * width();
-    z = Math.min(30, Math.max(0, z + ev.deltaY * 0.0016));
+    z = Math.min(ZMAX, Math.max(0, z + ev.deltaY * 0.0016));
     cx = anchor - frac * width();
+    clampCentre();
     inZ.value = String(z);
     schedule();
   }, { passive: false });
 
-  window.__panel2 = { redraw: schedule, gather: gather, EPS: EPS, W0: W0 };
+  window.__panel2 = { redraw: schedule, gather: gather, EPS: EPS, W0: W0, LAMBDA: LAMBDA,
+                      makeAtlas: makeAtlas, ensureCells: ensureCells, colourise: colourise,
+                      atlas: function(){ return atlas; } };
   lb = Math.pow(10, parseFloat(inB.value));
   schedule();
 })();
@@ -2096,6 +2244,69 @@ readColours();
     var mean = counts.reduce(function(x, y){ return x + y; }, 0) / counts.length;
     var flat = counts.every(function(c){ return Math.abs(c - mean) < 0.45 * mean + 12; });
     check('visible point count flat over 10 decades', flat, '[' + counts.join(', ') + '] mean ' + mean.toFixed(0));
+
+    /* ---- panel 2: the atlas ---- */
+    /* exact regime: with the cell cutoff below beta every point is present,
+       so a cell's partition is the true one on its range. Pairs the atlas
+       joins must then be joined on the union of the ranges, and pairs
+       joined on the overlap of two cells must be joined by the atlas. */
+    var ga = { seed: 424242, lambda: 1, beta: 2, budget: Infinity };
+    var A = P2.makeAtlas(424242, 2), jA = 10, SA = Math.pow(2, jA);
+    if (A.cutoff(jA) > A.beta) throw new Error('self-test cell leaves the exact regime');
+    A.cell(jA, -1); A.cell(jA, 0);
+    var allA = toSample(gatherPoints(-1.25 * SA, 1.25 * SA, A.beta, ga), A.beta), brA = componentsBrute(allA, A.beta);
+    var atlasBad = 0, missing = 0, rootsA = {}, ia;
+    for (ia = 0; ia < allA.n; ia++){
+      var node = A.index.get(allA.xs[ia]);
+      if (node === undefined){ missing++; continue; }
+      var ra = A.root(node), rb = find(brA.parent, ia);
+      if (rootsA[ra] === undefined) rootsA[ra] = rb; else if (rootsA[ra] !== rb) atlasBad++;
+    }
+    check('atlas joins only pairs joined on the union of its cells (exact regime)',
+          atlasBad === 0 && missing === 0, allA.n + ' points, ' + atlasBad + ' bad, ' + missing + ' missing');
+    var ovA = toSample(gatherPoints(-0.25 * SA, 0.25 * SA, A.beta, ga), A.beta), brO = componentsBrute(ovA, A.beta);
+    var ovBad = 0, rootsO = {};
+    for (ia = 0; ia < ovA.n; ia++){
+      var rb2 = find(brO.parent, ia), ra2 = A.root(A.index.get(ovA.xs[ia]));
+      if (rootsO[rb2] === undefined) rootsO[rb2] = ra2; else if (rootsO[rb2] !== ra2) ovBad++;
+    }
+    check('atlas joins every pair joined on the overlap of two cells (exact regime)', ovBad === 0, ovA.n + ' points, ' + ovBad + ' bad');
+    /* the partition does not depend on the order the cells come in */
+    var A1 = P2.makeAtlas(424242, 2), A2 = P2.makeAtlas(424242, 2);
+    [[10, -1], [10, 0], [11, -1], [11, 0], [12, 0]].forEach(function(c){ A1.cell(c[0], c[1]); });
+    [[12, 0], [11, 0], [10, 0], [11, -1], [10, -1]].forEach(function(c){ A2.cell(c[0], c[1]); });
+    var ordBad = 0, ordMap = {};
+    A1.index.forEach(function(i1, x){
+      var i2 = A2.index.get(x);
+      if (i2 === undefined){ ordBad++; return; }
+      var r1 = A1.root(i1), r2 = A2.root(i2);
+      if (ordMap[r1] === undefined) ordMap[r1] = r2; else if (ordMap[r1] !== r2) ordBad++;
+    });
+    check('atlas partition is independent of the order of its cells', ordBad === 0 && A1.index.size === A2.index.size,
+          A1.index.size + ' points, ' + ordBad + ' bad');
+    /* a colour never splits: over a zoom out of six decades at the origin,
+       two drawn points of one group stay in one group while both are drawn */
+    var Zt = P2.makeAtlas(424242, 2), prevG = null, splits = 0, frames = 0, tz = performance.now();
+    for (var zz = 0; zz <= 6; zz += 0.05){
+      var Wz2 = P2.W0 * Math.pow(10, zz);
+      P2.ensureCells(Zt, -1.5 * Wz2, 1.5 * Wz2, Wz2, Infinity);
+      var pz = gatherPoints(-1.5 * Wz2, 1.5 * Wz2, P2.EPS * Wz2, { seed: 424242, lambda: 1, beta: 2, budget: 6000 });
+      var sz = toSample(pz, 2), rz = components(sz, 2, {}), cz = P2.colourise(Zt, pz, rz);
+      var cur = new Map();
+      for (var iz = 0; iz < pz.length; iz++) cur.set(pz[iz].x, cz.group[iz]);
+      if (prevG){
+        var seenG = {};
+        prevG.forEach(function(gp, x){
+          var gc = cur.get(x);
+          if (gc === undefined) return;
+          if (seenG[gp] === undefined) seenG[gp] = gc; else if (seenG[gp] !== gc) splits++;
+        });
+      }
+      prevG = cur; frames++;
+    }
+    check('atlas colours never split over six decades of zoom', splits === 0,
+          frames + ' frames, ' + Zt.n + ' nodes, ' + Zt.index.size + ' indexed, ' + Zt.merges + ' merges, ' +
+          splits + ' splits; ' + Math.round(performance.now() - tz) + ' ms');
 
     /* ---- panel 4: the shared generator and the tower ---- */
     var P4 = window.__panel4, go = { seed: 424242, lambda: 1, beta: 2, budget: Infinity };
