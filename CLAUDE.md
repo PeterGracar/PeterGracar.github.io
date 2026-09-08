@@ -398,13 +398,17 @@ at `/simulations/<name>.html`. There are two flavours:
     rather than turning `--outer`). Because the graph on a subset of the
     points is a subgraph, every recorded connection is real, so a colour
     never splits while zooming or panning and two colours become one when
-    a connection is found; on a merge the larger component keeps its colour.
-    When the position index passes `ATLAS_MAX` entries the points below the
-    current cutoff are dropped from the index (their nodes and merges stay)
-    and the finer cells unmarked, so zooming back in re-derives them. Do
-    **not** turn this back into a per-frame recompute either. `?selftest=1`
-    checks the atlas against brute force in the exact regime, its
-    independence of cell order, and that no colour splits over six decades.
+    a connection is found. A component wears the colour of its point
+    nearest the origin (`nearX` per root), a function of its point set
+    alone, so colours are independent of discovery order and a window on
+    the origin never recolours as it widens. Nothing is forgotten: the
+    `Map` of recent points is flushed every `FLUSH_AT` entries into a
+    sorted typed-array archive (`arcX` / `arcNode`, twelve bytes a point,
+    binary-searched by `lookup`), so zooming back in finds every point at
+    its old node. Do **not** turn this back into a per-frame recompute
+    either. `?selftest=1` checks the atlas against brute force in the exact
+    regime, that partition and colours are independent of cell order, and
+    that no colour splits or changes over six decades out and back.
   - Every rule in its `<style>` block is **scoped to the `.rp` tour root**
     (`#rp`), because the tour reuses element and class names the site
     stylesheet already owns — `header`, `footer`, `h1`, `h2` and especially

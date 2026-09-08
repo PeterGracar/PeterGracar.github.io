@@ -292,8 +292,9 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
   picture has the same law at every width. Colours mark connected components. They are
   decided once, at a resolution finer than the drawing, and remembered as the window
   moves, so two points joined only through reaches too short to draw keep a common colour
-  and a colour never splits as you zoom; two colours become one when a connection between
-  them is found. Drag inside the picture to pan, and scroll or pinch to zoom.</p>
+  and a colour never splits as you zoom. Two colours become one when a connection between
+  them is found, and the colour that stays is that of the point nearest the origin. Drag
+  inside the picture to pan, and scroll or pinch to zoom.</p>
 
   <details>
     <summary>The rescaling</summary>
@@ -1126,9 +1127,14 @@ readColours();
    is the whole graph. The drawn edges of each frame are merged in as
    well, so an arc always joins two points of one colour.
 
-   On a merge the larger component keeps its colour. The components in
-   view hold the fine points of the octaves already walked, so they keep
-   their colours when the widening window joins new territory to them.
+   A component wears the colour of its point nearest the origin. That is
+   a function of its point set alone, so the colours do not depend on the
+   order in which the cells were found, and a colour changes only when a
+   component gains a point nearer the origin than any it had, which a
+   window that contains the origin never brings as it widens. Nothing is
+   ever forgotten: recent points sit in a Map that is flushed now and then
+   into a sorted archive, twelve bytes a point, so zooming back in finds
+   every point at its old node.
    ===================================================================== */
 (function(){
   var cv = document.getElementById('cv-zoom');
@@ -1138,7 +1144,7 @@ readColours();
   var btnPlay = document.getElementById('btn-zplay');
 
   var EPS = 1 / 140, W0 = 1000, LAMBDA = 1, ZMAX = 30;
-  var ATLAS_MAX = 250000, CELL_MS = 12;
+  var FLUSH_AT = 65536, CELL_MS = 12;
   var seed = 424242, z = 0, cx = 0, lb = 2, playing = false, lastT = 0;
 
   function width(){ return W0 * Math.pow(10, z); }
@@ -1157,38 +1163,70 @@ readColours();
   }
 
   /* ---- the atlas: a self-contained structure for one (seed, λβ) ---- */
-  function makeAtlas(seed, lb){
+  function makeAtlas(seed, lb, opts){
+    opts = opts || {};
     var beta = lb / LAMBDA, K = refine(lb), KC = K / EPS, cap = 1 << 16;
+    var flushAt = opts.flushAt || FLUSH_AT;
     var at = { key: seed + '/' + lb, seed: seed, lb: lb, beta: beta, K: K, KC: KC,
-               n: 0, parent: new Int32Array(cap), size: new Int32Array(cap),
-               colour: new Uint8Array(cap), reach: new Float64Array(cap),
-               index: new Map(), cells: new Map(), floor: 0, work: 0, merges: 0 };
+               n: 0, parent: new Int32Array(cap), size: new Int32Array(cap), nearX: new Float64Array(cap),
+               index: new Map(), arcX: new Float64Array(0), arcNode: new Int32Array(0),
+               cells: new Set(), work: 0, merges: 0, flushes: 0 };
     var gopts = { seed: seed, lambda: LAMBDA, beta: beta, budget: Math.ceil(6 * lb * KC) + 2000 };
 
     function grow(){
       cap *= 2;
       var p = new Int32Array(cap); p.set(at.parent); at.parent = p;
       var s = new Int32Array(cap); s.set(at.size); at.size = s;
-      var c = new Uint8Array(cap); c.set(at.colour); at.colour = c;
-      var r = new Float64Array(cap); r.set(at.reach); at.reach = r;
+      var q = new Float64Array(cap); q.set(at.nearX); at.nearX = q;
     }
-    /* the node of the point at x, created on first sight with a colour
-       hashed from its position; positions are bit-identical across calls
-       to gatherPoints, so x is a safe key */
-    at.node = function(x, R){
+    /* The node of the point at x, or -1. Recent points sit in a Map; when
+       it grows past flushAt it is emptied into a sorted archive that is
+       never trimmed, so a point once seen is always found again. Positions
+       are bit-identical across calls to gatherPoints, so x is a safe key. */
+    at.lookup = function(x){
       var i = at.index.get(x);
       if (i !== undefined) return i;
+      var k = lowerBound(at.arcX, at.arcX.length, x);
+      return (k < at.arcX.length && at.arcX[k] === x) ? at.arcNode[k] : -1;
+    };
+    at.node = function(x){
+      var i = at.lookup(x);
+      if (i >= 0) return i;
       if (at.n === cap) grow();
       i = at.n++;
-      at.parent[i] = i; at.size[i] = 1; at.colour[i] = xIndex(x); at.reach[i] = R;
+      at.parent[i] = i; at.size[i] = 1; at.nearX[i] = x;
       at.index.set(x, i);
+      if (at.index.size >= flushAt) at.flush();
       return i;
     };
+    at.flush = function(){
+      var m = at.index.size, xs = new Float64Array(m), ns = new Int32Array(m), k = 0;
+      at.index.forEach(function(i, x){ xs[k] = x; ns[k] = i; k++; });
+      var ord = new Int32Array(m);
+      for (k = 0; k < m; k++) ord[k] = k;
+      ord.sort(function(p, q){ return xs[p] - xs[q]; });
+      var oldX = at.arcX, oldN = at.arcNode, no = oldX.length;
+      var newX = new Float64Array(no + m), newN = new Int32Array(no + m), p = 0, q = 0, r = 0;
+      while (p < no || q < m){
+        if (q >= m || (p < no && oldX[p] <= xs[ord[q]])){ newX[r] = oldX[p]; newN[r] = oldN[p]; p++; }
+        else { newX[r] = xs[ord[q]]; newN[r] = ns[ord[q]]; q++; }
+        r++;
+      }
+      at.arcX = newX; at.arcNode = newN; at.index = new Map(); at.flushes++;
+    };
     at.root = function(i){ return find(at.parent, i); };
+    /* A component wears the colour of its point nearest the origin, a
+       function of its point set alone: no order of discovery is involved,
+       and a colour changes only when a component gains a point nearer the
+       origin than any it had, which a window that contains the origin never
+       does as it widens. */
+    at.colour = function(root){ return PALETTE[xIndex(at.nearX[root])]; };
     at.union = function(a, b){
       a = find(at.parent, a); b = find(at.parent, b);
       if (a === b) return;
       if (at.size[a] < at.size[b]){ var t = a; a = b; b = t; }
+      var xa = at.nearX[a], xb = at.nearX[b];
+      if (Math.abs(xb) < Math.abs(xa) || (Math.abs(xb) === Math.abs(xa) && xb < xa)) at.nearX[a] = xb;
       at.parent[b] = a; at.size[a] += at.size[b]; at.merges++;
     };
     /* merge the partition of a sample whose points are the given nodes */
@@ -1204,22 +1242,10 @@ readColours();
       var pts = gatherPoints((b - 0.25) * S, (b + 1.25) * S, S / KC, gopts);
       var samp = toSample(pts, beta), res = components(samp, beta, {}), n = samp.n;
       var ids = new Int32Array(n);
-      for (var i = 0; i < n; i++) ids[i] = at.node(pts[i].x, pts[i].R);
+      for (var i = 0; i < n; i++) ids[i] = at.node(pts[i].x);
       at.merge(res, ids);
-      at.cells.set(j + '/' + b, n);
+      at.cells.add(j + '/' + b);
       at.work += n;
-      if (at.index.size > ATLAS_MAX) at.purge(S / KC);
-    };
-    /* Forget the index entries of the points below a reach floor and
-       unmark the cells that contain such points. The nodes and their
-       merges stay, so nothing recorded is lost; a cell processed again
-       later only re-derives the same connections on fresh nodes. */
-    at.purge = function(floor){
-      at.floor = floor;
-      at.index.forEach(function(i, x){ if (at.reach[i] < floor) at.index.delete(x); });
-      at.cells.forEach(function(v, key){
-        if (at.cutoff(parseInt(key, 10)) < floor) at.cells.delete(key);
-      });
     };
     return at;
   }
@@ -1249,11 +1275,11 @@ readColours();
      in first, so an arc always joins two points of one group */
   function colourise(at, pts, res){
     var n = pts.length, ids = new Int32Array(n), group = new Int32Array(n), local = new Map(), colours = [];
-    for (var i = 0; i < n; i++) ids[i] = at.node(pts[i].x, pts[i].R);
+    for (var i = 0; i < n; i++) ids[i] = at.node(pts[i].x);
     at.merge(res, ids);
     for (i = 0; i < n; i++){
       var r = at.root(ids[i]), g = local.get(r);
-      if (g === undefined){ g = colours.length; local.set(r, g); colours.push(PALETTE[at.colour[r]]); }
+      if (g === undefined){ g = colours.length; local.set(r, g); colours.push(at.colour(r)); }
       group[i] = g;
     }
     return { group: group, colours: colours };
@@ -2275,38 +2301,56 @@ readColours();
     var A1 = P2.makeAtlas(424242, 2), A2 = P2.makeAtlas(424242, 2);
     [[10, -1], [10, 0], [11, -1], [11, 0], [12, 0]].forEach(function(c){ A1.cell(c[0], c[1]); });
     [[12, 0], [11, 0], [10, 0], [11, -1], [10, -1]].forEach(function(c){ A2.cell(c[0], c[1]); });
-    var ordBad = 0, ordMap = {};
+    var ordBad = 0, ordMap = {}, ordCol = 0;
     A1.index.forEach(function(i1, x){
-      var i2 = A2.index.get(x);
-      if (i2 === undefined){ ordBad++; return; }
+      var i2 = A2.lookup(x);
+      if (i2 < 0){ ordBad++; return; }
       var r1 = A1.root(i1), r2 = A2.root(i2);
       if (ordMap[r1] === undefined) ordMap[r1] = r2; else if (ordMap[r1] !== r2) ordBad++;
+      if (A1.colour(r1) !== A2.colour(r2)) ordCol++;
     });
-    check('atlas partition is independent of the order of its cells', ordBad === 0 && A1.index.size === A2.index.size,
-          A1.index.size + ' points, ' + ordBad + ' bad');
-    /* a colour never splits: over a zoom out of six decades at the origin,
-       two drawn points of one group stay in one group while both are drawn */
-    var Zt = P2.makeAtlas(424242, 2), prevG = null, splits = 0, frames = 0, tz = performance.now();
-    for (var zz = 0; zz <= 6; zz += 0.05){
-      var Wz2 = P2.W0 * Math.pow(10, zz);
+    check('atlas partition and colours are independent of the order of its cells',
+          ordBad === 0 && ordCol === 0 && A1.n === A2.n, A1.n + ' points, ' + ordBad + ' bad, ' + ordCol + ' colours differ');
+    /* a colour never splits, and changes only when its component gains a
+       point nearer the origin: out six decades and back, with the archive
+       flushed often so that the lookups go through it, two drawn points of
+       one group stay in one group, a drawn point that changes colour has a
+       nearer point in its component than before, and nothing changes at
+       all on the way back */
+    var Zt = P2.makeAtlas(424242, 2, { flushAt: 4096 }), prevG = null, splits = 0, recol = 0, unexplained = 0, back = 0;
+    var frames = 0, tz = performance.now(), zPath = [], outFrames = 0;
+    for (var zz = 0; zz <= 6; zz += 0.05){ zPath.push(zz); outFrames++; }
+    for (zz = 6; zz >= 0; zz -= 0.05) zPath.push(zz);
+    function nearer(a, b){ return Math.abs(a) < Math.abs(b) || (Math.abs(a) === Math.abs(b) && a < b); }
+    for (var zi = 0; zi < zPath.length; zi++){
+      var Wz2 = P2.W0 * Math.pow(10, zPath[zi]);
       P2.ensureCells(Zt, -1.5 * Wz2, 1.5 * Wz2, Wz2, Infinity);
       var pz = gatherPoints(-1.5 * Wz2, 1.5 * Wz2, P2.EPS * Wz2, { seed: 424242, lambda: 1, beta: 2, budget: 6000 });
       var sz = toSample(pz, 2), rz = components(sz, 2, {}), cz = P2.colourise(Zt, pz, rz);
       var cur = new Map();
-      for (var iz = 0; iz < pz.length; iz++) cur.set(pz[iz].x, cz.group[iz]);
+      for (var iz = 0; iz < pz.length; iz++){
+        cur.set(pz[iz].x, [cz.group[iz], cz.colours[cz.group[iz]], Zt.nearX[Zt.root(Zt.lookup(pz[iz].x))]]);
+      }
       if (prevG){
         var seenG = {};
         prevG.forEach(function(gp, x){
           var gc = cur.get(x);
           if (gc === undefined) return;
-          if (seenG[gp] === undefined) seenG[gp] = gc; else if (seenG[gp] !== gc) splits++;
+          if (seenG[gp[0]] === undefined) seenG[gp[0]] = gc[0]; else if (seenG[gp[0]] !== gc[0]) splits++;
+          if (gp[1] !== gc[1]){
+            recol++;
+            if (!nearer(gc[2], gp[2])) unexplained++;
+            if (zi >= outFrames) back++;
+          }
         });
       }
       prevG = cur; frames++;
     }
-    check('atlas colours never split over six decades of zoom', splits === 0,
-          frames + ' frames, ' + Zt.n + ' nodes, ' + Zt.index.size + ' indexed, ' + Zt.merges + ' merges, ' +
-          splits + ' splits; ' + Math.round(performance.now() - tz) + ' ms');
+    check('atlas colours never split, change only on gaining a nearer point, and hold on the way back',
+          splits === 0 && unexplained === 0 && back === 0,
+          frames + ' frames, ' + Zt.n + ' nodes, ' + Zt.arcX.length + ' archived in ' + Zt.flushes + ' flushes, ' +
+          Zt.merges + ' merges, ' + splits + ' splits, ' + recol + ' recoloured by a merge (' + unexplained +
+          ' unexplained, ' + back + ' on the way back); ' + Math.round(performance.now() - tz) + ' ms');
 
     /* ---- panel 4: the shared generator and the tower ---- */
     var P4 = window.__panel4, go = { seed: 424242, lambda: 1, beta: 2, budget: Infinity };
