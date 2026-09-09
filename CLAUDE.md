@@ -228,6 +228,9 @@ Key rules mirrored by the templates (see `_includes/publication_item.html` and
 
 - **Modules** (`_modules/*.md`)
   - Required: `code`, `title`, `role`, `active`. Only `active: true` is shown.
+  - Optional: `semester`, free text (e.g. `Semester 1`, `Semesters 1 and 2`,
+    `Over summer`) rendered in muted type after the code on the
+    `.module-meta` line above the title in `teaching.html`.
   - Ordered by `order` ascending, then `code`.
 
 - **Mini CV** (`_mini_cv/*.md`)

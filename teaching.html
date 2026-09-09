@@ -24,7 +24,8 @@ canonical: "https://gracar.org/teaching.html"
           {% if module.order and module.code and module.title and module.role %}
             <li class="module-item">
               <div>
-                <h3><code>{{ module.code }}</code> {{ module.title }}</h3>
+                <p class="module-meta"><code>{{ module.code }}</code>{% if module.semester %} <span class="module-semester">{{ module.semester }}</span>{% endif %}</p>
+                <h3>{{ module.title }}</h3>
               </div>
               <span class="role-badge">{{ module.role }}</span>
             </li>
@@ -34,7 +35,8 @@ canonical: "https://gracar.org/teaching.html"
           {% if module.order == nil and module.code and module.title and module.role %}
             <li class="module-item">
               <div>
-                <h3><code>{{ module.code }}</code> {{ module.title }}</h3>
+                <p class="module-meta"><code>{{ module.code }}</code>{% if module.semester %} <span class="module-semester">{{ module.semester }}</span>{% endif %}</p>
+                <h3>{{ module.title }}</h3>
               </div>
               <span class="role-badge">{{ module.role }}</span>
             </li>

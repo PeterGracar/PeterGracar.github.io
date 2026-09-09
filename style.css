@@ -540,14 +540,30 @@ li + li {
   text-wrap: balance;
 }
 
+.module-meta {
+  margin: 0 0 0.15rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-size: var(--text-sm);
+}
+
 .module-item code {
-  display: block;
-  margin-bottom: 0.15rem;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-sm);
   letter-spacing: 0.04em;
   color: var(--color-accent);
+}
+
+.module-semester {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.module-semester::before {
+  content: "\00b7";
+  margin-right: 0.45rem;
 }
 
 .role-badge {

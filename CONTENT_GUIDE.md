@@ -90,12 +90,15 @@ title: "Discrete Time Finance"
 role: "Module leader"
 active: true
 order: 10
+semester: "Semester 1" # optional free text, e.g. "Semester 2", "Semesters 1 and 2", "Over summer"
 ---
 ```
 
 Validation and behavior:
 
 - Required fields: `code`, `title`, `role`, `active`.
+- `semester` is optional free text shown in muted type after the module code;
+  omit it and nothing is rendered.
 - Invalid modules are skipped.
 - Only `active: true` modules are shown.
 - Modules are ordered by `order` ascending, then `code`.
