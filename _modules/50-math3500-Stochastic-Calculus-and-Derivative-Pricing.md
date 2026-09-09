@@ -4,4 +4,5 @@ title: "Stochastic Calculus and Derivative Pricing"
 role: "Module leader"
 active: true
 order: 50
+semester: "Semester 2"
 ---
