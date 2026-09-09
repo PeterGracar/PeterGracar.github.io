@@ -89,7 +89,6 @@ code: "MATH5320M"
 title: "Discrete Time Finance"
 role: "Module leader"
 active: true
-order: 10
 semester: "Semester 1" # optional free text, e.g. "Semester 2", "Semesters 1 and 2", "Over summer"
 ---
 ```
@@ -101,7 +100,7 @@ Validation and behavior:
   omit it and nothing is rendered.
 - Invalid modules are skipped.
 - Only `active: true` modules are shown.
-- Modules are ordered by `order` ascending, then `code`.
+- Modules are sorted by `code` ascending.
 
 ## Mini CV template
 

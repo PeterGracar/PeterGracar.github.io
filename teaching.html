@@ -15,24 +15,12 @@ canonical: "https://gracar.org/teaching.html"
     </section>
 
     {% assign active_modules = site.modules | where: "active", true | sort: "code" %}
-    {% assign active_modules_by_order = active_modules | sort: "code" | sort: "order" %}
 
     <section class="page-section">
       <h2>Current modules</h2>
       <ul class="module-list">
-        {% for module in active_modules_by_order %}
-          {% if module.order and module.code and module.title and module.role %}
-            <li class="module-item">
-              <div>
-                <p class="module-meta"><code>{{ module.code }}</code>{% if module.semester %} <span class="module-semester">{{ module.semester }}</span>{% endif %}</p>
-                <h3>{{ module.title }}</h3>
-              </div>
-              <span class="role-badge">{{ module.role }}</span>
-            </li>
-          {% endif %}
-        {% endfor %}
         {% for module in active_modules %}
-          {% if module.order == nil and module.code and module.title and module.role %}
+          {% if module.code and module.title and module.role %}
             <li class="module-item">
               <div>
                 <p class="module-meta"><code>{{ module.code }}</code>{% if module.semester %} <span class="module-semester">{{ module.semester }}</span>{% endif %}</p>

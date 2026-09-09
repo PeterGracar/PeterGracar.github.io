@@ -231,7 +231,7 @@ Key rules mirrored by the templates (see `_includes/publication_item.html` and
   - Optional: `semester`, free text (e.g. `Semester 1`, `Semesters 1 and 2`,
     `Over summer`) rendered in muted type after the code on the
     `.module-meta` line above the title in `teaching.html`.
-  - Ordered by `order` ascending, then `code`.
+  - Sorted by `code` ascending; there is no `order` field.
 
 - **Mini CV** (`_mini_cv/*.md`)
   - Required front matter: `period`, `order`. The Markdown **body** is the
