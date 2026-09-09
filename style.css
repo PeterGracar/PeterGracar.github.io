@@ -527,7 +527,7 @@ li + li {
   display: flex;
   justify-content: space-between;
   gap: 0.7rem;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .module-item > div {
@@ -541,9 +541,12 @@ li + li {
 }
 
 .module-item code {
+  display: block;
+  margin-bottom: 0.15rem;
   font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-sm);
+  letter-spacing: 0.04em;
   color: var(--color-accent);
 }
 
@@ -556,7 +559,6 @@ li + li {
   color: var(--color-text-muted);
   white-space: nowrap;
   flex: 0 0 auto;
-  margin-top: 0.2rem;
 }
 
 .contact-list {
