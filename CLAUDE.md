@@ -368,7 +368,13 @@ at `/simulations/<name>.html`. There are two flavours:
     in the simulation core (cells keyed by dyadic mark band × position block,
     seeded by `hash3(k, b, seed)`, so a point's position is bit-identical
     across calls); `toSample`, `arcHeight`/`arcPath` and `fmtLen` are shared
-    the same way. Panel 4's colours come from a **tower** computed once per
+    the same way. The two panels also draw the **same line**: their seed
+    lives in one holder in the core, `sharedLine` (`seed()`, `next()`,
+    `onChange(f)`), each panel's "new sample" button calls `next()`, and
+    both panels subscribe, so a new sample in either is a new sample in
+    both and the views stay comparable. All four panels have a "new
+    sample" button; panels 1 and 3 keep their own seeds, since they use
+    different generators (`makeSample` and the discrete skeleton). Panel 4's colours come from a **tower** computed once per
     (sample, λβ) and frozen: the line is walked outward octave by octave, a
     sweep at resolution 1/`K_SWEEP` of the octave joins each new
     origin-crossing arch to the current component whenever it finds a

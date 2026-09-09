@@ -281,6 +281,7 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
     <div class="btnrow">
       <button class="btn" id="btn-zplay" type="button" aria-pressed="false">zoom out</button>
       <button class="btn" id="btn-zreset" type="button">reset</button>
+      <button class="btn" id="btn-zresample" type="button">new sample</button>
     </div>
   </div>
 
@@ -295,8 +296,9 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
   joined only through reaches too short to draw keep a common colour and a colour never
   splits as you zoom. Two colours become one when a connection between them is found; the
   colour that stays is that of the point nearest the origin, and a component that the
-  merged span now overlaps in that colour is given a new one. Drag inside the picture to
-  pan, and scroll or pinch to zoom.</p>
+  merged span now overlaps in that colour is given a new one. Panel 4 shows the same
+  line, pinned to the origin, and a new sample here is a new sample there. Drag inside
+  the picture to pan, and scroll or pinch to zoom.</p>
 
   <details>
     <summary>The rescaling</summary>
@@ -479,7 +481,8 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
   changing as the window widens. Above it they stop, once the origin belongs to the
   infinite component. The checkbox drops the balance condition of the definition;
   the cuts do not depend on it, only which pairs count as rainbows. The picture
-  starts on the same line as panel 2. Scroll to zoom, or press zoom out.</p>
+  is drawn on the same line as panel 2, and a new sample in either panel is a new
+  sample in both. Scroll to zoom, or press zoom out.</p>
 
   <details>
     <summary>What the colours certify</summary>
@@ -641,6 +644,22 @@ function makeSample(L, lambda, seed){
   order.sort(function(p, q){ return tt[p] - tt[q]; });
   return { L: L, n: n, xs: Float64Array.from(xs), ts: Float64Array.from(ts), order: order };
 }
+
+/* The line that panels 2 and 4 both draw: one seed for the two of them,
+   so that they always show the same realisation and can be compared.
+   Either panel's "new sample" advances the seed and every subscriber is
+   told, so the other panel follows. */
+var sharedLine = (function(){
+  var seed = 424242, subs = [];
+  return {
+    seed: function(){ return seed; },
+    next: function(){
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      for (var i = 0; i < subs.length; i++) subs[i](seed);
+    },
+    onChange: function(f){ subs.push(f); }
+  };
+})();
 
 function lowerBound(xs, n, v){
   var lo = 0, hi = n;
@@ -1151,7 +1170,7 @@ readColours();
 
   var EPS = 1 / 140, W0 = 1000, LAMBDA = 1, ZMAX = 30;
   var FLUSH_AT = 65536, CELL_MS = 12;
-  var seed = 424242, z = 0, cx = 0, lb = 2, playing = false, lastT = 0;
+  var seed = sharedLine.seed(), z = 0, cx = 0, lb = 2, playing = false, lastT = 0;
 
   function width(){ return W0 * Math.pow(10, z); }
 
@@ -1430,6 +1449,11 @@ readColours();
   document.getElementById('btn-zreset').addEventListener('click', function(){
     z = 0; cx = 0; inZ.value = '0'; stop(); schedule();
   });
+  /* the line is shared with panel 4: the button advances the common seed
+     and both panels are told; the atlas is keyed by seed, so the next
+     frame starts a fresh one */
+  document.getElementById('btn-zresample').addEventListener('click', sharedLine.next);
+  sharedLine.onChange(function(s){ seed = s; schedule(); });
   function stop(){ playing = false; btnPlay.setAttribute('aria-pressed', 'false'); btnPlay.textContent = 'zoom out'; }
   btnPlay.addEventListener('click', function(){
     playing = !playing;
@@ -1854,7 +1878,7 @@ readColours();
 
   var EPS = 1 / 140, W0 = 200, LAMBDA = 1, ZMAX = 30;
   var K_SWEEP = 1000, K_FINE = 8000, MAX_SHELLS = 14, SHELL_BUDGET = 1.2e6, TOP_REPS = 8;
-  var seed = 424242, z = 0, lb = 2, playing = false, lastT = 0;
+  var seed = sharedLine.seed(), z = 0, lb = 2, playing = false, lastT = 0;
 
   function width(){ return W0 * Math.pow(10, z); }
   function keyOf(){ return seed + '/' + lb; }
@@ -2229,10 +2253,10 @@ readColours();
   document.getElementById('btn-oreset').addEventListener('click', function(){
     z = 0; inZ.value = '0'; stop(); schedule();
   });
-  document.getElementById('btn-oresample').addEventListener('click', function(){
-    seed = (seed * 1664525 + 1013904223) >>> 0;
-    startBuild(); schedule();
-  });
+  /* the line is shared with panel 2: the button advances the common seed
+     and both panels are told */
+  document.getElementById('btn-oresample').addEventListener('click', sharedLine.next);
+  sharedLine.onChange(function(s){ seed = s; startBuild(); schedule(); });
   function stop(){ playing = false; btnPlay.setAttribute('aria-pressed', 'false'); btnPlay.textContent = 'zoom out'; }
   btnPlay.addEventListener('click', function(){
     playing = !playing;
