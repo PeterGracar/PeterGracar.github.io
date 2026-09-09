@@ -297,7 +297,8 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
   splits as you zoom. Two colours become one when a connection between them is found; the
   colour that stays is that of the point nearest the origin, and a component that the
   merged span now overlaps in that colour is given a new one. Panel 4 shows the same
-  line, pinned to the origin, and a new sample here is a new sample there. Drag inside
+  line at the same <b>&lambda;&beta;</b>, pinned to the origin: a new sample or a move of
+  the slider here is one there as well. Drag inside
   the picture to pan, and scroll or pinch to zoom.</p>
 
   <details>
@@ -481,8 +482,8 @@ canonical: "https://gracar.org/simulations/rainbow-percolation.html"
   changing as the window widens. Above it they stop, once the origin belongs to the
   infinite component. The checkbox drops the balance condition of the definition;
   the cuts do not depend on it, only which pairs count as rainbows. The picture
-  is drawn on the same line as panel 2, and a new sample in either panel is a new
-  sample in both. Scroll to zoom, or press zoom out.</p>
+  is drawn on the same line as panel 2 at the same <b>&lambda;&beta;</b>: a new sample or
+  a move of the slider in either panel is one in both. Scroll to zoom, or press zoom out.</p>
 
   <details>
     <summary>What the colours certify</summary>
@@ -645,19 +646,28 @@ function makeSample(L, lambda, seed){
   return { L: L, n: n, xs: Float64Array.from(xs), ts: Float64Array.from(ts), order: order };
 }
 
-/* The line that panels 2 and 4 both draw: one seed for the two of them,
-   so that they always show the same realisation and can be compared.
-   Either panel's "new sample" advances the seed and every subscriber is
-   told, so the other panel follows. */
+/* The line that panels 2 and 4 both draw: one seed and one value of
+   lambda*beta for the two of them, so that they always show the same
+   realisation at the same parameter and can be compared. Either panel's
+   "new sample" advances the seed, either panel's slider moves the shared
+   value (kept as the slider position, log10 of lambda*beta, since the
+   two sliders have the same range), and every subscriber is told, so the
+   other panel follows. */
 var sharedLine = (function(){
-  var seed = 424242, subs = [];
+  var seed = 424242, logLb = 0.30, seedSubs = [], lbSubs = [];
   return {
     seed: function(){ return seed; },
     next: function(){
       seed = (seed * 1664525 + 1013904223) >>> 0;
-      for (var i = 0; i < subs.length; i++) subs[i](seed);
+      for (var i = 0; i < seedSubs.length; i++) seedSubs[i](seed);
     },
-    onChange: function(f){ subs.push(f); }
+    onChange: function(f){ seedSubs.push(f); },
+    logLb: function(){ return logLb; },
+    setLogLb: function(v){
+      logLb = v;
+      for (var i = 0; i < lbSubs.length; i++) lbSubs[i](logLb);
+    },
+    onLb: function(f){ lbSubs.push(f); }
   };
 })();
 
@@ -1445,7 +1455,7 @@ readColours();
   function schedule(){ if (!raf) raf = requestAnimationFrame(function(){ raf = 0; draw(); }); }
 
   inZ.addEventListener('input', function(){ z = parseFloat(inZ.value); stop(); schedule(); });
-  inB.addEventListener('input', function(){ lb = Math.pow(10, parseFloat(inB.value)); schedule(); });
+  inB.addEventListener('input', function(){ sharedLine.setLogLb(parseFloat(inB.value)); });
   document.getElementById('btn-zreset').addEventListener('click', function(){
     z = 0; cx = 0; inZ.value = '0'; stop(); schedule();
   });
@@ -1454,6 +1464,8 @@ readColours();
      frame starts a fresh one */
   document.getElementById('btn-zresample').addEventListener('click', sharedLine.next);
   sharedLine.onChange(function(s){ seed = s; schedule(); });
+  /* λβ is shared too: the slider of either panel moves both */
+  sharedLine.onLb(function(v){ inB.value = String(v); lb = Math.pow(10, v); schedule(); });
   function stop(){ playing = false; btnPlay.setAttribute('aria-pressed', 'false'); btnPlay.textContent = 'zoom out'; }
   btnPlay.addEventListener('click', function(){
     playing = !playing;
@@ -1499,7 +1511,8 @@ readColours();
   window.__panel2 = { redraw: schedule, gather: gather, EPS: EPS, W0: W0, LAMBDA: LAMBDA,
                       makeAtlas: makeAtlas, ensureCells: ensureCells, colourise: colourise,
                       atlas: function(){ return atlas; } };
-  lb = Math.pow(10, parseFloat(inB.value));
+  inB.value = String(sharedLine.logLb());
+  lb = Math.pow(10, sharedLine.logLb());
   schedule();
 })();
 
@@ -2244,11 +2257,7 @@ readColours();
   function schedule(){ if (!raf) raf = requestAnimationFrame(function(){ raf = 0; draw(); }); }
 
   inZ.addEventListener('input', function(){ z = parseFloat(inZ.value); stop(); schedule(); });
-  inB.addEventListener('input', function(){
-    lb = Math.pow(10, parseFloat(inB.value));
-    clearTimeout(debounce); debounce = setTimeout(startBuild, 150);
-    schedule();
-  });
+  inB.addEventListener('input', function(){ sharedLine.setLogLb(parseFloat(inB.value)); });
   ckBal.addEventListener('change', schedule);
   document.getElementById('btn-oreset').addEventListener('click', function(){
     z = 0; inZ.value = '0'; stop(); schedule();
@@ -2257,6 +2266,13 @@ readColours();
      and both panels are told */
   document.getElementById('btn-oresample').addEventListener('click', sharedLine.next);
   sharedLine.onChange(function(s){ seed = s; startBuild(); schedule(); });
+  /* λβ is shared too: the slider of either panel moves both, and the
+     tower is rebuilt once the slider comes to rest */
+  sharedLine.onLb(function(v){
+    inB.value = String(v); lb = Math.pow(10, v);
+    clearTimeout(debounce); debounce = setTimeout(startBuild, 150);
+    schedule();
+  });
   function stop(){ playing = false; btnPlay.setAttribute('aria-pressed', 'false'); btnPlay.textContent = 'zoom out'; }
   btnPlay.addEventListener('click', function(){
     playing = !playing;
@@ -2282,7 +2298,8 @@ readColours();
 
   window.__panel4 = { redraw: schedule, makeTower: makeTower, tower: function(){ return tower; },
                       K_SWEEP: K_SWEEP, K_FINE: K_FINE, LAMBDA: LAMBDA };
-  lb = Math.pow(10, parseFloat(inB.value));
+  inB.value = String(sharedLine.logLb());
+  lb = Math.pow(10, sharedLine.logLb());
   startBuild();
   schedule();
 })();
