@@ -142,7 +142,11 @@ uploads/                    Drop-zone for arbitrary files (any type), served as
                             not listed on secret.html). Must NOT be added to
                             _config.yml's exclude: list, or its files would
                             not be published.
-img/                        Avatar, map, figure previews (.webp)
+img/                        Avatar, map, figure previews (.webp), plus
+                            geometric-graph.svg: the research-page preview of a
+                            spatial preferential attachment graph, whose colours
+                            switch with an internal prefers-color-scheme block
+                            (halo colours match --color-surface)
 papers/                     PDF reprints (SPA129.pdf, waw2020.pdf, waw2023.pdf)
 banner.webp                 Lipschitz-surface render (viridis) used as the
                             light-mode site-header background in style.css
