@@ -439,9 +439,9 @@ at `/simulations/<name>.html`. There are two flavours:
     brute-force overlap query, and nothing changes on the way back.
   - Every rule in its `<style>` block is **scoped to the `.rp` tour root**
     (`#rp`), because the tour reuses element and class names the site
-    stylesheet already owns — `header`, `footer`, `h1`, `h2` and especially
-    `.panel`, which is a card class in `style.css`. Keep new rules scoped, and
-    keep `.rp .panel` resetting the card's background/border/shadow.
+    stylesheet already owns — `header`, `footer`, `h1`, `h2` and `.panel`
+    (no longer defined in `style.css`, but `.rp .panel` still resets
+    background/border/shadow defensively). Keep new rules scoped.
   - Chrome colours (`--bg`, `--ink`, `--muted`, `--rule`, `--panel`,
     `--rp-accent`, `--shadow`) are declared on `:root` with the **site
     palette's** literal values, because `readColours()` in the script reads
@@ -537,11 +537,28 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   `_includes/publication_item.html` — the templates silently skip entries with
   missing required fields rather than erroring.
 - **CSS**: all styles live in `style.css`. It uses CSS custom properties
-  (`--color-*` and `--text-*` — the previous `--space-*` spacing tokens were
-  removed as unused, plus `--pride-gradient` and `--underline-image` for the
-  June easter egg, and `--header-image` for the per-scheme header banner) and
-  a `prefers-color-scheme: dark` block. Prefer extending
-  the existing variables over adding hard-coded values.
+  (`--color-*`, `--text-*` and `--radius-*` — the previous `--space-*`
+  spacing tokens and the `--shadow-card` token were removed as unused, plus
+  `--pride-gradient` and `--underline-image` for the June easter egg, and
+  `--header-image` for the per-scheme header banner) and a
+  `prefers-color-scheme: dark` block. Prefer extending the existing variables
+  over adding hard-coded values.
+- **Visual register**: the palette is deliberately *neutral* — a cool
+  off-white page (`#f5f6f7`), near-black text, the deep red `#950000`
+  accent in light mode and a pale red `#f28b82` in dark mode. Do not
+  reintroduce the earlier warm-cream / terracotta / coral scheme, pill
+  (`999px`) shapes, drop shadows on cards, or tracked-uppercase "eyebrow"
+  labels above headings; those read as a generic AI-generated house style
+  and were removed on purpose. Radii are small (`--radius-sm/md/lg` =
+  0.2 / 0.3 / 0.4rem), cards are border-only, the homepage "At a glance"
+  items and the Short CV timeline entries are plain rows (no boxes), and the
+  only remaining shadow is `--shadow-soft` on the floating `.hover-img`
+  preview. Every simulation page under `simulations/` carries a literal copy
+  of the `--color-*` chrome tokens (and the rainbow pair its `--bg`/`--ink`/…
+  short names) in its own `<style>`, overriding `style.css` on `:root`, so a
+  palette change in `style.css` must be propagated to all of them and to the
+  `theme-color` metas in `_layouts/default.html`, `site.webmanifest`, and
+  the dark `--halo` in `img/geometric-graph.svg`.
 - **JS**: keep `site.js` small and framework-free. It is a single IIFE that
   short-circuits gracefully when the elements it looks for are absent.
 - **Cache busting**: bump `?v=<n>` on `style.css` / `site.js` in
