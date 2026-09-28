@@ -2,31 +2,31 @@
 layout: default
 data_page: research
 title: "Research | Peter Gracar"
-description: "Research profile and publication list of Peter Gracar, including preprints, accepted papers, collaborations, and talks in probability and random geometric systems."
-og_description: "Preprints, publications, collaborators, and talks in probability and random geometric systems."
+description: "Papers, preprints, coauthors and conference talks of Peter Gracar on geometric random graphs, dependent percolation and interacting particle systems."
+og_description: "Papers on geometric random graphs, dependent percolation and interacting particle systems."
 canonical: "https://gracar.org/research.html"
 mathjax: true
 ---
   <main id="main-content">
     <section class="page-section">
-      <h1>Research profile</h1>
-      <p class="lead">I study
+      <h1>Research</h1>
+      <p class="lead">I work on
         <button class="hover-image" type="button" aria-label="Preview figure for geometric random graphs">geometric random graphs
           <img src="img/geometric-graph.svg" alt="Simulated spatial preferential attachment graph: old, high-weight vertices form hubs with many long edges" class="hover-img" width="1600" height="1000" loading="lazy">
         </button>
         and
         <button class="hover-image" type="button" aria-label="Preview figure for dependent percolation">dependent percolation
           <img src="img/lipschitz2.webp" alt="Preview of Lipschitz percolation figure" class="hover-img" width="2670" height="1356" loading="lazy">
-        </button>
-        using multi-scale and geometric techniques. You can also browse my profiles on <a href="https://arxiv.org/a/gracar_p_1">arXiv</a> and <a href="https://orcid.org/0000-0001-8340-8340">ORCID</a>. Some of the papers below come with an interactive browser simulation.
+        </button>, mostly by multi-scale arguments. Recurring questions are how far apart two vertices of a scale-free spatial network are, whether a random walk or a contact process on it survives or spreads, when a Boolean model with moving or heavy-tailed grains covers or detects a target, and how Lipschitz surfaces control dependent percolation. Papers marked <em>Simulation</em> have an interactive simulation that runs in the browser.
       </p>
+      <p class="reading-width">My papers are also listed on <a href="https://arxiv.org/a/gracar_p_1">arXiv</a> and <a href="https://orcid.org/0000-0001-8340-8340">ORCID</a>.</p>
     </section>
 
     {% assign publications_by_date = site.publications | sort: "date" | reverse %}
     {% assign publications_by_title = site.publications | sort: "title" %}
 
     <section class="page-section">
-      <h2>Submitted papers and preprints</h2>
+      <h2>Preprints</h2>
       <ul class="publication-list">
         {% for publication in publications_by_date %}
           {% if publication.status == "preprint" %}
@@ -37,7 +37,7 @@ mathjax: true
     </section>
 
     <section class="page-section">
-      <h2>Published and accepted papers</h2>
+      <h2>Published and accepted</h2>
       <ul class="publication-list">
         {% for publication in publications_by_title %}
           {% if publication.status == "accepted" %}
@@ -73,7 +73,7 @@ mathjax: true
     {% endfor %}
 
     <section class="page-section">
-      <h2>Collaborators</h2>
+      <h2>Coauthors</h2>
       {% assign collaborator_count = 0 %}
       {% capture collaborator_markup %}{% endcapture %}
       {% for coauthor in sorted_coauthors %}
@@ -94,7 +94,7 @@ mathjax: true
 
     {% assign talks = site.talks | sort: "date" | reverse %}
     <section class="page-section">
-      <h2>Selected conferences and workshops</h2>
+      <h2>Conferences and workshops</h2>
       <ul class="talk-list">
         {% for talk in talks %}
           {% if talk.title %}

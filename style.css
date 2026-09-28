@@ -316,20 +316,6 @@ li + li {
   border: 1px solid var(--color-border);
 }
 
-.quick-links {
-  display: grid;
-  gap: 1rem;
-}
-
-.quick-links > article {
-  border-top: 1px solid var(--color-border);
-  padding-top: 0.8rem;
-}
-
-.quick-links h3 {
-  margin-bottom: 0.25rem;
-}
-
 .timeline {
   --track-x: 0.45rem;
   --tl-pad: 1.5rem;
@@ -757,10 +743,6 @@ body.pride .site-footer {
   .home-hero {
     grid-template-columns: minmax(0, 1fr) 14rem;
     align-items: start;
-  }
-
-  .quick-links {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

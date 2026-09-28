@@ -550,8 +550,10 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   (`999px`) shapes, drop shadows on cards, or tracked-uppercase "eyebrow"
   labels above headings; those read as a generic AI-generated house style
   and were removed on purpose. Radii are small (`--radius-sm/md/lg` =
-  0.2 / 0.3 / 0.4rem), cards are border-only, the homepage "At a glance"
-  items and the Short CV timeline entries are plain rows (no boxes), and the
+  0.2 / 0.3 / 0.4rem), cards are border-only, the Short CV timeline
+  entries are plain rows (no boxes; the former "At a glance" link cards
+  were removed as brochure filler, the prose links to the other pages
+  instead), and the
   only remaining shadow is `--shadow-soft` on the floating `.hover-img`
   preview. Every simulation page under `simulations/` carries a literal copy
   of the `--color-*` chrome tokens (and the rainbow pair its `--bg`/`--ink`/…
@@ -559,6 +561,9 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   palette change in `style.css` must be propagated to all of them and to the
   `theme-color` metas in `_layouts/default.html`, `site.webmanifest`, and
   the dark `--halo` in `img/geometric-graph.svg`.
+- **Copy**: page text is first-person, plain and specific (what the papers
+  are about, which modules, which office); avoid brochure phrasing such as
+  "Get in touch", "At a glance", "Explore…" or "dedicated … page".
 - **JS**: keep `site.js` small and framework-free. It is a single IIFE that
   short-circuits gracefully when the elements it looks for are absent.
 - **Cache busting**: bump `?v=<n>` on `style.css` / `site.js` in
