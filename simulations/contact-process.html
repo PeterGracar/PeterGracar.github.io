@@ -27,14 +27,14 @@ mathjax: true
     --sim-susceptible-fill: rgba(29, 78, 216, 0.12);
     --sim-infected-core:    #950000;
     --sim-infected-fill:    rgba(149, 0, 0, 0.18);
-    --sim-edge:             rgba(100, 80, 65, 0.50);
+    --sim-edge:             rgba(90, 95, 102, 0.50);
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --sim-susceptible-core: #38bdf8;
       --sim-susceptible-fill: rgba(56, 189, 248, 0.10);
-      --sim-infected-core:    #ff7558;
-      --sim-infected-fill:    rgba(255, 117, 88, 0.28);
+      --sim-infected-core:    #f28b82;
+      --sim-infected-fill:    rgba(242, 139, 130, 0.28);
       --sim-edge:             rgba(100, 116, 139, 0.70);
     }
   }
@@ -116,10 +116,10 @@ mathjax: true
     position: absolute;
     bottom: 1rem; right: 1rem; z-index: 30;
     background: var(--color-accent); color: #fff;
-    border: none; border-radius: 999px;
+    border: none; border-radius: var(--radius-sm);
     padding: 0.5rem 0.9rem;
     font-size: 0.85rem; font-weight: 600; font-family: var(--font-body);
-    cursor: pointer; box-shadow: var(--shadow-soft);
+    cursor: pointer;
   }
 
   /* ── Backdrop ── */
@@ -164,19 +164,19 @@ mathjax: true
   <div class="sim-left flex-grow flex flex-col relative overflow-hidden" style="min-height: 0;">
 
     <!-- Stats bar -->
-    <div class="w-full p-4 flex flex-row items-center justify-between flex-shrink-0 z-20 shadow-sm"
+    <div class="w-full p-4 flex flex-row items-center justify-between flex-shrink-0 z-20"
          style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
       <div class="flex flex-col">
-        <div class="text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--color-text-muted);">Prevalence</div>
+        <div class="text-xs mb-1" style="color: var(--color-text-muted);">Prevalence</div>
         <div class="text-3xl font-mono font-bold leading-none" id="infected-count" style="color: var(--color-accent);">0%</div>
       </div>
       <div class="flex gap-6">
         <div class="text-right">
-          <div class="text-xs uppercase tracking-wider mb-1" style="color: var(--color-text-muted);">\(R_0\) Proxy</div>
+          <div class="text-xs mb-1" style="color: var(--color-text-muted);">\(R_0\) Proxy</div>
           <div id="r0-display" class="text-xl font-mono leading-none" style="color: var(--color-text);">--</div>
         </div>
         <div class="text-right pl-6" style="border-left: 1px solid var(--color-border);">
-          <div class="text-xs uppercase tracking-wider mb-1" style="color: var(--color-text-muted);">Intensity (\(\lambda \times 10^4\))</div>
+          <div class="text-xs mb-1" style="color: var(--color-text-muted);">Intensity (\(\lambda \times 10^4\))</div>
           <div id="density-display" class="text-xl font-mono leading-none" style="color: var(--color-text);">--</div>
         </div>
       </div>
@@ -197,13 +197,13 @@ mathjax: true
     <div class="h-32 relative flex-shrink-0" id="chart-container"
          style="background: var(--color-surface); border-top: 1px solid var(--color-border);">
       <canvas id="chartCanvas" class="w-full h-full block"></canvas>
-      <div class="absolute top-2 left-2 text-[10px] font-bold uppercase tracking-wider pointer-events-none"
+      <div class="absolute top-2 left-2 text-xs pointer-events-none"
            style="color: var(--color-text-muted);">Infection History</div>
     </div>
   </div>
 
   <!-- ── Right column: controls ── -->
-  <div class="sim-right controls-panel w-full md:w-80 p-6 overflow-y-auto flex-shrink-0 z-20 shadow-2xl"
+  <div class="sim-right controls-panel w-full md:w-80 p-6 overflow-y-auto flex-shrink-0 z-20"
        style="background: var(--color-surface); border-left: 1px solid var(--color-border); min-height: 0;">
 
     <div class="flex items-center justify-between mb-6">
@@ -220,7 +220,7 @@ mathjax: true
 
     <!-- Continuum Percolation -->
     <div class="param-section">
-      <div class="mb-3 text-xs font-bold uppercase tracking-wider" style="color: var(--color-accent);">Continuum Percolation</div>
+      <div class="mb-3 text-sm font-semibold" style="color: var(--color-text);">Continuum Percolation</div>
 
       <div class="control-group">
         <div class="slider-label"><span>Torus Size (\(L\))</span><span id="val-world">1000</span></div>
@@ -270,7 +270,7 @@ mathjax: true
 
     <!-- Mobility -->
     <div class="param-section">
-      <div class="mb-3 text-xs font-bold uppercase tracking-wider" style="color: var(--color-accent-soft);">Mobility (Lévy Flight)</div>
+      <div class="mb-3 text-sm font-semibold" style="color: var(--color-text);">Mobility (Lévy Flight)</div>
 
       <div class="control-group">
         <label class="toggle-row" for="param-freeze">
@@ -296,7 +296,7 @@ mathjax: true
 
     <!-- Epidemic -->
     <div class="param-section">
-      <div class="mb-3 text-xs font-bold uppercase tracking-wider" style="color: var(--color-accent);">Contact Process (SIS)</div>
+      <div class="mb-3 text-sm font-semibold" style="color: var(--color-text);">Contact Process (SIS)</div>
 
       <div class="control-group">
         <div class="slider-label"><span>Infection Rate (\(\beta\))</span><span id="val-beta">0.10</span></div>

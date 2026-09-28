@@ -443,7 +443,7 @@ at `/simulations/<name>.html`. There are two flavours:
     (no longer defined in `style.css`, but `.rp .panel` still resets
     background/border/shadow defensively). Keep new rules scoped.
   - Chrome colours (`--bg`, `--ink`, `--muted`, `--rule`, `--panel`,
-    `--rp-accent`, `--shadow`) are declared on `:root` with the **site
+    `--rp-accent`) are declared on `:root` with the **site
     palette's** literal values, because `readColours()` in the script reads
     them back through `getComputedStyle(document.documentElement)`. The figure
     colours (`--outer`, `--inner`, `--forbid`, `--escape`, `--ok`, `--dust`,
@@ -560,7 +560,20 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   short names) in its own `<style>`, overriding `style.css` on `:root`, so a
   palette change in `style.css` must be propagated to all of them and to the
   `theme-color` metas in `_layouts/default.html`, `site.webmanifest`, and
-  the dark `--halo` in `img/geometric-graph.svg`.
+  the dark `--halo` in `img/geometric-graph.svg`. The simulations follow the
+  same register: their segmented toggles, radio rows, buttons and status
+  pills use `--radius-sm` (the rainbow pair literal 3–4px), their floating
+  panels, toggles and figure stages are border-only with no `box-shadow`
+  (none of them defines `--shadow-soft` any more), their section and stat
+  labels are normal-case, and only the run/resume button is filled with the
+  accent — Reset, Pause and the seed/export buttons are neutral
+  (`--color-surface-soft` with a `--color-border` border). Their per-sim
+  figure tokens (`--sim-*`, `--dp-*`, `--lbm-*`) derive from the neutral
+  palette too: near-black `#1a1a1a` ink for particles and traces, `#ffffff`
+  / `#1e1e1e` panel backgrounds, and the pale red `#f28b82` (with
+  `#f6aaa4` fills) for the dark-mode infected / target / largest-component
+  colour. The amber critical-value notch in contact-process and the blue
+  susceptible nodes are data colours, not chrome, and stay as they are.
 - **Copy**: page text is first-person, plain and specific (what the papers
   are about, which modules, which office); avoid brochure phrasing such as
   "Get in touch", "At a glance", "Explore…" or "dedicated … page".

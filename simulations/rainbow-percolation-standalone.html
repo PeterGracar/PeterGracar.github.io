@@ -48,7 +48,7 @@
          drawing code reads back through getComputedStyle. ── */
     :root {
       --bg: #f5f6f7; --ink: #1a1a1a; --muted: #5a5f66; --rule: #d4d7db; --panel: #ffffff;
-      --rp-accent: #950000; --shadow: rgba(0, 0, 0, .10);
+      --rp-accent: #950000;
     }
     /* ── Figure tokens: what the drawings mean, not what the site looks like. ── */
     :root {
@@ -58,7 +58,7 @@
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #141414; --ink: #e6e6e6; --muted: #a3a3a3; --rule: #3a3a3a; --panel: #1e1e1e;
-        --rp-accent: #f28b82; --shadow: rgba(0, 0, 0, .35);
+        --rp-accent: #f28b82;
         --outer: #7aa2e8; --inner: #4fc7b6; --forbid: #e8756a; --escape: #e8a44f;
         --ok: #68c07f; --dust: #5a5c60; --hi: #c08ae8;
       }
@@ -66,13 +66,13 @@
 
     html[data-theme="light"] {
       --bg: #f5f6f7; --ink: #1a1a1a; --muted: #5a5f66; --rule: #d4d7db; --panel: #ffffff;
-      --rp-accent: #950000; --shadow: rgba(0, 0, 0, .10);
+      --rp-accent: #950000;
       --outer: #2f4f8f; --inner: #1a7d72; --forbid: #bf3428; --escape: #cc7a1c;
       --ok: #2f7d43; --dust: #a8a8a2; --hi: #8c4bb5;
     }
     html[data-theme="dark"] {
       --bg: #141414; --ink: #e6e6e6; --muted: #a3a3a3; --rule: #3a3a3a; --panel: #1e1e1e;
-      --rp-accent: #f28b82; --shadow: rgba(0, 0, 0, .35);
+      --rp-accent: #f28b82;
       --outer: #7aa2e8; --inner: #4fc7b6; --forbid: #e8756a; --escape: #e8a44f;
       --ok: #68c07f; --dust: #5a5c60; --hi: #c08ae8;
     }
@@ -91,12 +91,11 @@
     #theme-toggle {
       position: fixed; top: 12px; right: 12px; z-index: 50;
       display: flex; gap: 0; background: var(--panel);
-      border: 1px solid var(--rule); border-radius: 999px; padding: 3px;
-      box-shadow: 0 1px 3px var(--shadow);
+      border: 1px solid var(--rule); border-radius: 3px; padding: 3px;
     }
     #theme-toggle button {
       border: none; background: transparent; cursor: pointer;
-      padding: 4px 12px; border-radius: 999px; font: inherit; font-size: .75rem;
+      padding: 4px 12px; border-radius: 3px; font: inherit; font-size: .75rem;
       color: var(--muted); line-height: 1.2; white-space: nowrap; transition: all .2s;
     }
     #theme-toggle button.active { background: var(--rp-accent); color: #fff; }
@@ -137,13 +136,13 @@
     }
     .rp h2 .num {
       font-family: var(--font-body); font-size: .78rem; font-weight: 600; color: var(--muted);
-      border: 1px solid var(--rule); border-radius: 999px; min-width: 1.6em; height: 1.6em;
+      border: 1px solid var(--rule); border-radius: 3px; min-width: 1.6em; height: 1.6em;
       display: inline-flex; align-items: center; justify-content: center; flex: none;
     }
     .rp .lede { margin: .2rem 0 1.1rem; }
     .rp .stage {
       position: relative; background: var(--panel); border: 1px solid var(--rule);
-      border-radius: 10px; box-shadow: 0 1px 2px var(--shadow); overflow: hidden;
+      border-radius: 4px; overflow: hidden;
     }
     .rp .stage canvas { display: block; width: 100%; touch-action: none; }
     .rp .stage + .stage { margin-top: 10px; }
@@ -160,7 +159,7 @@
     }
     .rp .btnrow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; flex: 0 0 auto; }
     .rp .btn {
-      font: inherit; font-size: .86rem; padding: .34rem .8rem; border-radius: 7px;
+      font: inherit; font-size: .86rem; padding: .34rem .8rem; border-radius: 3px;
       border: 1px solid var(--rule); background: var(--panel); color: var(--ink); cursor: pointer;
     }
     .rp .btn:hover { border-color: var(--muted); }
@@ -184,7 +183,7 @@
     .rp details .body b { color: var(--ink); font-weight: 600; }
     .rp .tabs { display: flex; gap: 6px; margin: 0 0 12px; }
     .rp .tab {
-      font: inherit; font-size: .88rem; padding: .36rem .85rem; border-radius: 7px; cursor: pointer;
+      font: inherit; font-size: .88rem; padding: .36rem .85rem; border-radius: 3px; cursor: pointer;
       border: 1px solid var(--rule); background: transparent; color: var(--muted);
     }
     .rp .tab[aria-selected=true] { background: var(--panel); color: var(--ink); border-color: var(--muted); }
@@ -194,7 +193,7 @@
     .rp footer p { margin: 0; }
     .rp footer a { color: inherit; }
     .rp #selftest {
-      display: none; margin: 16px 0; padding: .6rem .9rem; border-radius: 8px; font-size: .88rem;
+      display: none; margin: 16px 0; padding: .6rem .9rem; border-radius: 4px; font-size: .88rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap;
     }
     .rp #selftest.pass { display: block; background: rgba(47, 125, 67, .12); color: var(--ok); }

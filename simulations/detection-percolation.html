@@ -22,7 +22,6 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
       --color-accent: #950000;
       --color-accent-strong: #6f0000;
       --color-accent-soft: #b3261e;
-      --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.14);
       --radius-sm: 0.2rem;
       --radius-md: 0.3rem;
     }
@@ -37,18 +36,17 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
         --color-accent: #f28b82;
         --color-accent-strong: #f6aaa4;
         --color-accent-soft: #f28b82;
-        --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.45);
       }
     }
 
     /* ── Simulation colour tokens ── */
     :root {
-      --dp-panel-bg:     rgba(248, 244, 238, 0.93);
+      --dp-panel-bg:     rgba(255, 255, 255, 0.93);
       --dp-box-fill:     rgba(255, 255, 255, 0.4);
-      --dp-particle:     rgba(40, 25, 15, 0.38);
-      --dp-particle-core:rgba(40, 25, 15, 0.85);
-      --dp-edge:         rgba(40, 25, 15, 0.22);
-      --dp-big-comp:     rgba(207, 106, 84, 0.38);
+      --dp-particle:     rgba(26, 26, 26, 0.38);
+      --dp-particle-core:rgba(26, 26, 26, 0.85);
+      --dp-edge:         rgba(26, 26, 26, 0.22);
+      --dp-big-comp:     rgba(179, 38, 30, 0.38);
       --dp-big-comp-core:#950000;
       --dp-target:       #950000;
       --dp-target-ring:  rgba(149, 0, 0, 0.25);
@@ -56,16 +54,16 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --dp-panel-bg:     rgba(26, 30, 36, 0.93);
-        --dp-box-fill:     rgba(35, 40, 49, 0.55);
+        --dp-panel-bg:     rgba(30, 30, 30, 0.93);
+        --dp-box-fill:     rgba(38, 38, 38, 0.55);
         --dp-particle:     rgba(226, 232, 240, 0.30);
-        --dp-particle-core:rgba(236, 228, 217, 0.90);
+        --dp-particle-core:rgba(230, 230, 230, 0.90);
         --dp-edge:         rgba(226, 232, 240, 0.25);
-        --dp-big-comp:     rgba(255, 159, 135, 0.38);
-        --dp-big-comp-core:#ff7558;
-        --dp-target:       #ff7558;
-        --dp-target-ring:  rgba(255, 117, 88, 0.35);
-        --dp-trail:        rgba(255, 117, 88, 0.55);
+        --dp-big-comp:     rgba(246, 170, 164, 0.38);
+        --dp-big-comp-core:#f28b82;
+        --dp-target:       #f28b82;
+        --dp-target-ring:  rgba(242, 139, 130, 0.35);
+        --dp-trail:        rgba(242, 139, 130, 0.55);
       }
     }
 
@@ -83,7 +81,6 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
       border-radius: var(--radius-md);
       border: 1px solid var(--color-border);
       width: min(340px, calc(100% - 20px));
-      box-shadow: var(--shadow-soft);
       user-select: none;
       max-height: calc(100% - 40px);
       overflow-y: auto;
@@ -101,9 +98,7 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
       padding-top: 10px;
     }
     .group-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-size: 0.8rem;
       color: var(--color-text-muted);
       font-weight: 600;
       margin-bottom: 10px;
@@ -148,7 +143,7 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
       gap: 0;
       background: var(--color-surface-soft);
       border: 1px solid var(--color-border);
-      border-radius: 999px;
+      border-radius: var(--radius-sm);
       padding: 3px;
       margin-bottom: 10px;
     }
@@ -159,7 +154,7 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
       font-size: 0.8rem;
       font-weight: 500;
       color: var(--color-text-muted);
-      border-radius: 999px;
+      border-radius: var(--radius-sm);
       cursor: pointer;
       transition: all 0.15s;
       line-height: 1.2;
@@ -184,17 +179,19 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
 
     /* ── Buttons ── */
     button.sim-btn {
-      width: 100%; padding: 8px 16px; border: none;
+      width: 100%; padding: 8px 16px; border: 1px solid transparent;
       border-radius: var(--radius-sm); font-weight: 600;
       cursor: pointer; transition: opacity 0.2s; margin-top: 4px;
       font-family: var(--font-body); font-size: 0.9rem;
     }
-    .sim-btn-primary { background: var(--color-accent); color: #fff; }
-    .sim-btn-primary:hover { opacity: 0.85; }
-    .sim-btn-pause  { background: #d97706; color: #fff; }
-    .sim-btn-resume { background: #059669; color: #fff; }
-    .sim-btn-export { background: var(--color-accent-soft); color: #fff; }
-    .sim-btn-export:hover { opacity: 0.85; }
+    .sim-btn-resume { background: var(--color-accent); color: #fff; }
+    .sim-btn-resume:hover { opacity: 0.85; }
+    button.sim-btn-primary,
+    button.sim-btn-pause,
+    button.sim-btn-export { background: var(--color-surface-soft); color: var(--color-text); border-color: var(--color-border); }
+    button.sim-btn-primary:hover,
+    button.sim-btn-pause:hover,
+    button.sim-btn-export:hover { border-color: var(--color-text-muted); }
     .btn-group { display: flex; gap: 8px; margin-top: 8px; }
     .btn-group .sim-btn { flex: 1; }
 
@@ -230,14 +227,13 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
       display: flex; gap: 0;
       background: var(--color-surface-soft);
       border: 1px solid var(--color-border);
-      border-radius: 999px; padding: 3px;
-      box-shadow: var(--shadow-soft);
+      border-radius: var(--radius-sm); padding: 3px;
       font-family: var(--font-body);
     }
     #dp-toggle button,
     #stats-toggle button {
       border: none; background: transparent; cursor: pointer;
-      padding: 4px 12px; border-radius: 999px;
+      padding: 4px 12px; border-radius: var(--radius-sm);
       font-size: 0.75rem; color: var(--color-text-muted);
       transition: all 0.2s;
       line-height: 1.2;
@@ -259,7 +255,6 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
       background: var(--dp-panel-bg);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      box-shadow: var(--shadow-soft);
       padding: 10px 14px;
       font-family: var(--font-body);
       color: var(--color-text);
@@ -296,10 +291,9 @@ no_index: true   # superseded by detection-percolation-discontinuous.html; kept 
         gap: 0;
         background: var(--color-surface-soft);
         border: 1px solid var(--color-border);
-        border-radius: 999px;
+        border-radius: var(--radius-sm);
         padding: 3px;
-        box-shadow: var(--shadow-soft);
-        pointer-events: auto;
+          pointer-events: auto;
         width: max-content;
         max-width: calc(100% - 24px);
         left: 50%;

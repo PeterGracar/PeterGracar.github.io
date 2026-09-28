@@ -21,7 +21,6 @@ mathjax: true
     --color-accent: #950000;
     --color-accent-strong: #6f0000;
     --color-accent-soft: #b3261e;
-    --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.14);
     --radius-sm: 0.2rem;
     --radius-md: 0.3rem;
   }
@@ -36,28 +35,27 @@ mathjax: true
       --color-accent: #f28b82;
       --color-accent-strong: #f6aaa4;
       --color-accent-soft: #f28b82;
-      --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.45);
     }
   }
 
   /* ── Simulation colour tokens ── */
   :root {
-    --lbm-panel-bg:     rgba(248, 244, 238, 0.93);
+    --lbm-panel-bg:     rgba(255, 255, 255, 0.93);
     --lbm-panel-border: var(--color-border);
-    --lbm-trace:        rgba(40, 25, 15, 0.13);
-    --lbm-brownian:     rgba(30, 20, 12, 0.88);
-    --lbm-levy-line:    rgba(40, 25, 15, 0.55);
-    --lbm-legend-bg:    rgba(241, 235, 225, 0.90);
+    --lbm-trace:        rgba(26, 26, 26, 0.13);
+    --lbm-brownian:     rgba(26, 26, 26, 0.88);
+    --lbm-levy-line:    rgba(26, 26, 26, 0.55);
+    --lbm-legend-bg:    rgba(236, 238, 240, 0.90);
     --lbm-hue-lightness: 42;
     --lbm-hue-sat-base: 85;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --lbm-panel-bg:     rgba(26, 30, 36, 0.93);
+      --lbm-panel-bg:     rgba(30, 30, 30, 0.93);
       --lbm-trace:        rgba(148, 163, 184, 0.15);
       --lbm-brownian:     rgba(255, 255, 255, 1.0);
       --lbm-levy-line:    rgba(226, 232, 240, 0.55);
-      --lbm-legend-bg:    rgba(26, 30, 36, 0.90);
+      --lbm-legend-bg:    rgba(30, 30, 30, 0.90);
       --lbm-hue-lightness: 60;
       --lbm-hue-sat-base: 100;
     }
@@ -88,7 +86,6 @@ mathjax: true
     border-radius: var(--radius-md);
     border: 1px solid var(--lbm-panel-border);
     width: min(340px, calc(100% - 20px));
-    box-shadow: var(--shadow-soft);
     user-select: none;
     max-height: calc(100% - 40px);
     overflow-y: auto;
@@ -179,7 +176,7 @@ mathjax: true
     width: 20px; height: 20px; background: var(--color-surface);
     border-radius: 50%; transition: 0.3s;
   }
-  input[type="checkbox"]:checked + .toggle-switch { background: #10b981; }
+  input[type="checkbox"]:checked + .toggle-switch { background: var(--color-accent); }
   input[type="checkbox"]:checked + .toggle-switch::after { transform: translateX(20px); }
   input[type="checkbox"] { display: none; }
 
@@ -201,17 +198,19 @@ mathjax: true
 
   /* ── Buttons ── */
   button.sim-btn {
-    width: 100%; padding: 8px 16px; border: none;
+    width: 100%; padding: 8px 16px; border: 1px solid transparent;
     border-radius: var(--radius-sm); font-weight: 600;
     cursor: pointer; transition: opacity 0.2s; margin-top: 8px;
     font-family: var(--font-body); font-size: 0.9rem;
   }
-  .sim-btn-primary { background: var(--color-accent); color: #fff; }
-  .sim-btn-primary:hover { opacity: 0.85; }
-  .sim-btn-pause  { background: #d97706; color: #fff; }
-  .sim-btn-resume { background: #059669; color: #fff; }
-  .sim-btn-export { background: var(--color-accent-soft); color: #fff; }
-  .sim-btn-export:hover { opacity: 0.85; }
+  .sim-btn-resume { background: var(--color-accent); color: #fff; }
+  .sim-btn-resume:hover { opacity: 0.85; }
+  button.sim-btn-primary,
+  button.sim-btn-pause,
+  button.sim-btn-export { background: var(--color-surface-soft); color: var(--color-text); border-color: var(--color-border); }
+  button.sim-btn-primary:hover,
+  button.sim-btn-pause:hover,
+  button.sim-btn-export:hover { border-color: var(--color-text-muted); }
 
   .btn-group { display: flex; gap: 10px; margin-top: 8px; }
   .btn-group .sim-btn { flex: 1; }
@@ -236,13 +235,12 @@ mathjax: true
     display: flex; gap: 0;
     background: var(--color-surface-soft);
     border: 1px solid var(--color-border);
-    border-radius: 999px; padding: 3px;
-    box-shadow: var(--shadow-soft);
+    border-radius: var(--radius-sm); padding: 3px;
     font-family: var(--font-body);
   }
   #lbm-toggle button {
     border: none; background: transparent; cursor: pointer;
-    padding: 4px 12px; border-radius: 999px;
+    padding: 4px 12px; border-radius: var(--radius-sm);
     font-size: 0.75rem; color: var(--color-text-muted);
     transition: all 0.2s;
     line-height: 1.2;
@@ -263,7 +261,7 @@ mathjax: true
     font-size: 0.75rem; font-family: var(--font-body);
     color: var(--color-text);
     background: var(--lbm-panel-bg);
-    padding: 4px 12px; border-radius: 999px;
+    padding: 4px 12px; border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
     opacity: 0; pointer-events: none; z-index: 9;
     transition: opacity 250ms ease;
@@ -278,9 +276,8 @@ mathjax: true
       gap: 0;
       background: var(--color-surface-soft);
       border: 1px solid var(--color-border);
-      border-radius: 999px;
+      border-radius: var(--radius-sm);
       padding: 3px;
-      box-shadow: var(--shadow-soft);
       pointer-events: auto;
       width: max-content;
       max-width: calc(100% - 24px);
@@ -312,13 +309,12 @@ mathjax: true
     display: flex; gap: 0;
     background: var(--color-surface-soft);
     border: 1px solid var(--color-border);
-    border-radius: 999px; padding: 3px;
-    box-shadow: var(--shadow-soft);
+    border-radius: var(--radius-sm); padding: 3px;
     font-family: var(--font-body);
   }
   #track-toggle button {
     border: none; background: transparent; cursor: pointer;
-    padding: 4px 12px; border-radius: 999px;
+    padding: 4px 12px; border-radius: var(--radius-sm);
     font-size: 0.75rem; color: var(--color-text-muted);
     transition: all 0.2s;
     line-height: 1.2;
@@ -1068,7 +1064,7 @@ mathjax: true
       ctx.beginPath();
       if (this.strokePolyline(ctx, w, h, cam, agent, connW, !isExport)) {
         ctx.lineWidth   = connW;
-        ctx.strokeStyle = colors.levyLine || (colors.isDark ? 'rgba(226,232,240,0.55)' : 'rgba(40,25,15,0.55)');
+        ctx.strokeStyle = colors.levyLine || (colors.isDark ? 'rgba(226,232,240,0.55)' : 'rgba(26,26,26,0.55)');
         ctx.lineJoin    = 'round';
         ctx.lineCap     = 'round';
         ctx.stroke();
@@ -1103,7 +1099,7 @@ mathjax: true
       else ctx.rect(startX-10, startY-barH*1.5, barW+20, barH*2.5+5);
       ctx.fill();
 
-      ctx.fillStyle = colors.isDark ? 'rgba(148,163,184,0.5)' : 'rgba(100,80,65,0.3)';
+      ctx.fillStyle = colors.isDark ? 'rgba(148,163,184,0.5)' : 'rgba(90,95,102,0.3)';
       ctx.fillRect(startX, startY, barW, barH);
 
       const steps = 60, sliceW = barW / steps;
