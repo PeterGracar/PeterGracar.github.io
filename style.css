@@ -270,6 +270,7 @@ figure {
 }
 
 p + p,
+p + dl,
 p + ul,
 p + ol,
 ul + p,
