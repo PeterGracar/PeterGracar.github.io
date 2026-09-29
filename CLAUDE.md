@@ -549,7 +549,12 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   `--pride-gradient` and `--underline-image` for the June easter egg, and
   `--header-image` for the per-scheme header banner) and a
   `prefers-color-scheme: dark` block. Prefer extending the existing variables
-  over adding hard-coded values.
+  over adding hard-coded values. `--site-max-width` (58rem) is the width of
+  the content column, chosen to equal the About block (12rem photo, 1.5rem
+  gap, 68ch paragraphs) so the page sits centred rather than leaving empty
+  space on the right. `main` has no side padding, while the header, nav and
+  footer inner boxes pad by 1rem, so those are capped at
+  `calc(var(--site-max-width) + 2rem)` to keep all left edges aligned.
 - **Visual register**: the palette is deliberately *neutral* — a cool
   off-white page (`#f5f6f7`), near-black text, the deep red `#950000`
   accent in light mode and a pale red `#f28b82` in dark mode. Do not

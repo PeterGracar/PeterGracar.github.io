@@ -29,7 +29,7 @@
   --text-base: clamp(1.04rem, 1rem + 0.3vw, 1.18rem);
   --text-xl: clamp(1.9rem, 1.55rem + 1.1vw, 2.85rem);
 
-  --site-max-width: 74rem;
+  --site-max-width: 58rem;
   --reading-width: 68ch;
 
   --transition-fast: 170ms ease;
@@ -145,7 +145,7 @@ button:focus-visible {
 }
 
 .site-header-inner {
-  max-width: var(--site-max-width);
+  max-width: calc(var(--site-max-width) + 2rem);
   margin: 0 auto;
   padding: clamp(2.4rem, 4vw, 4rem) 1rem clamp(1.2rem, 2.4vw, 1.7rem);
 }
@@ -178,7 +178,7 @@ button:focus-visible {
 }
 
 .site-nav ul {
-  max-width: var(--site-max-width);
+  max-width: calc(var(--site-max-width) + 2rem);
   margin: 0 auto;
   padding: 0.45rem 1rem 0.55rem;
   display: flex;
@@ -664,7 +664,7 @@ li + li {
 }
 
 .site-footer-inner {
-  max-width: var(--site-max-width);
+  max-width: calc(var(--site-max-width) + 2rem);
   margin: 0 auto;
   padding: 1rem;
   font-size: var(--text-sm);
