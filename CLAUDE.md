@@ -301,6 +301,13 @@ resolve to `/simulations/style.css`, etc., and 404.
   in
   `localStorage['pride-colours']` (`"on"`/`"off"`, default on, `try/catch`
   guarded). The toggle is hidden and the class absent outside June.
+- Lays out the About paragraphs on `index.html`. From 48rem up, the photo
+  (`.about-body .portrait`) floats left and `style.css` makes each paragraph
+  `display: flow-root`, so a paragraph that starts beside the photo moves over
+  as a whole block instead of wrapping. `site.js` measures each paragraph top
+  to bottom (on load, resize and `document.fonts.ready`) and adds
+  `.about-wrap` (ordinary wrapping) to any that would run more than two lines
+  past the photo. Below 48rem the photo sits above the text.
 - Wires up `.hover-image` buttons with `.hover-img` children for the figure
   previews on the home and research pages (hover on desktop, click on touch,
   Esc to dismiss, click-outside to dismiss).

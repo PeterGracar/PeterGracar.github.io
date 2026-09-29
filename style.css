@@ -294,14 +294,9 @@ li + li {
   max-width: var(--reading-width);
 }
 
-.home-hero {
-  display: grid;
-  gap: 1.25rem;
-}
-
 .portrait {
-  justify-self: start;
   width: min(100%, 14rem);
+  margin-bottom: 1.25rem;
 }
 
 .portrait img {
@@ -733,9 +728,25 @@ body.pride .site-footer {
 }
 
 @media (min-width: 48rem) {
-  .home-hero {
-    grid-template-columns: minmax(0, 1fr) 14rem;
-    align-items: start;
+  .about-body {
+    display: flow-root;
+  }
+
+  .about-body .portrait {
+    float: left;
+    width: 12rem;
+    margin: 0.35rem 1.5rem 0.75rem 0;
+  }
+
+  /* A paragraph beside the photo moves over as a whole block; site.js
+     switches it to ordinary wrapping (.about-wrap) when it would run more
+     than two lines past the photo. */
+  .about-body p {
+    display: flow-root;
+  }
+
+  .about-body p.about-wrap {
+    display: block;
   }
 }
 

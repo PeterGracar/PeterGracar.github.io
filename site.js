@@ -27,6 +27,50 @@
     yearNode.textContent = String(new Date().getFullYear());
   }
 
+  // About page: a paragraph that starts beside the floated photo moves over as
+  // a whole block, unless it would then run more than two lines past the photo,
+  // in which case it wraps around the photo as ordinary text.
+  const aboutBody = document.querySelector(".about-body");
+  const aboutPhoto = aboutBody && aboutBody.querySelector(".portrait");
+  if (aboutPhoto) {
+    const maxLinesPastPhoto = 2;
+    const paragraphs = aboutBody.querySelectorAll("p");
+    const fitParagraphs = () => {
+      paragraphs.forEach((p) => p.classList.remove("about-wrap"));
+      const photoStyle = getComputedStyle(aboutPhoto);
+      if (photoStyle.float === "none") {
+        return;
+      }
+      const photoBottom = aboutPhoto.getBoundingClientRect().bottom + parseFloat(photoStyle.marginBottom);
+      // Top to bottom, since each choice moves the paragraphs below it.
+      paragraphs.forEach((p) => {
+        const box = p.getBoundingClientRect();
+        if (box.top >= photoBottom) {
+          return;
+        }
+        const lineHeight = parseFloat(getComputedStyle(p).lineHeight);
+        if (Math.round((box.bottom - photoBottom) / lineHeight) > maxLinesPastPhoto) {
+          p.classList.add("about-wrap");
+        }
+      });
+    };
+    let fitQueued = false;
+    const queueFit = () => {
+      if (!fitQueued) {
+        fitQueued = true;
+        requestAnimationFrame(() => {
+          fitQueued = false;
+          fitParagraphs();
+        });
+      }
+    };
+    fitParagraphs();
+    window.addEventListener("resize", queueFit);
+    if (document.fonts) {
+      document.fonts.ready.then(queueFit);
+    }
+  }
+
   // Pride Month (June) easter egg — auto-on, with a remembered opt-out.
   const prideToggle = document.querySelector("[data-pride-toggle]");
   if (prideToggle && new Date().getMonth() === 5) {
