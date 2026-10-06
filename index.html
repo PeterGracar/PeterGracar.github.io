@@ -38,5 +38,18 @@ canonical: "https://gracar.org/"
           {% endif %}
         {% endfor %}
       </ul>
+      {% if site.data.cv_origins %}
+        <template id="cv-origins">
+          {% for origin in site.data.cv_origins %}
+            {% if origin.year and origin.event and origin.event != "" %}
+              {% assign origin_text = origin.event | markdownify | strip | remove: "<p>" | remove: "</p>" %}
+              <li class="timeline-origin">
+                <span class="timeline-year">{{ origin.year }}</span>
+                <span>{{ origin_text }}</span>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </template>
+      {% endif %}
     </section>
   </main>
