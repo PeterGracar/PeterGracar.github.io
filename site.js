@@ -150,6 +150,22 @@
       `${pad(stamp.getHours())}:${pad(stamp.getMinutes())}:${pad(stamp.getSeconds())}${zone}`;
   });
 
+  // Short CV easter egg: below a break in the timeline, one made-up earliest
+  // entry, picked at random on each visit from the <template> rendered from
+  // _data/cv_origins.yml.
+  const cvOrigins = document.getElementById("cv-origins");
+  const timeline = document.querySelector(".timeline");
+  if (cvOrigins && timeline && cvOrigins.content) {
+    const origins = cvOrigins.content.querySelectorAll(".timeline-origin");
+    if (origins.length) {
+      const gap = document.createElement("li");
+      gap.className = "timeline-gap";
+      gap.setAttribute("aria-hidden", "true");
+      const origin = origins[Math.floor(Math.random() * origins.length)];
+      timeline.append(gap, origin.cloneNode(true));
+    }
+  }
+
   const tooltipButtons = Array.from(document.querySelectorAll(".hover-image"));
   if (!tooltipButtons.length) {
     return;

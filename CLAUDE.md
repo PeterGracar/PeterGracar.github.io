@@ -37,6 +37,10 @@ _coauthors/*.md             Coauthor directory, referenced by publications via c
 _talks/*.md                 Talks / conferences / workshops
 _modules/*.md               Teaching modules
 _mini_cv/*.md               Short CV timeline entries shown on the homepage
+_data/cv_origins.yml        Pool of made-up {year, event} entries for the
+                            Short CV easter egg (see site.js below). The only
+                            committed file in _data/; file_dates.json there is
+                            build-generated and git-ignored.
 
 index.html                  Home (About)
 research.html               Publications, collaborators, talks
@@ -240,6 +244,11 @@ Key rules mirrored by the templates (see `_includes/publication_item.html` and
 - **Mini CV** (`_mini_cv/*.md`)
   - Required front matter: `period`, `order`. The Markdown **body** is the
     line text (rendered with `markdownify` and wrapper `<p>` stripped).
+  - The joke entry shown below the timeline is **not** a `_mini_cv` file: it
+    comes from `_data/cv_origins.yml` (`year` and Markdown `event`, both
+    required, both quoted), which `index.html` renders through the same
+    `markdownify` pipeline into an inert `<template id="cv-origins">` after
+    the `<ul class="timeline">`.
 
 When adding content, follow the exact schemas in `CONTENT_GUIDE.md` and prefer
 editing existing files as templates — do not invent new front-matter keys
@@ -308,6 +317,16 @@ resolve to `/simulations/style.css`, etc., and 404.
   to bottom (on load, resize and `document.fonts.ready`) and adds
   `.about-wrap` (ordinary wrapping) to any that would run more than two lines
   past the photo. Below 48rem the photo sits above the text.
+- Short CV easter egg on `index.html`: picks one `<li class="timeline-origin">`
+  at random (`Math.random()`, so a new one on each visit) from the
+  `#cv-origins` template and appends it to `.timeline` after an empty
+  `<li class="timeline-gap" aria-hidden="true">`. In `style.css` the track is
+  drawn per entry (each `li::before` runs from its dot to the next entry's dot;
+  the dot is `li::after`), so it can break: the last real entry keeps its usual
+  tail, `.timeline-gap` draws three dots, and `.timeline-origin` gets a short
+  stub ending at its dot. The `.timeline` gap token `--tl-gap` (1.5rem) also
+  absorbs the global `li + li` margin, which is zeroed inside the timeline.
+  Without JS nothing is appended and the timeline looks as before.
 - Wires up `.hover-image` buttons with `.hover-img` children for the figure
   previews on the home and research pages (hover on desktop, click on touch,
   Esc to dismiss, click-outside to dismiss).

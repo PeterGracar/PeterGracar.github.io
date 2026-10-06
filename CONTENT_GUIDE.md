@@ -117,3 +117,21 @@ Validation and behavior:
 - Required fields: `period`, `order`.
 - Body content is markdown and rendered as the CV line text.
 - Entries are shown on the homepage in ascending `order`.
+
+## Short CV easter egg
+
+Below the earliest Mini CV entry the timeline breaks off, and `site.js` shows
+one made-up entry, picked at random on each visit, where the timeline ends.
+The pool is the list in `_data/cv_origins.yml` (a data file, not a collection):
+
+```yaml
+- year: "1827"
+  event: "Supplied the pollen for [Robert Brown's microscope](https://en.wikipedia.org/wiki/Brownian_motion)"
+```
+
+Validation and behavior:
+
+- Required fields: `year`, `event`. Entries missing either are skipped.
+- `event` is markdown, rendered like a Mini CV body; quote both values.
+- Keep `year` earlier than the earliest real entry.
+- Without JavaScript nothing is shown and the timeline looks as before.

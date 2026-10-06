@@ -307,24 +307,12 @@ li + li {
 .timeline {
   --track-x: 0.45rem;
   --tl-pad: 1.5rem;
+  --tl-gap: 1.5rem;
   list-style: none;
   padding: 0 0 0 var(--tl-pad);
   display: grid;
-  gap: 0.85rem;
-  position: relative;
+  gap: var(--tl-gap);
   max-width: var(--reading-width);
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: var(--track-x);
-  top: 0.5rem;
-  bottom: 0.5rem;
-  width: 2px;
-  background: var(--color-border);
-  border-radius: 1px;
-  translate: -50% 0;
 }
 
 .timeline li {
@@ -333,7 +321,31 @@ li + li {
   gap: 0.22rem;
 }
 
+.timeline li + li {
+  margin-top: 0;
+}
+
+/* The track is drawn in pieces, each entry's ::before running from its dot
+   down to the next entry's dot, so that it can break before the made-up
+   earliest entry site.js adds (.timeline-gap, .timeline-origin). */
 .timeline li::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--track-x) - var(--tl-pad));
+  top: 0.5rem;
+  bottom: calc(-1 * var(--tl-gap) - 0.5rem);
+  width: 2px;
+  background: var(--color-border);
+  border-radius: 1px;
+  translate: -50% 0;
+}
+
+/* Past the last entry the track runs on a little and stops. */
+.timeline li:last-child::before {
+  bottom: 0.5rem;
+}
+
+.timeline li::after {
   content: '';
   position: absolute;
   left: calc(var(--track-x) - var(--tl-pad) - 0.25rem - 2px);
@@ -344,6 +356,36 @@ li + li {
   background: var(--color-accent);
   border: 2px solid var(--color-bg);
   box-shadow: 0 0 0 1px var(--color-border);
+}
+
+/* Short CV easter egg (site.js): the earliest real entry keeps its usual
+   tail, three dots on the track mark a break, and a short stub of track
+   leads into the made-up entry, where the track ends. The empty
+   .timeline-gap has no height: the tail ends one gap plus 0.5rem above it
+   and the stub starts one gap minus 0.5rem below it, so the dots are
+   centred 0.5rem above it. */
+.timeline li:has(+ .timeline-gap)::before {
+  bottom: 0.5rem;
+}
+
+.timeline .timeline-gap::before {
+  top: -0.5rem;
+  bottom: auto;
+  height: 1.5rem;
+  width: 4px;
+  border-radius: 0;
+  translate: -50% -50%;
+  background: radial-gradient(circle, var(--color-border) 1.6px, transparent 2.1px) center / 4px 0.5rem repeat-y;
+}
+
+.timeline .timeline-gap::after {
+  content: none;
+}
+
+.timeline li.timeline-origin::before {
+  top: -0.5rem;
+  bottom: auto;
+  height: 1rem;
 }
 
 .timeline-year {

@@ -1,0 +1,36 @@
+# Joke entries for the Short CV on the homepage (index.html). Below the
+# earliest real entry the timeline breaks off, and site.js shows one of these,
+# picked at random on each visit, as the entry where the timeline ends.
+#
+# year:  shown in place of the period; keep it before the earliest real entry.
+# event: Markdown, rendered like a _mini_cv body (link a key phrase).
+# Entries missing either field are skipped.
+
+- year: "1202"
+  event: "Counted the rabbits in [Fibonacci's Liber Abaci](https://en.wikipedia.org/wiki/Liber_Abaci)"
+- year: "1494"
+  event: "Audited [Luca Pacioli's double-entry books](https://en.wikipedia.org/wiki/Luca_Pacioli)"
+- year: "1637"
+  event: "Sold Pierre de Fermat [a book with narrow margins](https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem)"
+- year: "1654"
+  event: "Asked Pascal and Fermat how to split [the stakes of an unfinished game](https://en.wikipedia.org/wiki/Problem_of_points)"
+- year: "1713"
+  event: "Tossed coins for [Jacob Bernoulli's law of large numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers)"
+- year: "1736"
+  event: "Tried to cross each of [Königsberg's seven bridges](https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg) exactly once"
+- year: "1777"
+  event: "Dropped needles on the floorboards for [the Comte de Buffon](https://en.wikipedia.org/wiki/Buffon%27s_needle_problem)"
+- year: "1827"
+  event: "Supplied the pollen for [Robert Brown's microscope](https://en.wikipedia.org/wiki/Brownian_motion)"
+- year: "1900"
+  event: "Priced options with [Louis Bachelier](https://en.wikipedia.org/wiki/Louis_Bachelier) in Paris"
+- year: "1908"
+  event: "Sampled barley for [\"Student\"](https://en.wikipedia.org/wiki/William_Sealy_Gosset) at the Guinness brewery"
+- year: "1913"
+  event: "Counted vowels in Eugene Onegin for [Andrey Markov](https://en.wikipedia.org/wiki/Andrey_Markov)"
+- year: "1933"
+  event: "Proofread [Kolmogorov's axioms of probability](https://en.wikipedia.org/wiki/Probability_axioms)"
+- year: "1957"
+  event: "Brewed percolated coffee for [Broadbent and Hammersley](https://en.wikipedia.org/wiki/Percolation_theory)"
+- year: "1959"
+  event: "Drew the random edges for [Erdős and Rényi](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model)"
