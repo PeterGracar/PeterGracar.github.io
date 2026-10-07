@@ -542,20 +542,26 @@ it as an `<img>`. Consequences for editing:
   wrap text: line breaks are fixed, and each box was sized to the widest of
   Source Sans 3, Liberation Sans (Arial metrics) and FreeSans (Helvetica
   metrics) plus 5%, so re-check the box widths after any text change.
-- Coordinates are in a 0 0 1764 1372 frame, the frame of the former raster
-  map, so the routes, markers and callouts sit where they did; the base was
-  fitted to that frame.
 - The base (buildings, the E.C. Stoner Building drawn darker, service roads,
   footpaths, paved areas, grass) is **OpenStreetMap** data, extracted on
   2026-10-07 from `api.openstreetmap.org/api/0.6/map?bbox=-1.5590,53.8030,-1.5480,53.8080`
-  (indoor, covered, tunnel and below-ground ways left out). It was projected to
-  local metres (x east, y south, about 53.8055 N, 1.5545 W) and mapped into the
-  frame with an affine transform, `x' = 10.1648x + 0.4987y + 337.87`,
-  `y' = -0.0252x + 10.7219y + 1108.39`, fitted to six building corners on the
-  old aerial photo (RMS residual 7.5 px, about 0.7 m). ODbL requires the
-  "© OpenStreetMap contributors" credit: keep it both inside the SVG (bottom
-  right, for the `<img>` previews) and in the `map.html` figcaption, linked to
-  https://www.openstreetmap.org/copyright.
+  (indoor, covered, tunnel and below-ground ways left out). It is drawn
+  **undeformed**: projected to local metres (x east, y south, about 53.8055 N,
+  1.5545 W), then north up at one scale in both directions,
+  `x' = 10.6732x + 320.48`, `y' = 10.6732y + 1107.00`, into the 0 0 1764 1372
+  frame (the frame of the former raster map). Do not fit the base to anything
+  else; move the overlay instead.
+- The routes, markers, star and leader-arrow tips were placed in the same
+  metres and snapped to OSM features: the Red Route corridor (north-south at
+  x = -4.4, east-west at y = 6.0), the footway from the School of Mathematics
+  rotunda to IT Services (y = -20.2), the inside of IT Services (x = 17.6), and
+  Staircase 1, the destination and Entrance 1 South inside the E.C. Stoner
+  Building. The scale and offset above were chosen so the overlay stays within
+  10 px of where it was drawn on the old map, so the callout boxes did not
+  have to move; no callout or label box covers a route, marker or the star.
+- ODbL requires the "© OpenStreetMap contributors" credit: keep it both inside
+  the SVG (bottom right, for the `<img>` previews) and in the `map.html`
+  figcaption, linked to https://www.openstreetmap.org/copyright.
 
 ## SEO, sitemap, and the "secret" index
 
