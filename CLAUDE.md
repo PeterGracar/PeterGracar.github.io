@@ -558,7 +558,8 @@ it as an `<img>`. Consequences for editing:
   Staircase 1, the destination and Entrance 1 South inside the E.C. Stoner
   Building. The scale and offset above were chosen so the overlay stays within
   10 px of where it was drawn on the old map, so the callout boxes did not
-  have to move; no callout or label box covers a route, marker or the star.
+  have to move; no callout or label box covers a route, marker, the star or
+  a leader arrow, or leaves the frame.
 - ODbL requires the "© OpenStreetMap contributors" credit: keep it both inside
   the SVG (bottom right, for the `<img>` previews) and in the `map.html`
   figcaption, linked to https://www.openstreetmap.org/copyright.

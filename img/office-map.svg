@@ -87,8 +87,8 @@
 <g role="list">
 <g role="listitem"><text class="om-step"><tspan x="364" y="143">1. </tspan><tspan x="402" y="143">Follow the red route on level 10. </tspan><tspan x="402" dy="40">The School of Mathematics entrance is on level 9.</tspan></text></g>
 <g role="listitem"><text class="om-step"><tspan x="364" y="231">2. </tspan><tspan x="402" y="231">Take a left into the E.C. Stoner building </tspan><tspan x="402" dy="40">and walk past the IT Service Desk.</tspan></text></g>
-<g role="listitem"><text class="om-step"><tspan x="364" y="319">3. </tspan><tspan x="402" y="319">Take the stairs on the right (Staircase 1) </tspan><tspan x="402" dy="40">and go down one floor.</tspan></text></g>
-<g role="listitem"><text class="om-step"><tspan x="364" y="407">4. </tspan><tspan x="402" y="407">At the bottom of the stairs, turn right and go </tspan><tspan x="402" dy="40">through the door marked <tspan class="om-em">Maths Research Deck</tspan>.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="364" y="319">3. </tspan><tspan x="402" y="319">Take the stairs on the right (Staircase 1) </tspan><tspan x="402" dy="40">and go down one floor to level 9.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="364" y="407">4. </tspan><tspan x="402" y="407">Turn right and go through the door </tspan><tspan x="402" dy="40">marked <tspan class="om-em">Maths Research Deck</tspan>.</tspan></text></g>
 </g>
 <polygon class="om-star" aria-hidden="true" points="379,471 382.8,481.7 394.2,482.1 385.2,489 388.4,499.9 379,493.5 369.6,499.9 372.8,489 363.8,482.1 375.2,481.7"/>
 <text class="om-success" x="408" y="497">Success!</text>
@@ -105,15 +105,15 @@
 <text class="om-success" x="653" y="841">Success!</text>
 </g>
 <g class="om-callout om-c">
-<rect class="om-box" aria-hidden="true" x="950" y="880" width="775" height="316" rx="10"/>
-<rect class="om-swatch" aria-hidden="true" x="974" y="917" width="40" height="14" rx="3"/>
-<text class="om-title" x="1028" y="933">Route C (green)</text>
+<rect class="om-box" aria-hidden="true" x="925" y="880" width="819" height="316" rx="10"/>
+<rect class="om-swatch" aria-hidden="true" x="949" y="917" width="40" height="14" rx="3"/>
+<text class="om-title" x="1003" y="933">Route C (green)</text>
 <g role="list">
-<g role="listitem"><text class="om-step"><tspan x="974" y="983">1. </tspan><tspan x="1012" y="983">Enter through Entrance 1 South </tspan><tspan x="1012" dy="40">next to the bike shelter.</tspan></text></g>
-<g role="listitem"><text class="om-step"><tspan x="974" y="1071">4. </tspan><tspan x="1012" y="1071">Take the stairs up three floors, then go </tspan><tspan x="1012" dy="40">through the door marked <tspan class="om-em">Maths Research Deck</tspan>.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="949" y="983">1. </tspan><tspan x="987" y="983">Enter through Entrance 1 South </tspan><tspan x="987" dy="40">next to the bike shelter.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="949" y="1071">4. </tspan><tspan x="987" y="1071">Take the stairs up three floors to level 9, then </tspan><tspan x="987" dy="40">go through the door marked <tspan class="om-em">Maths Research Deck</tspan>.</tspan></text></g>
 </g>
-<polygon class="om-star" aria-hidden="true" points="989,1135 992.8,1145.7 1004.2,1146.1 995.2,1153 998.4,1163.9 989,1157.5 979.6,1163.9 982.8,1153 973.8,1146.1 985.2,1145.7"/>
-<text class="om-success" x="1018" y="1161">Success!</text>
+<polygon class="om-star" aria-hidden="true" points="964,1135 967.8,1145.7 979.2,1146.1 970.2,1153 973.4,1163.9 964,1157.5 954.6,1163.9 957.8,1153 948.8,1146.1 960.2,1145.7"/>
+<text class="om-success" x="993" y="1161">Success!</text>
 </g>
 <g class="om-label">
 <rect class="om-label-box" aria-hidden="true" x="24" y="700" width="212" height="94" rx="6"/>
