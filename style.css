@@ -594,6 +594,12 @@ li + li {
   background: var(--color-surface);
 }
 
+.map-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .map-figure figcaption {
   padding: 0.8rem 1rem;
   font-size: var(--text-sm);

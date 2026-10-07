@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="om" viewBox="0 0 1764 1372" width="1764" height="1372" role="group">
+<style>.om{--om-ground:var(--color-surface-soft,#eceef0);--om-building:var(--color-border,#d4d7db);--om-building-edge:#b3b8bf;--om-focus-building:#c3c7cc;--om-road:var(--color-surface,#ffffff);--om-green:#dde6d6;--om-surface:var(--color-surface,#ffffff);--om-ink:var(--color-text,#1a1a1a);--om-muted:var(--color-text-muted,#5a5f66);--om-casing:#1a1a1a;--om-red:#ad2d14;--om-blue:#53afee;--om-green-route:#79d357;--om-on-red:#ffffff;--om-on-light:#1a1a1a;display:block;font-family:var(--font-body,"Source Sans 3","Segoe UI",Arial,sans-serif);font-size:30px;font-weight:400;line-height:normal}
+@media (prefers-color-scheme:dark){.om{--om-ground:var(--color-surface-soft,#262626);--om-building:#3a3a3a;--om-building-edge:#4d4d4d;--om-focus-building:#474747;--om-road:#1c1c1c;--om-green:#25301f;--om-surface:var(--color-surface,#1e1e1e);--om-ink:var(--color-text,#e6e6e6);--om-muted:var(--color-text-muted,#a3a3a3);--om-casing:#141414;--om-red:#e5533a;--om-on-red:#1a1a1a}}
+.om .om-ground{fill:var(--om-ground)}
+.om .om-green{fill:var(--om-green)}
+.om .om-road{fill:none;stroke:var(--om-road);stroke-linecap:round;stroke-linejoin:round}
+.om .om-building{fill:var(--om-building);stroke:var(--om-building-edge);stroke-width:2;fill-rule:evenodd}
+.om .om-building-focus{fill:var(--om-focus-building);stroke:var(--om-building-edge);stroke-width:2;fill-rule:evenodd}
+.om .om-casing{fill:none;stroke:var(--om-casing);stroke-width:20;stroke-linejoin:miter}
+.om .om-route{fill:none;stroke-width:14;stroke-linejoin:miter}
+.om .om-route-a{stroke:var(--om-red)}
+.om .om-route-b{stroke:var(--om-blue)}
+.om .om-route-c{stroke:var(--om-green-route)}
+.om .om-stub{fill:none;stroke-width:7}
+.om .om-mark{stroke:var(--om-casing);stroke-width:3}
+.om .om-mark-a{fill:var(--om-red)}
+.om .om-mark-b{fill:var(--om-blue)}
+.om .om-mark-c{fill:var(--om-green-route)}
+.om .om-mark-ac{fill:url(#om-grad-ac)}
+.om .om-digit{font-size:30px;text-anchor:middle;fill:var(--om-on-light)}
+.om .om-digit-a{fill:var(--om-on-red)}
+.om .om-digit-ac{stroke:#ffffff;stroke-width:5;stroke-linejoin:round;paint-order:stroke}
+.om .om-stop-red{stop-color:var(--om-red)}
+.om .om-stop-blue{stop-color:var(--om-blue)}
+.om .om-stop-green{stop-color:var(--om-green-route)}
+.om .om-star{fill:url(#om-grad-star);stroke:var(--om-casing);stroke-width:2.5;stroke-linejoin:round}
+.om .om-box{fill:var(--om-surface);stroke-width:5}
+.om .om-a .om-box{stroke:var(--om-red)}
+.om .om-b .om-box{stroke:var(--om-blue)}
+.om .om-c .om-box{stroke:var(--om-green-route)}
+.om .om-swatch{stroke:var(--om-casing);stroke-width:2}
+.om .om-a .om-swatch{fill:var(--om-red)}
+.om .om-b .om-swatch{fill:var(--om-blue)}
+.om .om-c .om-swatch{fill:var(--om-green-route)}
+.om .om-title,.om .om-success,.om .om-em{font-weight:700}
+.om .om-title,.om .om-step,.om .om-success,.om .om-label-text{fill:var(--om-ink)}
+.om .om-label-box{fill:var(--om-surface);stroke:var(--om-ink);stroke-width:2}
+.om .om-label-text{text-anchor:middle}
+.om .om-place{fill:var(--om-muted);font-size:26px;text-anchor:middle}
+.om .om-leader{fill:none;stroke:var(--om-ink);stroke-width:4}
+.om .om-leader-head{fill:var(--om-ink)}
+.om .om-credit{fill:var(--om-muted);font-size:20px;text-anchor:end}
+.om .om-credit-box{fill:var(--om-surface);opacity:.85}</style>
+<defs><linearGradient id="om-grad-ac" x1="0" y1="0" x2="1" y2="1"><stop offset="0.3" class="om-stop-red"/><stop offset="0.7" class="om-stop-green"/></linearGradient><linearGradient id="om-grad-star" x1="0" y1="0" x2="1" y2="0"><stop offset="0.3" class="om-stop-blue"/><stop offset="0.7" class="om-stop-red"/></linearGradient></defs>
+<g aria-hidden="true">
+<rect class="om-ground" width="1764" height="1372"/>
+<polyline class="om-casing" points="372,890 507,890 507,1232 627,1232"/>
+<polyline class="om-casing" points="797,1318 797,1235"/>
+<polyline class="om-casing" points="272,66 272,1174 797,1174 797,1232 627,1232"/>
+<polyline class="om-casing" points="627,1232 627,1258"/>
+<polyline class="om-route om-route-b" points="372,890 507,890 507,1232 627,1232"/>
+<polyline class="om-route om-route-c" points="797,1318 797,1235"/>
+<polyline class="om-route om-route-a" points="272,66 272,1174 797,1174 797,1232 627,1232"/>
+<polyline class="om-stub om-route-b" points="623.5,1225 623.5,1258"/>
+<polyline class="om-stub om-route-a" points="630.5,1225 630.5,1258"/>
+<circle class="om-mark om-mark-a" cx="272" cy="678" r="28"/>
+<text class="om-digit om-digit-a" x="272" y="688.5">1</text>
+<circle class="om-mark om-mark-a" cx="272" cy="1174" r="28"/>
+<text class="om-digit om-digit-a" x="272" y="1184.5">2</text>
+<circle class="om-mark om-mark-a" cx="797" cy="1174" r="28"/>
+<text class="om-digit om-digit-a" x="797" y="1184.5">3</text>
+<circle class="om-mark om-mark-b" cx="372" cy="890" r="28"/>
+<text class="om-digit om-digit-b" x="372" y="900.5">1</text>
+<circle class="om-mark om-mark-b" cx="507" cy="890" r="28"/>
+<text class="om-digit om-digit-b" x="507" y="900.5">2</text>
+<circle class="om-mark om-mark-c" cx="797" cy="1318" r="28"/>
+<text class="om-digit om-digit-c" x="797" y="1328.5">1</text>
+<circle class="om-mark om-mark-ac" cx="797" cy="1235" r="28"/>
+<text class="om-digit om-digit-ac" x="797" y="1245.5">4</text>
+<path class="om-leader" d="M206 794L304.6 870.5"/><polygon class="om-leader-head" points="322,884 297.9,879.2 311.4,861.8"/>
+<path class="om-leader" d="M1010 1244L929 1218.6"/><polygon class="om-leader-head" points="908,1212 932.3,1208.1 925.7,1229.1"/>
+</g>
+<g class="om-callout om-a">
+<rect class="om-box" aria-hidden="true" x="340" y="40" width="784" height="492" rx="10"/>
+<rect class="om-swatch" aria-hidden="true" x="364" y="77" width="40" height="14" rx="3"/>
+<text class="om-title" x="418" y="93">Route A (red)</text>
+<g role="list">
+<g role="listitem"><text class="om-step"><tspan x="364" y="143">1. </tspan><tspan x="402" y="143">Follow the red route on level 10. </tspan><tspan x="402" dy="40">The School of Mathematics entrance is on level 9.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="364" y="231">2. </tspan><tspan x="402" y="231">Take a left into the E.C. Stoner building </tspan><tspan x="402" dy="40">and walk past the IT Service Desk.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="364" y="319">3. </tspan><tspan x="402" y="319">Take the stairs on the right (Staircase 1) </tspan><tspan x="402" dy="40">and go down one floor.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="364" y="407">4. </tspan><tspan x="402" y="407">At the bottom of the stairs, turn right and go </tspan><tspan x="402" dy="40">through the door marked <tspan class="om-em">Maths Research Deck</tspan>.</tspan></text></g>
+</g>
+<polygon class="om-star" aria-hidden="true" points="379,471 382.8,481.7 394.2,482.1 385.2,489 388.4,499.9 379,493.5 369.6,499.9 372.8,489 363.8,482.1 375.2,481.7"/>
+<text class="om-success" x="408" y="497">Success!</text>
+</g>
+<g class="om-callout om-b">
+<rect class="om-box" aria-hidden="true" x="585" y="560" width="663" height="316" rx="10"/>
+<rect class="om-swatch" aria-hidden="true" x="609" y="597" width="40" height="14" rx="3"/>
+<text class="om-title" x="663" y="613">Route B (blue)</text>
+<g role="list">
+<g role="listitem"><text class="om-step"><tspan x="609" y="663">1. </tspan><tspan x="647" y="663">Go through the IT Services door opposite </tspan><tspan x="647" dy="40">the School of Mathematics.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="609" y="751">2. </tspan><tspan x="647" y="751">Turn right and follow the signs for </tspan><tspan x="647" dy="40"><tspan class="om-em">Maths Research Deck</tspan>.</tspan></text></g>
+</g>
+<polygon class="om-star" aria-hidden="true" points="624,815 627.8,825.7 639.2,826.1 630.2,833 633.4,843.9 624,837.5 614.6,843.9 617.8,833 608.8,826.1 620.2,825.7"/>
+<text class="om-success" x="653" y="841">Success!</text>
+</g>
+<g class="om-callout om-c">
+<rect class="om-box" aria-hidden="true" x="950" y="880" width="775" height="316" rx="10"/>
+<rect class="om-swatch" aria-hidden="true" x="974" y="917" width="40" height="14" rx="3"/>
+<text class="om-title" x="1028" y="933">Route C (green)</text>
+<g role="list">
+<g role="listitem"><text class="om-step"><tspan x="974" y="983">1. </tspan><tspan x="1012" y="983">Enter through Entrance 1 South </tspan><tspan x="1012" dy="40">next to the bike shelter.</tspan></text></g>
+<g role="listitem"><text class="om-step"><tspan x="974" y="1071">4. </tspan><tspan x="1012" y="1071">Take the stairs up three floors, then go </tspan><tspan x="1012" dy="40">through the door marked <tspan class="om-em">Maths Research Deck</tspan>.</tspan></text></g>
+</g>
+<polygon class="om-star" aria-hidden="true" points="989,1135 992.8,1145.7 1004.2,1146.1 995.2,1153 998.4,1163.9 989,1157.5 979.6,1163.9 982.8,1153 973.8,1146.1 985.2,1145.7"/>
+<text class="om-success" x="1018" y="1161">Success!</text>
+</g>
+<g class="om-label">
+<rect class="om-label-box" aria-hidden="true" x="24" y="700" width="212" height="94" rx="6"/>
+<text class="om-label-text"><tspan x="130" y="739">School of </tspan><tspan x="130" dy="36">Mathematics</tspan></text>
+</g>
+<g class="om-label">
+<rect class="om-label-box" aria-hidden="true" x="980" y="1244" width="239" height="58" rx="6"/>
+<text class="om-label-text"><tspan x="1099.5" y="1283">Maths Satellite</tspan></text>
+</g>
+<g role="img" aria-label="Destination: office 9.10p1, Maths Research Deck"><polygon class="om-star" points="627,1248 635.2,1270.7 659.3,1271.5 640.3,1286.3 647,1309.5 627,1296 607,1309.5 613.7,1286.3 594.7,1271.5 618.8,1270.7"/></g>
+</svg>

@@ -46,7 +46,8 @@ index.html                  Home (About)
 research.html               Publications, collaborators, talks
 teaching.html               Current modules
 contact.html                Email/office/address + Leeds staff-profile link
-map.html                    Directions to office 9.10p1
+map.html                    Directions to office 9.10p1; inlines
+                            img/office-map.svg (see "Office map" below)
 secret.html                 Unlisted auto-index of all pages/static files (noindex)
 404.html                    Custom 404
 
@@ -146,11 +147,13 @@ uploads/                    Drop-zone for arbitrary files (any type), served as
                             not listed on secret.html). Must NOT be added to
                             _config.yml's exclude: list, or its files would
                             not be published.
-img/                        Avatar, map, figure previews (.webp), plus
-                            geometric-graph.svg: the research-page preview of a
-                            spatial preferential attachment graph, whose colours
-                            switch with an internal prefers-color-scheme block
-                            (halo colours match --color-surface)
+img/                        Avatar and figure previews (.webp), plus two
+                            theme-aware SVGs whose colours switch with an
+                            internal prefers-color-scheme block:
+                            geometric-graph.svg, the research-page preview of a
+                            spatial preferential attachment graph (halo colours
+                            match --color-surface), and office-map.svg, the
+                            directions map (see "Office map" below)
 papers/                     PDF reprints (SPA129.pdf, waw2020.pdf, waw2023.pdf)
 banner.webp                 Lipschitz-surface render (viridis) used as the
                             light-mode site-header background in style.css
@@ -328,8 +331,9 @@ resolve to `/simulations/style.css`, etc., and 404.
   absorbs the global `li + li` margin, which is zeroed inside the timeline.
   Without JS nothing is appended and the timeline looks as before.
 - Wires up `.hover-image` buttons with `.hover-img` children for the figure
-  previews on the home and research pages (hover on desktop, click on touch,
-  Esc to dismiss, click-outside to dismiss).
+  previews on the home, research and contact pages (hover on desktop, click on
+  touch, Esc to dismiss, click-outside to dismiss). The map previews on the
+  home and contact pages load `img/office-map.svg` as an `<img>`.
 
 ## Simulations directory
 
@@ -496,6 +500,47 @@ them together. The `detection-percolation-discontinuous` and
 `rainbow-percolation` pairs have **no** Swift counterpart; each pair's two HTML
 files must be kept in sync with each other.
 
+## Office map
+
+`img/office-map.svg` is the map on `map.html` (it replaced the raster
+`img/Map.webp`, whose Pixelmator source was lost). One file serves two uses:
+`map.html` inlines it with `{% include_relative img/office-map.svg %}` so
+screen readers can reach its text (an SVG loaded through `<img>` is a single
+opaque image), and the hover previews on `index.html` and `contact.html` load
+it as an `<img>`. Consequences for editing:
+
+- It must stay **valid XML** with no XML declaration and no front matter (the
+  `<img>` previews fail silently otherwise), and it must not contain `{{` or
+  `{%`, because Liquid parses the included file.
+- Its `<style>` block becomes page-wide CSS once inlined (the one exception to
+  "all styles live in `style.css`"), so every rule is scoped under the root
+  class `.om` and every class and id is prefixed `om-`; never use type
+  selectors. Colours are custom properties on `.om` that read the site tokens
+  with literal fallbacks (e.g. `var(--color-surface, #ffffff)`), so inline it
+  follows `style.css` and as an `<img>` it falls back to the literals; a
+  `prefers-color-scheme: dark` block switches both. Theming goes through
+  classes (gradient stops included), because `var()` does not work in
+  presentation attributes. `font-family` and `font-size` are set on `.om` so
+  the page's `body` styles do not leak in.
+- Route colours are **data colours**, not the site accent: red `#ad2d14`
+  (dark mode `#e5533a`), blue `#53afee`, green `#79d357`, each drawn over a
+  near-black casing so lines and markers keep 3:1 contrast on any background,
+  and red and green differ in lightness for red-green colour-blind readers.
+- Accessibility structure: the root is `role="group"` with no `<title>` (the
+  `<figcaption>` names it). Everything decorative (base, casings, routes,
+  marker digits, leader arrows) sits in one `aria-hidden` group. Each route's
+  callout has a title ("Route A (red)") and a `role="list"` of
+  `role="listitem"` groups, one `<text>` per step with one positioned `<tspan>`
+  per line; every line but the last ends with a space so words do not run
+  together. The destination star is `role="img"` with an `aria-label`.
+- The callout text copies the step lists in `map.html` word for word (bold
+  only where the HTML has `<strong>`); **edit both together**. SVG does not
+  wrap text: line breaks are fixed, and each box was sized to the widest of
+  Source Sans 3, Liberation Sans (Arial metrics) and FreeSans (Helvetica
+  metrics) plus 5%, so re-check the box widths after any text change.
+- Coordinates are in a 0 0 1764 1372 frame, the frame of the former raster
+  map, so the routes sit where they did.
+
 ## SEO, sitemap, and the "secret" index
 
 - `sitemap.xml` is a Liquid template that enumerates `site.pages`, skipping any
@@ -562,7 +607,8 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
 - **HTML/Liquid**: match the indentation and defensive `{% if %}` style in
   `_includes/publication_item.html` — the templates silently skip entries with
   missing required fields rather than erroring.
-- **CSS**: all styles live in `style.css`. It uses CSS custom properties
+- **CSS**: all styles live in `style.css` (the exception is the scoped
+  `<style>` block inside `img/office-map.svg`; see "Office map"). It uses CSS custom properties
   (`--color-*`, `--text-*` and `--radius-*` — the previous `--space-*`
   spacing tokens and the `--shadow-card` token were removed as unused, plus
   `--pride-gradient` and `--underline-image` for the June easter egg, and
@@ -591,7 +637,8 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   short names) in its own `<style>`, overriding `style.css` on `:root`, so a
   palette change in `style.css` must be propagated to all of them and to the
   `theme-color` metas in `_layouts/default.html`, `site.webmanifest`, and
-  the dark `--halo` in `img/geometric-graph.svg`. The simulations follow the
+  the dark `--halo` in `img/geometric-graph.svg` and the literal token
+  fallbacks in `img/office-map.svg`. The simulations follow the
   same register: their segmented toggles, radio rows, buttons and status
   pills use `--radius-sm` (the rainbow pair literal 3–4px), their floating
   panels, toggles and figure stages are border-only with no `box-shadow`
@@ -612,8 +659,10 @@ templates and pushing. GitHub Pages rebuilds on push to `main`.
   short-circuits gracefully when the elements it looks for are absent.
 - **Cache busting**: bump `?v=<n>` on `style.css` / `site.js` in
   `_layouts/default.html` when their contents change.
-- **Images**: use `.webp` in `img/` with explicit `width`, `height`, and
-  `loading` attributes, mirroring existing usage.
+- **Images**: use `.webp` in `img/` for photos and renders, and a theme-aware
+  `.svg` (internal `prefers-color-scheme` block) for drawn figures, with
+  explicit `width`, `height`, and `loading` attributes, mirroring existing
+  usage.
 - **Accessibility**: preserve the skip link, `aria-*` attributes on nav and
   hover-image buttons, and the `<noscript>` fallback on the contact email.
 
