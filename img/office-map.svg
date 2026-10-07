@@ -1,9 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" class="om" viewBox="0 0 1764 1372" width="1764" height="1372" role="group">
 <style>.om{--om-ground:var(--color-surface-soft,#eceef0);--om-building:var(--color-border,#d4d7db);--om-building-edge:#b3b8bf;--om-focus-building:#c3c7cc;--om-road:var(--color-surface,#ffffff);--om-green:#dde6d6;--om-surface:var(--color-surface,#ffffff);--om-ink:var(--color-text,#1a1a1a);--om-muted:var(--color-text-muted,#5a5f66);--om-casing:#1a1a1a;--om-red:#ad2d14;--om-blue:#53afee;--om-green-route:#79d357;--om-on-red:#ffffff;--om-on-light:#1a1a1a;display:block;font-family:var(--font-body,"Source Sans 3","Segoe UI",Arial,sans-serif);font-size:30px;font-weight:400;line-height:normal}
-@media (prefers-color-scheme:dark){.om{--om-ground:var(--color-surface-soft,#262626);--om-building:#3a3a3a;--om-building-edge:#4d4d4d;--om-focus-building:#474747;--om-road:#1c1c1c;--om-green:#25301f;--om-surface:var(--color-surface,#1e1e1e);--om-ink:var(--color-text,#e6e6e6);--om-muted:var(--color-text-muted,#a3a3a3);--om-casing:#141414;--om-red:#e5533a;--om-on-red:#1a1a1a}}
+@media (prefers-color-scheme:dark){.om{--om-ground:var(--color-surface-soft,#262626);--om-building:#333333;--om-building-edge:#4a4a4a;--om-focus-building:#3a3a3a;--om-road:#1c1c1c;--om-green:#25301f;--om-surface:var(--color-surface,#1e1e1e);--om-ink:var(--color-text,#e6e6e6);--om-muted:var(--color-text-muted,#a3a3a3);--om-casing:#141414;--om-red:#e5533a;--om-on-red:#1a1a1a}}
 .om .om-ground{fill:var(--om-ground)}
 .om .om-green{fill:var(--om-green)}
 .om .om-road{fill:none;stroke:var(--om-road);stroke-linecap:round;stroke-linejoin:round}
+.om .om-paved{fill:var(--om-road)}
 .om .om-building{fill:var(--om-building);stroke:var(--om-building-edge);stroke-width:2;fill-rule:evenodd}
 .om .om-building-focus{fill:var(--om-focus-building);stroke:var(--om-building-edge);stroke-width:2;fill-rule:evenodd}
 .om .om-casing{fill:none;stroke:var(--om-casing);stroke-width:20;stroke-linejoin:miter}
@@ -36,7 +37,7 @@
 .om .om-title,.om .om-step,.om .om-success,.om .om-label-text{fill:var(--om-ink)}
 .om .om-label-box{fill:var(--om-surface);stroke:var(--om-ink);stroke-width:2}
 .om .om-label-text{text-anchor:middle}
-.om .om-place{fill:var(--om-muted);font-size:26px;text-anchor:middle}
+.om .om-place{fill:var(--om-ink);font-size:26px;text-anchor:middle}
 .om .om-leader{fill:none;stroke:var(--om-ink);stroke-width:4}
 .om .om-leader-head{fill:var(--om-ink)}
 .om .om-credit{fill:var(--om-muted);font-size:20px;text-anchor:end}
@@ -44,6 +45,13 @@
 <defs><linearGradient id="om-grad-ac" x1="0" y1="0" x2="1" y2="1"><stop offset="0.3" class="om-stop-red"/><stop offset="0.7" class="om-stop-green"/></linearGradient><linearGradient id="om-grad-star" x1="0" y1="0" x2="1" y2="0"><stop offset="0.3" class="om-stop-blue"/><stop offset="0.7" class="om-stop-red"/></linearGradient></defs>
 <g aria-hidden="true">
 <rect class="om-ground" width="1764" height="1372"/>
+<path class="om-green" d="M144 1402L-30 1402 -30 1186 129 1185ZM-30 -30L-30 1015 142 1016 128 766 -30 768 -30 85 79 84 75 11 66 -30ZM713 769L712 953 613 950 605 767 444 767 433 520 473 517 445 12 645 20 708 120 714 345ZM1266 483L1441 494 1436 731 1264 717ZM1236 510L1229 717 1095 704 1091 505ZM1241 345L1254 -30 1074 -30 1080 342ZM1794 518L1650 507 1650 1022 1757 1054 1794 1054ZM872 828L871 941 1049 951 1049 875 1021 873 1021 836Z"/>
+<path class="om-paved" d="M464 1180L183 1183 129 1185 144 1402 473 1402 471 1332ZM452 933L412 933 321 936 331 922 337 909 339 894 339 881 337 868 329 850 317 834 307 827 296 821 291 766 345 766 331 528 348 527 329 202 456 205 473 517 433 520Z"/>
+<path class="om-road" stroke-width="36" d="M791 -30L768 -19 714 -11 422 -9M615 986L1183 1023 1260 1030 1386 1045 1752 1099 1794 1100M1330 419L1372 441 1451 449 1794 479M1794 349L1783 348M243 -20L223 -30M1753 1124L1752 1099M1330 419L1255 433 1123 428M1338 -30L1318 388 1330 419M1762 1402L1760 1329"/>
+<path class="om-road" stroke-width="16" d="M-30 1215L131 1212M412 933L411 891 402 754 397 600 376 204M1249 362L1255 433 1247 785 1250 834M332 261L378 260 488 256 561 181 660 85 714 -11M554 -30L555 -10 561 181M742 1331L746 1402M1193 1342L1242 1402M131 1212L466 1217M488 256L727 356 1249 362 1318 388M376 204L370 89M736 649L736 771M494 1323L488 1217M397 600L735 604M411 891L339 894M621 1152L630 1139 732 1138 728 993 736 833M364 -30L281 82M332 1402L426 1217 423 1180M370 89L366 -30M735 604L727 356 714 -11M1192 1330L1195 1402M505 1332L583 1402M736 771L736 833M735 604L736 649M1247 785L1187 832 1186 984 1183 1023M1255 930L1264 1135M1250 834L1255 930M1098 360L1100 430 1078 433M1123 428L1100 430M1446 956L1451 449M1386 1045L1386 951M1386 951L1446 956M1593 1402L1590 1339M1590 1339L1590 1329M732 1138L1584 1133M1584 1133L1794 1133M1774 -30L1770 27 1778 49 1793 66 1794 67"/>
+<path class="om-building" d="M313 1181L183 1183 129 1185 -30 1186 -30 1015 142 1016 128 766 276 765 291 766 296 821 307 827 317 834 329 850 337 868 339 881 339 894 337 909 331 922 321 936 311 944 300 950ZM281 82L155 83 153 11 75 11 79 84 -30 85 -30 768 276 765 291 766 345 766 334 582 293 583 288 529 348 527 323 82ZM459 1081L444 767 605 767 619 1081ZM1794 108L1446 67 1436 214 1724 248 1713 425 1794 435 1794 370 1775 368 1781 275 1794 277ZM748 623L751 832 839 836 839 818 1043 829 1043 867 1077 869 1079 643ZM1513 497L1497 1010 1622 1020 1638 507ZM1074 -30L1080 342 944 338 944 293 852 291 850 192 793 191 791 63 864 65 865 127 946 129 945 59 980 60 979 -30ZM311 1149L462 1148 464 1180 313 1181ZM193 1402L183 1183 219 1183 229 1402ZM1277 931L1394 930 1386 777 1270 778ZM743 365L748 623 1079 643 1078 433 1076 397 1078 375Z"/>
+<path class="om-building-focus" d="M471 1332L1794 1329 1794 1150 621 1152 619 1081 459 1081Z"/>
+<text class="om-place" x="1480" y="1270">E.C. Stoner Building</text>
 <polyline class="om-casing" points="372,890 507,890 507,1232 627,1232"/>
 <polyline class="om-casing" points="797,1318 797,1235"/>
 <polyline class="om-casing" points="272,66 272,1174 797,1174 797,1232 627,1232"/>
@@ -69,6 +77,8 @@
 <text class="om-digit om-digit-ac" x="797" y="1245.5">4</text>
 <path class="om-leader" d="M206 794L304.6 870.5"/><polygon class="om-leader-head" points="322,884 297.9,879.2 311.4,861.8"/>
 <path class="om-leader" d="M1010 1244L929 1218.6"/><polygon class="om-leader-head" points="908,1212 932.3,1208.1 925.7,1229.1"/>
+<rect class="om-credit-box" x="1435" y="1334" width="329" height="38"/>
+<text class="om-credit" x="1750" y="1360">© OpenStreetMap contributors</text>
 </g>
 <g class="om-callout om-a">
 <rect class="om-box" aria-hidden="true" x="340" y="40" width="784" height="492" rx="10"/>

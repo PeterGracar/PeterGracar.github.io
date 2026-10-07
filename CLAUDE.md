@@ -524,11 +524,15 @@ it as an `<img>`. Consequences for editing:
   the page's `body` styles do not leak in.
 - Route colours are **data colours**, not the site accent: red `#ad2d14`
   (dark mode `#e5533a`), blue `#53afee`, green `#79d357`, each drawn over a
-  near-black casing so lines and markers keep 3:1 contrast on any background,
-  and red and green differ in lightness for red-green colour-blind readers.
+  near-black casing, and red and green differ in lightness for red-green
+  colour-blind readers. Every line keeps at least 3:1 against every base fill
+  (ground, buildings, roads, grass): in light mode through the casing, in dark
+  mode through the fill itself, which is why the dark building fills are as
+  dark as `#333333` / `#3a3a3a` (E.C. Stoner). Re-check if a fill changes.
 - Accessibility structure: the root is `role="group"` with no `<title>` (the
-  `<figcaption>` names it). Everything decorative (base, casings, routes,
-  marker digits, leader arrows) sits in one `aria-hidden` group. Each route's
+  `<figcaption>` names it). Everything decorative (base, building label, casings,
+  routes, marker digits, leader arrows, map credit) sits in one `aria-hidden`
+  group. Each route's
   callout has a title ("Route A (red)") and a `role="list"` of
   `role="listitem"` groups, one `<text>` per step with one positioned `<tspan>`
   per line; every line but the last ends with a space so words do not run
@@ -539,7 +543,19 @@ it as an `<img>`. Consequences for editing:
   Source Sans 3, Liberation Sans (Arial metrics) and FreeSans (Helvetica
   metrics) plus 5%, so re-check the box widths after any text change.
 - Coordinates are in a 0 0 1764 1372 frame, the frame of the former raster
-  map, so the routes sit where they did.
+  map, so the routes, markers and callouts sit where they did; the base was
+  fitted to that frame.
+- The base (buildings, the E.C. Stoner Building drawn darker, service roads,
+  footpaths, paved areas, grass) is **OpenStreetMap** data, extracted on
+  2026-10-07 from `api.openstreetmap.org/api/0.6/map?bbox=-1.5590,53.8030,-1.5480,53.8080`
+  (indoor, covered, tunnel and below-ground ways left out). It was projected to
+  local metres (x east, y south, about 53.8055 N, 1.5545 W) and mapped into the
+  frame with an affine transform, `x' = 10.1648x + 0.4987y + 337.87`,
+  `y' = -0.0252x + 10.7219y + 1108.39`, fitted to six building corners on the
+  old aerial photo (RMS residual 7.5 px, about 0.7 m). ODbL requires the
+  "© OpenStreetMap contributors" credit: keep it both inside the SVG (bottom
+  right, for the `<img>` previews) and in the `map.html` figcaption, linked to
+  https://www.openstreetmap.org/copyright.
 
 ## SEO, sitemap, and the "secret" index
 
