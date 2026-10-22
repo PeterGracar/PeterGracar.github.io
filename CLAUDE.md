@@ -227,7 +227,7 @@ Key rules mirrored by the templates (see `_includes/publication_item.html` and
     `.pub-badge--simulation` pill next to the status badge and a `.pub-sim`
     link line under the entry. Items missing either key are
     skipped, and one simulation may be listed on several publications (the
-    contact-process sim is on two). This is how simulations reach the site —
+    contact-process sim is on three). This is how simulations reach the site —
     `research.html` no longer keeps a list of its own.
 
 - **Coauthors** (`_coauthors/*.md`)
@@ -348,8 +348,8 @@ at `/simulations/<name>.html`. There are two flavours:
   `simulations/<name>.html`. They are linked from `research.html` **through the
   publication entries**, not from a list at the top of the page: each paper's
   `simulations:` front matter names the sims that illustrate it (see the
-  Publications bullet above). contact-process is on both the contact-process and
-  the mobile-vertices papers, levy-vs-bm and detection-percolation-**discontinuous**
+  Publications bullet above). contact-process is on the contact-process, the
+  mobile-vertices and the motion-helps papers, levy-vs-bm and detection-percolation-**discontinuous**
   are both on the detection/coverage paper, and rainbow-percolation is on the
   rainbow paper; the plain
   `detection-percolation.html` is now `no_index` and **not** linked (superseded

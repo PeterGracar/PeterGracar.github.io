@@ -5,4 +5,7 @@ status: "preprint"
 date: "2026-08-26"
 preprint_label: "arXiv:2608.24830"
 preprint_url: "https://arxiv.org/abs/2608.24830"
+simulations:
+  - url: "simulations/contact-process.html"
+    label: "an SIS epidemic on a mobile geometric graph"
 ---
