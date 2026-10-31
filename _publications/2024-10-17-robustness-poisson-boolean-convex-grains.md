@@ -2,6 +2,7 @@
 title: "Robustness in the Poisson Boolean model with convex grains"
 title_url: "https://arxiv.org/pdf/2410.13366"
 status: "accepted"
+date: "2026-10-31" 
 coauthors:
   - "marilyn-korfhage"
   - "peter-moerters"
